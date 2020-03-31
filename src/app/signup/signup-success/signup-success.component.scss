@@ -1,0 +1,25 @@
+@import "assets/styles/styles.scss";
+.signup-plan{
+    padding: 10vh 50px;
+    .signup-plan-action{
+        margin: 0 auto;
+    }
+    .signup-plan-top{
+        text-align: center;
+       .btn{
+            position: absolute;
+            right: 0;
+            top:10px;
+       } 
+    }
+    .signup-plan-title{
+        text-align: center;
+        .signup-plan-checkcircle i{
+            font-size: 80px;
+            color: #FFA11B; 
+        }
+        a{
+            color: #212529;
+        }
+    }
+}

@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-12">
+      <div class="header-title">
+        <h6>Role Privileges</h6>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-3">
+      <div class="role-table table-responsive">
+        <table class="table table-borderless">
+          <thead>
+            <tr>
+              <th scope="col" colspan="6"></th>
+              <th class="text-center" *ngFor="let singleRole of allAvailableRolesSorted" scope="col">{{singleRole.Name}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let category of allCategories">
+              <tr>
+                <th class="tab-bg" colspan="12">{{category}}</th>
+              </tr>
+              <tr *ngFor="let aPerm of getPermissionsInCategory(category);">
+                <th scope="row" class="font-weight-normal" colspan="6">{{aPerm.Name}}</th>
+                <td *ngFor="let sRole of allAvailableRolesSorted">
+                  <form>
+                    <div class="custom-control custom-checkbox">
+                      <input disabled type="checkbox" class="custom-control-input"
+                        id="customCheckone_{{sRole.Id}}_{{aPerm.Id}}" name="example1"
+                        (click)="addRemovePermission(sRole, aPerm,$event)"
+                        [checked]="shouldCheckThisItem(sRole, aPerm)">
+                      <label class="custom-control-label" for="customCheckone_{{sRole.Id}}_{{aPerm.Id}}"></label>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div class="col-md-12 d-flex justify-content-end mt-4 pb-4">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+.custom-radio-wrapper {
+    float: left;
+    margin-top: 8px;
+    width: 100%;
+    .custom-radio {
+        float: left;
+        margin-right: 10px;
+    }
+}
+
+.meshin-text {
+    textarea {
+        background: #F5F6FA;
+        font-size: 13px;
+        padding: 6px 8px;
+        border-bottom: none;
+        min-height: 100px;
+    }
+}
+.btn-position
+{
+    position: absolute;
+    top: 60px;
+    right: 14px;
+}
+.outline-icon{
+    right: 0px;
+    top: 0px;
+    color: #808495;
+    font-size: 23px;
+}
+.remove-icon{
+    right: 0px;
+    top: 0px;
+    color: #808495;
+    font-size: 23px;
+}
+
+// Medium devices (tablets, less than 992px)
+@media (max-width: 992px) { 
+    .progressbar
+    {
+        width: 100%
+    }
+}
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 768px) {
+    .progressbar
+    {
+        width: 100%
+    }
+}
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 576px) {
+    .progressbar li a
+    {
+        font-size: 10px;
+    }
+}

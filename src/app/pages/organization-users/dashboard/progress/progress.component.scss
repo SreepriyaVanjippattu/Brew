@@ -1,0 +1,40 @@
+.progress {
+    background: #ffffff;
+    height: 15.9rem;
+    box-shadow: 0px 3px 6px #00000029;
+  }
+  
+  .progress__value-text {
+    position: absolute;
+    top: 40%;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .progress__value-days {
+    position: absolute;
+    top: 52%;
+    font-size: 15px;
+    color: red;
+    font-weight: 600;
+  }
+  
+  .progress__svg {
+    transform: rotate(-90deg);
+    align-items: center;
+    align-content: center;
+    height: 250px;
+  }
+  
+  .progress__meter,
+  .progress__value {
+    fill: none;
+  }
+  
+  .progress__meter {
+    stroke: #ccc;
+  }
+  
+  .progress__value {
+    stroke:#4CAF50;;
+    transition: all 100ms;
+  }

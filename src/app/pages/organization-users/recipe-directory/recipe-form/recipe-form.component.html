@@ -1,0 +1,1002 @@
+<kendo-pdf-export #pdf paperSize="A4" [scale]="0.5" margin="1cm">
+    <div class="container-fluid">
+        <section class='recipe-report'>
+            <div class="header-title">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h6>{{recipeName}}</h6>
+                        <button (click)="backButtonClick()" type="button" class='btn l-btn-cancel'>
+                            <img src="assets/images/back-btn.svg">
+                            Go Back
+                        </button>
+                        <img src="assets/images/pdf.svg" (click)="savePdf(pdf)" class="float-right mr-2">
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="recipeDetailsForm" id="pdfDiv" #pdfDiv>
+                <div class='recipe-details'>
+                    <div class="sub-header">
+                        <h6>Recipe Details</h6>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Recipe Name
+                                <i class="material-icons star-ico l-mandatory"> star </i>
+                            </label>
+                            <input type="text" class="form-control" placeholder="Recipe Name" id="ReceipeName"
+                                formControlName="ReceipeName">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Style
+                                <i class="material-icons star-ico l-mandatory"> star </i>
+                            </label>
+                            <select class="form-control input-style input-dropdown" id="" formControlName="StyleId">
+                                <option disabled value="">Select</option>
+                                <option *ngFor="let styles of styles" [value]="styles.id">{{styles.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Batch Size
+                                <i class="material-icons star-ico l-mandatory"> star </i>
+                            </label>
+                            <div class='multiple-input'>
+                                <input type="text" class="form-control" placeholder="Batch Size" id="BatchSize"
+                                    formControlName="BatchSize">
+                                <select class="form-control input-dropdown" formControlName="BatchSizeUnitId"
+                                    id="BatchSizeUnitId">
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Brew House Efficiency (%)
+                                <i class="material-icons star-ico l-mandatory"> star </i>
+                            </label>
+                            <input type="text" class="form-control" placeholder="Brew House Efficiency (%)"
+                                id="BrewHouseEfficiency" formControlName="BrewHouseEfficiency">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>ABV (%)
+                                <i class="material-icons star-ico l-mandatory"> star </i>
+                            </label>
+                            <input type="text" class="form-control" placeholder="ABV (%)" id="Abv"
+                                formControlName="Abv">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>IBUs
+                                <i class="material-icons star-ico l-mandatory"> star </i>
+                            </label>
+                            <input type="text" class="form-control" placeholder="IBUs" id="Ibus" formControlName="Ibus">
+                        </div>
+                    </div>
+
+
+                    <div formArrayName="MaltGrainBill"
+                        *ngFor="let MaltGrainBill of maltGrainBillArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="sub-header">
+                                <h6>Malt/Grain Bill. {{i+1}}</h6>
+                            </div>
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-3">
+                                    <label>Name
+                                        <i class="material-icons star-ico l-mandatory"> star </i>
+                                    </label>
+                                    <input type="text" value="{{MaltGrainBill.value.Name}}" class="form-control"
+                                        placeholder="Name" id="Name" formControlName="Name">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Type</label>
+                                    <select class="form-control input-style input-dropdown" id="MaltGrainTypeId"
+                                        formControlName="MaltGrainTypeId">
+                                        <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
+                                            {{maltTypes.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Origin</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        formControlName="CountryId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let countries of countries" [value]="countries.id">
+                                            {{countries.countryName}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Supplier</label>
+                                    <select formControlName="SupplierId" class="form-control input-style input-dropdown"
+                                        id="">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                            {{suppliers.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>Quantity
+                                        <i class="material-icons star-ico l-mandatory"> star </i>
+                                    </label>
+                                    <div class='multiple-input'>
+                                        <input type="text" value="{{MaltGrainBill.value.Quantity}}" class="form-control"
+                                            placeholder="Quantity" id="Quantity" formControlName="Quantity">
+                                        <select class="form-control input-dropdown" formControlName="QuantityUnitId"
+                                            id="QuantityUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>% of Grain Bill</label>
+                                    <input type="number" value="{{MaltGrainBill.value.GrainBillPercentage}}"
+                                        class="form-control" placeholder="% of Grain Bill" id="GrainBillPercentage"
+                                        formControlName="GrainBillPercentage">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>SRM</label>
+                                    <input type="number" value="{{MaltGrainBill.value.Srm}}" class="form-control"
+                                        placeholder="SRM" id="Srm" formControlName="Srm">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Potential</label>
+                                    <input type="number" value="{{MaltGrainBill.value.Potential}}" class="form-control"
+                                        placeholder="Potential" id="Potential" formControlName="Potential">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div formArrayName="WaterAdditions" *ngFor="let water of waterAdditionsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="sub-header">
+                                <h6>Water Additions. {{i+1}}</h6>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-quantity">CaCO3</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="CaCo3" placeholder="CaCo3"
+                                            formControlName="caCo3">
+                                        <select class="form-control input-dropdown" formControlName="caCo3unitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-quantity">Table Salt</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="TableSalt" placeholder="Quantity"
+                                            formControlName="tableSalt">
+                                        <select class="form-control input-dropdown" formControlName="tableSaltUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-quantity">Epsom Salt</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="EpsomSalt" placeholder="Quantity"
+                                            formControlName="epsomSalt">
+                                        <select class="form-control input-dropdown" formControlName="epsomSaltUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-quantity">Gypsum</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="Gypsum" placeholder="Quantity"
+                                            formControlName="gypsum">
+                                        <select class="form-control input-dropdown" formControlName="gypsumUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-quantity">CACL2</label>
+
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="Cacl2" placeholder="Quantity"
+                                            formControlName="cacl2">
+                                        <select class="form-control input-dropdown" formControlName="cacl2unitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="H3po4">H3PO4</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="H3po4" placeholder="Quantity"
+                                            formControlName="h3po4">
+                                        <select class="form-control input-dropdown" formControlName="h3po4unitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-Quantity">Baking Soda Name</label>
+                                    <input type="text" class="form-control" id="brewrrun-Quantity"
+                                        formControlName="bakingSodaName" placeholder="">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="BakingSoda">Baking Soda</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="BakingSoda"
+                                            formControlName="bakingSoda" placeholder="Quantity">
+                                        <select class="form-control input-dropdown" formControlName="bakingSodaUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div formArrayName="Hops" *ngFor="let Hops of hopsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="sub-header">
+                                <h6>Hops {{i+1}}</h6>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="recipe-name">Name
+                                        <i class="material-icons star-ico l-mandatory"> star </i>
+                                    </label>
+                                    <input type="text" class="form-control" id="recipe-name" placeholder="Name"
+                                        id="Name" formControlName="name">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="recipe-type">Type</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        formControlName="maltGrainTypeId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
+                                            {{maltTypes.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Origin</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        formControlName="countryId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let countries of countries" [value]="countries.id">
+                                            {{countries.countryName}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Supplier</label>
+                                    <select formControlName="supplierId" class="form-control input-style input-dropdown"
+                                        id="">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                            {{suppliers.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="recipe-alpha">Alpha (%)
+                                        <i class="material-icons star-ico l-mandatory"> star </i>
+                                    </label>
+                                    <input type="text" class="form-control" id="recipe-alpha" placeholder="Alpha (%)"
+                                        id="Alpha" formControlName="alpha">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="recipe-quantity">Quantity</label>
+                                    <div class='multiple-input'>
+                                        <input type="text" class="form-control" id='recipe-quantity'
+                                            placeholder="Quantity" id="Quantity" formControlName="quantity">
+                                        <select class="form-control input-dropdown" formControlName="quantityUnitTypeId"
+                                            id="QuantityUnitTypeId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="recipe-addin">Add In</label>
+                                    <select class="form-control input-style input-dropdown" id="add-in"
+                                        formControlName="addInId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div for="status" class="form-group col-md-3">
+                                    <label for="brewrrun-Quantity">Time In</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewrrun-Quantity"
+                                            placeholder="Time In" formControlName="timeIn">
+
+                                        <select formControlName="timeInUnitId" class="form-control input-dropdown">
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div formArrayName="Adjuncts" *ngFor="let Adjuncts of adjunctsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="sub-header">
+                                <h6>Adjuncts. {{i+1}}</h6>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="recipe-name">Name
+                                    </label>
+                                    <input type="text" class="form-control" id="Name" placeholder="Name"
+                                        formControlName="name">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Origin</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        formControlName="countryId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let countries of countries" [value]="countries.id">
+                                            {{countries.countryName}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Supplier</label>
+                                    <select formControlName="supplierId" class="form-control input-style input-dropdown"
+                                        id="">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                            {{suppliers.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="recipe-amount">Amount</label>
+                                    <div class='multiple-input'>
+                                        <input type="text" class="form-control" id='Quantity' placeholder="Amount"
+                                            formControlName="quantity">
+                                        <select formControlName="quantityUnitId" class="form-control input-dropdown">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label for="recipe-addin">Add In</label>
+                                    <select class="form-control input-style input-dropdown" id="add-in"
+                                        formControlName="addInId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-Quantity">Time In</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewrrun-Quantity"
+                                            placeholder="Time In" formControlName="timeIn">
+
+                                        <select formControlName="timeInUnitId" class="form-control input-dropdown">
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header">
+                        <h6>Mashing Targets</h6>
+                    </div>
+                    <div formArrayName="mashingTargets"
+                        *ngFor="let mashingTargets of mashingTargetsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-volume">Strike Water Volume</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="recipe-volume"
+                                            placeholder="Strike Water Volume" id="strikewaterVolume"
+                                            formControlName="strikeWaterVolume">
+                                        <select formControlName="strikeWaterUnitTypeId"
+                                            class="form-control input-dropdown">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-temperature">Strike Water Temperature ({{preferedUnit}})</label>
+                                    <input type="number" class="form-control" id="recipe-temperature"
+                                        placeholder="Strike Water Temperature" formControlName="strikeWaterTemperature"
+                                        id="strikewaterTemperature">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="mashingTargetsmashPH">Mash pH</label>
+                                    <input type="number" class="form-control" id="mashingTargetsmashPH"
+                                        placeholder="Mash pH" formControlName="mashpH">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-ratio">Liquor to Grist Ratio</label>
+                                    <input type="text" class="form-control" id="recipe-temperature"
+                                        placeholder="Liquor to Grist Ratio" formControlName="liquortogristratio">
+                                </div>
+                            </div>
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label>Temperature</label>
+                                    <div class='custom-radio-wrapper'>
+                                        <div class='custom-radio'>
+                                            <input type="radio" id="preference-Single" formControlName="tempSingle"
+                                                value="single">
+                                            <label for="preference-Single">Single</label>&nbsp;
+                                            <input type="radio" id="preference-Multiple" formControlName="tempSingle"
+                                                value="multiple">
+                                            <label for="preference-Multiple">Multiple</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6 position-relative">
+                                    <label for="brewrun-id">Temperature ({{preferedUnit}})</label>
+                                    <i *ngIf="showMultiTemps"
+                                        class="material-icons position-absolute outline-icon cursor-click">add_circle_outline</i>
+                                    <div formArrayName="mashingTargetTemperature"
+                                        *ngFor="let temp of mashingTargets.get('mashingTargetTemperature').controls; let i = index;">
+                                        <div [formGroupName]="i" class="w-100 position-relative">
+
+                                            <input type="number" formControlName="temperature" class='form-control mt-3'
+                                                placeholder="temperature">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header">
+                        <h6>Notes</h6>
+                    </div>
+                    <div class="card-body card-notes" formArrayName="RecipeNotes"
+                        *ngFor="let Notes of recipeNotesArray.controls; let i = index;">
+                        <div class="form-row meshin-text" [formGroupName]="i">
+                            <div class="form-group col-md-12">
+                                <textarea type="text" class="form-control" id="meshin-Notes" formControlName="Notes"
+                                    placeholder="Type Text Here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header">
+                        <h6>Kettle Targets</h6>
+                    </div>
+                    <div formArrayName="KettleTargets"
+                        *ngFor="let mashingTargets of kettleTargetsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-boil">Boil Length (mins)</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="BoilLength"
+                                            placeholder="Boil Length (mins)" formControlName="BoilLength">
+                                        <select formControlName="BoilLengthUnitId" class="form-control input-dropdown">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-preboil">Volume Pre Boil</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="VolumePreBoil"
+                                            placeholder="Volume Pre Boil" formControlName="VolumePreBoil">
+                                        <select formControlName="VolumePreBoilUnitId"
+                                            class="form-control input-dropdown">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-postboil">Volume Post Boil</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="VolumePostBoil"
+                                            placeholder="Volume Post Boil" formControlName="VolumePostBoil">
+                                        <select formControlName="VolumePostBoilUnitId"
+                                            class="form-control input-dropdown">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-plato">{{preferedPlato}}</label>
+                                    <input type="text" class="form-control" id="Plato" placeholder="{{preferedPlato}}"
+                                        formControlName="Plato" id="Plato">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-ph">pH</label>
+                                    <input type="text" class="form-control" id="Ph" placeholder="pH"
+                                        formControlName="Ph">
+                                </div>
+                            </div>
+                            <p><strong>Notes</strong></p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <textarea type="text" class="form-control" id="Notes"
+                                        placeholder="Type text here ..." formControlName="Notes"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div formArrayName="sparge" *ngFor="let sparge of spargeArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="sub-header">
+                                <h6>Lauter/ Sparge/ Transfer Details. {{i+1}} </h6>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-sparge">Sparge Water Temperature ({{preferedUnit}})</label>
+                                    <input type="number" class="form-control" id="SpargeWaterTemperature"
+                                        placeholder="Sparge Water Temperature" formControlName="spargeWaterTemperature">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-spargetotal">Sparge Total Volume</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="SpargeTotalVolume"
+                                            placeholder="Sparge Total Volume" formControlName="spargeTotalVolume">
+                                        <select class="form-control input-dropdown">
+                                            <option *ngFor="let SpargeTotalVolumeOption of SpargeTotalVolumeOptions ">
+                                                {{SpargeTotalVolumeOption}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-plato">First Runnings ({{preferedPlato}})</label>
+                                    <input type="number" class="form-control" id="FirstRunningPlato"
+                                        placeholder="First Runnings" formControlName="firstRunningPlato">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-plato">Last Runnings ({{preferedPlato}})</label>
+                                    <input type="number" class="form-control" id="LastRunningPlato"
+                                        placeholder="Last Runnings" formControlName="lastRunningPlato">
+                                </div>
+                            </div>
+                            <p><strong>Notes</strong></p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <textarea type="text" class="form-control" id="Notes"
+                                        placeholder="Type text here ..." formControlName="notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header">
+                        <h6>Whirlpool Targets</h6>
+                    </div>
+                    <div formArrayName="WhirlpoolTarget"
+                        *ngFor="let whirlpool of whirlpoolTargetArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-boilvolume">Post Boil Volume
+                                        <i class="material-icons star-ico l-mandatory"> star </i>
+                                    </label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="PostBoilVolume"
+                                            placeholder="Post Boil Volume" formControlName="PostBoilVolume">
+                                        <select class="form-control input-dropdown"
+                                            formControlName="PostBoilVolumeunitId" id="QuantityUnitTypeId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <p><strong>Notes</strong></p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <textarea type="text" class="form-control" id="Notes"
+                                        placeholder="Type text here ..." formControlName="Notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="sub-header">
+                        <h6>Cooling-Knockout Targets</h6>
+                    </div>
+                    <div formArrayName="CoolingKnockoutTargets"
+                        *ngFor="let coolingknockout of coolingKnockoutTargetsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-fermentervolume">Volume in Fermentation
+                                    </label>
+                                    <div class='multiple-input'>
+                                        <input type="text" class="form-control" id="VolumeInFermentation"
+                                            placeholder="Volume in Fermenter" formControlName="VolumeInFermentation">
+                                        <select class="form-control input-dropdown"
+                                            formControlName="VolumeInFermentationOptionId"
+                                            id="VolumeInFermentationOptionId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <p><strong>Notes</strong></p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <textarea type="text" class="form-control" id="Notes"
+                                        placeholder="Type Text here..." formControlName="Notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header">
+                        <h6>Fermentation Targets</h6>
+                    </div>
+                    <div formArrayName="FermentationTargets"
+                        *ngFor="let fermentationTarget of fermentationTargetsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-volumein">Volume In</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="VolumeIn" placeholder="Volume In"
+                                            formControlName="VolumeIn">
+                                        <select class="form-control input-dropdown" formControlName="VolumeInUnitId"
+                                            id="VolumeInUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-temp">Temperature ({{preferedUnit}})</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="Temperature"
+                                            placeholder="Temperature" formControlName="Temperature">
+                                        <select class="form-control input-dropdown" formControlName="TemperatureUnitId"
+                                            id="TemperatureUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-pressure">Pressure (in PSI)</label>
+                                    <input type="number" class="form-control" id="Pressure"
+                                        placeholder="Pressure (in PSI)" formControlName="Pressure">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-ph">pH</label>
+                                    <input type="number" class="form-control" id="Ph" placeholder="pH"
+                                        formControlName="Ph">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-plato">{{preferedPlato}}</label>
+                                    <input type="number" class="form-control" id="recipe-plato"
+                                        placeholder="{{preferedPlato}}" formControlName="Plato">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p><strong>Diacetyl Rest</strong></p>
+                    <div formArrayName="DiacetylRest"
+                        *ngFor="let DiacetylRest of diacetylRestArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-temp">Temperature ({{preferedUnit}})</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="recipe-temp"
+                                            placeholder="Temperature" formControlName="Temperature">
+                                        <select class="form-control input-dropdown" formControlName="TemperatureUnitId"
+                                            id="TemperatureUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-plato">{{preferedPlato}}</label>
+                                    <input type="number" class="form-control" id="recipe-plato"
+                                        placeholder="{{preferedPlato}}" formControlName="Plato">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p><strong>Cooling/ Aging</strong></p>
+                    <div formArrayName="Aging" *ngFor="let Aging of agingArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-duration">Time Duration</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="recipe-duration"
+                                            placeholder="Time Duration" formControlName="TimeDuration">
+                                        <select class="form-control input-dropdown" formControlName="TimeDurationUnitId"
+                                            id="VolumeInUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-temp">Temperature ({{preferedUnit}})</label>
+                                    <input type="number" class="form-control" id="recipe-temp" placeholder="Temperature"
+                                        formControlName="Temperature">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p><strong>Yeast</strong></p>
+                    <div formArrayName="Yeast" *ngFor="let Yeast of yeastArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-name">Yeast Name</label>
+                                    <input type="text" class="form-control" id="recipe-strain" placeholder="Yeast Name"
+                                        formControlName="Name">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-strain">Strain</label>
+
+                                    <select class="form-control input-style input-dropdown" id="add-in"
+                                        formControlName="YeastStrainId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let yeastStrain of yeastStrain" [value]="yeastStrain.id">
+                                            {{yeastStrain.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Origin</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        formControlName="CountryId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let countries of countries" [value]="countries.id">
+                                            {{countries.countryName}}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Supplier</label>
+                                    <select formControlName="SupplierId" class="form-control input-style input-dropdown"
+                                        id="">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                            {{suppliers.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="sub-header">
+                        <h6>Conditioning Targets</h6>
+                    </div>
+                    <div formArrayName="ConditioningTargets"
+                        *ngFor="let conditioningTarget  of conditioningTargetsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-volumein">Volume In</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="recipe-volumein"
+                                            placeholder="Volume In" formControlName="VolumeIn">
+                                        <select class="form-control input-dropdown" formControlName="VolumeInUnitId"
+                                            id="VolumeInUnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-temp">Temperature ({{preferedUnit}})</label>
+                                    <input type="number" class="form-control" id="recipe-temp" placeholder="Temperature"
+                                        formControlName="Temperature">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-pressure">Pressure (in PSI)</label>
+                                    <input type="number" class="form-control" id="recipe-pressure"
+                                        placeholder="Pressure (in PSI)" formControlName="Pressure">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-ph">pH</label>
+                                    <input type="number" class="form-control" id="recipe-ph" placeholder="pH"
+                                        formControlName="Ph">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-plato">{{preferedPlato}}</label>
+                                    <input type="number" class="form-control" id="recipe-plato"
+                                        placeholder="{{preferedPlato}}" formControlName="Plato">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-CO2">CO2</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="recipe-CO2" placeholder="CO2"
+                                            formControlName="Co2">
+                                        <select class="form-control input-dropdown" formControlName="Co2UnitId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <p><strong>Notes</strong></p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <textarea type="text" class="form-control" id="recipe-notes"
+                                        placeholder="Type text here ..." formControlName="Notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sub-header">
+                        <h6>Filtration Targets</h6>
+                    </div>
+                    <div formArrayName="FilterationTargets"
+                        *ngFor="let filterationTargets  of filterationTargetsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-temp">Temperature ({{preferedUnit}})</label>
+                                    <input type="number" class="form-control" id="recipe-temp" placeholder="Temperature"
+                                        formControlName="Temperature">
+                                </div>
+                            </div>
+                            <p><strong>Notes</strong></p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <textarea type="text" class="form-control" id="recipe-notes"
+                                        placeholder="Type Text here..." formControlName="Notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header">
+                        <h6>Carbonation Targets</h6>
+                    </div>
+                    <div formArrayName="CarbonationTargets"
+                        *ngFor="let CarbonationTargets  of carbonationTargetsArray.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-pressure">Pressure (in PSI)</label>
+                                    <input type="number" class="form-control" id="recipe-pressure"
+                                        placeholder="Pressure (in PSI)" formControlName="Pressure">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="recipe-ph">pH</label>
+                                    <input type="number" class="form-control" id="recipe-ph" placeholder="pH"
+                                        formControlName="Ph">
+                                </div>
+                            </div>
+                            <p><strong>Notes</strong></p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <textarea type="text" class="form-control" id="recipe-notes"
+                                        placeholder="Type Text here..." formControlName="Notes"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class='recipe-footer'>
+
+                <div (click)="gotoTop()" class="recipe-scrolltop">
+                    <div class="material-icons scroll-arrow">
+                        expand_less
+                    </div>
+                </div>
+
+                <button type="button" class='btn l-btn-cancel' (click)="backButtonClick()">
+                    <img src="../../../../../assets/images/back-btn.svg">
+                    Go Back
+                </button>
+            </div>
+        </section>
+    </div>
+</kendo-pdf-export>

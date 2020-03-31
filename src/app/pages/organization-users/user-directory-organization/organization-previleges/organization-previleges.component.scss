@@ -1,0 +1,27 @@
+@import "assets/styles/styles.scss";
+
+table
+{
+    min-width: 1130px;
+}
+
+.tab-bg
+{
+    background: #0B20441A 0% 0% no-repeat padding-box;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before
+{
+    background: #F8B500;
+    border-color: #F8B500;
+}
+
+.role-table
+{
+    background: $BgWhite;
+    border-radius: $tableBorder;
+}
+.custom-control
+{
+    text-align: center;
+}

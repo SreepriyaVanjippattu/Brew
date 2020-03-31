@@ -1,0 +1,1191 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="header-title">
+                <h6>{{pageHeader}}</h6>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/app/recipes">Recipes Directory </a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{pageHeader}}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <ul class="nav nav-pills mb-3 progressbar" id="pills-tab" role="tablist">
+                <li (click)="mashInClick()" class="nav-item active cursor-click">
+                    <a class="active" id="pills-mash-tab" data-toggle="pill" href="#pills-mash" role="tab"
+                        aria-controls="pills-mash" aria-selected="true">Mash In</a>
+                </li>
+                <li (click)="brewLogClick()" class="nav-item cursor-click">
+                    <a id="pills-brew-tab" data-toggle="pill" href="#pills-brew" role="tab" aria-controls="pills-brew"
+                        aria-selected="false">Brew Log</a>
+                </li>
+                <li (click)="fermentationClick()" class="nav-item cursor-click">
+                    <a id="pills-fermentation-tab" data-toggle="pill" href="#pills-fermentation" role="tab"
+                        aria-controls="pills-fermentation" aria-selected="false">Fermentation</a>
+                </li>
+                <li (click)="conditioningClick()" class="nav-item cursor-click">
+                    <a id="pills-conditioning-tab" data-toggle="pill" href="#pills-conditioning" role="tab"
+                        aria-controls="pills-conditioning" aria-selected="false">Conditioning</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2 cancel-mb">
+            <button class="btn l-btn-cancel float-right mt-5" type="button" (click)="cancelClick()">
+                <img src="assets/images/close-icon.svg">Cancel</button>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12 recipe-bg">
+            <form [formGroup]="recipeMashForm" autocomplete="off">
+                <div class="accordion" id="accordionExample">
+
+                    <div class="card">
+                        <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+                            <h2 class="mb-0">
+                                <button (click)="isCollapsedReceipe = !isCollapsedReceipe" class="btn btn-link"
+                                    type="button" data-target="#collapseOne" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    Recipe Details
+                                </button>
+                            </h2>
+                            <div class="d-flex align-items-center">
+                                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedReceipe"
+                                    (click)="isCollapsedReceipe = !isCollapsedReceipe">
+                                    indeterminate_check_box
+                                </i>
+                                <i class="material-icons  colapse-toggle cursor-click"
+                                    [ngbCollapse]="!isCollapsedReceipe"
+                                    (click)="isCollapsedReceipe = !isCollapsedReceipe">
+                                    add_box
+                                </i>
+                            </div>
+                        </div>
+
+                        <div [ngbCollapse]="isCollapsedReceipe" class="collapse show" aria-labelledby="headingOne"
+                            data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label for="recipt-Name">Recipe Name </label>
+                                        <i class="material-icons star-ico">
+                                            star_rate
+                                        </i>
+                                        <input type="text" class="form-control" id="recipt-Name"
+                                            placeholder="Recipe Name" formControlName="receipeName">
+                                        <div *ngIf="formSubmitted">
+                                            <div *ngIf="form.receipeName.errors?.required" class="valid-error">
+                                                Recipe Name is required
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="count">Style</label>
+                                        <i class="material-icons star-ico">
+                                            star_rate
+                                        </i>
+                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                            data-toggle="modal" data-target="#styleModal">add_circle_outline</i>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            formControlName="styleId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let styles of styles" [value]="styles.id">
+                                                {{styles.name}}</option>
+
+                                        </select>
+                                        <div *ngIf="formSubmitted">
+                                            <div *ngIf="form.styleId.errors?.required" class="valid-error">
+                                                Style is required
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label for="batch-size">Batch Size</label>
+                                        <i class="material-icons star-ico">
+                                            star_rate
+                                        </i>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="ferment-Pressure"
+                                                placeholder="Batch Size" formControlName="batchSize">
+                                            <select class="form-control input-dropdown"
+                                                >
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.category === 'Size'" [value]="unit.id">
+                                                        {{unit.symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                        <div *ngIf="formSubmitted">
+                                            <div *ngIf="form.batchSize.errors?.required || form.batchSizeUnitId.errors?.required"
+                                                class="valid-error">
+                                                Batch Size and Unit is required
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6">
+                                        <label for="recipt-efcncy">Brew House Efficiency (%) </label>
+                                        <i class="material-icons star-ico">
+                                            star_rate
+                                        </i>
+                                        <input type="number" class="form-control" id="recipt-efcncy"
+                                            placeholder="Brew House Efficiency" formControlName="brewHouseEfficiency">
+                                        <div *ngIf="formSubmitted">
+                                            <div *ngIf="form.brewHouseEfficiency.errors?.required" class="valid-error">
+                                                Brew House Efficiency is required
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="form-group col-md-6">
+                                        <label for="recipt-Abv">ABV (%) </label>
+                                        <i class="material-icons star-ico">
+                                            star_rate
+                                        </i>
+                                        <input type="number" class="form-control" id="recipt-Abv" placeholder="ABV"
+                                            formControlName="abv">
+                                        <div *ngIf="formSubmitted">
+                                            <div *ngIf="form.abv.errors?.required" class="valid-error">
+                                                ABV is required
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="recipt-ibu">IBUs</label>
+                                        <i class="material-icons star-ico">
+                                            star_rate
+                                        </i>
+                                        <input type="number" class="form-control" id="recipt-ibu" placeholder="IBUs"
+                                            formControlName="ibus">
+                                        <div *ngIf="formSubmitted">
+                                            <div *ngIf="form.ibus.errors?.required" class="valid-error">
+                                                IBU is required
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                                <h2 class="mb-0">
+                                    <button (click)="isCollapsedMalt = !isCollapsedMalt" class="btn btn-link collapsed"
+                                        type="button" data-toggle="collapse" aria-expanded="false"
+                                        aria-controls="collapseTwo">
+                                        Malt/Grain Bill. 1
+                                    </button>
+                                </h2>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn l-btn mr-2" type="button" (click)="addMaltBill()">Add
+                                        New</button>
+                                    <i class="material-icons colapse-toggle cursor-click"
+                                        [ngbCollapse]="isCollapsedMalt" (click)="isCollapsedMalt = !isCollapsedMalt">
+                                        indeterminate_check_box
+                                    </i>
+                                    <i class="material-icons  colapse-toggle cursor-click"
+                                        [ngbCollapse]="!isCollapsedMalt" (click)="isCollapsedMalt = !isCollapsedMalt">
+                                        add_box
+                                    </i>
+                                </div>
+                            </div>
+                            <div [ngbCollapse]="isCollapsedMalt" class="collapse" aria-labelledby="headingTwo"
+                                data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div formArrayName="maltGrainBill"
+                                        *ngFor="let malt of maltBillArray.controls; let i=index">
+
+                                        <div class="d-flex justify-content-between mr-2 card-sub-section mb-4"
+                                            *ngIf="recipeMashForm.controls.maltGrainBill.controls.length > 1 && i != 0">
+                                            <label class="mt-2">Malt/Grain Bill.
+                                                {{i+1}}</label>
+                                            <button class="btn l-btn mr-3" type="button" (click)="removeMaltBill(i)">
+                                                Remove
+                                            </button>
+                                        </div>
+
+                                        <div [formGroupName]="i">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label for="brewrun-Name">Name</label>
+                                                    <i class="material-icons star-ico">
+                                                        star_rate
+                                                    </i>
+                                                    <input type="text" class="form-control" id="brewrun-Name"
+                                                        placeholder="" formControlName="name">
+                                                    <div *ngIf="formSubmitted">
+                                                        <div *ngIf="malt.get('name').invalid" class="valid-error">
+                                                            Name is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div for="status" class="form-group col-md-3">
+                                                    <label>Type</label>
+                                                    <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                        data-toggle="modal"
+                                                        data-target="#typeModal">add_circle_outline</i>
+                                                    <select class="form-control input-style input-dropdown" id=""
+                                                        formControlName="maltGrainTypeId">
+                                                        <option disabled value="">Select</option>
+                                                        <option *ngFor="let maltTypes of maltTypes"
+                                                            [value]="maltTypes.id">{{maltTypes.name}}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div for="status" class="form-group col-md-3">
+                                                    <label>Origin</label>
+                                                    <select class="form-control input-style input-dropdown" id=""
+                                                        formControlName="countryId">
+                                                        <option disabled value="">Select</option>
+                                                        <option *ngFor="let countries of countries"
+                                                            [value]="countries.id">{{countries.countryName}}</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label>Supplier</label>
+                                                    <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                        data-toggle="modal"
+                                                        data-target="#supplierModal">add_circle_outline</i>
+                                                    <select formControlName="supplierId"
+                                                        class="form-control input-style input-dropdown">
+                                                        <option disabled value="">Select</option>
+                                                        <option *ngFor="let suppliers of suppliers"
+                                                            [value]="suppliers.id">{{suppliers.name}}</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-row">
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="brewrrun-Quantity1">Quantity</label>
+                                                    <i class="material-icons star-ico">
+                                                        star_rate
+                                                    </i>
+                                                    <div class='multiple-input'>
+                                                        <input type="number" class="form-control"
+                                                            id="brewrrun-Quantity1" placeholder="Quantity"
+                                                            formControlName="quantity">
+                                                        <select class="form-control input-dropdown"
+                                                           >
+
+                                                            <ng-container *ngFor="let unit of units">
+                                                                <option *ngIf="unit.category === 'Mass'"
+                                                                    [value]="unit.id">{{unit.symbol}}</option>
+                                                            </ng-container>
+                                                        </select>
+                                                    </div>
+                                                    <div *ngIf="formSubmitted">
+                                                        <div *ngIf="malt.get('Quantity').invalid || malt.get('QuantityUnitId').invalid"
+                                                            class="valid-error">
+                                                            Quantity and Unit is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="grain-bill">% of Grain Bill</label>
+                                                    <input type="number" class="form-control" id="grain-bill"
+                                                        placeholder="" formControlName="grainBillPercentage">
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="recipe-Srm">SRM</label>
+                                                    <input type="number" class="form-control" id="recipe-Srm"
+                                                        placeholder="" formControlName="srm">
+                                                </div>
+
+                                                <div class="form-group col-md-3">
+                                                    <label for="recipe-Potential">Potential</label>
+                                                    <input type="number" class="form-control" id="recipe-Potential"
+                                                        placeholder="" formControlName="potential">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+                                    <h2 class="mb-0">
+                                        <button (click)="isCollapsedWater = !isCollapsedWater"
+                                            class="btn btn-link collapsed" type="button" aria-expanded="false"
+                                            aria-controls="collapseThree">
+                                            Water Additions. 1
+                                        </button>
+                                    </h2>
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn l-btn mr-2" type="button" (click)="addWaterAdditions()">Add
+                                            New</button>
+                                        <i class="material-icons colapse-toggle cursor-click"
+                                            [ngbCollapse]="isCollapsedWater"
+                                            (click)="isCollapsedWater = !isCollapsedWater">
+                                            indeterminate_check_box
+                                        </i>
+                                        <i class="material-icons  colapse-toggle cursor-click"
+                                            [ngbCollapse]="!isCollapsedWater"
+                                            (click)="isCollapsedWater = !isCollapsedWater">
+                                            add_box
+                                        </i>
+                                    </div>
+                                </div>
+                                <div [ngbCollapse]="isCollapsedWater" class="collapse" aria-labelledby="headingThree"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div formArrayName="waterAdditions"
+                                            *ngFor="let water of waterAdditionsArray.controls; let i=index">
+                                            <div class="d-flex justify-content-between mr-2 card-sub-section mb-4"
+                                                *ngIf="recipeMashForm.controls.waterAdditions.controls.length > 1 && i != 0">
+                                                <label class="mt-2">Water Additions. {{i+1}}</label>
+                                                <button class="btn l-btn mr-3" type="button"
+                                                    (click)="removeWaterAdditions(i)">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                            <div [formGroupName]="i">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-CACL2">CACL2</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-CACL2" placeholder="Quantity"
+                                                                formControlName="cacl2">
+                                                            <select class="form-control input-dropdown"
+                                                                >
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.Category === 'Mass'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-Gypsum">Gypsum</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-Gypsum" placeholder="Quantity"
+                                                                formControlName="gypsum">
+                                                            <select class="form-control input-dropdown"
+                                                                >
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Mass'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-Table">Table Salt</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-Table" placeholder="Quantity"
+                                                                formControlName="tableSalt">
+                                                            <select class="form-control input-dropdown"
+                                                                formControlName="tableSaltUnitId">
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.Category === 'Mass'"
+                                                                        [value]="unit.Id">{{unit.Symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-Epsom">Epsom Salt</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-Epsom" placeholder="Quantity"
+                                                                formControlName="epsomSalt">
+                                                            <select class="form-control input-dropdown"
+                                                                >
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Mass'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-CaCO3">CaCO3</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-CaCO3" placeholder="Quantity"
+                                                                formControlName="caCo3">
+                                                            <select class="form-control input-dropdown"
+                                                                >
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Mass'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-Soda">Baking Soda Name</label>
+                                                        <input type="text" class="form-control" id="brewrrun-Soda"
+                                                            formControlName="bakingSodaName" placeholder="">
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+
+                                                        <label for="brewrrun-Baking">Baking Soda</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-Baking" formControlName="bakingSoda"
+                                                                placeholder="Quantity">
+                                                            <select class="form-control input-dropdown"
+                                                                formControlName="bakingSodaUnitId">
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.Category === 'Mass'"
+                                                                        [value]="unit.Id">{{unit.Symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-H3PO4">H3PO4</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-H3PO4" placeholder="Quantity"
+                                                                formControlName="h3po4">
+                                                            <select class="form-control input-dropdown"
+                                                                >
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Mass'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-sub-header d-flex justify-content-between" id="headingThreeHops">
+                                    <h2 class="mb-0">
+                                        <button (click)="isCollapsedHops = !isCollapsedHops"
+                                            class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                            aria-expanded="false" aria-controls="collapseThree">
+                                            Hops. 1
+                                        </button>
+                                    </h2>
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn l-btn mr-2" type="button" (click)="addHops()">Add
+                                            New</button>
+                                        <i class="material-icons colapse-toggle cursor-click"
+                                            [ngbCollapse]="isCollapsedHops"
+                                            (click)="isCollapsedHops = !isCollapsedHops">
+                                            indeterminate_check_box
+                                        </i>
+                                        <i class="material-icons  colapse-toggle cursor-click"
+                                            [ngbCollapse]="!isCollapsedHops"
+                                            (click)="isCollapsedHops = !isCollapsedHops">
+                                            add_box
+                                        </i>
+                                    </div>
+                                </div>
+                                <div [ngbCollapse]="isCollapsedHops" class="collapse" aria-labelledby="headingThree"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div formArrayName="hops" *ngFor="let hops of hopsArray.controls; let i=index">
+                                            <div class="d-flex justify-content-between mr-2 card-sub-section mb-4"
+                                                *ngIf="recipeMashForm.controls.hops.controls.length > 1 && i != 0">
+                                                <label class="mt-2">Hops. {{i+1}}</label>
+                                                <button *ngIf="recipeMashForm.controls.hops.controls.length > 1"
+                                                    class="btn l-btn mr-3" type="button" (click)="removeHops(i)">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                            <div [formGroupName]="i">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrun-Name2">Name</label>
+                                                        <i class="material-icons star-ico">
+                                                            star_rate
+                                                        </i>
+                                                        <input type="text" class="form-control" id="brewrun-Name2"
+                                                            placeholder="" formControlName="name">
+                                                        <div *ngIf="formSubmitted">
+                                                            <div *ngIf="hops.get('name').invalid" class="valid-error">
+                                                                Name is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div for="status" class="form-group col-md-3">
+                                                        <label for="Type">Type</label>
+                                                        <i class="material-icons star-ico">
+                                                            star_rate
+                                                        </i>
+                                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                            data-toggle="modal"
+                                                            data-target="#typeModal">add_circle_outline</i>
+                                                        <select class="form-control input-style input-dropdown" id=""
+                                                            formControlName="maltGrainTypeId">
+                                                            <option disabled value="">Select</option>
+                                                            <option *ngFor="let maltTypes of maltTypes"
+                                                                [value]="maltTypes.id">{{maltTypes.name}}</option>
+                                                        </select>
+                                                        <div *ngIf="formSubmitted">
+                                                            <div *ngIf="hops.get('maltGrainTypeId').invalid"
+                                                                class="valid-error">
+                                                                Type is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div for="status" class="form-group col-md-3">
+                                                        <label for="postal">Origin</label>
+                                                        <select class="form-control input-style input-dropdown"
+                                                            id="postal" formControlName="countryId">
+                                                            <option disabled value="">Select</option>
+                                                            <option *ngFor="let countries of countries"
+                                                                [value]="countries.id">{{countries.countryName}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group col-md-3">
+                                                        <label>Supplier</label>
+                                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                            data-toggle="modal"
+                                                            data-target="#supplierModal">add_circle_outline</i>
+                                                        <select formControlName="supplierId"
+                                                            class="form-control input-style input-dropdown" id="">
+                                                            <option disabled value="">Select</option>
+                                                            <option *ngFor="let suppliers of suppliers"
+                                                                [value]="suppliers.id">{{suppliers.name}}</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-row">
+
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrun-Alpha">Alpha (%)</label>
+                                                        <i class="material-icons star-ico">
+                                                            star_rate
+                                                        </i>
+                                                        <input type="number" class="form-control" id="brewrun-Alpha"
+                                                            placeholder="Alpha (%)" formControlName="alpha">
+                                                        <div *ngIf="formSubmitted">
+                                                            <div *ngIf="hops.get('alpha').invalid" class="valid-error">
+                                                                Alpha is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group col-md-3">
+                                                        <label for="brewrrun-Quantity">Quantity</label>
+                                                        <i class="material-icons star-ico">
+                                                            star_rate
+                                                        </i>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-Quantity" placeholder="Quantity"
+                                                                formControlName="quantity">
+
+                                                            <select 
+                                                                class="form-control input-dropdown">
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Mass'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                        <div *ngIf="formSubmitted">
+                                                            <div *ngIf="hops.get('quantity').invalid || hops.get('quantityUnitTypeId').invalid"
+                                                                class="valid-error">
+                                                                Quantity and Unit is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div for="status" class="form-group col-md-3">
+                                                        <label for="add-in">Add In</label>
+                                                        <i class="material-icons star-ico">
+                                                            star_rate
+                                                        </i>
+                                                        <select class="form-control input-style input-dropdown"
+                                                            id="add-in" formControlName="addInId">
+                                                            <option disabled value="">Select</option>
+                                                            <option *ngFor="let addins of addins" [value]="addins.id">
+                                                                {{addins.name}}</option>
+
+                                                        </select>
+                                                        <div *ngIf="formSubmitted">
+                                                            <div *ngIf="hops.get('addInId').invalid"
+                                                                class="valid-error">
+                                                                Add In is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div for="status" class="form-group col-md-3">
+                                                        <label for="brewrrun-Time1">Time In</label>
+                                                        <i class="material-icons star-ico">
+                                                            star_rate
+                                                        </i>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-Time1" placeholder="Time In"
+                                                                formControlName="timeIn">
+
+                                                            <select 
+                                                                class="form-control input-dropdown">
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Days'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                        <div *ngIf="formSubmitted">
+                                                            <div *ngIf="hops.get('timeIn').invalid || hops.get('timeInUnitId').invalid"
+                                                                class="valid-error">
+                                                                Time In and Unit is required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link collapsed" type="button"
+                                            (click)="isCollapsedAdjuncts = !isCollapsedAdjuncts" aria-expanded="false"
+                                            aria-controls="collapseThree">
+                                            Adjuncts. 1
+                                        </button>
+                                    </h2>
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn l-btn mr-2" type="button" (click)="addAdjuncts()">Add
+                                            New</button>
+                                        <i class="material-icons colapse-toggle cursor-click"
+                                            [ngbCollapse]="isCollapsedAdjuncts"
+                                            (click)="isCollapsedAdjuncts = !isCollapsedAdjuncts">
+                                            indeterminate_check_box
+                                        </i>
+                                        <i class="material-icons  colapse-toggle cursor-click"
+                                            [ngbCollapse]="!isCollapsedAdjuncts"
+                                            (click)="isCollapsedAdjuncts = !isCollapsedAdjuncts">
+                                            add_box
+                                        </i>
+                                    </div>
+                                </div>
+                                <div [ngbCollapse]="isCollapsedAdjuncts" class="collapse" aria-labelledby="headingThree"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div formArrayName="adjuncts"
+                                            *ngFor="let adjuncts of adjunctsArray.controls; let i=index">
+                                            <div class="d-flex justify-content-between mr-2 card-sub-section mb-4"
+                                                *ngIf="recipeMashForm.controls.adjuncts.controls.length > 1 && i != 0">
+                                                <label class="mt-2">Adjuncts. {{i+1}}</label>
+                                                <button *ngIf="recipeMashForm.controls.adjuncts.controls.length > 1"
+                                                    class="btn l-btn mr-3" type="button" (click)="removeAdjuncts(i)">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                            <div [formGroupName]="i">
+                                                <div class="form-row">
+
+                                                    <div class="form-group col-md-4">
+                                                        <label for="brewrun-Name3">Name</label>
+                                                        <input formControlName="name" type="text" class="form-control"
+                                                            id="brewrun-Name3" placeholder="">
+                                                    </div>
+
+                                                    <div for="status" class="form-group col-md-4">
+                                                        <label>Origin</label>
+                                                        <select formControlName="countryId"
+                                                            class="form-control input-style input-dropdown" id="">
+                                                            <option disabled value="">Select</option>
+                                                            <option *ngFor="let countries of countries"
+                                                                [value]="countries.id">{{countries.countryName}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group col-md-4">
+                                                        <label>Supplier</label>
+                                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                            data-toggle="modal"
+                                                            data-target="#supplierModal">add_circle_outline</i>
+                                                        <select formControlName="supplierId"
+                                                            class="form-control input-style input-dropdown" id="">
+                                                            <option disabled value="">Select</option>
+                                                            <option *ngFor="let suppliers of suppliers"
+                                                                [value]="suppliers.id">{{suppliers.name}}</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-row">
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="brewrrun-Amount1">Amount</label>
+                                                        <div class='multiple-input'>
+                                                            <input formControlName="quantity" type="number"
+                                                                class="form-control" id="brewrrun-Amount1"
+                                                                placeholder="Quantity">
+                                                            <select
+                                                                class="form-control input-dropdown">
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Mass'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div for="status" class="form-group col-md-3">
+                                                        <label for="add-in2">Add In</label>
+                                                        <select formControlName="addInId"
+                                                            class="form-control input-style input-dropdown"
+                                                            id="add-in2">
+                                                            <option disabled value="">Select</option>
+                                                            <option *ngFor="let addins of addins" [value]="addins.id">
+                                                                {{addins.name}}</option>
+
+                                                        </select>
+                                                    </div>
+
+                                                    <div for="status" class="form-group col-md-3">
+                                                        <label for="brewrrun-Time2">Time In</label>
+                                                        <div class='multiple-input'>
+                                                            <input type="number" class="form-control"
+                                                                id="brewrrun-Time2" placeholder="Time In"
+                                                                formControlName="timeIn">
+
+                                                            <select 
+                                                                class="form-control input-dropdown">
+
+                                                                <ng-container *ngFor="let unit of units">
+                                                                    <option *ngIf="unit.category === 'Days'"
+                                                                        [value]="unit.id">{{unit.symbol}}</option>
+                                                                </ng-container>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+                                    <h2 class="mb-0">
+                                        <button (click)="isCollapsedMashing = !isCollapsedMashing"
+                                            class="btn btn-link collapsed" type="button" aria-expanded="false"
+                                            aria-controls="collapseThree">
+                                            Mashing Targets
+                                        </button>
+                                    </h2>
+                                    <div class="d-flex align-items-center">
+                                        <i class="material-icons colapse-toggle cursor-click"
+                                            [ngbCollapse]="isCollapsedMashing"
+                                            (click)="isCollapsedMashing = !isCollapsedMashing">
+                                            indeterminate_check_box
+                                        </i>
+                                        <i class="material-icons  colapse-toggle cursor-click"
+                                            [ngbCollapse]="!isCollapsedMashing"
+                                            (click)="isCollapsedMashing = !isCollapsedMashing">
+                                            add_box
+                                        </i>
+                                    </div>
+                                </div>
+                                <div [ngbCollapse]="isCollapsedMashing" class="collapse" aria-labelledby="headingThree"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body" formArrayName="mashingTargets"
+                                        *ngFor="let mashins of mashinTargetsArray.controls; let i=index">
+                                        <div [formGroupName]="i">
+                                            <div class="form-row">
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="brewrrun-Water">Strike Water Volume</label>
+                                                    <i class="material-icons star-ico">
+                                                        star_rate
+                                                    </i>
+                                                    <div class='multiple-input'>
+                                                        <input type="number" class="form-control"
+                                                            formControlName="strikeWaterVolume" id="brewrrun-Water"
+                                                            placeholder="Quantity">
+                                                        <select 
+                                                            class="form-control input-dropdown">
+
+                                                            <ng-container *ngFor="let unit of units">
+                                                                <option *ngIf="unit.category === 'Size'"
+                                                                    [value]="unit.id">{{unit.symbol}}</option>
+                                                            </ng-container>
+                                                        </select>
+
+                                                    </div>
+                                                    <div *ngIf="formSubmitted">
+                                                        <div *ngIf="mashins.get('strikeWaterVolume').invalid"
+                                                            class="valid-error">
+                                                            Strike Water Volume is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="brewrun-Strike">Strike Water Temperature
+                                                        ({{preferedUnit}})</label>
+                                                    <i class="material-icons star-ico">
+                                                        star_rate
+                                                    </i>
+                                                    <input formControlName="strikeWaterTemperature" type="number"
+                                                        class="form-control" id="brewrun-Strike" placeholder="">
+                                                    <div *ngIf="formSubmitted">
+                                                        <div *ngIf="mashins.get('strikeWaterTemperature').invalid"
+                                                            class="valid-error">
+                                                            Strike Water Temperature is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="form-row">
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="brewrun-Mash">Mash pH</label>
+                                                    <i class="material-icons star-ico">
+                                                        star_rate
+                                                    </i>
+                                                    <input formControlName="mashpH" type="number" class="form-control"
+                                                        id="brewrun-Mash" placeholder="">
+                                                    <div *ngIf="formSubmitted">
+                                                        <div *ngIf="mashins.get('mashpH').invalid" class="valid-error">
+                                                            Mash pH is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group col-md-6">
+                                                    <label for="ratio-id">Liquor to Grist Ratio</label>
+                                                    <input formControlName="liquortogristratio" type="text"
+                                                        class="form-control" id="ratio-id" placeholder="0 : 0"
+                                                        (blur)="showRatio($event,mashins)">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-row">
+
+                                                <div class="form-group col-md-6">
+                                                    <label>Temperature</label>
+
+                                                    <div class='custom-radio-wrapper'>
+                                                        <div class='custom-radio'>
+                                                            <input type="radio" id="preference-Single"
+                                                                formControlName="tempSingle" value="single"
+                                                                (change)="singleTempChange(mashins)">
+                                                            <label for="preference-Single">Single</label>&nbsp;
+                                                            <input type="radio" id="preference-Multiple"
+                                                                formControlName="tempSingle" value="multiple"
+                                                                (change)="singleTempChange(mashins)">
+                                                            <label for="preference-Multiple">Multiple</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6 position-relative">
+                                                    <label for="brewrun-id1">Temperature ({{preferedUnit}})</label>
+                                                    <i class="material-icons star-ico">
+                                                        star_rate
+                                                    </i>
+                                                    <i *ngIf="showMultiTemps"
+                                                        class="material-icons position-absolute outline-icon cursor-click"
+                                                        (click)="addMashingTargetsTemperature(mashins)">add_circle_outline</i>
+                                                    <div formArrayName="mashingTargetTemperatures"
+                                                        *ngFor="let temp of mashins.get('mashingTargetTemperatures').controls; let i = index;">
+                                                        <div [formGroupName]="i" class="w-100 position-relative">
+
+                                                            <input type="number" formControlName="temperature"
+                                                                class='form-control mt-3' placeholder="Temperature">
+                                                            <div *ngIf="formSubmitted">
+                                                                <div *ngIf="temp.get('temperature').invalid"
+                                                                    class="valid-error">
+                                                                    Temperature is required
+                                                                </div>
+                                                            </div>
+
+                                                            <i *ngIf="showMultiTemps && i != 0"
+                                                                class="material-icons position-absolute remove-icon cursor-click"
+                                                                (click)="removeMashingTargetsTemperature(mashins, i)">remove_circle_outline</i>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                        aria-expanded="false" aria-controls="collapseThree">
+                                        Notes
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseThree" class="collapse show" aria-labelledby="headingThree"
+                                data-parent="#accordionExample">
+                                <div class="card-body" formArrayName="recipeNotes"
+                                    *ngFor="let Notes of recipeNotesArray.controls; let i = index;">
+                                    <div class="form-row meshin-text" [formGroupName]="i">
+                                        <div class="form-group col-md-12">
+                                            <textarea type="text" class="form-control" id="meshin-Notes"
+                                                formControlName="notes" placeholder="Type Text Here..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </form>
+
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-end mt-3">
+                    <button class="btn l-btn-cancel mr-2" type="button" (click)="cancelClick()">
+                        <i class="material-icons cancel-ico">
+                            cancel
+                        </i>
+                        Cancel</button>
+                    <button (click)="nextStepClick()" class="btn l-btn" type="button">Next Step</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<form [formGroup]="modalForms" autocomplete="off">
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="styleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Style</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div class="form-group col-md-12">
+                                    <label for="brewrun-Style">Add New Style</label>
+                                    <input type="text" class="form-control" id="brewrun-Style" placeholder=""
+                                        formControlName="styleText">
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewStyle()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!--Type Modal -->
+        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Type</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div class="form-group col-md-12">
+                                    <label for="brewrun-New">Add New Type</label>
+                                    <input type="text" class="form-control" id="brewrun-New" placeholder=""
+                                        formControlName="typeText">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewType()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!-- Supplier Modal -->
+        <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Supplier</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div class="form-group col-md-12">
+                                    <label for="supplier">Add New Supplier</label>
+                                    <input type="text" class="form-control" id="supplier" placeholder=""
+                                        formControlName="supplierText">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewSupplier()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#errorModal">Open Modal</button>
+<div class="del-modal">
+    <!-- Button trigger modal -->
+    <!--Type Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Form Invalid</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            Please fill in required fields to continue.
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                            <button data-dismiss="modal" type="button" class="btn  l-btn-agree">
+                                Ok
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

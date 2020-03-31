@@ -1,0 +1,183 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="header-title">
+                <h6>New User</h6>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb  d-flex justify-content-end">
+                    <li class="breadcrumb-item position-relative">
+                        <a [routerLink]="['/app/user-directory']" class="home-font"> User Directory
+                            <i class="material-icons home-ico">
+                                home
+                            </i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <a [routerLink]="['/app/user-directory/add']" class="home-font">Add User
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 mt-4">
+            <div class="sub-header">
+                <h6>
+                    User Details
+                </h6>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <form [formGroup]="usersForm">
+
+                <div class="form-row form-bg ml-0 mr-0 ">
+
+                    <div class="form-group col-md-3">
+                        <label for="brewrun-id">First Name</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="firstName" id="firstName"
+                            placeholder="First Name ">
+                        <div *ngIf="formSubmitted && form.firstName.errors?.required" class="valid-error">First Name is
+                            required.</div>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="brewrun-id">Last Name</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="lastName" id="lastName"
+                            placeholder="Last Name">
+                        <div *ngIf="formSubmitted && form.lastName.errors?.required" class="valid-error">Last Name is
+                            required.</div>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="brewrun-id">E-mail</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="userEmail" id="useremail"
+                            (keyup)="emailvalidation($event.target.value)" placeholder="E-mail">
+                        <div *ngIf="formSubmitted && form.userEmail.errors?.required" class="valid-error">Email is
+                            required.</div>
+                        <div *ngIf="!validEmail" class="valid-error">Please enter valid Email Address</div>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="brewrun-id">Phone</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input class="form-control" formControlName="userPhone" id="inputPhone"
+                            placeholder="(555) 555-5555" mask="(000) 000-0000" validation="true"
+                            (keyup)="formatPhone()">
+                        <div *ngIf="formSubmitted && form.userPhone.errors?.required" class="valid-error">Phone is
+                            required.</div>
+                        <div class="valid-error" *ngIf="!validPhone">
+                            Phone No is invalid.
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="brewrun">Role Name</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <select class="form-control input-dropdown" id="role" formControlName="role">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let role of roles" [value]="role.Id">{{role.Name}}</option>
+                        </select>
+                        <div *ngIf="formSubmitted && form.role.errors?.required" class="valid-error">Role is required.
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="password" class="input-label">Position in the Brewery
+                            <i class="material-icons star-ico">
+                                star
+                            </i>
+                        </label>
+                        <input type="text" class="form-control" formControlName="position" id="position" placeholder="">
+                        <div *ngIf="formSubmitted && form.position.errors?.required" class="valid-error">Position is
+                            required.</div>
+                    </div>
+
+
+
+                    <div class="form-group col-md-4">
+                        <label for="image">Image</label>
+                        <div class="img">
+                            <input [ngClass]="{hide : imageLink}" type="file" class="form-control"
+                                formControlName="image" id="image" placeholder="" (change)="imageUploadChange($event)">
+                            <img *ngIf="imageLink" src="{{imageLink}}" width="100px">
+                            <i *ngIf="page !== 'View'" [ngClass]="{hide : !imageLink}"
+                                class="material-icons img-del-ico cursor-click" (click)="deleteImage()">
+                                delete
+                            </i>
+                        </div>
+                        <p class="valid-success" *ngIf="percent > 0">Upload Progress: {{ percent }}%</p>
+                        <div class="valid-error" *ngIf="imageError">
+                            Image shoulde of format .png / .jpg / .jpeg
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-row form-bg ml-0 mr-0">
+
+                    <div class="form-group col-md-12 d-flex justify-content-end">
+                        <button type="button" class="btn l-btn mt-2" (click)="userFormSubmit()">
+                            <i class="material-icons save-ico">
+                                save
+                            </i>Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<!--Confirm-->
+<div class="confirm-modal">
+
+    <div class="modal fade" id="resetconfirm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Alert</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mail-alert">
+                        <div class="mail-logo">
+                            <i class="material-icons">mail</i>
+                        </div>
+                        <p>A mail has been sent to your email with reset link</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

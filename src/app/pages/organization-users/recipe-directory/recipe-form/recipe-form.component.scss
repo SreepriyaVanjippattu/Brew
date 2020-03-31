@@ -1,0 +1,69 @@
+@import "assets/styles/styles.scss";
+.recipe-report {
+    .header-title {
+        margin-bottom: 10px;
+        h6 {
+            float: left;
+        }
+        button {
+            float: right;
+        }
+    }
+    .recipe-details {
+        background: #fff;
+        p {
+            margin-left: 10px;
+        }
+        .form-row {
+            margin-bottom: 20px;
+        }
+        textarea {
+            background: #F5F6FA;
+            font-size: 13px;
+            padding: 6px 8px;
+            border-bottom: none;
+            min-height: 70px;
+        }
+        .sub-header{
+            margin-bottom: 15px;
+            padding: 10px 10px 10px 16px;
+        }
+        .form-row{
+            margin: 0;
+        }
+    }
+    .recipe-footer {
+        float: right;
+        margin: 20px 0;
+        position: relative;
+        .recipe-scrolltop {
+            background: #FFA11B;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            top: -95px;
+            right: -15px;
+            cursor: pointer;
+        }
+        .scroll-arrow
+        {
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            color: $BgWhite;
+        }
+      
+    }
+    .card-notes{
+        padding: 0;
+    }
+}
+.l-btn-cancel
+{
+    padding: 5px 30px;
+    img
+    {
+        width: 20px;
+    }
+}

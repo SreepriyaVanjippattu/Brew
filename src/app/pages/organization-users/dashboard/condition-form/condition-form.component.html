@@ -1,0 +1,654 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="header-title">
+                <h6>Active Conditioning</h6>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item position-relative">
+                        <a href="app/dashboard">
+                            <i class="material-icons home-ico">
+                                home
+                            </i>Dashboard
+                        </a>
+                    </li>
+                    <li (click)="activeBrewClick()" class="breadcrumb-item"><a>Active Brew</a></li>
+                    <li class="breadcrumb-item"><a>Enter Data</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Conditioning</li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills mb-3 progressbar" id="pills-tab" role="tablist">
+                <li (click)="mashInClick()" class="nav-item active cursor-click">
+                    <a class="active" id="pills-mash-tab" data-toggle="pill" href="#pills-mash" role="tab"
+                        aria-controls="pills-mash" aria-selected="true">Mash In</a>
+                </li>
+                <li (click)="brewLogClick()" class="nav-item active cursor-click">
+                    <a id="pills-brew-tab" data-toggle="pill" href="#pills-brew" role="tab" aria-controls="pills-brew"
+                        aria-selected="false">Brew Log</a>
+                </li>
+                <li (click)="fermentationClick()" class="nav-item active cursor-click">
+                    <a id="pills-fermentation-tab" data-toggle="pill" href="#pills-fermentation" role="tab"
+                        aria-controls="pills-fermentation" aria-selected="false">Fermentation</a>
+                </li>
+                <li (click)="conditioningClick()" class="nav-item active cursor-click">
+                    <a id="pills-conditioning-tab" data-toggle="pill" href="#pills-conditioning" role="tab"
+                        aria-controls="pills-conditioning" aria-selected="false">Conditioning</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-main-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                General Details
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Brew Run ID</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="Brew Run ID"
+                                        [(ngModel)]="brew.BrewRunId" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewer">Brewer</label>
+                                    <input type="text" class="form-control" id="brewer" placeholder="Brewer"
+                                        [(ngModel)]="brew.UserName" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="tank-name">Tank Name</label>
+                                    <input type="text" class="form-control" id="tank-name" placeholder="Tank Name"
+                                        [(ngModel)]="brew.TankName" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="recipe-name">Recipe</label>
+                                    <input type="text" class="form-control" id="recipe-name" placeholder="Recipe"
+                                        [(ngModel)]="brew.RecipeName" readonly>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card">
+                            <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button (click)="isCollapsedConditioning = !isCollapsedConditioning"
+                                        class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                        Conditioning Data Entry
+                                    </button>
+                                </h2>
+
+                                <div class="d-flex align-items-center">
+                                    <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                        data-target="#dataEntry">Target Values</button>
+                                    <i class="material-icons colapse-toggle" [ngbCollapse]="isCollapsedConditioning"
+                                        (click)="isCollapsedConditioning = !isCollapsedConditioning">
+                                        indeterminate_check_box
+                                    </i>
+                                    <i class="material-icons  colapse-toggle"
+                                        [ngClass]="{'colapse-toggle-active' :setClassCond}"
+                                        [ngClass]="{'colapse-toggle-active' :setClass}"
+                                        [ngbCollapse]="!isCollapsedConditioning"
+                                        (click)="isCollapsedConditioning = !isCollapsedConditioning">
+                                        add_box
+                                    </i>
+                                </div>
+                            </div>
+
+                            <div [ngbCollapse]="isCollapsedConditioning" class="collapse show"
+                                aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div *ngFor="let ConditioningDetail of brew.ConditioningDetails; let i = index;">
+                                        <div class="form-row">
+
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-volume">Volume In</label>
+                                                <div class='multiple-input'>
+                                                    <input type="number" class="form-control" id="ferment-volume"
+                                                        placeholder="Volume In"
+                                                        [(ngModel)]="brew.ConditioningDetails[i].VolumeIn">
+                                                    <select class="form-control input-dropdown"
+                                                        [(ngModel)]="brew.ConditioningDetails[i].VolumeInOptionId">
+
+                                                        <ng-container *ngFor="let unit of units">
+                                                            <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
+                                                                {{unit.Symbol}}</option>
+                                                        </ng-container>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
+                                                <input type="text" class="form-control" id="ferment-acttemp"
+                                                    placeholder="Temperature (In Celcius)"
+                                                    [(ngModel)]="brew.ConditioningDetails[i].TemperatureIn">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-ph">Actual Pressure ( in PSI)</label>
+                                                <input type="text" class="form-control" id="ferment-ph"
+                                                    placeholder="Pressure"
+                                                    [(ngModel)]="brew.ConditioningDetails[i].ActualPressure">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-ph">pH</label>
+                                                <input type="text" class="form-control" id="ferment-ph" placeholder="pH"
+                                                    [(ngModel)]="brew.ConditioningDetails[i].Ph">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-plato">Actual {{preferedPlato}}</label>
+                                                <input type="text" class="form-control" id="ferment-plato"
+                                                    placeholder="Actual {{preferedPlato}}"
+                                                    [(ngModel)]="brew.ConditioningDetails[i].ActualPlato">
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-plato">CO2</label>
+                                                <input type="text" class="form-control" id="ferment-plato"
+                                                    placeholder="co2" [(ngModel)]="brew.ConditioningDetails[i].Co2">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="d-flex l-start">
+                                                    <label class="l-start-label"
+                                                        (click)="setConStart(i,brew.ConditioningDetails[i])">START</label>
+                                                    <div class="form-group w-100">
+                                                        <label for="brewrun-id">Start Time</label><br />
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="ConditioningDetail.StartTime">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="d-flex l-start">
+                                                    <label class="l-start-label"
+                                                        (click)="setConEnd(i,brew.ConditioningDetails[i])">END</label>
+                                                    <div class="form-group w-100">
+                                                        <label for="brewrun-id">End Time</label><br />
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="ConditioningDetail.EndTime">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="col-md-12 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-outline-light l-btn"
+                                                    (click)="onConditioningComplete(i,'ConditioningData')">
+                                                    Complete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button (click)="isCollapsedFiltration = !isCollapsedFiltration"
+                                        class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                        Filtration Data Entry
+                                    </button>
+                                </h2>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                        data-target="#filterData">Target Values</button>
+                                    <i class="material-icons colapse-toggle" [ngbCollapse]="isCollapsedFiltration"
+                                        (click)="isCollapsedFiltration = !isCollapsedFiltration">
+                                        indeterminate_check_box
+                                    </i>
+                                    <i class="material-icons  colapse-toggle"
+                                        [ngClass]="{'colapse-toggle-active' :setClass}"
+                                        [ngbCollapse]="!isCollapsedFiltration"
+                                        (click)="isCollapsedFiltration = !isCollapsedFiltration">
+                                        add_box
+                                    </i>
+                                </div>
+
+                            </div>
+
+                            <div [ngbCollapse]="isCollapsedFiltration" class="collapse show"
+                                aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="form-row"
+                                        *ngFor="let FilterationDetail of brew.FilterationDetails; let i = index;">
+                                        <div class="form-group col-md-12">
+                                            <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+                                            <input type="text" class="form-control" id="ferment-plato"
+                                                placeholder="Temperature"
+                                                [(ngModel)]="brew.FilterationDetails[i].TemperatureIn">
+                                        </div>
+
+                                        <div class="col-md-12 d-flex justify-content-end">
+                                            <button type="button" class="btn btn-outline-light l-btn"
+                                                (click)="onFiltrationComplete(i,'Filtration')">
+                                                Complete
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button (click)="isCollapsedCarbonation = !isCollapsedCarbonation"
+                                        class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true"
+                                        aria-controls="collapseOne">
+                                        Carbonation Data Entry
+                                    </button>
+                                </h2>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                        data-target="#carbonData">Target Values</button>
+                                    <i class="material-icons colapse-toggle" [ngbCollapse]="isCollapsedCarbonation"
+                                        (click)="isCollapsedCarbonation = !isCollapsedCarbonation">
+                                        indeterminate_check_box
+                                    </i>
+                                    <i class="material-icons  colapse-toggle"
+                                        [ngClass]="{'colapse-toggle-active' :setClassCarb}"
+                                        [ngbCollapse]="!isCollapsedCarbonation"
+                                        (click)="isCollapsedCarbonation = !isCollapsedCarbonation">
+                                        add_box
+                                    </i>
+                                </div>
+                            </div>
+
+                            <div [ngbCollapse]="isCollapsedCarbonation" class="collapse show"
+                                aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div *ngFor="let CarbonationDetail of brew.CarbonationDetails; let i = index;">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+                                                <input type="text" class="form-control" id="ferment-plato"
+                                                    placeholder="Temperature"
+                                                    [(ngModel)]="brew.CarbonationDetails[i].Temperature">
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label for="ferment-plato">Pressure (in PSI)</label>
+                                                <input type="text" class="form-control" id="ferment-plato"
+                                                    placeholder="Pressure"
+                                                    [(ngModel)]="brew.CarbonationDetails[i].Pressure">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="d-flex l-start">
+                                                    <label class="l-start-label"
+                                                        (click)="setCarbStart(i,brew.CarbonationDetails[i])">START</label>
+                                                    <div class="form-group w-100">
+                                                        <label for="brewrun-id">Start Time</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="CarbonationDetail.StartTime">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="d-flex l-start">
+                                                    <label class="l-start-label"
+                                                        (click)="setCarbEnd(i,brew.CarbonationDetails[i])">END</label>
+                                                    <div class="form-group w-100">
+                                                        <label for="brewrun-id">End Time</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="CarbonationDetail.EndTime">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-row">
+                                            <div class="col-md-12 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-outline-light l-btn"
+                                                    (click)="onCarbonationComplete(i,'Carbonation')">
+                                                    Complete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Notes
+                                    </button>
+                                </h2>
+
+                            </div>
+
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="form-row condition-text"
+                                        *ngFor="let ConditioningDetailsNote of brew.ConditioningDetailsNotes; let i = index;">
+                                        <div class="form-group col-md-12">
+                                            <textarea type="text" class="form-control" id="meshin-notes"
+                                                placeholder="Type Text Here..."
+                                                [(ngModel)]="brew.ConditioningDetailsNotes[i].Notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-outline-light l-btn mr-2" data-target="#completeModal"
+                data-toggle="modal">
+                Complete
+            </button>
+
+            <button type="button" class="btn btn-outline-light l-btn" data-target="#commitModal" data-toggle="modal">
+                Commit
+            </button>
+        </div>
+    </div>
+
+
+</div>
+
+<!--Modal-->
+
+<div class="brew-modal">
+
+    <!-- Conditioning Data Entry -->
+    <div class="modal fade" id="dataEntry" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Conditioning Data Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let cond of conditionTarget">
+                    <div class="container-fluid">
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label for="ferment-volume">Volume In</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="ferment-volume"
+                                        [value]="cond.VolumeIn" disabled>
+                                    <select class="form-control input-dropdown" [value]="cond.VolumeInUnitId" disabled>
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
+                                <input type="text" class="form-control" id="ferment-acttemp" [value]="cond.Temperature"
+                                    disabled>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ferment-ph">Actual Pressure</label>
+                                <input type="text" class="form-control" id="ferment-ph" [value]="cond.Pressure"
+                                    disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="ferment-ph">pH</label>
+                                <input type="text" class="form-control" id="ferment-ph" [value]="cond.Ph" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="ferment-plato">Actual {{preferedPlato}}</label>
+                                <input type="text" class="form-control" id="ferment-plato" [value]="cond.Plato"
+                                    disabled>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="ferment-plato">CO2</label>
+                                <input type="text" class="form-control" id="ferment-plato" [value]="cond.Co2" disabled>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-row">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtration Data Entry -->
+    <div class="modal fade" id="filterData" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Filtration Data Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let filt of filterTarget">
+                    <div class="container-fluid">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+                                <input type="text" class="form-control" id="ferment-plato" [value]="filt.Temperature"
+                                    disabled>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--Carbonation Data Entry -->
+    <div class="modal fade" id="carbonData" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Carbonation Data Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let carb of carbonTarget">
+                    <div class="container-fluid">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-12">
+                                <label for="ferment-plato">Pressure (in PSI)</label>
+                                <input type="text" class="form-control" id="ferment-plato" [value]="carb.Pressure"
+                                    disabled>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="del-modal">
+
+    <div class="modal fade" id="commitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Commit Brew</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center del-content">
+                            <div>
+                                <p class="del-header">You cannot edit after commit.</p>
+                                <p class="mt-3 text-center">Are you sure you want to proceed?</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            <button type="button" data-dismiss="modal" class="btn  l-btn-cancel mr-2">
+                                No
+                            </button>
+
+                            <button (click)="commitBrewRun()" type="button" class="btn  l-btn-agree"
+                                data-dismiss="modal">
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="del-modal">
+
+    <div class="modal fade" id="completeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Complete Brew</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center del-content">
+                            <div>
+                                <p class="del-header">You are going to complete the brew</p>
+                                <p class="mt-3 text-center">Are you sure you want to proceed?</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            <button type="button" data-dismiss="modal" class="btn  l-btn-cancel mr-2">
+                                No
+                            </button>
+
+                            <button (click)="completeBrewRun()" type="button" class="btn  l-btn-agree"
+                                data-dismiss="modal">
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

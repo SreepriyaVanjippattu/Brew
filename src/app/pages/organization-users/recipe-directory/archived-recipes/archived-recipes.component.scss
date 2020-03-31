@@ -1,0 +1,49 @@
+@import "assets/styles/styles.scss";
+.header-title {
+    color: $headerFont;
+    font-size: $headerFontsize;
+}
+.ferment-table {
+    background: $BgWhite;
+    border-radius: $tableBorder;
+    padding: $tablePadding;
+}
+
+.edit-ico {
+    img {
+        width: 15px;
+    }
+}
+
+.download-ico {
+    img {
+        width: 17px;
+    }
+}
+
+.del-ico {
+    img {
+        width: 12px;
+    }
+}
+
+
+
+.progress {
+    height: 10px;
+}
+
+.days-status {
+    span {
+        font-weight: 600;
+    }
+}
+
+.progress-percent {
+    p {
+        font-weight: 600;
+    }
+}
+.display {
+    display: none;
+}

@@ -1,0 +1,579 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="header-title">
+                <h6>{{pageHeader}}</h6>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/app/recipes">Recipes Directory </a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{pageHeader}}</li>
+                </ol>
+            </nav>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-10">
+            <ul class="nav nav-pills mb-3 progressbar" id="pills-tab" role="tablist">
+                <li (click)="mashInClick()" class="nav-item active cursor-click">
+                    <a class="active" id="pills-mash-tab" data-toggle="pill" href="#pills-mash" role="tab"
+                        aria-controls="pills-mash" aria-selected="true">Mash In</a>
+                </li>
+                <li (click)="brewLogClick()" class="nav-item cursor-click active">
+                    <a id="pills-brew-tab" data-toggle="pill" href="#pills-brew" role="tab" aria-controls="pills-brew"
+                        aria-selected="false">Brew Log</a>
+                </li>
+                <li (click)="fermentationClick()" class="nav-item cursor-click">
+                    <a id="pills-fermentation-tab" data-toggle="pill" href="#pills-fermentation" role="tab"
+                        aria-controls="pills-fermentation" aria-selected="false">Fermentation</a>
+                </li>
+                <li (click)="conditioningClick()" class="nav-item cursor-click">
+                    <a id="pills-conditioning-tab" data-toggle="pill" href="#pills-conditioning" role="tab"
+                        aria-controls="pills-conditioning" aria-selected="false">Conditioning</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2 cancel-mb">
+            <button class="btn l-btn-cancel float-right mt-5" type="button" (click)="cancelClick()">
+                <img src="assets/images/close-icon.svg">Cancel</button>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12 recipe-bg">
+            <form [formGroup]="brewLogForm">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+                            <h2 class="mb-0">
+                                <button (click)="isCollapsedKettle = !isCollapsedKettle" class="btn btn-link"
+                                    type="button" aria-expanded="true" aria-controls="collapseOne">
+                                    Kettle Targets
+                                </button>
+                            </h2>
+                            <div class="d-flex align-items-center">
+                                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedKettle"
+                                    (click)="isCollapsedKettle = !isCollapsedKettle">
+                                    indeterminate_check_box
+                                </i>
+                                <i class="material-icons  colapse-toggle cursor-click"
+                                    [ngbCollapse]="!isCollapsedKettle" (click)="isCollapsedKettle = !isCollapsedKettle">
+                                    add_box
+                                </i>
+                            </div>
+                        </div>
+
+                        <div [ngbCollapse]="isCollapsedKettle" class="collapse show" aria-labelledby="headingOne"
+                            data-parent="#accordionExample">
+                            <div class="card-body" formArrayName="kettleTargets"
+                                *ngFor="let kettleTargets of kettleTargetsArray.controls; let i=index">
+                                <div [formGroupName]="i">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="brewlog-boil">Boil Length (mins)</label>
+                                            <i class="material-icons star-ico">
+                                                star_rate
+                                            </i>
+                                            <div class='multiple-input'>
+                                                <input type="number" class="form-control" id="brewlog-boil"
+                                                    placeholder="Boil Length" formControlName="boilLength">
+                                            </div>
+                                            <div *ngIf="formSubmitted">
+                                                <div *ngIf="kettleTargets.get('boilLength').invalid"
+                                                    class="valid-error">
+                                                    Boil Length is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="pre-boil">Volume Pre Boil</label>
+                                            <i class="material-icons star-ico">
+                                                star_rate
+                                            </i>
+                                            <div class='multiple-input'>
+                                                <input type="number" class="form-control" id="pre-boil"
+                                                    placeholder="Volume Pre Boil" formControlName="volumePreBoil">
+                                                <select class="form-control input-dropdown"
+                                                    formControlName="volumePreBoilUnitId">
+                                                    <ng-container *ngFor="let unit of units">
+                                                        <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
+                                                            {{unit.symbol}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                            <div *ngIf="formSubmitted">
+                                                <div *ngIf="kettleTargets.get('volumePreBoil').invalid || kettleTargets.get('volumePreBoilUnitId').invalid"
+                                                    class="valid-error">
+                                                    Volume Pre Boil and Unit is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="post-boil">Volume Post Boil</label>
+                                            <i class="material-icons star-ico">
+                                                star_rate
+                                            </i>
+                                            <div class='multiple-input'>
+                                                <input type="number" class="form-control" id="post-boil"
+                                                    placeholder="Volume Post Boil" formControlName="volumePostBoil">
+                                                <select class="form-control input-dropdown"
+                                                    formControlName="volumePostBoilUnitId">
+                                                    <ng-container *ngFor="let unit of units">
+                                                        <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
+                                                            {{unit.symbol}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                            <div *ngIf="formSubmitted">
+                                                <div *ngIf="kettleTargets.get('volumePostBoil').invalid || kettleTargets.get('volumePostBoilUnitId').invalid"
+                                                    class="valid-error">
+                                                    Volume Post Boil and Unit is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="plato">{{preferedPlato}}</label>
+                                            <input type="number" class="form-control" id="plato"
+                                                placeholder="{{preferedPlato}}" formControlName="plato">
+                                            <div *ngIf="preferedPlato != 'plato'">
+                                                <div *ngIf="kettleTargets.get('plato').invalid" class="valid-error">
+                                                    Range should be from 1 to 1.100
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="brewlog-pH">pH</label>
+                                            <i class="material-icons star-ico">
+                                                star_rate
+                                            </i>
+                                            <input type="number" class="form-control" id="brewlog-pH" placeholder="pH"
+                                                formControlName="ph">
+                                            <div *ngIf="formSubmitted">
+                                                <div *ngIf="kettleTargets.get('ph').invalid" class="valid-error">
+                                                    pH is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+
+
+                                    </div>
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-12 target-text">
+                                            <h6>Notes</h6>
+                                            <textarea type="text" class="form-control" id="target-Notes"
+                                                placeholder="Type Text Here" formControlName="notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button (click)="isCollapsedLauter = !isCollapsedLauter" class="btn btn-link collapsed"
+                                    type="button" aria-expanded="false" aria-controls="collapseTwo">
+                                    Lauter/ Sparge/ Transfer Targets. 1
+                                </button>
+                            </h2>
+                            <div class="d-flex align-items-center">
+                                <button class="btn l-btn mr-2" type="button" (click)="addSparge()">Add
+                                    New</button>
+                                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedLauter"
+                                    (click)="isCollapsedLauter = !isCollapsedLauter">
+                                    indeterminate_check_box
+                                </i>
+                                <i class="material-icons  colapse-toggle cursor-click"
+                                    [ngbCollapse]="!isCollapsedLauter" (click)="isCollapsedLauter = !isCollapsedLauter">
+                                    add_box
+                                </i>
+                            </div>
+                        </div>
+                        <div [ngbCollapse]="isCollapsedLauter" class="collapse" aria-labelledby="headingTwo"
+                            data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div formArrayName="sparges" *ngFor="let lauter of spargeArray.controls; let i=index">
+                                    <div class="d-flex justify-content-between mr-2 card-sub-section mb-4"
+                                        *ngIf="brewLogForm.controls.sparges.controls.length > 1 && i != 0">
+                                        <label class="mt-2">Lauter/ Sparge/ Transfer Targets. {{i+1}}</label>
+                                        <button *ngIf="brewLogForm.controls.sparges.controls.length > 1"
+                                            class="btn l-btn mr-3" type="button" (click)="removeSparge(i)">
+                                            Remove
+                                        </button>
+                                    </div>
+                                    <div [formGroupName]="i">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="water-temp">Sparge Water Temperature
+                                                    ({{preferedUnit}})</label>
+                                                <i class="material-icons star-ico">
+                                                    star_rate
+                                                </i>
+                                                <input type="number" class="form-control" id="water-temp"
+                                                    placeholder="Sparge Water Temperature"
+                                                    formControlName="spargeWaterTemperature">
+                                                <div *ngIf="formSubmitted">
+                                                    <div *ngIf="lauter.get('spargeWaterTemperature').invalid"
+                                                        class="valid-error">
+                                                        Temperature is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="total-vol">Sparge Total Volume</label>
+                                                <i class="material-icons star-ico">
+                                                    star_rate
+                                                </i>
+                                                <div class='multiple-input'>
+                                                    <input type="number" class="form-control" id="total-vol"
+                                                        placeholder="Sparge Total Volume"
+                                                        formControlName="spargeTotalVolume">
+                                                    <select class="form-control input-dropdown"
+                                                        formControlName="spargeTotalVolumeUnitId">
+
+                                                        <ng-container *ngFor="let unit of units">
+                                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">
+                                                                {{unit.symbol}}</option>
+                                                        </ng-container>
+                                                    </select>
+                                                </div>
+                                                <div *ngIf="formSubmitted">
+                                                    <div *ngIf="lauter.get('spargeTotalVolume').invalid || lauter.get('spargeTotalVolumeUnitId').invalid"
+                                                        class="valid-error">
+                                                        Sparge Volume and Unit is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="first-Gravity1">First Runnings ({{preferedPlato}})</label>
+                                                <i class="material-icons star-ico">
+                                                    star_rate
+                                                </i>
+                                                <input type="number" class="form-control" id="first-Gravity1"
+                                                    placeholder="First Runnings" formControlName="firstRunningPlato">
+                                                <div *ngIf="formSubmitted">
+                                                    <div *ngIf="lauter.get('firstRunningPlato').invalid"
+                                                        class="valid-error">
+                                                        First Runnings is required
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="preferedPlato != 'plato'">
+                                                    <div *ngIf="lauter.get('firstRunningPlato').invalid"
+                                                        class="valid-error">
+                                                        Range should be from 1 to 1.100
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="last-runplato1">Last Running ({{preferedPlato}})</label>
+                                                <i class="material-icons star-ico">
+                                                    star_rate
+                                                </i>
+                                                <input type="number" class="form-control" id="last-runplato1"
+                                                    placeholder="Last Running" formControlName="lastRunningPlato">
+                                                <div *ngIf="formSubmitted">
+                                                    <div *ngIf="lauter.get('lastRunningPlato').invalid"
+                                                        class="valid-error">
+                                                        First Runnings is required
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="preferedPlato != 'plato'">
+                                                    <div *ngIf="lauter.get('lastRunningPlato').invalid"
+                                                        class="valid-error">
+                                                        Range should be from 1 to 1.100
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12 target-text">
+                                                <h6>Notes</h6>
+                                                <textarea type="text" class="form-control" id="target-Notes"
+                                                    placeholder="Type Text Here.." formControlName="notes"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+                            <h2 class="mb-0">
+                                <button (click)="isCollapsedWhirlpool = !isCollapsedWhirlpool"
+                                    class="btn btn-link collapsed" type="button" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                    Whirlpool Targets
+                                </button>
+                            </h2>
+                            <div class="d-flex align-items-center">
+                                <i class="material-icons colapse-toggle cursor-click"
+                                    [ngbCollapse]="isCollapsedWhirlpool"
+                                    (click)="isCollapsedWhirlpool = !isCollapsedWhirlpool">
+                                    indeterminate_check_box
+                                </i>
+                                <i class="material-icons  colapse-toggle cursor-click"
+                                    [ngbCollapse]="!isCollapsedWhirlpool"
+                                    (click)="isCollapsedWhirlpool = !isCollapsedWhirlpool">
+                                    add_box
+                                </i>
+                            </div>
+                        </div>
+                        <div [ngbCollapse]="isCollapsedWhirlpool" class="collapse" aria-labelledby="headingThree"
+                            data-parent="#accordionExample">
+                            <div class="card-body" formArrayName="whirlpoolTarget"
+                                *ngFor="let whirlpool of whirlpoolTargetArray.controls; let i=index">
+                                <div class="form-row" [formGroupName]="i">
+                                    <div class="form-group col-md-6">
+                                        <label for="post-boil2">Post Boil Volume</label>
+                                        <i class="material-icons star-ico">
+                                            star_rate
+                                        </i>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="post-boil2"
+                                                placeholder="Volume Post Boil" formControlName="postBoilVolume">
+                                            <select class="form-control input-dropdown"
+                                                formControlName="postBoilVolumeunitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.category === 'Size'" [value]="unit.id">
+                                                        {{unit.symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                        <div *ngIf="formSubmitted">
+                                            <div *ngIf="whirlpool.get('postBoilVolume').invalid || whirlpool.get('postBoilVolumeunitId').invalid"
+                                                class="valid-error">
+                                                Post Boil Volume and Unit is required
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12 target-text">
+                                        <h6>Notes</h6>
+                                        <textarea type="text" class="form-control" id="target-Notes"
+                                            placeholder="Type text here ..." formControlName="notes"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+                            <h2 class="mb-0">
+                                <button (click)="isCollapsedCoolingKnockout = !isCollapsedCoolingKnockout"
+                                    class="btn btn-link collapsed" type="button" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                    Cooling-Knockout Targets
+                                </button>
+                            </h2>
+                            <div class="d-flex align-items-center">
+                                <i class="material-icons colapse-toggle cursor-click"
+                                    [ngbCollapse]="isCollapsedCoolingKnockout"
+                                    (click)="isCollapsedCoolingKnockout = !isCollapsedCoolingKnockout">
+                                    indeterminate_check_box
+                                </i>
+                                <i class="material-icons  colapse-toggle cursor-click"
+                                    [ngbCollapse]="!isCollapsedCoolingKnockout"
+                                    (click)="isCollapsedCoolingKnockout = !isCollapsedCoolingKnockout">
+                                    add_box
+                                </i>
+                            </div>
+                        </div>
+                        <div [ngbCollapse]="isCollapsedCoolingKnockout" class="collapse" aria-labelledby="headingThree"
+                            data-parent="#accordionExample">
+                            <div class="card-body" formArrayName="coolingKnockoutTargets"
+                                *ngFor="let coolingKnockout of coolingKnockoutTargetsArray.controls; let i=index">
+                                <div [formGroupName]="i">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="brewrrun-Quantity">Volume in Fermenter</label>
+                                            <i class="material-icons star-ico">
+                                                star_rate
+                                            </i>
+                                            <div class='multiple-input'>
+                                                <input type="number" class="form-control" id="brewrrun-Quantity"
+                                                    placeholder="Quantity" formControlName="volumeInFermentation">
+                                                <select class="form-control input-dropdown">
+
+                                                    <ng-container *ngFor="let unit of units">
+                                                        <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
+                                                            {{unit.symbol}}</option>
+                                                    </ng-container>
+
+                                                </select>
+                                            </div>
+                                            <div *ngIf="formSubmitted">
+                                                <div *ngIf="coolingKnockout.get('volumeInFermentation').invalid || coolingKnockout.get('volumeInFermentationOptionId').invalid"
+                                                    class="valid-error">
+                                                    Volume is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12 target-text">
+                                            <h6>Notes</h6>
+                                            <textarea type="text" class="form-control" id="target-Notes"
+                                                placeholder="Type Text here" formControlName="notes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-end mt-3">
+            <button class="btn l-btn-cancel mr-2" type="button" (click)="mashInClick()">
+                Previous Step</button>
+            <button (click)="nextStepClick()" class="btn l-btn" type="button">Next Step</button>
+        </div>
+    </div>
+
+</div>
+
+
+
+<form [formGroup]="modalForms">
+
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!--Type Modal -->
+        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Type</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div class="form-group col-md-12">
+                                    <label for="brewrun-Name">Add New Type</label>
+                                    <input type="text" class="form-control" id="brewrun-Name" placeholder=""
+                                        formControlName="typeText">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewType()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!-- Supplier Modal -->
+        <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Supplier</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div class="form-group col-md-12">
+                                    <label for="brewrun-Name">Add New Supplier</label>
+                                    <input type="text" class="form-control" id="supplier" placeholder=""
+                                        formControlName="supplierText">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewSupplier()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#errorModal">Open Modal</button>
+<div class="del-modal">
+    <!-- Button trigger modal -->
+    <!--Type Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Form Invalid</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            Please fill in required fields to continue.
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                            <button data-dismiss="modal" type="button" class="btn  l-btn-agree">
+                                Ok
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

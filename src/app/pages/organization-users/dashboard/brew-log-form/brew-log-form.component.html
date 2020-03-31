@@ -1,0 +1,2207 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="header-title">
+                <h6>Active Brew Log</h6>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item position-relative">
+                        <a href="app/dashboard">
+                            <i class="material-icons home-ico">
+                                home
+                            </i>Dashboard
+                        </a>
+                    </li>
+                    <li (click)="activeBrewClick()" class="breadcrumb-item"><a>Active Brew</a></li>
+                    <li class="breadcrumb-item"><a>Enter Data</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Brew Log</li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills mb-3 progressbar" id="pills-tab" role="tablist">
+                <li (click)="mashInClick()" class="nav-item active">
+                    <a class="active" id="pills-mash-tab" data-toggle="pill" href="#pills-mash" role="tab"
+                        aria-controls="pills-mash" aria-selected="true">Mash In</a>
+                </li>
+                <li (click)="brewLogClick()" class="nav-item active cursor-click">
+                    <a id="pills-brew-tab" data-toggle="pill" href="#pills-brew" role="tab" aria-controls="pills-brew"
+                        aria-selected="false">Brew Log</a>
+                </li>
+                <li (click)="fermentationClick()" class="nav-item cursor-click">
+                    <a id="pills-fermentation-tab" data-toggle="pill" href="#pills-fermentation" role="tab"
+                        aria-controls="pills-fermentation" aria-selected="false">Fermentation</a>
+                </li>
+                <li (click)="conditioningClick()" class="nav-item cursor-click">
+                    <a id="pills-conditioning-tab" data-toggle="pill" href="#pills-conditioning" role="tab"
+                        aria-controls="pills-conditioning" aria-selected="false">Conditioning</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="accordion" id="accordionExample">
+
+                <div class="card">
+                    <div class="card-main-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                General Details
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+
+                            <div class="form-row">
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Brew Run ID</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="Brew Run ID"
+                                        [(ngModel)]="brew.BrewRunId" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewer">Brewer</label>
+                                    <input type="text" class="form-control" id="brewer" placeholder="Brewer"
+                                        [(ngModel)]="brew.UserName" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="tank-name">Tank Name</label>
+                                    <input type="text" class="form-control" id="tank-name" placeholder="Tank Name"
+                                        [(ngModel)]="brew.TankName" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="recipe-name">Recipe</label>
+                                    <input type="text" class="form-control" id="recipe-name" placeholder="Recipe"
+                                        [(ngModel)]="brew.RecipeName" readonly>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedVorlauf = !isCollapsedVorlauf" class="btn btn-link collapsed"
+                                type="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
+                                Vorlauf
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                data-target="#vorLauf">Target Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedVorlauf"
+                                (click)="isCollapsedVorlauf = !isCollapsedVorlauf">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClass}" [ngbCollapse]="!isCollapsedVorlauf"
+                                (click)="isCollapsedVorlauf = !isCollapsedVorlauf">
+                                add_box
+                            </i>
+                        </div>
+
+                    </div>
+                    <div [ngbCollapse]="isCollapsedVorlauf" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="form-row" *ngFor="let Vorlauf of brew.Vorlauf; let i = index;">
+
+
+
+                                <div class="col-md-6">
+                                    <div class="d-flex l-start">
+                                        <label class="l-start-label"
+                                            (click)="setVStart(i,brew.Vorlauf[i])">START</label>
+                                        <div class="form-group w-100">
+                                            <label for="brewrun-id">Start Time</label>
+                                            <input type='text' class="form-control" [(ngModel)]="Vorlauf.StartTime">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="d-flex l-start">
+                                        <label class="l-start-label" (click)="setVEnd(i,brew.Vorlauf[i])">END</label>
+                                        <div class="form-group w-100">
+                                            <label for="brewrun-id">End Time</label>
+                                            <input type='text' class="form-control" [(ngModel)]="Vorlauf.EndTime">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-outline-light l-btn"
+                                        (click)="onVorlauf(i,'Vorlauf')">
+                                        Complete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedSparge = !isCollapsedSparge" class="btn btn-link collapsed"
+                                type="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
+                                Sparge
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                data-target="#sparge">Target Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedSparge"
+                                (click)="isCollapsedSparge = !isCollapsedSparge">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClassSparge}" [ngbCollapse]="!isCollapsedSparge"
+                                (click)="isCollapsedSparge = !isCollapsedSparge">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div class="collapse" [ngbCollapse]="isCollapsedSparge" aria-labelledby="headingTwo"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div *ngFor="let SpargeDetail of brew.SpargeDetails; let i = index;">
+                                <div class="card-sub-section mt-2">Sparge. {{i+1}}</div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="brewrun-id">Sparge Water Temp. (in {{preferedUnit}})</label>
+                                        <input type="text" class="form-control" id="brewrun-id"
+                                            placeholder="Sparge Water Temp."
+                                            [(ngModel)]="brew.SpargeDetails[i].SpargeWaterTemperature">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="brewrrun-quantity">Sparge Total Volume</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-quantity"
+                                                placeholder="Sparge Total Volume"
+                                                [(ngModel)]="brew.SpargeDetails[i].SpargeTotalVolume">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.SpargeDetails[i].SpargeTotalVolumeUnitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex l-start">
+                                            <label class="l-start-label"
+                                                (click)="setSpargeStart(i,brew.SpargeDetails[i])">START</label>
+                                            <div class="form-group w-100">
+                                                <label for="brewrun-id">Start Time</label>
+                                                <input type="text" class="form-control"
+                                                    [(ngModel)]="SpargeDetail.StartTime">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="d-flex l-start">
+                                            <label class="l-start-label"
+                                                (click)="setSpargeEnd(i,brew.SpargeDetails[i])">END</label>
+                                            <div class="form-group w-100">
+                                                <label for="brewrun-id">End Time</label>
+                                                <input type="text" class="form-control"
+                                                    [(ngModel)]="SpargeDetail.EndTime">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div *ngIf="brew.SpargeDetails != null" class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn"
+                                    (click)="onSpargeComplete(i,'Sparge')">
+                                    Complete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedFirstRun = !isCollapsedFirstRun" class="btn btn-link collapsed"
+                                type="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
+                                First Runnings
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                data-target="#firstRunning">Target Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedFirstRun"
+                                (click)="isCollapsedFirstRun = !isCollapsedFirstRun">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClassFirst}"
+                                [ngbCollapse]="!isCollapsedFirstRun"
+                                (click)="isCollapsedFirstRun = !isCollapsedFirstRun">
+                                add_box
+                            </i>
+                        </div>
+
+                    </div>
+                    <div [ngbCollapse]="isCollapsedFirstRun" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="form-row" *ngFor="let FirstRunning of brew.FirstRunnings; let i = index;">
+                                <div class="form-group col-md-12">
+                                    <label for="plato-first">{{preferedPlato}}</label>
+                                    <input type="text" class="form-control" id="plato-first"
+                                        placeholder="{{preferedPlato}}"
+                                        [(ngModel)]="brew.FirstRunnings[i].PlatoGravity">
+                                </div>
+
+
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-outline-light l-btn"
+                                        (click)="onFirstRunComplete(i,'FirstRunnings')">
+                                        Complete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedLastRun = !isCollapsedLastRun" class="btn btn-link collapsed"
+                                type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                aria-controls="collapseTwo">
+                                Last Runnings
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                data-target="#lastRunnings">Target Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedLastRun"
+                                (click)="isCollapsedLastRun = !isCollapsedLastRun">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClassLast}" [ngbCollapse]="!isCollapsedLastRun"
+                                (click)="isCollapsedLastRun = !isCollapsedLastRun">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div [ngbCollapse]="isCollapsedLastRun" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="form-group" *ngFor="let LastRunning of brew.LastRunnings; let i = index;">
+                                <label for="plato-last">{{preferedPlato}}</label>
+                                <input type="text" class="form-control" id="plato-last" placeholder="{{preferedPlato}}"
+                                    [(ngModel)]="brew.LastRunnings[i].PlatoGravity">
+
+
+                                <div class="mt-3 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-outline-light l-btn"
+                                        (click)="onLastRunComplete(i,'LastRunnings')">
+                                        Complete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button"
+                                (click)="isCollapsedKettle = !isCollapsedKettle" aria-expanded="false"
+                                aria-controls="collapseTwo">
+                                Kettle Data Entry
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                data-target="#kettleData">Target Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedKettle"
+                                (click)="isCollapsedKettle = !isCollapsedKettle">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClassKettle}" [ngbCollapse]="!isCollapsedKettle"
+                                (click)="isCollapsedKettle = !isCollapsedKettle">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div [ngbCollapse]="isCollapsedKettle" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div *ngFor="let KettleDataEntryDetail of brew.KettleDataEntryDetails; let i = index;">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="d-flex l-start">
+                                            <label class="l-start-label"
+                                                (click)="setKettleStart(i,brew.KettleDataEntryDetails[i])">START</label>
+                                            <div class="form-group w-100">
+                                                <label for="brewrun-id">Start Time</label>
+                                                <input type="text" class="form-control"
+                                                    [(ngModel)]="KettleDataEntryDetail.StartTime">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="d-flex l-start">
+                                            <label class="l-start-label"
+                                                (click)="setKettleEnd(i,brew.KettleDataEntryDetails[i])">END</label>
+                                            <div class="form-group w-100">
+                                                <label for="brewrun-id">End Time</label>
+                                                <input type="text" class="form-control"
+                                                    [(ngModel)]="KettleDataEntryDetail.EndTime">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="boil-length">Boil Length (in mins)</label>
+                                        <input type="number" class="form-control" id="boil-length"
+                                            placeholder="Boil Length"
+                                            [(ngModel)]="brew.KettleDataEntryDetails[i].BoilLength">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="vol-boil">Volume Pre-Boil</label>
+                                        <input type="number" class="form-control" id="vol-boil"
+                                            placeholder="Volume Pre-Boil"
+                                            [(ngModel)]="brew.KettleDataEntryDetails[i].VolumePreBoil">
+                                    </div>
+                                </div>
+
+
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-outline-light l-btn"
+                                        (click)="onKettleComplete(i,'KettleTargets')">
+                                        Complete
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--  -->
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedHops = !isCollapsedHops" class="btn btn-link collapsed"
+                                type="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
+                                Hops
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                data-target="#hopsKettle">Target Values</button>
+                            <i class="material-icons colapse-toggle" [ngbCollapse]="isCollapsedHops"
+                                (click)="isCollapsedHops = !isCollapsedHops">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle"
+                                [ngClass]="{'colapse-toggle-active' :setClassHops}" [ngbCollapse]="!isCollapsedHops"
+                                (click)="isCollapsedHops = !isCollapsedHops">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div [ngbCollapse]="isCollapsedHops" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionExample">
+                        <div *ngIf="addInHopsKettle.length > 0" class="card-body">
+                            <div *ngFor="let HopesDetail of brew.HopesDetails; let i = index;">
+                                <div *ngIf="HopesDetail.AddInId == addInConstants.Kettle.Id">
+
+                                    <div class="card-sub-section mt-2">Hops. {{getHopsCountKettle(HopesDetail.Id)}}
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-3">
+                                            <label for="brewrun-name">Name</label>
+                                            <input type="text" class="form-control" id="brewrun-name" placeholder=""
+                                                [(ngModel)]="brew.HopesDetails[i].Name">
+                                        </div>
+
+                                        <div for="status" class="form-group col-md-3">
+                                            <label for="postal">Type</label>
+                                            <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                data-toggle="modal" data-target="#typeModal">add_circle_outline</i>
+                                            <select class="form-control input-style input-dropdown" id=""
+                                                [(ngModel)]="brew.HopesDetails[i].MaltGrainTypeId">
+                                                <option disabled value="">Select</option>
+                                                <option *ngFor="let maltType of maltTypes" [value]="maltType.Id">
+                                                    {{maltType.name}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div for="status" class="form-group col-md-3">
+                                            <label for="postal">Origin</label>
+                                            <select class="form-control input-style input-dropdown" id=""
+                                                [(ngModel)]="brew.HopesDetails[i].CountryId">
+                                                <option disabled value="">Select</option>
+                                                <option *ngFor="let country of countries" [value]="country.id">
+                                                    {{country.countryName}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label for="brewrun-id">Supplier</label>
+                                            <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
+                                            <select class="form-control input-style input-dropdown" id=""
+                                                [(ngModel)]="brew.HopesDetails[i].SupplierId">
+                                                <option disabled value="">Select</option>
+                                                <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                                    {{suppliers.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-3">
+                                            <label for="brewrun-alpha">Alpha (%)</label>
+                                            <input type="text" class="form-control" id="brewrun-alpha"
+                                                placeholder="Alpha (%)" [(ngModel)]="brew.HopesDetails[i].Alpha">
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+                                            <label for="brewrrun-quantity">Quantity</label>
+                                            <div class='multiple-input'>
+                                                <input type="number" class="form-control" id="brewrrun-quantity"
+                                                    placeholder="Quantity" [(ngModel)]="brew.HopesDetails[i].Quantity">
+                                                <select class="form-control input-dropdown"
+                                                    [(ngModel)]="brew.HopesDetails[i].QuantityUnitTypeId">
+                                                    <option disabled value="">Select</option>
+                                                    <ng-container *ngFor="let unit of units">
+                                                        <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                            {{unit.Symbol}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div for="status" class="form-group col-md-3">
+                                            <label for="add-in">Add In</label>
+                                            <select class="form-control input-style input-dropdown" id="add-in"
+                                                [(ngModel)]="brew.HopesDetails[i].AddInId" disabled>
+                                                <option disabled value="">Select</option>
+                                                <option *ngFor="let addins of addins" [value]="addins.Id">
+                                                    {{addins.Name}}</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group col-md-3">
+                                            <label for="brewrun-id">Start</label>
+                                            <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
+                                                class="form-control" [(ngModel)]="brew.HopesDetails[i].StartTime">
+                                            <owl-date-time #startTime></owl-date-time>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-end mb-15">
+                                <button type="button" class="btn btn-outline-light l-btn"
+                                    (click)="onHopsCompleteKettle('Hops')">
+                                    Complete
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedAdjuncts = !isCollapsedAdjuncts" class="btn btn-link collapsed"
+                                type="button" aria-expanded="false" aria-controls="collapseTwo">
+                                Adjuncts
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white" type="button" data-toggle="modal"
+                                data-target="#adjunctsKettle">Target Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedAdjuncts"
+                                (click)="isCollapsedAdjuncts = !isCollapsedAdjuncts">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClassAdjuncts}"
+                                [ngbCollapse]="!isCollapsedAdjuncts"
+                                (click)="isCollapsedAdjuncts = !isCollapsedAdjuncts">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div [ngbCollapse]="isCollapsedAdjuncts" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionExample">
+                        <div *ngIf="addInAdjunctsKettle.length > 0" class="card-body">
+                            <div *ngFor="let kettleAdjuncts of brew.AdjunctsDetails; let i = index;">
+                                <div *ngIf="kettleAdjuncts.AddInId == addInConstants.Kettle.Id">
+                                    <div class="card-sub-section mt-2">Adjuncts.
+                                        {{getAdjCountKettle(kettleAdjuncts.Id)}}</div>
+
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-4">
+                                            <label for="brewrun-alpha">Name</label>
+                                            <input type="text" class="form-control" id="brewrun-alpha"
+                                                placeholder="Name" [(ngModel)]="brew.AdjunctsDetails[i].Name">
+                                        </div>
+
+                                        <div for="status" class="form-group col-md-4">
+                                            <label for="postal">Origin</label>
+                                            <select class="form-control input-style input-dropdown" id=""
+                                                [(ngModel)]="brew.AdjunctsDetails[i].CountryId">
+                                                <option disabled value="">Select</option>
+                                                <option *ngFor="let country of countries" [value]="country.id">
+                                                    {{country.countryName}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label for="postal">Supplier</label>
+                                            <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                                data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
+                                            <select class="form-control input-style input-dropdown" id="">
+                                                <option disabled value="">Select</option>
+                                                <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                                    {{suppliers.name}}</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="brewrrun-quantity">Quantity</label>
+                                            <div class='multiple-input'>
+                                                <input type="number" class="form-control" id="brewrrun-quantity"
+                                                    placeholder="Quantity"
+                                                    [(ngModel)]="brew.AdjunctsDetails[i].Quantity">
+                                                <select class="form-control input-dropdown"
+                                                    [(ngModel)]="brew.AdjunctsDetails[i].QuantityUnitTypeId">
+                                                    <option disabled value="">Select</option>
+                                                    <ng-container *ngFor="let unit of units">
+                                                        <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                            {{unit.Symbol}}</option>
+                                                    </ng-container>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div for="status" class="form-group col-md-4">
+                                            <label for="add-in">Add In</label>
+                                            <select class="form-control input-style input-dropdown" id="add-in"
+                                                [(ngModel)]="brew.AdjunctsDetails[i].AddInId" disabled>
+                                                <option disabled value="">Select</option>
+                                                <option *ngFor="let addin of addins" [value]="addin.Id">{{addin.Name}}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label for="brewrun-id">Start</label><br />
+                                            <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
+                                                class="form-control" [(ngModel)]="brew.AdjunctsDetails[i].StartTime">
+                                            <owl-date-time #startTime></owl-date-time>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn"
+                                    (click)="onAdjunctsCompleteKettle('Adjuncts')">
+                                    Complete
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button (click)="isCollapsedPostBoil = !isCollapsedPostBoil" class="btn btn-link collapsed"
+                            type="button" aria-expanded="false" aria-controls="collapseTwo">
+                            Post Boil Data
+                        </button>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <button class="btn l-btn-white" type="button" data-toggle="modal" data-target="#postBoil">Target
+                            Values</button>
+                        <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedPostBoil"
+                            (click)="isCollapsedPostBoil = !isCollapsedPostBoil">
+                            indeterminate_check_box
+                        </i>
+                        <i class="material-icons  colapse-toggle cursor-click"
+                            [ngClass]="{'colapse-toggle-active' :setClassPostBoil}" [ngbCollapse]="!isCollapsedPostBoil"
+                            (click)="isCollapsedPostBoil = !isCollapsedPostBoil">
+                            add_box
+                        </i>
+                    </div>
+                </div>
+                <div [ngbCollapse]="isCollapsedPostBoil" class="collapse" aria-labelledby="headingTwo">
+                    <div class="card-body">
+                        <div class="form-row" *ngFor="let PostBoilData of brew.PostBoilData; let i = index;">
+
+                            <div class="form-group col-md-4">
+                                <label for="brewrrun-quantity">Volume PostBoil</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="brewrrun-quantity"
+                                        placeholder="Volume PostBoil" [(ngModel)]="brew.PostBoilData[i].VolumePostBoil">
+                                    <select class="form-control input-dropdown"
+                                        [(ngModel)]="brew.PostBoilData[i].VolumePostBoilOptionId">
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="brewrun-id">{{preferedPlato}}</label>
+                                <input type="text" class="form-control" id="brewrun-id" placeholder="{{preferedPlato}}"
+                                    [(ngModel)]="brew.PostBoilData[i].Plato">
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="brewrun-id">pH</label>
+                                <input type="text" class="form-control" id="brewrun-id" placeholder="pH"
+                                    [(ngModel)]="brew.PostBoilData[i].Ph">
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn"
+                                    (click)="onPostBoilComplete(i, 'PostBoil')">
+                                    Complete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button (click)="isCollapsedWhirlpool = !isCollapsedWhirlpool" class="btn btn-link collapsed"
+                            type="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
+                            Whirlpool Data Entry
+                        </button>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <button class="btn l-btn-white" type="button" data-toggle="modal" data-target="#poolData">Target
+                            Values</button>
+                        <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedWhirlpool"
+                            (click)="isCollapsedWhirlpool = !isCollapsedWhirlpool">
+                            indeterminate_check_box
+                        </i>
+                        <i class="material-icons  colapse-toggle cursor-click"
+                            [ngClass]="{'colapse-toggle-active' :setClassWhirl}" [ngbCollapse]="!isCollapsedWhirlpool"
+                            (click)="isCollapsedWhirlpool = !isCollapsedWhirlpool">
+                            add_box
+                        </i>
+                    </div>
+                </div>
+                <div [ngbCollapse]="isCollapsedWhirlpool" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionExample">
+
+                    <div class="card-body">
+
+                        <div class="form-row"
+                            *ngFor="let WhirlPoolDataEntry of brew.WhirlPoolDataEntry; let i = index;">
+                            <div class="col-md-12">
+                                <div class="d-flex l-start">
+                                    <label class="l-start-label"
+                                        (click)="setWhirlStart(i,brew.WhirlPoolDataEntry[i])">START</label>
+                                    <div class="form-group w-100">
+                                        <label for="brewrun-id">Start Time</label>
+                                        <input type="text" class="form-control"
+                                            [(ngModel)]="WhirlPoolDataEntry.StartTime">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn"
+                                    (click)="onWhirlpoolComplete(i, 'WhirlpoolTarget')">
+                                    Complete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- AddIn hops - whirlpool - Start -->
+
+            <div class="card">
+                <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button (click)="isCollapsedHopsWhirl = !isCollapsedHopsWhirl" class="btn btn-link collapsed"
+                            type="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseTwo">
+                            Hops
+                        </button>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <button class="btn l-btn-white" type="button" data-toggle="modal"
+                            data-target="#hopsWhirl">Target Values</button>
+                        <i class="material-icons colapse-toggle" [ngbCollapse]="isCollapsedHopsWhirl"
+                            (click)="isCollapsedHopsWhirl = !isCollapsedHopsWhirl">
+                            indeterminate_check_box
+                        </i>
+                        <i class="material-icons  colapse-toggle"
+                            [ngClass]="{'colapse-toggle-active' :setClassHopsWhirl}"
+                            [ngbCollapse]="!isCollapsedHopsWhirl"
+                            (click)="isCollapsedHopsWhirl = !isCollapsedHopsWhirl">
+                            add_box
+                        </i>
+                    </div>
+                </div>
+                <div [ngbCollapse]="isCollapsedHopsWhirl" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionExample">
+                    <div *ngIf="addInHopsWhirlpool.length > 0" class="card-body">
+                        <div *ngFor="let whirlpoolHopesDetail of brew.HopesDetails; let i = index;">
+                            <div *ngIf="whirlpoolHopesDetail.AddInId == addInConstants.Whirlpool.Id">
+                                <div class="card-sub-section mt-2">Hops. {{getHopsCountWhirl(whirlpoolHopesDetail.Id)}}
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrun-name">Name</label>
+                                        <input type="text" class="form-control" value="{{whirlpoolHopesDetail.Name}}"
+                                            id="brewrun-name" placeholder="">
+                                    </div>
+
+                                    <div for="status" class="form-group col-md-3">
+                                        <label for="postal">Type</label>
+                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                            data-toggle="modal" data-target="#styleModal">add_circle_outline</i>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.HopesDetails[i].MaltGrainTypeId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let maltType of maltTypes" [value]="maltType.Id">
+                                                {{maltType.name}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div for="status" class="form-group col-md-3">
+                                        <label for="postal">Origin</label>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.HopesDetails[i].CountryId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let country of countries" [value]="country.id">
+                                                {{country.countryName}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrun-id">Supplier</label>
+                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                            data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.HopesDetails[i].SupplierId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let supplier of suppliers" [value]="supplier.Id">
+                                                {{supplier.Name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrun-alpha">Alpha (%)</label>
+                                        <input type="text" class="form-control" id="brewrun-alpha"
+                                            placeholder="Alpha (%)" [(ngModel)]="brew.HopesDetails[i].Alpha">
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrrun-quantity">Quantity</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-quantity"
+                                                placeholder="Quantity" [(ngModel)]="brew.HopesDetails[i].Quantity">
+                                            <select class="form-control input-dropdown"
+                                                value="{{whirlpoolHopesDetail.QuantityUnitTypeId}}">
+                                                <option disabled value="">Select</option>
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div for="status" class="form-group col-md-3">
+                                        <label for="add-in">Add In</label>
+                                        <select class="form-control input-style input-dropdown" id="add-in"
+                                            [(ngModel)]="brew.HopesDetails[i].AddInId" disabled>
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let addins of addins" [value]="addins.Id">{{addins.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrun-id">Start</label>
+                                        <input class="form-control" [owlDateTime]="startTime"
+                                            [owlDateTimeTrigger]="startTime" [min]="minStarTime" [max]="maxStartTime"
+                                            [(ngModel)]="brew.HopesDetails[i].StartTime">
+                                        <owl-date-time #startTime></owl-date-time>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn"
+                                (click)="onHopsCompleteWhirl('Hops')">
+                                Complete
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- AddIn hops - whirlpool - End -->
+
+            <!-- AddIn Adjuncts - whirlpool - Start-->
+            <div class="card">
+                <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button (click)="isCollapsedAdjunctsWhirl = !isCollapsedAdjunctsWhirl"
+                            class="btn btn-link collapsed" type="button" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                            Adjuncts
+                        </button>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <button class="btn l-btn-white" type="button" data-toggle="modal"
+                            data-target="#adjunctsWhirl">Target Values</button>
+                        <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedAdjunctsWhirl"
+                            (click)="isCollapsedAdjunctsWhirl = !isCollapsedAdjunctsWhirl">
+                            indeterminate_check_box
+                        </i>
+                        <i class="material-icons  colapse-toggle cursor-click"
+                            [ngClass]="{'colapse-toggle-active' :setClassAdjunctsWhirl}"
+                            [ngbCollapse]="!isCollapsedAdjunctsWhirl"
+                            (click)="isCollapsedAdjunctsWhirl = !isCollapsedAdjunctsWhirl">
+                            add_box
+                        </i>
+                    </div>
+                </div>
+                <div [ngbCollapse]="isCollapsedAdjunctsWhirl" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionExample">
+                    <div *ngIf="addInAdjunctsWhirlpool.length > 0" class="card-body">
+                        <div *ngFor="let whirlpoolAdjunctsDetails of brew.AdjunctsDetails; let i = index;">
+                            <div *ngIf="whirlpoolAdjunctsDetails.AddInId == addInConstants.Whirlpool.Id">
+                                <div class="card-sub-section pl-0">Adjuncts.
+                                    {{getAdjCountWhirl(whirlpoolAdjunctsDetails.Id)}}</div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-4">
+                                        <label for="brewrun-alpha">Name</label>
+                                        <input type="text" class="form-control" id="brewrun-alpha" placeholder="Name"
+                                            [(ngModel)]="brew.AdjunctsDetails[i].Name">
+                                    </div>
+
+                                    <div for="status" class="form-group col-md-4">
+                                        <label for="postal">Origin</label>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.AdjunctsDetails[i].CountryId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let country of countries" [value]="country.id">
+                                                {{country.countryName}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="postal">Supplier</label>
+                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                            data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.AdjunctsDetails[i].SupplierId">
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let supply of suppliers" [value]="supply.Id">{{supply.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label for="brewrrun-quantity">Quantity</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-quantity"
+                                                placeholder="Quantity" [(ngModel)]="brew.AdjunctsDetails[i].Quantity">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.AdjunctsDetails[i].QuantityUnitTypeId">
+                                                <option disabled value="">Select</option>
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div for="status" class="form-group col-md-4">
+                                        <label for="add-in">Add In</label>
+                                        <select class="form-control input-style input-dropdown" id="add-in"
+                                            [(ngModel)]="brew.AdjunctsDetails[i].AddInId" disabled>
+                                            <option disabled value="">Select</option>
+                                            <option *ngFor="let addin of addins" [value]="addin.Id">{{addin.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="brewrun-id">Start</label><br />
+                                        <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
+                                            class="form-control" [(ngModel)]="brew.AdjunctsDetails[i].StartTime">
+                                        <owl-date-time #startTime></owl-date-time>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn"
+                                (click)="onAdjunctsCompleteWhirl('Adjuncts')">
+                                Complete
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- AddIn Adjuncts - whirlpool - End -->
+
+            <div class="card">
+                <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button (click)="isCollapsedPostWhirlpool = !isCollapsedPostWhirlpool"
+                            class="btn btn-link collapsed" type="button" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                            Post Whirlpool
+                        </button>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <button class="btn l-btn-white" type="button" data-toggle="modal"
+                            data-target="#postWhirl">Target Values</button>
+                        <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedPostWhirlpool"
+                            (click)="isCollapsedPostWhirlpool = !isCollapsedPostWhirlpool">
+                            indeterminate_check_box
+                        </i>
+                        <i class="material-icons  colapse-toggle cursor-click"
+                            [ngClass]="{'colapse-toggle-active' :setClassPostWhirl}"
+                            [ngbCollapse]="!isCollapsedPostWhirlpool"
+                            (click)="isCollapsedPostWhirlpool = !isCollapsedPostWhirlpool">
+                            add_box
+                        </i>
+                    </div>
+                </div>
+                <div [ngbCollapse]="isCollapsedPostWhirlpool" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="form-group"
+                            *ngFor="let PostWhirlpoolDetail of brew.PostWhirlpoolDetails; let i = index;">
+                            <label for="vol-out">Volume Out</label>
+                            <div class='multiple-input'>
+                                <input type="number" class="form-control" id="vol-out" placeholder="Volume Out"
+                                    [(ngModel)]="brew.PostWhirlpoolDetails[i].VolumeOut">
+                                <select class="form-control input-dropdown"
+                                    [(ngModel)]="brew.PostWhirlpoolDetails[i].VolumeOutOptionId">
+                                    <option disabled value="">Select</option>
+                                    <ng-container *ngFor="let unit of units">
+                                        <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">{{unit.Symbol}}
+                                        </option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                            <div class="mt-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn"
+                                    (click)="onPostWhirlComplete(i, 'PostWhirlpool')">
+                                    Complete
+                                </button>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button (click)="isCollapsedCoolingKnockout = !isCollapsedCoolingKnockout"
+                            class="btn btn-link collapsed" type="button" data-toggle="collapse" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                            Cooling-Knockout Data Entry
+                        </button>
+                    </h2>
+                    <div class="d-flex align-items-center">
+                        <button class="btn l-btn-white" type="button" data-toggle="modal"
+                            data-target="#coolKnock">Target Values</button>
+                        <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedCoolingKnockout"
+                            (click)="isCollapsedCoolingKnockout = !isCollapsedCoolingKnockout">
+                            indeterminate_check_box
+                        </i>
+                        <i class="material-icons  colapse-toggle cursor-click"
+                            [ngClass]="{'colapse-toggle-active' :setClassCool}"
+                            [ngbCollapse]="!isCollapsedCoolingKnockout"
+                            (click)="isCollapsedCoolingKnockout = !isCollapsedCoolingKnockout">
+                            add_box
+                        </i>
+                    </div>
+                </div>
+                <div [ngbCollapse]="isCollapsedCoolingKnockout" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div *ngFor="let CoolingKnockouDetail of brew.CoolingKnockouDetails; let i = index;">
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="vol-out">Volume in Fermentation</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="vol-out"
+                                            placeholder="Volume in Fermentation"
+                                            [(ngModel)]="brew.CoolingKnockouDetails[i].VolumeInFermentation">
+                                        <select class="form-control input-dropdown"
+                                            [(ngModel)]="brew.CoolingKnockouDetails[i].VolumeInFermentationOptionId">
+                                            <option disabled value="">Select</option>
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
+                                    <input type="number" class="form-control" id="cooling_temperature"
+                                        placeholder="Actual Temperature"
+                                        [(ngModel)]="brew.CoolingKnockouDetails[i].ActualTemperature">
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="d-flex l-start">
+                                        <label class="l-start-label"
+                                            (click)="setCoolStart(i,brew.CoolingKnockouDetails[i])">START</label>
+                                        <div class="form-group w-100">
+                                            <label for="brewrun-id">Start Time</label>
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="CoolingKnockouDetail.StartTime">
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="d-flex l-start">
+                                        <label class="l-start-label"
+                                            (click)="setCoolEnd(i,brew.CoolingKnockouDetails[i])">END</label>
+                                        <div class="form-group w-100">
+                                            <label for="brewrun-id">End Time</label>
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="CoolingKnockouDetail.EndTime">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-outline-light l-btn"
+                                        (click)="onCoolingComplete(i,'CoolingKnockoutTargets')">
+                                        Complete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Notes
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="form-row brewrun-text"
+                            *ngFor="let BrewLogDetailsNote of brew.BrewLogDetailsNotes; let i = index;">
+                            <div class="form-group col-md-12">
+                                <textarea type="text" class="form-control" id="meshin-notes"
+                                    placeholder="Type Text Here..."
+                                    [(ngModel)]="brew.BrewLogDetailsNotes[i].Notes"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-end mt-4">
+                <button class="btn l-btn-cancel mr-2" type="button" (click)="onPreviousClick()">
+                    <i class="material-icons">
+                        cancel
+                    </i>
+                    Previous Step
+                </button>
+
+                <button (click)="fermentationClick()" class="btn l-btn" type="button">Next Step</button>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<!--Modal-->
+
+<div class="brew-modal">
+
+    <!-- Vorlauf -->
+    <div class="modal fade" id="vorLauf" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Vorlauf</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="form-row">
+
+                            <div class="col-md-6">
+                                <div class="d-flex l-start">
+                                    <label class="l-start-label">START</label>
+                                    <div class="form-group w-100">
+                                        <label for="brewrun-id">Start Time</label>
+                                        <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
+                                            class="form-control">
+                                        <owl-date-time #startTime></owl-date-time>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="d-flex l-start">
+                                    <label class="l-start-label">END</label>
+                                    <div class="form-group w-100">
+                                        <label for="brewrun-id">End Time</label>
+                                        <input [owlDateTimeTrigger]="endTime" [owlDateTime]="endTime"
+                                            class="form-control">
+                                        <owl-date-time #endTime></owl-date-time>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Sparge -->
+    <div class="modal fade" id="sparge" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Sparge</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" *ngFor="let sparge of spargeTarget;let i =index">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="brewrun-id">Sparge Water Temp. (in {{preferedUnit}})</label>
+                                <input type="text" class="form-control" id="brewrun-id" placeholder="Sparge Water Temp."
+                                    [value]="sparge.SpargeWaterTemperature" disabled>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="brewrrun-quantity">Sparge Total Volume</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="brewrrun-quantity"
+                                        placeholder="Quantity" [value]="sparge.SpargeWaterTemperature" disabled>
+                                    <select class="form-control input-dropdown" [value]="sparge.QuantityUnitId"
+                                        disabled>
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- First Runnings -->
+    <div class="modal fade" id="firstRunning" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">First Runnings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let sparge of spargeTarget;let i =index">
+                    <div class="container-fluid">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="plato-first">{{preferedPlato}}</label>
+                                <input type="text" class="form-control" id="plato-first" placeholder="{{preferedPlato}}"
+                                    [value]="sparge.FirstRunningPlato" disabled>
+                            </div>
+
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Last Runnings -->
+    <div class="modal fade" id="lastRunnings" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Last Runnings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let sparge of spargeTarget;let i =index">
+                    <div class="container-fluid">
+                        <div class="form-group col-md-12">
+                            <label for="plato-last">{{preferedPlato}}</label>
+                            <input type="text" class="form-control" id="plato-last" placeholder="{{preferedPlato}}"
+                                [value]="sparge.LastRunningPlato" disabled>
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Kettle Data Entry -->
+    <div class="modal fade" id="kettleData" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Kettle Data Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" *ngFor="let kettle of kettleTarget;let i=index">
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="boil-length">Boil Length (in mins)</label>
+                                <input type="number" class="form-control" id="boil-length" placeholder="Mash pH"
+                                    [value]="kettle.BoilLength" disabled>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="vol-boil">Volume Pre-Boil</label>
+                                <input type="number" class="form-control" id="vol-boil" placeholder="Mash pH"
+                                    [value]="kettle.VolumePreBoil" disabled>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Hops Whirlpool -->
+    <div class="modal fade" id="hopsWhirl" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Hops</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let hops of hopsTargetWhirl;let i=index">
+                    <div *ngIf="hops.AddInId == addInConstants.Whirlpool.Id">
+                        <div class="col-md-12 pl-0"><b>Hops. {{getHopsCountWhirlTargets(hops.Id)}}</b></div>
+
+                        <div class="form-row mt-3">
+                            <div class="form-group col-md-3">
+                                <label for="brewrun-name">Name</label>
+                                <input type="text" class="form-control" id="brewrun-name" placeholder=""
+                                    [value]="hops.Name" disabled>
+                            </div>
+
+                            <div for="status" class="form-group col-md-3">
+                                <label for="postal">Type</label>
+                                <select class="form-control input-style input-dropdown" id=""
+                                    [value]="hops.MaltGrainTypeId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.Id">
+                                        {{maltTypes.name}}</option>
+                                </select>
+                            </div>
+
+                            <div for="status" class="form-group col-md-3">
+                                <label for="postal">Origin</label>
+                                <select class="form-control input-style input-dropdown" id="" [value]="hops.CountryId"
+                                    disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let countries of countries" [value]="countries.id">
+                                        {{countries.countryName}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="brewrun-id">Supplier</label>
+                                <select class="form-control input-style input-dropdown" id="" [value]="hops.SupplierId"
+                                    disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                        {{suppliers.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-3">
+                                <label for="brewrun-alpha">Alpha (%)</label>
+                                <input type="text" class="form-control" id="brewrun-alpha" [value]="hops.Alpha"
+                                    disabled>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="brewrrun-quantity">Quantity</label>
+                                <div class='multiple-input'>
+                                    <select class="form-control input-dropdown" [value]="hops.QuantityUnitTypeId"
+                                        disabled>
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div for="status" class="form-group col-md-3">
+                                <label for="add-in">Add In</label>
+                                <select class="form-control input-style input-dropdown" id="add-in"
+                                    [value]="hops.AddInId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let addins of addins" [value]="addins.Id">
+                                        {{addins.Name}}</option>
+
+                                </select>
+                            </div>
+                            <div for="status" class="form-group col-md-3">
+                                <label for="brewrrun-Quantity">Time In</label>
+                                <div class='multiple-input'>
+                                    <input type="number" disabled class="form-control" id="brewrrun-Quantity"
+                                        placeholder="Time In" [value]="hops.TimeIn">
+
+                                    <select disabled [value]="hops.TimeInUnitId" class="form-control input-dropdown">
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="row m-0">
+                    <div class="col-md-12 d-flex justify-content-end mb-3">
+                        <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Adjuncts WhirlPool-->
+    <div class="modal fade" id="adjunctsWhirl" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Adjuncts</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let adjuncts of adjunctsTargetWhirl;let i=index">
+                    <div class="container-fluid" *ngIf="adjuncts.AddInId == addInConstants.Whirlpool.Id">
+                        <div class="col-md-12 pl-0"><b>Adjuncts. {{getAdjCountWhirlTargets(adjuncts.Id)}}</b></div>
+                        <div class="form-row mt-3">
+                            <div class="form-group col-md-4">
+                                <label for="brewrun-alpha">Name</label>
+                                <input type="text" class="form-control" id="brewrun-alpha" placeholder="Name"
+                                    [value]="adjuncts.Name" disabled>
+                            </div>
+
+                            <div for="status" class="form-group col-md-4">
+                                <label for="postal">Origin</label>
+                                <select class="form-control input-style input-dropdown" id=""
+                                    [value]="adjuncts.CountryId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let country of countries" [value]="country.id">
+                                        {{country.countryName}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="postal">Supplier</label>
+
+                                <select class="form-control input-style input-dropdown" id=""
+                                    [value]="adjuncts.SupplierId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let supply of suppliers" [value]="supply.Id">{{supply.Name}}
+                                    </option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="brewrrun-quantity">Quantity</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="brewrrun-quantity"
+                                        [value]="adjuncts.Quantity" disabled>
+                                    <select class="form-control input-dropdown" [value]="adjuncts.QuantityUnitId"
+                                        disabled>
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div for="status" class="form-group col-md-4">
+                                <label for="add-in">Add In</label>
+                                <select class="form-control input-style input-dropdown" id="add-in"
+                                    [value]="adjuncts.AddInId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let addins of addins" [value]="addins.Id">
+                                        {{addins.Name}}</option>
+                                </select>
+                            </div>
+                            <div for="status" class="form-group col-md-4">
+                                <label for="brewrrun-Quantity">Time In</label>
+                                <div class='multiple-input'>
+                                    <input type="number" disabled class="form-control" id="brewrrun-Quantity"
+                                        placeholder="Time In" [value]="adjuncts.TimeIn">
+
+                                    <select disabled [value]="adjuncts.TimeInUnitId"
+                                        class="form-control input-dropdown">
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hops Kettle -->
+    <div class="modal fade" id="hopsKettle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Hops</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let hops of hopsTargetKettle;let i=index">
+                    <div *ngIf="hops.AddInId == addInConstants.Kettle.Id">
+                        <div class="col-md-12 pl-0"><b>Hops. {{getHopsCountKettleTarget(hops.Id)}}</b></div>
+
+                        <div class="form-row mt-3">
+                            <div class="form-group col-md-3">
+                                <label for="brewrun-name">Name</label>
+                                <input type="text" class="form-control" id="brewrun-name" placeholder=""
+                                    [value]="hops.Name" disabled>
+                            </div>
+
+                            <div for="status" class="form-group col-md-3">
+                                <label for="postal">Type</label>
+                                <select class="form-control input-style input-dropdown" id=""
+                                    [value]="hops.MaltGrainTypeId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.Id">
+                                        {{maltTypes.name}}</option>
+                                </select>
+                            </div>
+
+                            <div for="status" class="form-group col-md-3">
+                                <label for="postal">Origin</label>
+                                <select class="form-control input-style input-dropdown" id="" [value]="hops.CountryId"
+                                    disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let countries of countries" [value]="countries.id">
+                                        {{countries.countryName}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="brewrun-id">Supplier</label>
+                                <select class="form-control input-style input-dropdown" id="" [value]="hops.SupplierId"
+                                    disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                        {{suppliers.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-3">
+                                <label for="brewrun-alpha">Alpha (%)</label>
+                                <input type="text" class="form-control" id="brewrun-alpha" placeholder="Alpha (%)"
+                                    [value]="hops.Alpha" disabled>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="brewrrun-quantity">Quantity</label>
+                                <div class='multiple-input'>
+                                    <select class="form-control input-dropdown" [value]="hops.QuantityUnitTypeId"
+                                        disabled>
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div for="status" class="form-group col-md-3">
+                                <label for="add-in">Add In</label>
+                                <select class="form-control input-style input-dropdown" id="add-in"
+                                    [value]="hops.AddInId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let addins of addins" [value]="addins.Id">
+                                        {{addins.Name}}</option>
+
+                                </select>
+                            </div>
+                            <div for="status" class="form-group col-md-3">
+                                <label for="brewrrun-Quantity">Time In</label>
+                                <div class='multiple-input'>
+                                    <input type="number" disabled class="form-control" id="brewrrun-Quantity"
+                                        placeholder="Time In" [value]="hops.TimeIn">
+
+                                    <select disabled [value]="hops.TimeInUnitId" class="form-control input-dropdown">
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-end mb-2">
+                    <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Adjuncts Kettle-->
+    <div class="modal fade" id="adjunctsKettle" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Adjuncts</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let adjuncts of adjunctsTargetKettle;let i=index">
+                    <div class="container-fluid" *ngIf="adjuncts.AddInId == addInConstants.Kettle.Id">
+                        <div class="col-md-12 pl-0"><b>Adjuncts. {{getAdjCountKettleTargets(adjuncts.Id)}}</b></div>
+
+                        <div class="form-row mt-3">
+
+                            <div class="form-group col-md-4">
+                                <label for="brewrun-alpha">Name</label>
+                                <input type="text" class="form-control" id="brewrun-alpha" placeholder="Name"
+                                    [value]="adjuncts.Name" disabled>
+                            </div>
+
+                            <div for="status" class="form-group col-md-4">
+                                <label for="postal">Origin</label>
+                                <select class="form-control input-style input-dropdown" id=""
+                                    [value]="adjuncts.CountryId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let country of countries" [value]="country.id">
+                                        {{country.countryName}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="postal">Supplier</label>
+
+                                <select class="form-control input-style input-dropdown" id="" disabled
+                                    [value]=adjuncts.SupplierId>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                        {{suppliers.name}}</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-4">
+                                <label for="brewrrun-quantity">Quantity</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="brewrrun-quantity"
+                                        [value]="adjuncts.Quantity" disabled>
+                                    <select class="form-control input-dropdown" [value]="adjuncts.QuantityUnitId"
+                                        disabled>
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div for="status" class="form-group col-md-4">
+                                <label for="add-in">Add In</label>
+                                <select class="form-control input-style input-dropdown" id="add-in"
+                                    [value]="adjuncts.AddInId" disabled>
+                                    <option disabled value="">Select</option>
+                                    <option *ngFor="let addins of addins" [value]="addins.Id">
+                                        {{addins.Name}}</option>
+                                </select>
+                            </div>
+                            <div for="status" class="form-group col-md-4">
+                                <label for="brewrrun-Quantity">Time In</label>
+                                <div class='multiple-input'>
+                                    <input type="number" disabled class="form-control" id="brewrrun-Quantity"
+                                        placeholder="Time In" [value]="adjuncts.TimeIn">
+
+                                    <select disabled [value]="adjuncts.TimeInUnitId"
+                                        class="form-control input-dropdown">
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Boil Data -->
+    <div class="modal fade" id="postBoil" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Post Boil Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let post of kettleTarget;let i=index">
+                    <div class="container-fluid">
+                        <div class="form-row">
+
+
+
+                            <div class="form-group col-md-6">
+                                <label for="brewrun-id">{{preferedPlato}}</label>
+                                <input type="text" class="form-control" id="brewrun-id" [value]="post.Plato" disabled>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="brewrun-id">pH</label>
+                                <input type="text" class="form-control" id="brewrun-id" [value]="post.Ph" disabled>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Whirlpool Data Entry -->
+    <div class="modal fade" id="poolData" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Whirlpool Data Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let whirlpool of whirlpoolTarget;let i=index;">
+                    <div class="container-fluid">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="d-flex l-start">
+                                    <label class="l-start-label">START</label>
+                                    <div class="form-group w-100">
+                                        <label for="brewrun-id">Start Time</label>
+                                        <input type="text" class="form-control" id="brewrun-id" placeholder="Potential"
+                                            [value]="whirlpool.CreatedDate" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Whirlpool -->
+    <div class="modal fade" id="postWhirl" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Post Whirlpool</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let post of whirlpoolTarget;let i=index;">
+                    <div class="container-fluid">
+                        <div class="form-group col-md-12">
+                            <label for="vol-out">Volume Out</label>
+                            <div class='multiple-input'>
+                                <input type="number" class="form-control" id="vol-out" [value]="post.PostBoilVolume"
+                                    disabled>
+                                <select class="form-control input-dropdown" [value]="post.PostBoilVolumeunitId"
+                                    disabled>
+                                    <option disabled value="">Select</option>
+                                    <ng-container *ngFor="let unit of units">
+                                        <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                        </option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Cooling-Knockout Data Entry -->
+    <div class="modal fade" id="coolKnock" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Cooling-Knockout Data Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body" *ngFor="let cool of coolTarget;let i=index;">
+                    <div class="container-fluid">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-12">
+                                <label for="vol-out">Volume in Fermentation</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="vol-out"
+                                        [value]="cool.VolumeInFermentation" disabled>
+                                    <select class="form-control input-dropdown"
+                                        [value]="cool.VolumeInFermentationOptionId" disabled>
+                                        <option disabled value="">Select</option>
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+
+
+                    </div> -->
+
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- style modal  -->
+
+<form [formGroup]="modalForms" autocomplete="off">
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="styleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Style</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div class="form-group col-md-12">
+                                    <label for="brewrun-Name">Add New Style</label>
+                                    <input type="text" class="form-control" id="brewrun-Name" placeholder=""
+                                        formControlName="styleText">
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewStyle()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!--Type Modal -->
+        <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Type</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+
+                                <div class="form-group col-md-12">
+                                    <label for="brewrun-Name">Add New Type</label>
+                                    <input type="text" class="form-control" id="brewrun-Name" placeholder=""
+                                        formControlName="typeText">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewType()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!-- Supplier Modal -->
+        <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add New Supplier</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div class="form-group col-md-12">
+                                    <label for="brewrun-Name">Add New Supplier</label>
+                                    <input type="text" class="form-control" id="supplier" placeholder=""
+                                        formControlName="supplierText">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                    (click)="addNewSupplier()">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

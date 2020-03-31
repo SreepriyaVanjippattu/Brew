@@ -1,0 +1,132 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="header-title">
+                <h6>Edit Brew</h6>
+            </div>
+        </div>
+        <div class="col-md-6  d-flex justify-content-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Brew</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="sub-header">
+                <h6>
+                    Setup Details
+                </h6>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <form [formGroup]="editBrewForm">
+                <div class="form-row form-bg">
+
+                    <div class="form-group col-md-6">
+                        <label for="brewrun">Brew Run Id</label>
+                        <input type="text" disabled class="form-control" id="brewrun" placeholder="Brew run Id"
+                            formControlName="brewRunId">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="form.brewRunId.errors?.required" class="valid-error">
+                                Brew Run Id is required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-3">
+                        <label for="brewrun">Start Time</label>
+                        <input  disabled nbInput type="text" class="form-control input-style" formControlName="startTime"
+                            id="start" placeholder="" [owlDateTime]="startTime" [owlDateTimeTrigger]="startTime"
+                            (dateTimeChange)="startTimeChange()" [min]="minStarTime" [max]="maxStartTime">
+                        <owl-date-time #startTime></owl-date-time>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-3">
+                        <label for="brewrun">End Time</label>
+                        <input (blur)="compareTwoDates()" nbInput type="text" class="form-control input-style"
+                            formControlName="endTime" id="end" placeholder="" [owlDateTime]="endTime"
+                            [owlDateTimeTrigger]="endTime" (dateTimeChange)="endTimeChange()" [min]="minEndTime"
+                            [max]="maxEndTime">
+                        <owl-date-time #endTime></owl-date-time>
+                        <div *ngIf="error.isError" class="valid-error">
+                            End Date Can't be before Start Date
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-3">
+                        <label for="brewrun">Choose a Recipe</label>
+                        <select disabled class="form-control input-dropdown" id="status" formControlName="recipe">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let recipe of recipeList" [value]="recipe.id">{{recipe.name}}
+                            </option>
+                        </select>
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="form.recipe.errors?.required" class="valid-error">
+                                Recipe is required
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-6 col-lg-3">
+                        <label for="brewrun">Assign to Existing Tank</label>
+                        <select disabled class="form-control input-dropdown" id="status" formControlName="tank">
+                            <option value="" disabled>Select</option>
+                            <option *ngFor="let tank of tankList" [value]="tank.id">{{tank.name}}</option>
+                        </select>
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="form.tank.errors?.required" class="valid-error">
+                                Tank is required
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-6 col-lg-3">
+                        <label for="brewrun">Assign a Brewer</label>
+                        <select class="form-control input-dropdown" id="status" formControlName="brewer">
+                            <option disabled value="">Select</option>
+                            <option *ngFor="let brewer of brewerList" [value]="brewer.id">
+                                {{brewer.firstName +" "+ brewer?.lastName}}</option>
+                        </select>
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="form.brewer.errors?.required" class="valid-error">
+                                Brewer is required
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 d-flex justify-content-end mt-2">
+                        <div class="mr-2">
+                            <button (click)="saveBrew()" type="button" class="btn l-btn">
+                                <i class="material-icons save-ico">
+                                    save
+                                </i>
+                                Save
+                            </button>
+                        </div>
+                        <div>
+                            <button (click)="startBrew()" type="button" class="btn l-btn">
+                                <i class="material-icons clock-ico">
+                                    hourglass_full
+                                </i>
+                                Start
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

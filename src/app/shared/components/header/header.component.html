@@ -1,0 +1,130 @@
+<div *ngIf="headerActive" class="container-fluid">
+    <div class="row">
+
+        <div class="col-12 col-sm-12 col-md-4 header-container">
+            <div class="logo-container">
+                <span>
+                    <img src="../../../../assets/images/logo.png">
+                </span>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-4 header-container">
+            <a class="mobile-toggle cursor-click" (click)="toggleSidebar()" href="#"><img
+                    src="assets/images/toggle.svg"></a>
+            <div class="header-color-user text-color">WT Admin</div>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-4 header-container justify-content-end">
+            <div class="profile d-flex">
+                <img src="{{profilePic}}" class="profile-img">
+                <div class="profile-detail">
+                    <p class="text-color">{{ userProfile.firstName }}</p>
+                    <p class="text-color">{{ currentDate | date: 'dd-MM-yyyy' }}</p>
+                </div>
+            </div>
+            <nb-action>
+                <img class="logout-btn" src="assets/images/close.svg" (click)="logOutModalOpen(content)">
+            </nb-action>
+
+
+        </div>
+    </div>
+    <ng-template #content let-modal>
+        <div class="logout-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log Out</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body mt-4">
+                    <div class="col-md-12 d-flex justify-content-center del-content">
+                        <div>
+                            <p class="del-header">Are you sure you want to logout?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center mt-2 mb-4">
+                    <button type="button" class="btn l-btn-cancel mr-2" (click)="modal.dismiss('Cross click')">
+                        No
+                    </button>
+                    <button type="button" class="btn l-btn-agree" (click)="modal.dismiss('Cross click')"
+                        (click)="logoutClick()">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+
+
+<div *ngIf="!headerActive" class="container-fluid">
+    <div class="row">
+
+        <div class="col-12 col-sm-12 col-md-4 header-container">
+            <div class="logo-container">
+                <a class="" href="#" (click)="navigateHome()">
+                    <span>
+                        <img src="../../../../assets/images/logo-organ.png">
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-4 header-container">
+            <a class="mobile-toggle cursor-click" (click)="toggleSidebar()"><img
+                    src="assets/images/toggle-white.svg"></a>
+            <div class="header-color-admin text-color-white">{{ userProfile.companyName }}</div>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-4 header-container justify-content-end">
+            <div class="profile d-flex">
+                <img src={{profilePic}} class="profile-img">
+                <div class="profile-detail profile-organ">
+                    <p class="profile-name text-color-white">{{ userProfile.firstName }}</p>
+                    <p class="text-color-white">{{ currentDate | date:'dd-MM-yyyy' }}</p>
+                </div>
+            </div>
+            <nb-action>
+                <img class="logout-btn" src="assets/images/close.svg" (click)="logOutModalOpen(content)">
+            </nb-action>
+        </div>
+
+    </div>
+    <ng-template #content let-modal>
+        <div class="logout-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log Out</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        (click)="modal.dismiss('Cross click')">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body mt-4">
+                    <div class="col-md-12 d-flex justify-content-center del-content">
+                        <div>
+                            <p class="del-header">Are you sure you want to logout?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center mt-2 mb-4">
+                    <button type="button" class="btn l-btn-cancel mr-2" (click)="modal.dismiss('Cross click')">
+                        No
+                    </button>
+                    <button type="button" class="btn l-btn-agree" (click)="modal.dismiss('Cross click')"
+                        (click)="logoutClick()">
+                        Yes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

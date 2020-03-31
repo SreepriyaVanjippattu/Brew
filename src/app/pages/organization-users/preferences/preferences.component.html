@@ -1,0 +1,333 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6 col-md-6">
+      <div class="header-title">
+        <h6>Preferences</h6>
+      </div>
+    </div>
+    <div class="col-6 col-md-6">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb  d-flex justify-content-end">
+          <li class="breadcrumb-item position-relative">
+            <a>
+              <i class="material-icons home-ico">
+                home
+              </i>Preference
+            </a>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="preference">
+    <form [formGroup]="preferencesForm" class="mt-3">
+      <div class="sub-header">
+        <h6>General</h6>
+      </div>
+      <div class='preference-details'>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Gravity Measurement</label>
+            <div class='custom-radio-wrapper'>
+              <div class='custom-radio' *ngFor="let measurements of gravityMeasurement">
+                <input type="radio" id="measurement_{{measurements.Id}}" formControlName="gravityMeasurement"
+                  value="{{measurements.Id}}">
+                <label for="measurement_{{measurements.Id}}">{{measurements.Name}}</label>
+              </div>
+            </div>
+            <div *ngIf="formSubmittedGenSet">
+              <div *ngIf="forms.gravityMeasurement.errors?.required" class="valid-error">
+                Gravity Measurement is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Temperature</label>
+            <div class='custom-radio-wrapper'>
+              <div class='custom-radio' *ngFor="let temperature of temperatureUnits">
+                <input type="radio" id="temperature_{{temperature.Id}}" name="temperature" formControlName="temperature"
+                  value="{{temperature.Id}}">
+                <label for="temperature_{{temperature.Id}}">{{temperature.Name}}</label>
+              </div>
+            </div>
+            <div *ngIf="formSubmittedGenSet">
+              <div *ngIf="forms.temperature.errors?.required" class="valid-error">
+                Temperature is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Time Zone</label>
+            <select formControlName="timeZone" class="form-control input-dropdown">
+              <option value="" disabled>Select</option>
+              <option *ngFor="let time of timeZoneList" value="{{time.Id}}">{{time.Id}}</option>
+            </select>
+            <div *ngIf="formSubmittedGenSet">
+              <div *ngIf="forms.timeZone.errors?.required" class="valid-error">
+                Time Zone is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <div class="mr-2">
+              <button (click)="saveGeneralSettings()" type="button" class="btn l-btn">
+                <i class="material-icons save-ico">
+                  save
+                </i>
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <form [formGroup]="tankyeastForm" class="mt-3">
+      <div class="sub-header">
+        <h6>Yeast Strains</h6>
+        <div class="preference-header-right">
+          <div class="d-flex l-search">
+            <i class="material-icons search-ico"> search </i>
+            <input class='l-searchbox' (keyup.enter)="SearchYeast($event)" value="" placeholder="Search" type="text">
+          </div>
+          <button [disabled]="savenewYeastEnabled" class="btn l-btn-white" type="button" (click)="newYeastItem()">New
+            Yeast</button>
+        </div>
+      </div>
+      <div class="preference-details table-responsive">
+        <table class="table yeast-table">
+          <thead>
+            <tr>
+              <th scope="col">Yeast Name</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+
+
+          <tbody formArrayName="listYeast" *ngFor="let lists of yeastForms.controls  ; let i = index;">
+
+            <tr [formGroupName]="i" class="w-100">
+              <td>
+                <span> {{lists.value.Name}}</span>
+                <input *ngIf="enableeditYeastIndex && enableYeastEdit == i" formControlName="Name" class='form-control'
+                  placeholder="Yeast Strain">
+                <div *ngIf="formSubmitted && enableYeastEdit == i">
+                  <div *ngIf="yeastForms.controls[i].get('Name').invalid" class="valid-error">
+                    Yeast Strain is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span> {{lists.value.CreatedDate}}</span>
+                <input disabled type="date" *ngIf="enableeditYeastIndex && enableYeastEdit == i"
+                  formControlName="CreatedDate" class='form-control' placeholder="Yeast Date">
+                <div *ngIf="formSubmitted && enableYeastEdit == i">
+                </div>
+              </td>
+              <td>
+                <span> Active </span>
+
+              </td>
+              <td>
+                <div class="actions d-flex">
+                  <span (click)="editYeast(yeastForms.controls[i].controls,i)" class="edit-ico ml-2 cursor-click"><img
+                      src="../../../../../assets/images/edit.svg"></span>
+                  <span *ngIf="enableeditYeastIndex && enableYeastEdit == i"
+                    (click)="saveEditYeast(yeastForms.controls[i].controls,i)" class="del-ico ml-2 cursor-click"><i
+                      class="material-icons save-ico">save</i></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <!-- Add New Yeast -->
+          <tbody formArrayName="newYeast" *ngFor="let yeastItems of newYeastForms.controls; let i = index;">
+            <tr [formGroupName]="i" class="w-100">
+              <td> <input formControlName="yeastStrain" class='form-control' placeholder="Yeast Strain">
+                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
+                  <div *ngIf="yeastItems.get('yeastStrain').invalid" class="valid-error">
+                    Yeast Strain is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input disabled type="date" formControlName="yeastDate" class='form-control' placeholder="Yeast Date">
+                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
+                </div>
+              </td>
+              <td>In Progress</td>
+              <td>
+                <div class="actions">
+                  <span (click)="savenewYeast(newYeastArray.controls[i].controls,i)"
+                    class="del-ico ml-2 cursor-click"><i class="material-icons save-ico">save</i></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+    <!-- Tank Configuration -->
+    <form [formGroup]="tankForm" class="mt-3">
+      <div class="sub-header">
+        <h6>Tank Configuration</h6>
+        <div class="preference-header-right">
+          <div class="d-flex l-search">
+            <i class="material-icons search-ico"> search </i>
+            <input class='l-searchbox' (keyup.enter)="SearchTank($event)" placeholder="Search" type="text">
+          </div>
+          <button [disabled]="savenewTankEnabled" class="btn l-btn-white" type="button" (click)="newTankItem()">New
+            Tank</button>
+        </div>
+      </div>
+      <div class="preference-details table-responsive">
+        <table class="table yeast-table">
+          <thead>
+            <tr>
+              <th scope="col">Tank</th>
+              <th scope="col">Tank Type</th>
+              <th scope="col">Capacity</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody formArrayName="listTank" *ngFor="let lists of tankForms.controls  ; let i = index;">
+
+            <tr [formGroupName]="i" class="w-100">
+              <td>
+                <span>{{lists.value.name}}</span>
+                <input *ngIf="enableeditTankIndex && enableTankEdit == i" formControlName="name" class='form-control'
+                  placeholder="Yeast Strain">
+                <div *ngIf="formSubmitted && enableTankEdit == i">
+                  <div *ngIf="tankForms.controls[i].get('name').invalid" class="valid-error">
+                    Tank Name is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <select formControlName="tankTypeId" class="form-control input-dropdown-prefer">
+                  <option value="" disabled>Select</option>
+                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.Id}}">{{tankTypes.Name}}</option>
+                </select>
+                <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                  <div *ngIf="tankForms.controls[i].get('tankTypeId').invalid" class="valid-error">
+                    Tank Type is required
+                  </div>
+                </div>
+              </td>
+              <td class="d-flex" style="border-top: 1px solid #dee2e600;">
+                <span class="mr-2 mt-2">{{lists.value.capacity}}</span>
+                <div class="mr-2" *ngIf="enableeditTankIndex && enableTankEdit == i">
+                  <input formControlName="capacity" class='form-control' placeholder="Capacity">
+                  <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                    <div *ngIf="tankForms.controls[i].get('capacity').invalid" class="valid-error">
+                      Capacity is required
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <select formControlName="unit" class="form-control input-dropdown-capacity" style="min-width: 100px;">
+                    <option value="" disabled>Select</option>
+                    <ng-container *ngFor="let unitVol of unitTypeList">
+                      <option *ngIf="unitVol.Category === 'Size'" [value]="unitVol.Id">{{unitVol.Symbol}}</option>
+                    </ng-container>
+                  </select>
+                  <div *ngIf="formSubmitted && enableTankEdit == i">
+                    <div *ngIf="tankForms.controls[i].get('unit').invalid" class="valid-error">
+                      Unit is required
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td> {{lists.value.isActive? 'On' : 'Off'}}
+                <div class="custom-control custom-switch" *ngIf="enableeditTankIndex && enableTankEdit == i">
+                  <input formControlName="isActive" (click)="statusClickEdit(tankForms.controls[i].controls,i)"
+                    type="checkbox" [checked]="lists.value.isActive" value="{{lists.value.isActive}}"
+                    class="custom-control-input" id="switch{{i}}">
+                  <label class="custom-control-label" for="switch{{i}}">{{lists.value.isActive? 'On' : 'Off'}}</label>
+                </div>
+              </td>
+              <td>
+                <div class="actions d-flex">
+                  <span (click)="editTank(tankForms.controls[i].controls,i)" class="edit-ico ml-2 cursor-click"><img
+                      src="../../../../../assets/images/edit.svg"></span>
+                  <span *ngIf="enableeditTankIndex" (click)="saveEditTank(tankForms.controls[i].controls,i)"
+                    class="del-ico ml-2 cursor-click"><i class="material-icons save-ico">save</i></span>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+          <!-- Add New Tank -->
+          <tbody formArrayName="newTank" *ngFor="let tankItems of newTankForms.controls; let i = index;">
+            <tr [formGroupName]="i" class="w-100">
+              <td> <input formControlName="tankname" class='form-control' placeholder="Tank Name">
+                <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                  <div *ngIf="tankItems.get('tankname').invalid" class="valid-error">
+                    Tank Name is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <select formControlName="tanktype" class="form-control input-dropdown-prefer">
+                  <option value="" disabled>Select</option>
+                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.Id}}">{{tankTypes.Name}}</option>
+                </select>
+                <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                  <div *ngIf="tankItems.get('tanktype').invalid" class="valid-error">
+                    Tank Type is required
+                  </div>
+                </div>
+              </td>
+              <td class="d-flex">
+
+                <div class="mr-2"> <input formControlName="capacity" class='form-control' placeholder="Capacity">
+                  <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                    <div *ngIf="tankItems.get('capacity').invalid" class="valid-error">
+                      Capacity is required
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <select formControlName="unit" class="form-control input-dropdown-prefer" style="min-width: 90px;">
+                    <option value="" disabled>Select</option>
+
+                    <ng-container *ngFor="let unitVol of unitTypeList">
+                      <option *ngIf="unitVol.Category === 'Size'" [value]="unitVol.Id">{{unitVol.Symbol}}</option>
+                    </ng-container>
+
+                  </select>
+                  <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                    <div *ngIf="tankItems.get('unit').invalid" class="valid-error">
+                      Unit is required
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input formControlName="isActive" (click)="statusClick(newTankArray.controls[i].controls,i)"
+                    type="checkbox" [checked]="isactive" value="{{isactive}}" class="custom-control-input"
+                    id="switch{{i}}">
+                  <label class="custom-control-label" for="switch{{i}}">{{isactive? 'On' : 'Off'}}</label>
+                </div>
+              </td>
+              <td>
+                <div class="actions">
+                  <span (click)="savenewTank(newTankArray.controls[i].controls,i)" class="del-ico ml-2 cursor-click"><i
+                      class="material-icons save-ico">save</i></span>
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+.preference{
+    .sub-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        float: left;
+        width: 100%;
+        @media (max-width: 767px) {
+            display: block;
+        }
+        h6{
+            float: left;
+        }
+        .preference-header-right{
+            display: flex;
+            float: right;
+            .l-btn-white{
+                margin-left: 10px;
+                min-width: 117px;
+            }
+        }
+    }
+    .preference-details{
+        padding: 20px 15px 5px 15px;
+        background: #fff;
+        float: left;
+        width: 100%;
+        .form-row{
+            margin-bottom: 20px;
+        }
+        .custom-radio-wrapper{
+            float: left;
+            margin-top: 8px;
+            width: 100%;
+            .custom-radio{
+                float: left;
+                margin-right: 10px;
+            }
+        }  
+        table
+        {
+            min-width: 1024px;
+        }
+        .status-width
+        {
+            width: 200px;
+        }
+    }
+}
+.l-search
+{
+    min-width: auto;
+}
+
+.input-dropdown-prefer {
+    -moz-appearance: none;
+    -webkit-appearance: none !important;
+    background: url(assets/images/down-arrow.png) no-repeat !important;
+    background-repeat: no-repeat !important;
+    background-position: 98% !important;
+    background-size: 10px !important;
+}
+
+.input-dropdown-capacity {
+    -moz-appearance: none;
+    -webkit-appearance: none !important;
+    background: url(assets/images/down-arrow.png) no-repeat !important;
+    background-repeat: no-repeat !important;
+    background-position: 95% !important;
+    background-size: 10px !important;
+}

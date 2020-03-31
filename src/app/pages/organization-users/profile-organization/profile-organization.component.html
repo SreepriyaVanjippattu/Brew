@@ -1,0 +1,323 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-6 col-md-6">
+            <div class="header-title">
+                <h6>Profile (Organization Admin)</h6>
+            </div>
+        </div>
+
+        <div class="col-6 col-md-6 d-flex justify-content-end">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb  d-flex justify-content-end">
+                    <li class="breadcrumb-item position-relative">
+                        <a>
+                            <i class="material-icons home-ico">
+                                home
+                            </i>Profile
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form [formGroup]="profileOrgForm">
+
+                <div class="form-row section-one">
+
+                    <div class="col-md-6">
+
+                        <h6>
+                            Company Details
+                        </h6>
+
+                    </div>
+
+                    <div class="col-md-6 d-flex justify-content-end">
+                        <button id="subButton" (click)="subscriptionPlanClick()" type="button" class="btn l-btn">
+                            Subscription Plan
+                        </button>
+                    </div>
+
+
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">Company</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="company" id="company"
+                            placeholder="Company">
+                        <div *ngIf="forms.company.errors?.required" class="valid-error">
+                            Company is required.
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4 user-profile d-flex">
+                        <div class="company-image">
+                            <img *ngIf="imageLinkCompany" src="{{imageLinkCompany}}" height="100px" width="200px">
+                        </div>
+                        <div class="company-logo w-100">
+                            <label for="userId" class="input-label">Company Logo
+                                <i [ngClass]="{hide : !imageLinkCompany}"
+                                    class="material-icons img-del-ico cursor-click position-absolute"
+                                    (click)="deleteImageCompany()">
+                                    delete
+                                </i>
+                            </label>
+                            <input [ngClass]="{hide : imageLinkCompany}" type="file" class="form-control input-style"
+                                formControlName="imageCompany" id="image" placeholder=""
+                                (change)="logoUploadCompany($event)">
+                            <div class="valid-error" *ngIf="imageErrorCompany">
+                                Image shoulde of format .png / .jpg / .jpeg
+                            </div>
+                            <p class="valid-success" *ngIf="percentCompany > 0">Upload Progress: {{ percentCompany }}%
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">E-mail Address</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="email" id="email"
+                            placeholder="E-mail Address" (keyup)="emailvalidation($event.target.value)">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.email.errors?.email" class="valid-error">
+                                Invalid Email Address
+                            </div>
+                            <div *ngIf="forms.email.errors?.required" class="valid-error">
+                                Email is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">Phone</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input class="form-control" formControlName="companyPhone" id="inputPhone"
+                            placeholder="(555) 555-5555" mask="(000) 000-0000" validation="true"
+                            (keyup)="formatCompanyPhone()">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.companyPhone.errors?.required" class="valid-error">
+                                Phone Number is required.
+                            </div>
+                        </div>
+                        <div *ngIf="!validCompanyPhone" class="valid-error">
+                            Enter Valid Phone Number.
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">Street</label>
+                        <input type="text" class="form-control" formControlName="street" id="street"
+                            placeholder="Street">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">City</label>
+                        <input type="text" class="form-control" formControlName="city" id="city" placeholder="City">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">State/ Province</label>
+                        <input type="text" class="form-control" formControlName="state" id="state"
+                            placeholder="State/ Province">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.state.errors?.required" class="valid-error">
+                                State is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">Country</label>
+                        <input type="text" class="form-control" formControlName="country" id="country"
+                            placeholder="Country">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.country.errors?.required" class="valid-error">
+                                Country is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">Zip/Postal Code</label>
+                        <input type="text" class="form-control" formControlName="postalcode" id="postalcode"
+                            placeholder="Postal Code">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.postalcode.errors?.required" class="valid-error">
+                                Postalcode is required.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12  header-bg">
+                    <h6>User Details</h6>
+                </div>
+
+
+
+
+                <div class="form-row section-two">
+
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button data-toggle="modal" data-target="#exampleModalCenter" type="button" class="btn l-btn">
+                            Change Password
+                        </button>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">First Name </label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="firstName" id="firstName"
+                            placeholder="First Name ">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.firstName.errors?.required" class="valid-error">
+                                FirstName is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">Last Name</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="lastName" id="lastName"
+                            placeholder="Last Name">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.lastName.errors?.required" class="valid-error">
+                                LastName is required.
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">E-mail[User ID]</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input type="text" class="form-control" formControlName="userEmail" id="userEmail"
+                            placeholder="E-mail" readonly>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-4">
+                        <label for="brewrun-id">Phone</label>
+                        <i class="material-icons star-ico">
+                            star
+                        </i>
+                        <input class="form-control" formControlName="userPhone" id="inputPhone"
+                            placeholder="(555) 555-5555" mask="(000) 000-0000" validation="true"
+                            (keyup)="formatUserPhone()">
+                        <div *ngIf="formSubmitted">
+                            <div *ngIf="forms.userPhone.errors?.required" class="valid-error">
+                                Phone Number is required.
+                            </div>
+                        </div>
+                        <div *ngIf="!validUserPhone" class="valid-error">
+                            Enter Valid Phone Number.
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6 col-lg-4 d-flex user-profile">
+                        <div class="user-image mr-2">
+                            <img *ngIf="imageLink" src="{{imageLink}}" height="100px" width="200px">
+                        </div>
+                        <div class="user-upload">
+                            <label for="userId" class="input-label">Profile Image
+                                <i [ngClass]="{hide : !imageLink}"
+                                    class="material-icons img-del-ico cursor-click position-absolute"
+                                    (click)="deleteImage()">
+                                    delete
+                                </i>
+                            </label><br>
+                            <input [ngClass]="{hide : imageLink}" type="file" class="form-control input-style"
+                                formControlName="imageUser" id="image" placeholder=""
+                                (change)="imageUploadUser($event)">
+
+                        </div>
+                        <div class="valid-error" *ngIf="imageError">
+                            Image shoulde of format .png / .jpg / .jpeg
+                        </div>
+                        <p class="valid-success" *ngIf="percent > 0">Upload Progress: {{ percent }}%</p>
+                    </div>
+
+                    <div class="col-md-12 d-flex justify-content-end mt-4 profile-footer">
+
+                        <div class="mr-2">
+                            <button (click)="cancelClick()" type="button" class="btn l-btn-cancel">
+                                <i class="material-icons cancel-ico">
+                                    cancel
+                                </i>
+                                Cancel
+                            </button>
+                        </div>
+
+                        <div>
+                            <button (click)="saveProfile()" type="button" class="btn l-btn">
+                                <i class="material-icons save-ico">
+                                    save
+                                </i>
+                                Save
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--Change Password Modal-->
+
+<div class="del-modal">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Change Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center del-content">
+                            <div>
+                                <p class="del-header">Are you sure you want to proceed?</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            <button type="button" data-dismiss="modal" class="btn  l-btn-cancel mr-2">
+                                No
+                            </button>
+
+                            <button (click)="changePasswordClick()" data-dismiss="modal" type="button"
+                                class="btn  l-btn-agree">
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

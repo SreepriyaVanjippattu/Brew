@@ -1,0 +1,65 @@
+<div class='profile-subscrption'>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="header-title">
+                    <h6>Canada Brewer One Subscription Plan</h6>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+                <button type="button" class="btn  l-btn-cancel mr-2" (click)="clickCancel()">
+                    <i class="material-icons back-ico">
+                        arrow_right_alt
+                    </i>Back
+                </button>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12 text-center profile-subscrption-title mb-4">
+                <h6>Your plan <b>{{subscriptionName}}</b> will expire on {{expiryDate | date: 'dd-MM-yyyy'}}</h6>
+                <P class='mt-4'>To renew or upgrade your plan, please contact the BrewersInsight
+                    <a href="#">(902) 410-0533</a> or send your request to <a href="#">info@brewersinsight.com.</a> </P>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div *ngFor="let subscription of subscriptionPlan; let i = index;" class="col-lg-3 col-md-6">
+                <div [class.active]="subscription.Id === subId" class="subscription-wrap"
+                    (click)="selectPlan(subscription.Id)">
+                    <div class="subscription-radio">
+                        <input type="radio" [value]="subscription.Id" [(ngModel)]="subId" id="subscriptionRadio"
+                            name="subscription">
+                        <label></label>
+                    </div>
+                    <h4 class="subscription-title">{{subscription.Name}}</h4>
+                    <h5>Subscription Features</h5>
+                    <ul class="subscription-list">
+                        <span [innerHTML]="subscription.Description | newLine"></span>
+                    </ul>
+                    <button (click)="packageClick()" type="button"
+                        class="btn btn-light btn-block btn-sub subscription-action">Get Started</button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <form class="profile-subscrption-form">
+                    <div class="form-group">
+                        <label for="subscription-message">Message</label>
+                        <textarea class="form-control" id="subscription-message" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+
+                        <button type="submit" class="btn l-btn" (click)="sendRequest()">Send Request</button>
+
+                        <button type="submit" class="btn l-btn-cancel" (click)="clickCancel()">
+                            <i class="material-icons cancel-ico">
+                                cancel
+                            </i>Cancel
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

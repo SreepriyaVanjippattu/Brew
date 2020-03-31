@@ -1,0 +1,10 @@
+<div class="progress d-flex justify-content-center">
+	<svg class="progress__svg" width="150" height="150" viewBox="0 0 120 120">
+		<circle class="progress__meter" cx="60" cy="60" [attr.r]="radius" stroke-width="2" />
+		<circle class="progress__value" [style.strokeDasharray]="circumference" [style.strokeDashoffset]="dashoffset"
+			cx="60" cy="60" [attr.r]="radius" stroke-width="2" />
+	</svg>
+
+	<div class="progress__value-text">{{value}}%</div>
+	<div class="progress__value-days">{{daysLeft}} Days Left</div>
+</div>

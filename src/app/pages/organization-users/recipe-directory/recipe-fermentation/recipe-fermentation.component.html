@@ -1,0 +1,453 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="header-title">
+        <h6>{{pageHeader}}</h6>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <nav aria-label="breadcrumb" class="d-flex justify-content-end">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/app/recipes">Recipes Directory </a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{pageHeader}}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10">
+      <ul class="nav nav-pills mb-3 progressbar" id="pills-tab" role="tablist">
+        <li (click)="mashInClick()" class="nav-item active cursor-click">
+          <a class="active" id="pills-mash-tab" data-toggle="pill" href="#pills-mash" role="tab"
+            aria-controls="pills-mash" aria-selected="true">Mash In</a>
+        </li>
+        <li (click)="brewLogClick()" class="nav-item cursor-click active">
+          <a id="pills-brew-tab" data-toggle="pill" href="#pills-brew" role="tab" aria-controls="pills-brew"
+            aria-selected="false">Brew Log</a>
+        </li>
+        <li (click)="fermentationClick()" class="nav-item cursor-click active">
+          <a id="pills-fermentation-tab" data-toggle="pill" href="#pills-fermentation" role="tab"
+            aria-controls="pills-fermentation" aria-selected="false">Fermentation</a>
+        </li>
+        <li (click)="conditioningClick()" class="nav-item cursor-click">
+          <a id="pills-conditioning-tab" data-toggle="pill" href="#pills-conditioning" role="tab"
+            aria-controls="pills-conditioning" aria-selected="false">Conditioning</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-2 cancel-mb">
+      <button class="btn l-btn-cancel float-right mt-5" type="button" (click)="cancelClick()">
+        <img src="assets/images/close-icon.svg">Cancel</button>
+    </div>
+
+  </div>
+  <div class="row">
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 recipe-bg">
+      <form [formGroup]="recipeFermentationForm">
+        <div class="accordion" id="accordionExample">
+
+          <div class="card">
+            <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+              <h2 class="mb-0">
+                <button class="btn btn-link" type="button" (click)="isCollapsedFermentation = !isCollapsedFermentation"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  Fermentation Target
+                </button>
+              </h2>
+              <div class="d-flex align-items-center">
+                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedFermentation"
+                  (click)="isCollapsedFermentation = !isCollapsedFermentation">
+                  indeterminate_check_box
+                </i>
+                <i class="material-icons  colapse-toggle cursor-click" [ngbCollapse]="!isCollapsedFermentation"
+                  (click)="isCollapsedFermentation = !isCollapsedFermentation">
+                  add_box
+                </i>
+              </div>
+            </div>
+
+            <div [ngbCollapse]="isCollapsedFermentation" class="collapse show" aria-labelledby="headingOne"
+              data-parent="#accordionExample">
+              <div formArrayName="fermentationTargets"
+                *ngFor="let ferment of fermentationTargetsArray.controls; let i=index" class="card-body">
+                <div [formGroupName]="i">
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="brewrrun-Quantity">Volume in </label>
+                      <i class="material-icons star-ico">
+                        star_rate
+                      </i>
+                      <div class='multiple-input'>
+                        <input type="number" class="form-control" id="brewrrun-Quantity" placeholder="Quantity"
+                          formControlName="volumeIn">
+                        <select formControlName="volumeInUnitId" class="form-control input-dropdown">
+                          <option disabled value="">Select</option>
+                          <ng-container *ngFor="let unit of units">
+                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                      <div *ngIf="formSubmitted">
+                        <div *ngIf="ferment.get('volumeIn').invalid || ferment.get('volumeInUnitId').invalid"
+                          class="valid-error">
+                          Volume and unit is required
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="brewrun-Name">Temperature ({{preferedUnit}})</label>
+                      <i class="material-icons star-ico">
+                        star_rate
+                      </i>
+                      <input type="number" class="form-control" id="brewrun-Name" placeholder=""
+                        formControlName="temperature">
+                      <div *ngIf="formSubmitted">
+                        <div *ngIf="ferment.get('volumeIn').invalid" class="valid-error">
+                          Temperature is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="brewrun-Pressure">Pressure (in PSI)</label>
+                      <i class="material-icons star-ico">
+                        star_rate
+                      </i>
+                      <input type="number" class="form-control" id="brewrun-Pressure" placeholder=""
+                        formControlName="pressure">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="brewlog-preboil">pH</label>
+                      <input type="number" class="form-control" id="brewlog-preboil" placeholder="pH"
+                        formControlName="ph">
+
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="recipe-spcplato">{{preferedPlato}}</label>
+                      <i class="material-icons star-ico">
+                        star_rate
+                      </i>
+                      <input type="number" class="form-control" id="recipe-spcplato" placeholder="{{preferedPlato}}"
+                        formControlName="plato">
+                      <div *ngIf="formSubmitted">
+                        <div *ngIf="ferment.get('plato').invalid" class="valid-error">
+                          Required
+                        </div>
+                      </div>
+                      <div *ngIf="preferedPlato != 'plato'">
+                        <div *ngIf="ferment.get('plato').invalid" class="valid-error">
+                          Range should be from 1 to 1.100
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+              <h2 class="mb-0">
+                <button (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl" class="btn btn-link collapsed"
+                  type="button" aria-expanded="false" aria-controls="collapseTwo">
+                  Diacetyl Rest Target
+                </button>
+              </h2>
+              <div class="d-flex align-items-center">
+                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedDiacetyl"
+                  (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl">
+                  indeterminate_check_box
+                </i>
+                <i class="material-icons  colapse-toggle cursor-click" [ngbCollapse]="!isCollapsedDiacetyl"
+                  (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl">
+                  add_box
+                </i>
+              </div>
+            </div>
+            <div [ngbCollapse]="isCollapsedDiacetyl" class="collapse" aria-labelledby="headingTwo"
+              data-parent="#accordionExample">
+              <div formArrayName="diacetylRest" *ngFor="let diacetyl of diacetylRestArray.controls; let i=index"
+                class="card-body">
+                <div [formGroupName]="i" class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="brewrun-Temperature">Temperature ({{preferedUnit}})</label>
+                    <i class="material-icons star-ico">
+                      star_rate
+                    </i>
+                    <input type="number" class="form-control" id="brewrun-Temperature" placeholder=""
+                      formControlName="temperature">
+                    <div *ngIf="formSubmitted">
+                      <div *ngIf="diacetyl.get('temperature').invalid" class="valid-error">
+                        Temperature Required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="recipe-plato">{{preferedPlato}}</label>
+                    <i class="material-icons star-ico">
+                      star_rate
+                    </i>
+                    <input type="number" class="form-control" id="recipe-plato" placeholder="{{preferedPlato}}"
+                      formControlName="plato">
+                    <div *ngIf="formSubmitted">
+                      <div *ngIf="diacetyl.get('plato').invalid" class="valid-error">
+                        Required
+                      </div>
+                    </div>
+                    <div *ngIf="preferedPlato != 'plato'">
+                      <div *ngIf="diacetyl.get('plato').invalid" class="valid-error">
+                        Range should be from 1 to 1.100
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+              <h2 class="mb-0">
+                <button (click)="isCollapsedCooling = !isCollapsedCooling" class="btn btn-link collapsed" type="button"
+                  aria-expanded="false" aria-controls="collapseThree">
+                  Cooling/ Aging
+                </button>
+              </h2>
+
+              <div class="d-flex align-items-center">
+                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedCooling"
+                  (click)="isCollapsedCooling = !isCollapsedCooling">
+                  indeterminate_check_box
+                </i>
+                <i class="material-icons  colapse-toggle cursor-click" [ngbCollapse]="!isCollapsedCooling"
+                  (click)="isCollapsedCooling = !isCollapsedCooling">
+                  add_box
+                </i>
+              </div>
+            </div>
+            <div [ngbCollapse]="isCollapsedCooling" class="collapse" aria-labelledby="headingThree"
+              data-parent="#accordionExample">
+              <div formArrayName="aging" *ngFor="let aging of agingArray.controls; let i=index" class="card-body">
+                <div [formGroupName]="i" class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="brewrun-Time">Time Duration</label>
+                    <i class="material-icons star-ico">
+                      star_rate
+                    </i>
+                    <div class='multiple-input'>
+                      <input type="number" class="form-control" id="brewrun-Time" placeholder=""
+                        formControlName="timeDuration">
+                      <select formControlName="timeDurationUnitId" class="form-control input-dropdown">
+                        <option disabled value="">Select</option>
+                        <ng-container *ngFor="let unit of units">
+                          <option *ngIf="unit.category === 'Days'" [value]="unit.Id">{{unit.symbol}}</option>
+                        </ng-container>
+                      </select>
+                    </div>
+                    <div *ngIf="formSubmitted">
+                      <div *ngIf="aging.get('timeDuration').invalid || aging.get('timeDurationUnitId').invalid"
+                        class="valid-error">
+                        Time Duration and Unit Required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="recipe-Temperature2">Temperature ({{preferedUnit}})</label>
+                    <i class="material-icons star-ico">
+                      star_rate
+                    </i>
+                    <input type="number" class="form-control" id="recipe-Temperature2" placeholder="Temperature"
+                      formControlName="temperature">
+                    <div *ngIf="formSubmitted">
+                      <div *ngIf="aging.get('temperature').invalid" class="valid-error">
+                        Temperature Required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" (click)="isCollapsedYeast = !isCollapsedYeast"
+                  aria-expanded="false" aria-controls="collapseThree">
+                  Yeast
+                </button>
+              </h2>
+              <div class="d-flex align-items-center">
+                <i class="material-icons colapse-toggle cursor-click cursor-click" [ngbCollapse]="isCollapsedYeast"
+                  (click)="isCollapsedYeast = !isCollapsedYeast">
+                  indeterminate_check_box
+                </i>
+                <i class="material-icons  colapse-toggle cursor-click cursor-click" [ngbCollapse]="!isCollapsedYeast"
+                  (click)="isCollapsedYeast = !isCollapsedYeast">
+                  add_box
+                </i>
+              </div>
+            </div>
+            <div [ngbCollapse]="isCollapsedYeast" class="collapse" aria-labelledby="headingThree"
+              data-parent="#accordionExample">
+              <div formArrayName="yeast" *ngFor="let yeast of yeastArray.controls; let i=index" class="card-body">
+                <div [formGroupName]="i">
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="recipe-strain">Name</label>
+                      <i class="material-icons star-ico">
+                        star_rate
+                      </i>
+                      <input type="text" class="form-control" id="recipe-strain" placeholder="" formControlName="name">
+                      <div *ngIf="formSubmitted">
+                        <div *ngIf="yeast.get('name').invalid" class="valid-error">
+                          Yeast Name is required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="recipe-strain2">Strain</label>
+                      <i class="material-icons star-ico">
+                        star_rate
+                      </i>
+
+                      <select class="form-control input-style input-dropdown" id="add-in"
+                        formControlName="yeastStrainId">
+                        <option disabled value="">Select</option>
+                        <option *ngFor="let yeastStrain of yeastStrain" [value]="yeastStrain.id">{{yeastStrain.name}}
+                        </option>
+                      </select>
+                      <div *ngIf="formSubmitted">
+                        <div *ngIf="yeast.get('yeastStrainId').invalid" class="valid-error">
+                          Yeast Strain is required
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="recipe-origin">Origin</label>
+                      <select class="form-control input-style input-dropdown" id="" formControlName="countryId">
+                        <option disabled value="">Select</option>
+                        <option *ngFor="let countries of countries" [value]="countries.id">
+                          {{countries.countryName}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="recipe-supply">Supplier</label>
+                      <i class="material-icons  position-absolute cursor-click add-dropicon" data-toggle="modal"
+                        data-target="#supplierModal">add_circle_outline</i>
+                      <select class="form-control input-style input-dropdown" id="add-in" formControlName="supplierId">
+                        <option disabled value="">Select</option>
+                        <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-end mt-3">
+
+      <button class="btn l-btn-cancel mr-2" type="button" (click)="brewLogClick()">
+        Previous Step</button>
+
+      <button (click)="nextStepClick()" class="btn l-btn " type="button">Next Step</button>
+
+    </div>
+  </div>
+
+  <form [formGroup]="modalForms">
+    <div class="del-modal">
+      <!-- Button trigger modal -->
+      <!-- Supplier Modal -->
+      <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Add New Supplier</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><img src="assets/images/modal-close.svg" class="modal-close-ico"></span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="col-md-12 d-flex justify-content-center del-content">
+                  <div class="form-group col-md-12">
+                    <label for="brewrun-Name">Add New Supplier</label>
+                    <input type="text" class="form-control" id="supplier" placeholder="" formControlName="supplierText">
+                  </div>
+
+                </div>
+                <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                  <button data-dismiss="modal" type="button" class="btn  l-btn-agree" (click)="addNewSupplier()">
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+  <button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#errorModal">Open Modal</button>
+  <div class="del-modal">
+    <!-- Button trigger modal -->
+    <!--Type Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Form Invalid</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"><img src="assets/images/modal-close.svg" class="modal-close-ico"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="col-md-12 d-flex justify-content-center mt-2">
+                Please fill in required fields to continue.
+              </div>
+              <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                <button data-dismiss="modal" type="button" class="btn  l-btn-agree">
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

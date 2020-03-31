@@ -1,0 +1,71 @@
+@import "assets/styles/styles.scss";
+
+.ferment-table
+{
+    background: $BgWhite;
+    border-radius: $tableBorder;
+    padding: $tablePadding;
+    table{
+        min-width: 1024px;
+    }
+}
+
+
+.print-ico
+{
+   
+    img
+    {
+        width: 20px;
+    }
+}
+.pdf-ico
+{
+    img
+    {
+        width: 17px;
+    }
+}
+
+.progress {
+    height: 10px;
+}
+
+.days-status {
+    span {
+        font-weight: 600;
+    }
+}
+
+.days-left
+{
+    p
+    {
+        font-weight: 600;
+    }
+}
+
+.progress-percent {
+    p {
+        font-weight: 600;
+    }
+}
+.cal-img
+{
+    img
+    {
+        width: 20px;
+    }
+}
+.icon-align
+{
+    display: flex;
+    align-items: center;
+    height: 55px;
+}
+.l-search{
+    @media (max-width:767px) { 
+        min-width: calc(100% - 95px);
+    }
+}
+

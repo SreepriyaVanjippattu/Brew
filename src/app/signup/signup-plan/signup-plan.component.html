@@ -1,0 +1,123 @@
+<div class="signup-plan container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class='signup-plan-top'>
+                <div class='signup-logo'>
+                    <a href='#'><img src="../../assets/images/brewer-logo-signup.png" alt="" width="250px"></a>
+                </div>
+                <button (click)="signup()" type="button" class="btn l-btn-white l-btn-back"><i class="material-icons">
+                        arrow_right_alt
+                    </i>Back</button>
+            </div>
+        </div>
+        <div class="col-md-12 signup-plan-title">
+            <h3 class='mt-5'>Sign Up</h3>
+            <h4 class='mt-3'>Choose a plan that is right for you <small>(Your plan can be changed anytime)</small></h4>
+            <form>
+                <div class="custom-control custom-checkbox mt-4 mb-3">
+                    <input data-md-icheck (change)="toggleVisibility($event)" type="checkbox"
+                        class="custom-control-input" id="customCheck" name="example1" #checkBox>
+                    <label class="custom-control-label" for="customCheck">I have read this agreement and agree to the <a
+                            class="cursor-click" data-toggle="modal" data-target="#exampleModalCenter">terms and
+                            conditions</a></label>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div *ngIf="marked" class="row mt-5">
+        <div *ngFor="let subscription of subscriptionPlan; let i = index;" class="subscription-wrapouter">
+            <div [class.active]="subscription.Id === plan" class="subscription-wrap"
+                (click)="selectPlan(subscription.Id)">
+                <div class="subscription-radio">
+                    <input type="radio" [value]="subscription.Id" [(ngModel)]="plan" id="subscription"
+                        name="subscription">
+                    <label></label>
+                </div>
+
+                <h4 class="subscription-title mb-5">{{subscription.Name}}</h4>
+                <h5>Subscription Features</h5>
+                <ul class="subscription-list">
+                    <span [innerHTML]="subscription.Description | newLine"></span>
+                </ul>
+                <button (click)="packageClick()" type="button" class="btn btn-block subscription-action">Get
+                    Started</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="marked" class="row mt-5">
+        <div class="signup-plan-action">
+            <button (click)="cancelClick()" type="button" class="btn l-btn-cancel">Cancel</button>
+            <button (click)="submitClick()" type="button" class="btn l-btn-agree">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<!--Terms & Condition Modal-->
+
+<div class="terms-modal">
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Terms & Conditions</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <img src="assets/images/modal-close.svg" class="modal-close-ico">
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="modal-scroll">
+                            <div class="row d-flex justify-content-center">
+                                <h1 class="font-weight-bold">Terms & Conditions</h1>
+                            </div>
+                            <div class="row mt-4 pr-3 pl-3">
+                                <p>
+                                    These Website Standard Terms and Conditions written on this webpage shall manage
+                                    your use of our website,
+                                    Webiste Name accessible at Website.com. These Terms will be applied fully and affect
+                                    to your use of this Website. By using this Website, you agreed to accept all terms
+                                    and conditions written in here. You must not use this Website if you disagree with
+                                    any of these Website Standard Terms and Conditions. Minors or people below 18 years
+                                    old are not allowed to use this Website.
+
+                                </p>
+                                <h6 class="font-weight-bold">Intellectual Property Rights</h6>
+                                <p>Other than the content you own, under these Terms, Company Name and/or its licensors
+                                    own all the
+                                    intellectual property rights and materials contained in this Website. You are
+                                    granted limited license only for purposes of viewing the material contained on this
+                                    Website.</p>
+
+                                <h6 class="font-weight-bold">Restrictions</h6>
+                                <p>You are specifically restricted from all of the following: publishing any Website
+                                    material in any other media; selling, sublicensing and/or otherwise commercializing
+                                    any Website material; publicly performing and/or showing any Website material; using
+                                    this Website in any way that is or may be damaging to this Website; using this
+                                    Website in any way that impacts user access to this Website; using this Website
+                                    contrary to applicable laws and regulations, or in any way may cause harm to the
+                                    Website, or to any person or business entity; engaging in any data mining, data
+                                    harvesting, data extracting or any other similar activity in relation to this
+                                    Website; using this Website to engage in any advertising or marketing. Certain areas
+                                    of this Website are restricted from being access by you and Company Name may further
+                                    restrict access by you to any areas of this Website, at any time, in absolute
+                                    discretion. Any user ID and password you may have for this Website are confidential
+                                    and you must maintain confidentiality as well.</p>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center mt-4">
+                            <button type="button" data-dismiss="modal" class="btn l-btn-cancel mr-2">Cancel</button>
+                            <button (click)="clickedAgree()" type="button" data-dismiss="modal"
+                                class="btn l-btn-agree">Agree</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

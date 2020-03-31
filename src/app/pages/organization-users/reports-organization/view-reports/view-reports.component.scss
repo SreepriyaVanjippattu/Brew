@@ -1,0 +1,87 @@
+@import "assets/styles/styles.scss";
+.brewrun-report{
+    .report-head-right{
+        display: flex;
+        .report-address{
+            display: flex;
+            .report-logo-thumb img{
+                width: 80px;
+                margin-right:20px;
+            }
+            span{
+                width: 100%;
+                float: left;
+            }
+        }
+        .report-head-actions{
+            min-width: 80px;
+            margin-left: 20px;
+            .pdf-ico{
+                float: left;
+                cursor: pointer;   
+                margin-top: 6px;           
+            }
+            i.prin-ico{
+                font-size: 26px;
+                color: #636D75;
+                cursor: pointer;
+            }
+        }
+    }
+    .report-details{
+        padding: 20px 15px 5px 15px;
+        background: #fff;
+        .report-progress{
+            display: flex;
+            justify-content: space-between;
+            border: solid 1px #82E886;
+            padding: 10px;          
+        }
+        .form-control:disabled {
+            background-color: #fff;
+        }
+        p{
+            margin-left: 10px;
+        }
+        .form-row{
+            margin-bottom: 20px;
+        }
+        input[type='datetime-local']{
+            text-transform: uppercase;
+        }
+        textarea{
+            background: #F5F6FA !important;
+            font-size: 13px;
+            padding: 6px 8px;
+            border-bottom: none;
+            min-height: 70px;
+        }   
+    }
+}
+
+.report-footer {
+    float: right;
+    margin: 20px 0;
+    position: relative;
+    .report-scrolltop {
+        background: #FFA11B;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        position: absolute;
+        top: -50px;
+        right: -15px;
+        cursor: pointer;
+    }
+    .scroll-arrow
+    {
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        color: $BgWhite;
+    }
+}
+.statusdiv {
+    position: absolute;
+     right: 750px;
+}

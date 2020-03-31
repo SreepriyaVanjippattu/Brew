@@ -1,0 +1,162 @@
+@import "assets/styles/styles.scss";
+.profile-subscrption{
+    padding-bottom: 40px;
+    .profile-subscrption-title{
+        h6,a{
+            color: #0B2044;
+        }
+        p{
+            color: #0B2044;
+            font-weight: 600;  
+        }
+    }
+    .profile-subscrption-form{
+        label{
+            font-size: 16px;
+            font-weight: 600;
+            color: #0B2044;
+        }
+        .form-group{
+            button.btn{
+                float: right;
+                margin-top: 15px;
+            }
+            .btn + .btn{
+                margin-right: 15px;
+            }
+        }
+    }
+    .subscription-wrap {
+        text-align: center;
+        float: left;
+        padding: 50px 20px;
+        color: #000;
+        border-radius: 4px;
+        width: 100%;
+        background: $BgWhite;
+        box-shadow: -1px 3px 5px -3px rgba(128,128,128,1);
+        margin-bottom: 30px;
+        &:hover, &.active {
+            background: #FFA11B;
+            color: #fff;
+            cursor: pointer;
+              transition: transform .4s ease;         
+            .subscription-price {
+                color: #fff;
+            }
+            .subscription-list li {
+                color: #fff;
+            }
+            h4,
+            h5 {
+                color: #fff;
+            }
+            .subscription-action {
+                background: #fff;
+                color: #000;
+            }
+            .subscription-radio {
+                [type="radio"]:checked+label:before,
+                [type="radio"]:not(:checked)+label:before {
+                    background: #FFA11B;
+                    border: solid 1px #fff;
+                }
+                [type="radio"]:checked+label:after,
+                [type="radio"]:not(:checked)+label:after {
+                    background: #fff;
+                }
+            }
+        }
+        .subscription-price {
+            font-size: 36px;
+            padding: 60px 0;
+            color: #FFA11B;
+            line-height: 1;
+            font-weight: bold;
+        }
+        h4{
+            padding-bottom: 0;
+        }
+        h5 {
+            text-transform: uppercase;
+            font-size: 14px;
+            text-align: left;
+        }
+        .subscription-list {
+            padding: 0;
+            list-style: none;
+            text-align: left;
+            min-height: 175px;
+            li {
+                font-size: 14px;
+                padding: 5px 0;
+                display: flex;
+                i {
+                    font-size: 18px;
+                    margin-right: 15px;
+                }
+            }
+        }
+        .subscription-action {
+            background: #FFA11B;
+            color: #fff;
+        }
+        .subscription-radio {
+            margin-bottom: 15px;
+            [type="radio"]:checked,
+            [type="radio"]:not(:checked) {
+                position: absolute;
+                left: -9999px;
+            }
+            [type="radio"]:checked+label,
+            [type="radio"]:not(:checked)+label {
+                position: relative;
+                padding-left: 28px;
+                cursor: pointer;
+                line-height: 20px;
+                display: inline-block;
+                color: #666;
+            }
+            [type="radio"]:checked+label:before,
+            [type="radio"]:not(:checked)+label:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 18px;
+                height: 18px;
+                border: 1px solid #bdbdbd;
+                border-radius: 100%;
+                background: #fff;
+            }
+            [type="radio"]:checked+label:after,
+            [type="radio"]:not(:checked)+label:after {
+                content: '';
+                width: 12px;
+                height: 12px;
+                background: orange;
+                position: absolute;
+                top: 3px;
+                left: 3px;
+                border-radius: 100%;
+                -webkit-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+            }
+            [type="radio"]:not(:checked)+label:after {
+                opacity: 0;
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+            [type="radio"]:checked+label:after {
+                opacity: 1;
+                -webkit-transform: scale(1);
+                transform: scale(1);
+            }
+        }
+    }
+}
+
+.back-ico
+{
+    transform: rotate(180deg);
+}

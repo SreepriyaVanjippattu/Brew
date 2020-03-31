@@ -1,0 +1,1233 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="header-title">
+                <h6>Active Mashin</h6>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item position-relative">
+                        <a href="app/dashboard">
+                            <i class="material-icons home-ico">
+                                home
+                            </i>Dashboard
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"><a>Active Brew</a></li>
+                    <li class="breadcrumb-item"><a>Enter Data</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> Mash In</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-pills mb-3 progressbar" id="pills-tab" role="tablist">
+                <li (click)="mashInClick()" class="nav-item active cursor-click">
+                    <a class="active" id="pills-mash-tab" data-toggle="pill" href="#pills-mash" role="tab"
+                        aria-controls="pills-mash" aria-selected="true">Mash In</a>
+                </li>
+                <li (click)="brewLogClick()" class="nav-item cursor-click">
+                    <a id="pills-brew-tab" data-toggle="pill" href="#pills-brew" role="tab" aria-controls="pills-brew"
+                        aria-selected="false">Brew Log</a>
+                </li>
+                <li (click)="fermentationClick()" class="nav-item cursor-click">
+                    <a id="pills-fermentation-tab" data-toggle="pill" href="#pills-fermentation" role="tab"
+                        aria-controls="pills-fermentation" aria-selected="false">Fermentation</a>
+                </li>
+                <li (click)="conditioningClick()" class="nav-item cursor-click">
+                    <a id="pills-conditioning-tab" data-toggle="pill" href="#pills-conditioning" role="tab"
+                        aria-controls="pills-conditioning" aria-selected="false">Conditioning</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="accordion" id="accordionExample">
+
+                <div class="card">
+                    <div class="card-main-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                General Details
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="form-row">
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Brew Run ID</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="Brew Run ID"
+                                        [(ngModel)]="brew.BrewRunId" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Brewer</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="Brewer"
+                                        [(ngModel)]="brew.UserName" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Tank Name</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="Tank Name"
+                                        [(ngModel)]="brew.TankName" readonly>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Recipe</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="Recipe"
+                                        [(ngModel)]="brew.RecipeName" readonly>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsed = !isCollapsed" class="btn btn-link collapsed" type="button"
+                                aria-expanded="false" aria-controls="collapseTwo">
+                                Malt/Grain Bill
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white mr-2" type="button" data-toggle="modal"
+                                data-target="#maltgrain">Target
+                                Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsed"
+                                (click)="isCollapsed = !isCollapsed">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClass}" [ngbCollapse]="!isCollapsed"
+                                (click)="isCollapsed = !isCollapsed">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div [ngbCollapse]="isCollapsed" class="collapse" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            <div *ngFor="let MaltGrainBillDetail of brew.MaltGrainBillDetails; let i = index;">
+                                <div class="card-sub-section mt-2"> Malt/Grain Bill. {{i+1}}</div>
+                                <div class="form-row">
+
+                                    <div for="name" class="form-group col-md-3">
+                                        <label for="postal">Name</label>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.MaltGrainBillDetails[i].MaltGrainNameId">
+
+                                            <option *ngFor="let maltNames of maltNames" [value]="maltNames.Id">
+                                                {{maltNames.Name}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div for="type" class="form-group col-md-3">
+                                        <label for="postal">Type</label>
+                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                            data-toggle="modal" data-target="#typeModal">add_circle_outline</i>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Type">
+
+                                            <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
+                                                {{maltTypes.name}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div for="origin" class="form-group col-md-3">
+                                        <label for="postal">Origin</label>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.MaltGrainBillDetails[i].CountryId">
+
+                                            <option *ngFor="let countries of countries" [value]="countries.id">
+                                                {{countries.countryName}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div for="supplier" class="form-group col-md-3">
+                                        <label for="postal">Supplier</label>
+                                        <i class="material-icons  position-absolute cursor-click add-dropicon"
+                                            data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
+                                        <select class="form-control input-style input-dropdown" id=""
+                                            [(ngModel)]="brew.MaltGrainBillDetails[i].SupplierId">
+                                            <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                                {{suppliers.name}}</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrrun-quantity">Quantity</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-quantity"
+                                                placeholder="Quantity"
+                                                [(ngModel)]="brew.MaltGrainBillDetails[i].Quantity">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.MaltGrainBillDetails[i].QuantityUnitTypeId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrun-id">% of Grain Bill</label>
+                                        <input type="text" class="form-control" id="brewrun-id"
+                                            placeholder="% of Grain Bill"
+                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Percentage">
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrun-id">SRM</label>
+                                        <input type="text" class="form-control" id="brewrun-id" placeholder="SRM"
+                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Srm">
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrun-id">Potential</label>
+                                        <input type="text" class="form-control" id="brewrun-id" placeholder="Potential"
+                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Potential">
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div *ngIf="brew.MaltGrainBillDetails != null" class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn" [ngbCollapse]="isCollapsed"
+                                    (click)="onMaltComplete('MaltGrainBill')">
+                                    Complete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedWater = !isCollapsedWater" class="btn btn-link collapsed"
+                                type="button" data-toggle="collapse" aria-expanded="false"
+                                aria-controls="collapseThree">
+                                Water Additions
+                            </button>
+                        </h2>
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white mr-2" type="button" data-toggle="modal"
+                                data-target="#wateradd">Target
+                                Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedWater"
+                                (click)="isCollapsedWater = !isCollapsedWater">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClassWater}" [ngbCollapse]="!isCollapsedWater"
+                                (click)="isCollapsedWater = !isCollapsedWater">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div [ngbCollapse]="isCollapsedWater" class="collapse" aria-labelledby="headingThree">
+                        <div class="card-body">
+                            <div *ngFor="let WaterAdditionDetail of brew.WaterAdditionDetails; let i = index;">
+                                <div class="card-sub-section mt-2"> Water Additions. {{i+1}}</div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrrun-CaCl2">CaCl2</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-CaCl2"
+                                                placeholder="CaCl2" [(ngModel)]="brew.WaterAdditionDetails[i].Cacl2">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].Cacl2UnitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewerrun-gypsum">Gypsum</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewerrun-gypsum"
+                                                placeholder="Gypsum" [(ngModel)]="brew.WaterAdditionDetails[i].Gypsum">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].GypsumUnitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrrun-tablesalt">Table Salt</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-tablesalt"
+                                                placeholder="Table Salt"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].TableSalt">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].TableSaltUnitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewerrun-epsomsalt">Epsom Salt</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewerrun-epsomsalt"
+                                                placeholder="Epsom Salt"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].EpsomSalt">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].EpsomSaltUnitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrrun-CaCO3">CaCO3</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-CaCO3"
+                                                placeholder="CaCO3" [(ngModel)]="brew.WaterAdditionDetails[i].CaCo3">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].CaCo3unitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrrun-Quantity">Baking Soda Name</label>
+                                        <input type="text" class="form-control" id="brewrrun-Quantity"
+                                            [(ngModel)]="brew.WaterAdditionDetails[i].BakingSodaName" placeholder="">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="brewerrun-bakingsoda">Baking Soda</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewerrun-bakingsoda"
+                                                placeholder="Baking Soda"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].BakingSoda">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].BakingSodaUnitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <label for="brewrrun-H3PO4">H3PO4</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-H3PO4"
+                                                placeholder="H3PO4" [(ngModel)]="brew.WaterAdditionDetails[i].H3po4">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.WaterAdditionDetails[i].H3po4unitId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <div *ngIf="brew.WaterAdditionDetails != null" class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn"
+                                    [ngbCollapse]="isCollapsedWater" (click)="onWaterComplete('WaterAdditions')">
+                                    Complete
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-sub-header d-flex justify-content-between" id="headingFour">
+                        <h2 class="mb-0">
+                            <button (click)="isCollapsedMashing = !isCollapsedMashing" class="btn btn-link collapsed"
+                                type="button" data-toggle="collapse" aria-expanded="false"
+                                aria-controls="collapseThree">
+                                Mashing
+                            </button>
+                        </h2>
+
+                        <div class="d-flex align-items-center">
+                            <button class="btn l-btn-white mr-2" type="button" data-toggle="modal"
+                                data-target="#mashtarget">Target
+                                Values</button>
+                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedMashing"
+                                (click)="isCollapsedMashing = !isCollapsedMashing">
+                                indeterminate_check_box
+                            </i>
+                            <i class="material-icons  colapse-toggle cursor-click"
+                                [ngClass]="{'colapse-toggle-active' :setClassMashin}"
+                                [ngbCollapse]="!isCollapsedMashing" (click)="isCollapsedMashing = !isCollapsedMashing">
+                                add_box
+                            </i>
+                        </div>
+                    </div>
+                    <div [ngbCollapse]="isCollapsedMashing" class="collapse" aria-labelledby="headingFour"
+                        data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div *ngFor="let MashingTargetDetail of brew.MashingTargetDetails; let i = index;">
+                                <div class="form-row">
+
+                                    <div class="col-md-6">
+                                        <div class="d-flex l-start">
+                                            <label class="l-start-label" (click)="setStartTime()">START</label>
+                                            <div class="form-group w-100">
+                                                <label for="brewrun-id">Start Time</label>
+                                                <input type='hidden' class="form-control" id="mashinStart"
+                                                    name="StartTime"
+                                                    [(ngModel)]="brew.MashingTargetDetails[i].StartTime">
+                                                <input type='text' class="form-control" id="mashinStartTime"
+                                                    name="StartTime" [value]="mashinStartTime">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="d-flex l-start">
+                                            <label class="l-start-label" (click)="setEndTime()">END</label>
+                                            <div class="form-group w-100">
+                                                <label for="brewrun-id">End Time</label>
+                                                <input type='hidden' class="form-control" id="mashinEnd" name="EndTime"
+                                                    [(ngModel)]="brew.MashingTargetDetails[i].EndTime">
+                                                <input type='text' class="form-control" id="mashinEndTime"
+                                                    name="EndTime" [value]="mashinEndTime">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label for="brewrrun-volume">Strike Water Volume</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewrrun-volume"
+                                                placeholder="Strike Water Volume"
+                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterVolume">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterUnitTypeId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="brewerrun-temperature">Strike Water Temperature
+                                            ({{preferedUnit}})</label>
+                                        <div class='multiple-input'>
+                                            <input type="number" class="form-control" id="brewerrun-temperature"
+                                                placeholder="Strike Water Temperature"
+                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterTemperature">
+                                            <select class="form-control input-dropdown"
+                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterTemperatureUnitTypeId">
+
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.Category === 'Temperature'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="brewrrun-ph">Mash pH</label>
+                                        <input type="number" class="form-control" id="brewrrun-ph" placeholder="Mash pH"
+                                            [(ngModel)]="brew.MashingTargetDetails[i].MashpH">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="brewerrun-ratio">Liquor to Grist Ratio</label>
+                                        <input type="text" class="form-control" id="brewerrun-liquor"
+                                            placeholder="Liquor to Grist Ratio"
+                                            [(ngModel)]="brew.MashingTargetDetails[i].Liquortogristratio">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label>Temperature</label>
+                                        <div class='custom-radio-wrapper'>
+                                            <div class='custom-radio'>
+                                                <input type="radio" id="meshin-single" name="radio-gravity"
+                                                    [value]="false" name="Temperature"
+                                                    [(ngModel)]="MashingTargetDetail.Temperature"
+                                                    (click)="changeTemperatureType(MashingTargetDetail, 0)">
+                                                <label for="meshin-single">Single</label>
+                                            </div>
+                                            <div class='custom-radio'>
+                                                <input type="radio" id="meshin-multiple" name="radio-gravity"
+                                                    [value]="true" name="Temperature"
+                                                    [(ngModel)]="MashingTargetDetail.Temperature"
+                                                    (click)="changeTemperatureType(MashingTargetDetail, 1)">
+                                                <label for="meshin-multiple">Multiple</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row"
+                                    *ngFor="let temp of MashingTargetDetail.MashingTargetDetailsTemperature; let i = index;">
+                                    <div class="form-group col-md-6 position-relative">
+                                        <label for="temp">Temperature ({{preferedUnit}}) #{{i+1}}</label>
+                                        <div class="position-relative">
+                                            <input type="text" class="form-control mt-3" id="temp"
+                                                placeholder="Temperature #{{i+1}}"
+                                                [(ngModel)]="MashingTargetDetail.MashingTargetDetailsTemperature[i].Temperature">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex l-start mt-3">
+                                            <label class="l-start-label"
+                                                (click)="setTempStartTime(i, MashingTargetDetail.MashingTargetDetailsTemperature[i])">START</label>
+                                            <div class="form-group w-100">
+                                                <label for="brewrun-id">Start Time</label>
+                                                <input class="form-control" id="tempStart{{i}}"
+                                                    [(ngModel)]="temp.StartTime">
+                                                <i *ngIf="MashingTargetDetail.Temperature == true && i == 0"
+                                                    class="material-icons position-absolute outline-icon cursor-click"
+                                                    (click)="addMashingTemp(MashingTargetDetail)">add_circle_outline</i>
+                                                <i *ngIf="MashingTargetDetail.Temperature == true && i != 0"
+                                                    class="material-icons position-absolute remove-icon cursor-click"
+                                                    (click)="removeMashingTemp(MashingTargetDetail, i)">remove_circle_outline</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-outline-light l-btn"
+                                        [ngbCollapse]="isCollapsedMashing"
+                                        (click)="onMashinComplete(i,'MashingTargets')">
+                                        Complete
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card">
+                        <div class="card-sub-header d-flex justify-content-between" id="headingFifth">
+                            <h2 class="mb-0">
+                                <button (click)="isCollapsedStarch = !isCollapsedStarch" class="btn btn-link collapsed"
+                                    type="button" data-toggle="collapse" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                    Starch Test
+                                </button>
+                            </h2>
+                            <div class="d-flex align-items-center">
+                                <button class="btn l-btn-white mr-2" type="button" data-toggle="modal"
+                                    data-target="#starchTest">Target
+                                    Values</button>
+                                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedStarch"
+                                    (click)="isCollapsedStarch = !isCollapsedStarch">
+                                    indeterminate_check_box
+                                </i>
+                                <i class="material-icons  colapse-toggle cursor-click"
+                                    [ngClass]="{'colapse-toggle-active' :setClassStarch}"
+                                    [ngbCollapse]="!isCollapsedStarch" (click)="isCollapsedStarch = !isCollapsedStarch">
+                                    add_box
+                                </i>
+                            </div>
+                        </div>
+                        <div [ngbCollapse]="isCollapsedStarch" class="collapse" aria-labelledby="headingFifth">
+                            <div class="card-body">
+                                <div class="form-row" *ngFor="let StartchTest of brew.StartchTest; let i = index;">
+                                    <div class="form-group col-md-6">
+
+                                        <div class='custom-radio-wrapper'>
+                                            <div class='custom-radio'>
+                                                <input type="radio" id="meshin-pass" name="radio-gravity" [value]="true"
+                                                    name="PassStatus" (change)="radioChange('Pass')"
+                                                    [(ngModel)]="StartchTest.PassStatus">
+                                                <label for="meshin-pass">Pass</label>
+                                            </div>
+                                            <div class='custom-radio'>
+                                                <input type="radio" id="meshin-fail" name="radio-gravity"
+                                                    [value]="false" name="PassStatus" (change)="radioChange('Fail')"
+                                                    [(ngModel)]="StartchTest.PassStatus">
+                                                <label for="meshin-fail">Fail</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <ul *ngFor="let stat of sortData; let i = index;" style="list-style-type: none">
+                                            <li *ngIf="stat != null"><label>{{stat.TestName}} {{i+1}}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.TimeStamp | date: 'medium'}}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.TestResult}}</label></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-12 d-flex justify-content-end">
+                                        <button type="button" class="btn btn-outline-light l-btn"
+                                            [ngbCollapse]="isCollapsedStarch"
+                                            (click)="onStarchComplete(i, 'starchTest')">
+                                            Complete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-sub-header d-flex justify-content-between" id="headingSix">
+                            <h2 class="mb-0">
+                                <button (click)="isCollapsedNotes = !isCollapsedNotes" class="btn btn-link collapsed"
+                                    type="button" data-toggle="collapse" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                    Notes
+                                </button>
+
+                            </h2>
+                        </div>
+                        <div [ngbCollapse]="isCollapsedNotes" id="collapseSix" class="collapse"
+                            aria-labelledby="headingSix" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="form-row meshin-text"
+                                    *ngFor="let MashinDetailsNote of brew.MashinDetailsNotes; let i = index;">
+                                    <div class="form-group col-md-12">
+                                        <textarea type="text" class="form-control" id="meshin-notes"
+                                            placeholder="Type Text Here..."
+                                            [(ngModel)]="brew.MashinDetailsNotes[i].Notes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <div class="col-md-12 d-flex justify-content-end mt-4">
+                <button class="btn l-btn-cancel mr-2" type="button" (click)="onCancelClick()">
+                    <i class="material-icons">
+                        cancel
+                    </i>
+                    Cancel
+                </button>
+
+                <button (click)="mashInFormClick()" class="btn l-btn" type="button">Next Step</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Modal-->
+
+    <div class="brew-modal">
+
+        <!--Malt/Grain Bill-->
+        <div class="modal fade" id="maltgrain" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Malt/Grain Bill</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row" *ngFor="let malt of maltTarget;let i=index">
+                                <div class="form-group col-md-12"><b>MaltTargets #{{i+1}}</b></div>
+                                <div for="status" class="form-group col-md-3">
+                                    <label for="postal">Name</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder=""
+                                        [value]="malt.Name" disabled>
+                                </div>
+
+                                <div for="status" class="form-group col-md-3">
+                                    <label for="postal">Type</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        [value]="malt.MaltGrainTypeId" disabled>
+
+                                        <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
+                                            {{maltTypes.name}}</option>
+                                    </select>
+                                </div>
+
+                                <div for="status" class="form-group col-md-3">
+                                    <label for="postal">Origin</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        [value]="malt.CountryId" disabled>
+
+                                        <option *ngFor="let countries of countries" [value]="countries.id">
+                                            {{countries.countryName}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Supplier</label>
+                                    <select class="form-control input-style input-dropdown" id=""
+                                        [value]="malt.SupplierId" disabled>
+                                        <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
+                                            {{suppliers.name}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-quantity">Quantity</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewrrun-quantity"
+                                            placeholder="Quantity" [value]="malt.Quantity" disabled>
+                                        <select class="form-control input-dropdown" [value]="malt.QuantityUnitId"
+                                            disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">% of Grain Bill</label>
+                                    <input type="text" class="form-control" id="brewrun-id"
+                                        placeholder="% of Grain Bill" [value]="malt.GrainBillPercentage" disabled>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">SRM</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="SRM"
+                                        [value]="malt.Srm" disabled>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrun-id">Potential</label>
+                                    <input type="text" class="form-control" id="brewrun-id" placeholder="Potential"
+                                        [value]="malt.Potential" disabled>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Water Addition-->
+        <div class="modal fade" id="wateradd" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Water Additions</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid" *ngFor="let water of waterTarget;let i=index">
+                            <div class="form-row">
+                                <div class="form-group col-md-12"><b>Water Addition #{{i+1}}</b></div>
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-CaCl2">CaCl2</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewrrun-CaCl2"
+                                            placeholder="CaCl2" [value]="water.Cacl2" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.Cacl2Unitd" disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewerrun-gypsum">Gypsum</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewerrun-gypsum"
+                                            placeholder="Gypsum" [value]="water.Gypsum" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.GypsumUnitId"
+                                            disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-tablesalt">Table Salt</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewrrun-tablesalt"
+                                            placeholder="Table Salt" [value]="water.TableSalt" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.TableSaltUnitId"
+                                            disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewerrun-epsomsalt">Epsom Salt</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewerrun-epsomsalt"
+                                            placeholder="Epsom Salt" [value]="water.EpsomSalt" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.EpsomSaltUnitId"
+                                            disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-CaCO3">CaCO3</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewrrun-CaCO3"
+                                            placeholder="CaCO3" [value]="water.CaCo3" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.CaCo3unitId"
+                                            disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-Quantity">Baking Soda Name</label>
+                                    <input type="text" class="form-control" id="brewrrun-Quantity"
+                                        [value]="water.BakingSodaName" disabled placeholder="">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="brewerrun-bakingsoda">Baking Soda</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewerrun-bakingsoda"
+                                            placeholder="Baking Soda" [value]="water.BakingSoda" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.BakingSodaUnitId"
+                                            disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label for="brewrrun-H3PO4">H3PO4</label>
+                                    <div class='multiple-input'>
+                                        <input type="number" class="form-control" id="brewrrun-H3PO4"
+                                            placeholder="H3PO4" [value]="water.H3po4" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.H3po4unitId"
+                                            disabled>
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Mashing Target-->
+        <div class="modal fade" id="mashtarget" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Mashing Targets</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body" *ngFor="let mash of mashinTarget;let i=index">
+                        <div class="form-row">
+                            <div class="form-group col-md-12"><b>Mashing Target #{{i+1}}</b></div>
+                            <div class="form-group col-md-6">
+                                <label for="brewrrun-volume">Strike Water Volume</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="brewrrun-volume"
+                                        placeholder="Strike Water Volume" [value]="mash.StrikeWaterVolume" disabled>
+                                    <select class="form-control input-dropdown" [value]="mash.StrikeWaterUnitTypeId"
+                                        disabled>
+
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                            </option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="brewerrun-temperature">Strike Water Temperature (in
+                                    {{preferedUnit}})</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="brewerrun-temperature"
+                                        placeholder="Strike Water Temperature" [value]="mash.StrikeWaterTemperature"
+                                        disabled>
+                                    <select class="form-control input-dropdown"
+                                        [value]="mash.StrikeWaterTemperatureUnitTypeId" disabled>
+
+                                        <ng-container *ngFor="let unit of units">
+                                            <option *ngIf="unit.Category === 'Temperature'" [value]="unit.Id">
+                                                {{unit.Symbol}}</option>
+                                        </ng-container>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="brewrrun-ph">Mash pH</label>
+                                <input type="number" class="form-control" id="brewrrun-ph" placeholder="Mash pH"
+                                    [value]="mash.MashpH" disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="brewerrun-ratio">Liquor to Grist Ratio</label>
+                                <input type="text" class="form-control" id="brewerrun-temperature"
+                                    placeholder="Liquor to Grist Ratio" [value]="mash.Liquortogristratio" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label>Temperature</label>
+                                <div class='custom-radio-wrapper'>
+                                    <div class='custom-radio' *ngIf="!mash.Temperature">
+                                        <input type="radio" id="meshin-singlet" [value]="mash.Temperature" checked
+                                            disabled>
+                                        <label for="meshin-single">Single</label>
+                                    </div>
+                                    <div class='custom-radio' *ngIf="mash.Temperature">
+                                        <input type="radio" id="meshin-multiplet" [value]="mash.Temperature" checked
+                                            disabled>
+                                        <label for="meshin-multiple">Multiple</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-row" *ngFor="let temp of mash.MashingTargetTemperature;let i=index;">
+                            <div class="form-group col-md-6">
+                                <label for="brewrrun-temperature" *ngIf="i==0">Temperature (in {{preferedUnit}})</label>
+                                <label for="brewrrun-temperature" *ngIf="i!=0">Temperature #{{i+1}} (in
+                                    {{preferedUnit}})</label>
+                                <input type="number" class="form-control" id="brewrrun-temperature"
+                                    placeholder="Temperature (in {{preferedUnit}})" [value]="temp.Temperature" disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="brewerrun-time">Start Time</label>
+                                <input type="text" class="form-control" id="brewerrun-time" placeholder="Start Time"
+                                    [value]="temp.StartTime" disabled>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Starch Test -->
+        <div class="modal fade" id="starchTest" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Starch Test</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label></label>
+                                    <div class='custom-radio-wrapper'>
+                                        <div class='custom-radio'>
+                                            <input type="radio" id="meshin-pass" name="radio-gravity" checked>
+                                            <label for="meshin-pass">Pass</label>
+                                        </div>
+                                        <div class='custom-radio'>
+                                            <input type="radio" id="meshin-fail" name="radio-gravity">
+                                            <label for="meshin-fail">Fail</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <form [formGroup]="modalForms" autocomplete="off">
+        <div class="del-modal">
+            <!-- Button trigger modal -->
+            <!-- Modal -->
+            <div class="modal fade" id="styleModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add New Style</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                        class="modal-close-ico"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="col-md-12 d-flex justify-content-center del-content">
+                                    <div class="form-group col-md-12">
+                                        <label for="brewrun-Name">Add New Style</label>
+                                        <input type="text" class="form-control" id="brewrun-Name" placeholder=""
+                                            formControlName="styleText">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                    <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                        (click)="addNewStyle()">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="del-modal">
+            <!-- Button trigger modal -->
+            <!--Type Modal -->
+            <div class="modal fade" id="typeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add New Type</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                        class="modal-close-ico"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="col-md-12 d-flex justify-content-center del-content">
+                                    <div class="form-group col-md-12">
+                                        <label for="brewrun-Name">Add New Type</label>
+                                        <input type="text" class="form-control" id="brewrun-Name" placeholder=""
+                                            formControlName="typeText">
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                    <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                        (click)="addNewType()">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="del-modal">
+            <!-- Button trigger modal -->
+            <!-- Supplier Modal -->
+            <div class="modal fade" id="supplierModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add New Supplier</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                        class="modal-close-ico"></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="col-md-12 d-flex justify-content-center del-content">
+                                    <div class="form-group col-md-12">
+                                        <label for="brewrun-Name">Add New Supplier</label>
+                                        <input type="text" class="form-control" id="supplier" placeholder=""
+                                            formControlName="supplierText">
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                    <button data-dismiss="modal" type="button" class="btn  l-btn-agree"
+                                        (click)="addNewSupplier()">
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#errorModal">Open Modal</button>
+    <div class="del-modal">
+        <!-- Button trigger modal -->
+        <!--Type Modal -->
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Starch Test Failed</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+                                Starch Test should be 'Pass' to continue.
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+
+                                <button data-dismiss="modal" type="button" class="btn  l-btn-agree">
+                                    Ok
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

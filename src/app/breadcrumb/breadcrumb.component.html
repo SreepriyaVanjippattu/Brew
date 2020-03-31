@@ -1,0 +1,6 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a class="breadcrumb-text" href="#">Dashboard</a></li>
+    <li *ngFor="let breadLink of displayBreadcrumbList" class="breadcrumb-item active" aria-current="page">
+        <a href="javascript:void(0)" class="breadcrumb-text">{{breadLink?.name }}</a>
+    </li>
+</ol>

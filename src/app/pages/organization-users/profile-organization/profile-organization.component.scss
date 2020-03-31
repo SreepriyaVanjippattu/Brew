@@ -1,0 +1,51 @@
+@import "assets/styles/styles.scss";
+
+.section-one
+{
+    background: $BgWhite;
+    padding: $contentPadding;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.section-two
+{
+    background: $BgWhite;
+    padding: $contentPadding;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.img-del-ico
+{
+    color: #808495;
+    top: 46px;
+    left: 120px;
+}
+.img-del-ico:hover
+{
+    color: #1a2138;
+}
+.company-img
+{
+    img
+    {
+        max-width: 100px;
+    }
+   
+}
+
+.header-bg
+{
+    background: $mainBodyBg;
+    margin-top: 10px;
+}
+.user-profile
+{
+    img
+    {
+        max-width: 100px;
+    }
+}
+.w-77
+{
+    width: 77px;
+}

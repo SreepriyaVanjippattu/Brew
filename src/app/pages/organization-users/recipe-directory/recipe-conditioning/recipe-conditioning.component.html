@@ -1,0 +1,305 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="header-title">
+        <h6>{{pageHeader}}</h6>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <nav aria-label="breadcrumb" class="d-flex justify-content-end">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/app/recipes">Recipes Directory </a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{pageHeader}}</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10">
+      <ul class="nav nav-pills mb-3 progressbar" id="pills-tab" role="tablist">
+        <li (click)="mashInClick()" class="nav-item active cursor-click">
+          <a class="active" id="pills-mash-tab" data-toggle="pill" href="#pills-mash" role="tab"
+            aria-controls="pills-mash" aria-selected="true">Mash In</a>
+        </li>
+        <li (click)="brewLogClick()" class="nav-item active cursor-click">
+          <a id="pills-brew-tab" data-toggle="pill" href="#pills-brew" role="tab" aria-controls="pills-brew"
+            aria-selected="false">Brew Log</a>
+        </li>
+        <li (click)="fermentationClick()" class="nav-item active cursor-click">
+          <a id="pills-fermentation-tab" data-toggle="pill" href="#pills-fermentation" role="tab"
+            aria-controls="pills-fermentation" aria-selected="false">Fermentation</a>
+        </li>
+        <li (click)="conditioningClick()" class="nav-item active cursor-click">
+          <a id="pills-conditioning-tab" data-toggle="pill" href="#pills-conditioning" role="tab"
+            aria-controls="pills-conditioning" aria-selected="false">Conditioning</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-2 cancel-mb">
+      <button class="btn l-btn-cancel float-right mt-5" type="button" (click)="cancelClick()">
+        <img src="assets/images/close-icon.svg">Cancel</button>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-md-12 recipe-bg">
+      <form [formGroup]="recipeConditioningForm">
+        <div class="accordion" id="accordionExample">
+
+          <div class="card">
+            <div class="card-sub-header d-flex justify-content-between" id="headingOne">
+              <h2 class="mb-0">
+                <button class="btn btn-link" type="button" (click)="isCollapsedConditioning = !isCollapsedConditioning"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  Conditioning Targets
+                </button>
+              </h2>
+
+              <div class="d-flex align-items-center">
+                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedConditioning"
+                  (click)="isCollapsedConditioning = !isCollapsedConditioning">
+                  indeterminate_check_box
+                </i>
+                <i class="material-icons  colapse-toggle cursor-click" [ngbCollapse]="!isCollapsedConditioning"
+                  (click)="isCollapsedConditioning = !isCollapsedConditioning">
+                  add_box
+                </i>
+              </div>
+            </div>
+
+            <div [ngbCollapse]="isCollapsedConditioning" class="collapse show" aria-labelledby="headingOne"
+              data-parent="#accordionExample">
+              <div formArrayName="conditioningTargets"
+                *ngFor="let conditions of conditioningTargetsArray.controls; let i=index" class="card-body">
+                <div [formGroupName]="i">
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="brewrrun-Volume">Volume in </label>
+                      <div class='multiple-input'>
+                        <input type="number" class="form-control" id="brewrrun-Volume" placeholder="Quantity"
+                          formControlName="volumeIn">
+                        <select formControlName="volumeInUnitId" class="form-control input-dropdown">
+                          <option disabled value="">Select</option>
+                          <ng-container *ngFor="let unit of units">
+                            <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">{{unit.Symbol}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="brewrun-Temperature">Temperature ({{preferedUnit}})</label>
+                      <input type="number" class="form-control" id="brewrun-Temperature" placeholder="Temperature"
+                        formControlName="temperature">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="brewrun-Pressure">Pressure (in PSI)</label>
+                      <input type="number" class="form-control" id="brewrun-Pressure" placeholder=""
+                        formControlName="pressure">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="brewlog-pH">pH</label>
+                      <input type="number" class="form-control" id="brewlog-pH" placeholder="pH" formControlName="ph">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="recipe-spcplato">{{preferedPlato}}</label>
+                      <input type="number" class="form-control" id="recipe-spcplato" placeholder="{{preferedPlato}}"
+                        formControlName="plato">
+                      <div *ngIf="preferedPlato !== 'plato'">
+                        <div *ngIf="conditions.get('plato').invalid" class="valid-error">
+                          Range should be from 1 to 1.100
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="brewrrun-CO2">CO2</label>
+                      <div class='multiple-input'>
+                        <input type="number" class="form-control" id="brewrrun-CO2" placeholder="Quantity"
+                          formControlName="co2">
+                        <select formControlName="co2UnitId" class="form-control input-dropdown">
+
+                          <ng-container *ngFor="let unit of units">
+                            <option *ngIf="unit.category === 'Pressure'" [value]="unit.Id">{{unit.symbol}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-12 target-text">
+                      <h6>Notes</h6>
+                      <textarea type="text" class="form-control" id="target-Notes" placeholder="Type text here ......"
+                        formControlName="notes"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button"
+                  (click)="isCollapsedFiltration = !isCollapsedFiltration" aria-expanded="false"
+                  aria-controls="collapseTwo">
+                  Filtration Targets
+                </button>
+              </h2>
+              <div class="d-flex align-items-center">
+                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedFiltration"
+                  (click)="isCollapsedFiltration = !isCollapsedFiltration">
+                  indeterminate_check_box
+                </i>
+                <i class="material-icons  colapse-toggle cursor-click" [ngbCollapse]="!isCollapsedFiltration"
+                  (click)="isCollapsedFiltration = !isCollapsedFiltration">
+                  add_box
+                </i>
+              </div>
+            </div>
+            <div [ngbCollapse]="isCollapsedFiltration" class="collapse" aria-labelledby="headingTwo"
+              data-parent="#accordionExample">
+              <div formArrayName="filterationTargets"
+                *ngFor="let filter of filterationTargetsArray.controls; let i=index" class="card-body">
+                <div [formGroupName]="i" class="form-row">
+
+                  <div class="form-group col-md-6">
+                    <label for="recipe-temp">Temperature ({{preferedUnit}})</label>
+                    <input type="number" class="form-control" id="recipe-temp" placeholder="Temperature"
+                      formControlName="temperature">
+                  </div>
+
+
+                  <div class="form-group col-md-12 target-text">
+                    <h6>Notes</h6>
+                    <textarea type="text" class="form-control" id="target-Notes" placeholder="Type text here ......"
+                      formControlName="notes"></textarea>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-sub-header d-flex justify-content-between" id="headingThree">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button"
+                  (click)="isCollapsedCarbonation = !isCollapsedCarbonation" aria-expanded="false"
+                  aria-controls="collapseThree">
+                  Carbonation Targets
+                </button>
+              </h2>
+              <div class="d-flex align-items-center">
+                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedCarbonation"
+                  (click)="isCollapsedCarbonation = !isCollapsedCarbonation">
+                  indeterminate_check_box
+                </i>
+                <i class="material-icons  colapse-toggle cursor-click" [ngbCollapse]="!isCollapsedCarbonation"
+                  (click)="isCollapsedCarbonation = !isCollapsedCarbonation">
+                  add_box
+                </i>
+              </div>
+            </div>
+            <div [ngbCollapse]="isCollapsedCarbonation" class="collapse" aria-labelledby="headingThree"
+              data-parent="#accordionExample">
+              <div formArrayName="carbonationTargets"
+                *ngFor="let carbonTargets of carbonationTargetsArray.controls; let i=index" class="card-body">
+                <div [formGroupName]="i">
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="recipe-Pressure2">Pressure (in PSI)</label>
+                      <input type="number" class="form-control" id="recipe-Pressure2" placeholder="Pressure"
+                        formControlName="pressure">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="brewlog-pH2">pH</label>
+                      <input type="number" class="form-control" id="brewlog-pH2" placeholder="pH" formControlName="ph">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-12 target-text">
+                      <h6>Notes</h6>
+                      <textarea type="text" class="form-control" id="target-Notes" placeholder="Type text here ......"
+                        formControlName="notes"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-end mt-3 recipe-footer">
+
+      <button class="btn l-btn-cancel mr-2" type="button" (click)="fermentationClick()">
+        Previous Step</button>
+
+      <button class="btn l-btn mr-2" type="button" (click)="previewClick()">Fullscreen</button>
+
+      <button *ngIf="!disableSave" id="saveRecipe" (click)="nextStepClick()" class="btn l-btn mr-2"
+        type="button">Save</button>
+
+      <button *ngIf="!disableSave" id="commitRecipe" class="btn l-btn mr-2" type="button" data-toggle="modal"
+        data-target="#commitModal">Commit</button>
+
+    </div>
+  </div>
+</div>
+
+
+<!--Confirm-->
+<div class="del-modal">
+
+  <div class="modal fade" id="commitModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Commit Recipe</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><img src="assets/images/modal-close.svg" class="modal-close-ico"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 d-flex justify-content-center del-content">
+              <div>
+                <p class="del-header">You cannot edit after commit.</p>
+                <p class="mt-3 text-center">Are you sure you want to proceed?</p>
+              </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center mt-2">
+              <button type="button" data-dismiss="modal" class="btn  l-btn-cancel mr-2">
+                No
+              </button>
+
+              <button (click)="commitRecipe()" type="button" class="btn  l-btn-agree" data-dismiss="modal">
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

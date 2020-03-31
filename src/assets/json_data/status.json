@@ -1,0 +1,89 @@
+[
+
+{
+    "Id": "7cd88ffb-cf41-4efc-9a17-d75bcb5b3770",
+        "Name": "Active",
+    "status":[
+      { 
+        "Id":"7cd88ffb-cf41-4efc-9a17-d75bcb5b3770",
+        "StatusName":"Active"
+      },{
+        "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
+        "StatusName":"Archieve"
+      },
+      {
+        "Id":"4d2ba3c3-132e-489f-9c43-47a3996f74fa",
+        "StatusName":"Inactive"
+      }
+
+     ] 
+
+},
+
+{
+    "Id": "6e7df31b-5f6a-4029-91e0-5561807164da",
+        "Name": "Pending",
+
+          "status":[
+      { 
+        "Id":"7cd88ffb-cf41-4efc-9a17-d75bcb5b3770",
+        "StatusName":"Active"
+      },{
+        "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
+        "StatusName":"Archieve"
+      },
+      {
+        "Id":"1625a5c1-b41a-4f6e-91ad-e4aa0c61121c",
+        "StatusName":"Deleted"
+      },
+      {
+        "Id":"6e7df31b-5f6a-4029-91e0-5561807164da",
+        "StatusName":"Pending"
+      }
+
+     ] 
+   
+},
+
+{
+    "Id": "4d2ba3c3-132e-489f-9c43-47a3996f74fa",
+        "Name": "Inactive",
+        "status": [
+
+        { 
+        "Id":"7cd88ffb-cf41-4efc-9a17-d75bcb5b3770",
+        "StatusName":"Active"
+      },{
+        "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
+        "StatusName":"Archieve"
+      }
+      ,{
+        "Id":"4d2ba3c3-132e-489f-9c43-47a3996f74fa",
+        "StatusName":"Inactive"
+      }
+    ]
+},
+{
+    "Id": "1625a5c1-b41a-4f6e-91ad-e4aa0c61121c",
+        "Name": "Deleted",
+        "status": []
+},
+{
+    "Id": "fc7178dd-c5c1-4776-944a-b50fe2c37f06",
+        "Name": "Archived",
+        "status": [
+        {
+        "Id":"6e7df31b-5f6a-4029-91e0-5561807164da",
+        "StatusName":"Pending"
+      },{
+        "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
+        "StatusName":"Archieve"
+      },
+      {
+        "Id":"1625a5c1-b41a-4f6e-91ad-e4aa0c61121c",
+        "StatusName":"Deleted"
+      }
+    ]
+}
+
+]

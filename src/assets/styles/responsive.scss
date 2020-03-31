@@ -1,0 +1,164 @@
+@import '../../assets/styles/styles';
+$xm:388px;
+$sm:576px;
+$md:768px;
+$lg:992px;
+$xl:1200px;
+
+.archivebtn-resp
+{
+  justify-content: end;
+}
+
+// Extra small devices (portrait phones, less than 576px)
+@media(max-width: $xm){
+  .user-actions{
+    flex-direction: column;
+    .l-btn{
+      margin-bottom: 5px;
+    }
+  }
+  .profile-footer{
+    flex-direction: column;
+    .l-btn-cancel , .l-btn{
+      margin-bottom: 5px;
+    }
+  }
+  .ngx-pagination{
+    padding: 0 !important;
+  }
+}
+@media (max-width: $sm) {
+  .breadcrumb-nav
+  {
+    display: none !important;
+  }
+  .profile-detail
+  {
+    display: none !important;
+  }
+  .recipe-footer{
+    flex-direction: column;
+    .l-btn-cancel , .l-btn{
+      margin-bottom: 7px;
+      display: block !important;
+    }
+  }
+  .recipe-bg{
+    padding: 0px !important;
+  }
+  .cancel-mb{
+    margin-bottom: 10px;
+    padding: 0 !important;
+  }
+  .profile{
+    margin-right: 0px !important;
+  }
+  .advanced-pie {
+    position: absolute;
+    left: 0;
+    top: -16px;  
+  }
+  .view-brewheader{
+    display: block !important;
+    .l-btn{
+      width: 100% !important;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .report-resp{
+    display: block !important;
+    .btn-cancel{
+      width: 100% !important;
+      display: flex;
+      justify-content: center;
+      
+    }
+    .btn-save{
+      width: 100% !important;
+      display: flex;
+      justify-content: center;
+      margin-top: 5px;
+    }
+    .pdf-ico{
+      width: 100% !important;
+      display: flex;
+      justify-content: center;
+      margin-top: 5px;
+    }
+  }
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: $md) {
+
+  .nb-theme-default nb-layout .layout .layout-container nb-sidebar.fixed, .nb-theme-default nb-layout .layout .layout-container nb-sidebar .main-container-fixed{
+    top:5.75rem !important;
+  }
+  .nb-theme-default nb-layout-header.fixed ~ .layout-container{
+    padding-top: 5.75rem;
+  }
+  .nb-theme-default{
+    nb-layout-header{
+      nav{
+        height: 5.75rem !important;
+        display: block !important;
+        padding: 10px;
+        .logo-container{
+          width: auto !important;
+          margin: 0 auto;
+          img{
+            width: 135px;
+          }
+        }
+        .header-color-user{
+          margin-top: 20px;
+        }
+        .close{
+          display: none;
+        }
+        .profile , .logout-btn{
+          position: relative;
+          top: -30px;
+          .profile-img{
+            width: 40px !important;
+            height: 40px !important;
+          }
+          .profile-detail{
+            display: none;
+          }
+        }
+        .mobile-toggle{
+          margin-top: 18px;
+          display: block;
+        }
+      }
+    }
+  
+  }
+  
+  .cancel-mb{
+    margin-bottom: 10px;
+    padding: 0 !important;
+  }
+  .recipe-bg{
+    padding: 0px !important;
+  }
+}
+
+// Medium devices (tablets, less than 992px)
+@media (max-width: $lg) { 
+
+}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: $xl) { 
+    .nb-theme-default nb-layout-header nav
+    {
+      height: 3.75rem;
+    }
+ }
+
+

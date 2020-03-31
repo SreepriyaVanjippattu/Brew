@@ -1,0 +1,29 @@
+@import "assets/styles/styles.scss";
+
+.search-style {
+    border-radius: $borderRadius !important;
+    padding: 10px 10px 10px 40px !important;
+    box-shadow: 0px 3px 5px #00000012;
+    min-width: 450px;
+}
+
+.search-ico {
+    top: 9px;
+    font-size: 21px;
+    left: 10px; 
+}
+
+.prin-ico {
+    top: 5px;
+    left: 15px;
+    color: #636D75;
+}
+
+.filter-ico {
+    right: 0px;
+    top: 5px;
+    color: #636D75;
+}
+.display {
+    display: none;
+}
