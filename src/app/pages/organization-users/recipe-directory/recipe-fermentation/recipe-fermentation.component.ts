@@ -279,6 +279,7 @@ export class RecipeFermentationComponent implements OnInit {
 
 
       if (data.yeast != null) {
+        
         this.yeastArray.controls.forEach(fields => {
           fields.get('name').setValue(data.yeast.name);
           fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
@@ -426,13 +427,14 @@ export class RecipeFermentationComponent implements OnInit {
   }
 
   saveFermentation() {
+    
     if (this.singleRecipeDetails && this.recipeFermentationForm.valid && this.recipeFermentationForm.dirty) {
 
       this.yeastArray.controls.map(field => {
         this.singleRecipeDetails.yeastStrainId = field.get('yeastStrainId').value;
       });
       const fermentationTargets = JSON.stringify(this.recipeFermentationForm.get('fermentationTargets').value).replace(/^\[|]$/g, '');
-      this.singleRecipeDetails.fermentationTargets = (JSON.parse(fermentationTargets));
+      this.singleRecipeDetails.fermentationTargets = JSON.parse(fermentationTargets);
 
       const diacetylrest = JSON.stringify(this.recipeFermentationForm.get('diacetylRest').value).replace(/^\[|]$/g, '');
       this.singleRecipeDetails['diacetylRest'] = (JSON.parse(diacetylrest));

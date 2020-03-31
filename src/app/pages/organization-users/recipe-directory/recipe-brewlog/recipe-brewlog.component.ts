@@ -46,6 +46,7 @@ export class RecipeBrewlogComponent implements OnInit {
   tempUnitIdFromDb: any;
   preferedTempUnit: any;
   pageHeader: string;
+  
 
   constructor(private apiService: ApiProviderService,
     private formBuilder: FormBuilder,
@@ -82,11 +83,12 @@ export class RecipeBrewlogComponent implements OnInit {
   }
 
   ngOnInit() {
+  
     this.id = Guid.raw();
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    if (sessionStorage.preferenceUsed != undefined && sessionStorage.preferenceUsed !== null) {
+    if (sessionStorage.preferenceUsed !== undefined && sessionStorage.preferenceUsed !== null) {
       this.preference = JSON.parse(sessionStorage.preferenceUsed);
     }
     if (sessionStorage.page === 'edit') {
@@ -120,9 +122,12 @@ export class RecipeBrewlogComponent implements OnInit {
   }
 
   findUnits() {
+ 
     if (this.units !== null) {
       this.units.forEach(element => {
-        if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
+
+
+        if (!this.tempUnitIdFromDb && element.id === '3545a3b4-bf2e-4b94-a06e-5eea613f0e64') {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.id;
         }
@@ -130,7 +135,7 @@ export class RecipeBrewlogComponent implements OnInit {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.id;
         }
-        if (!this.platoUnitIdFromDb && element.id === this.preference.gravityMeasurementId) {
+        if (!this.platoUnitIdFromDb && element.id === '0b1cc404-b982-451a-85b3-8fec59baf09a') {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
         }
@@ -162,14 +167,15 @@ export class RecipeBrewlogComponent implements OnInit {
           this.singleRecipeDetails.conditioningTargets.platoUnitId ||
           this.singleRecipeDetails.diacetylRest.platoUnitId ||
           this.singleRecipeDetails.fermentationTargets.platoUnitId;
-
-        if (this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
-          this.singleRecipeDetails.mashingTargets.mashingTargetTemperature[0].temperatureUnitTypeId
-        ) {
-          this.tempUnitIdFromDb = this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
-            this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
-        }
       }
+
+      if (this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
+        this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId
+      ) {
+        this.tempUnitIdFromDb = this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
+          this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
+      }
+
       this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { // commit status
@@ -181,6 +187,7 @@ export class RecipeBrewlogComponent implements OnInit {
   }
 
   initiateFormArrays() {
+    
     if (!sessionStorage.RecipeId) {
       const sparges = (this.brewLogForm.get('sparges') as FormArray);
       this.addSparge();
@@ -248,14 +255,15 @@ export class RecipeBrewlogComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
-        sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
-      }
+      sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
+    }
     }, error => {
       this.toast.danger(error.error.Message);
     })
   }
 
   setValueToEdit(data) {
+   
     if (data) {
       if (data.sparges != null) {
         let spargeFlag = true;
@@ -290,7 +298,7 @@ export class RecipeBrewlogComponent implements OnInit {
         this.whirlpoolTargetArray.controls.forEach(fields => {
           fields.get('id').setValue(data.whirlpoolTarget.id);
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
-          fields.get('postBoilVolumeunitId').setValue(data.whirlpoolTarget.postBoilVolumeunitId);
+          fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
         });
       }
@@ -313,11 +321,12 @@ export class RecipeBrewlogComponent implements OnInit {
     control.push(
       this.formBuilder.group({
         id: [this.id],
-        receipeId: [this.recipeId],
+        recipeId: [this.recipeId],
         boilLength: ['', Validators.required],
         boilLengthUnitId: ['944db4fe-e508-43a6-b599-e11556cfc844'],
         volumePreBoil: ['', Validators.required],
-        volumePreBoilUnitId: ['d9d14065-4034-4c37-b433-4d28fdda761a', Validators.required],
+        // volumePreBoilUnitId: ['d9d14065-4034-4c37-b433-4d28fdda761a', Validators.required],
+        volumePreBoilUnitId: ['d9d14065-4034-4c37-b433-4d28fdda761a'],
         volumePostBoil: ['', Validators.required],
         volumePostBoilUnitId: ['d9d14065-4034-4c37-b433-4d28fdda761a', Validators.required],
         plato: ['', this.validateGravity],
@@ -364,7 +373,7 @@ export class RecipeBrewlogComponent implements OnInit {
         id: [this.id],
         recipeId: [this.recipeId],
         postBoilVolume: ['', Validators.required],
-        postBoilVolumeunitId: ['58c07c47-a13e-4464-bec8-628fe11f027a', Validators.required],
+        postBoilVolumeUnitId: ['58c07c47-a13e-4464-bec8-628fe11f027a', Validators.required],
         notes: [''],
         isActive: [true],
         createdDate: ['2019-01-01T00:00:00'],
@@ -390,6 +399,7 @@ export class RecipeBrewlogComponent implements OnInit {
   }
 
   saveBrewLog() {
+    
     this.formSubmitted = true;
     if (this.singleRecipeDetails && this.brewLogForm.valid || this.removeStatus && this.brewLogForm.valid) {
 

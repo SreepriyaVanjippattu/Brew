@@ -94,6 +94,7 @@ export class RecipeMashformComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
+    
     this.page = this.route.snapshot.url[0].path;
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);

@@ -104,7 +104,7 @@
                                                 <input type="number" class="form-control" id="pre-boil"
                                                     placeholder="Volume Pre Boil" formControlName="volumePreBoil">
                                                 <select class="form-control input-dropdown"
-                                                    formControlName="volumePreBoilUnitId">
+                                                   >
                                                     <ng-container *ngFor="let unit of units">
                                                         <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
                                                             {{unit.symbol}}</option>
@@ -364,7 +364,7 @@
                                             </select>
                                         </div>
                                         <div *ngIf="formSubmitted">
-                                            <div *ngIf="whirlpool.get('postBoilVolume').invalid || whirlpool.get('postBoilVolumeunitId').invalid"
+                                            <div *ngIf="whirlpool.get('postBoilVolume').invalid || whirlpool.get('postBoilVolumeunitId').invalid "
                                                 class="valid-error">
                                                 Post Boil Volume and Unit is required
                                             </div>
