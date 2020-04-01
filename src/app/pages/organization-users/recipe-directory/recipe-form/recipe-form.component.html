@@ -44,7 +44,7 @@
                             <div class='multiple-input'>
                                 <input type="text" class="form-control" placeholder="Batch Size" id="batchSize"
                                     formControlName="batchSize">
-                                <select class="form-control input-dropdown" formControlName="BatchSizeUnitId"
+                                <select class="form-control input-dropdown" formControlName="batchSizeUnitId"
                                     id="batchSizeUnitId">
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
@@ -89,7 +89,7 @@
                                     <label>Name
                                         <i class="material-icons star-ico l-mandatory"> star </i>
                                     </label>
-                                    <input type="text" value="{{maltGrainBills.value.Name}}" class="form-control"
+                                    <input type="text" value="{{maltGrainBills.value.name}}" class="form-control"
                                         placeholder="Name" id="Name" formControlName="name">
                                 </div>
                                 <div class="form-group col-md-3">
@@ -126,9 +126,9 @@
                                         <i class="material-icons star-ico l-mandatory"> star </i>
                                     </label>
                                     <div class='multiple-input'>
-                                        <input type="text" value="{{maltGrainBills.value.Quantity}}" class="form-control"
+                                        <input type="text" value="{{maltGrainBills.value.quantity}}" class="form-control"
                                             placeholder="Quantity" id="Quantity" formControlName="quantity">
-                                        <select class="form-control input-dropdown" formControlName="QuantityUnitId"
+                                        <select class="form-control input-dropdown" formControlName="quantityUnitId"
                                             id="QuantityUnitId">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -138,18 +138,18 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>% of Grain Bill</label>
-                                    <input type="number" value="{{maltGrainBills.value.GrainBillPercentage}}"
+                                    <input type="number" value="{{maltGrainBills.value.grainBillPercentage}}"
                                         class="form-control" placeholder="% of Grain Bill" id="GrainBillPercentage"
                                         formControlName="grainBillPercentage">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>SRM</label>
-                                    <input type="number" value="{{maltGrainBills.value.Srm}}" class="form-control"
+                                    <input type="number" value="{{maltGrainBills.value.srm}}" class="form-control"
                                         placeholder="SRM" id="Srm" formControlName="srm">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>Potential</label>
-                                    <input type="number" value="{{maltGrainBills.value.Potential}}" class="form-control"
+                                    <input type="number" value="{{maltGrainBills.value.potential}}" class="form-control"
                                         placeholder="Potential" id="Potential" formControlName="potential">
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                                             formControlName="cacl2">
                                         <select class="form-control input-dropdown" formControlName="cacl2unitId">
                                             <option disabled value="">Select</option>
-                                            <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </select>
 
@@ -344,10 +344,10 @@
                                             placeholder="Time In" formControlName="timeIn">
 
                                         <select formControlName="timeInUnitId" class="form-control input-dropdown">
-                                            <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.id">
+                                            <!-- <ng-container *ngFor="let unit of units"> -->
+                                                <option *ngFor="let unit of units" [value]="unit.id">
                                                     {{unit.symbol}}</option>
-                                            </ng-container>
+                                            <!-- </ng-container> -->
                                         </select>
                                     </div>
                                 </div>
@@ -420,12 +420,12 @@
                                         <input type="number" class="form-control" id="brewrrun-Quantity"
                                             placeholder="Time In" formControlName="timeIn">
 
-                                        <select formControlName="timeInUnitId" class="form-control input-dropdown">
-                                            <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
-                                            </ng-container>
-                                        </select>
+                                            <select formControlName="timeInUnitId" class="form-control input-dropdown">
+                                                <!-- <ng-container *ngFor="let unit of units"> -->
+                                                    <option *ngFor="let unit of units" [value]="unit.id">
+                                                        {{unit.symbol}}</option>
+                                                <!-- </ng-container> -->
+                                            </select>
                                     </div>
                                 </div>
                             </div>
@@ -530,7 +530,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="BoilLength"
                                             placeholder="Boil Length (mins)" formControlName="boilLength">
-                                        <select formControlName="BoilLengthUnitId" class="form-control input-dropdown">
+                                        <select formControlName="boilLengthUnitId" class="form-control input-dropdown">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
                                             </option>
@@ -542,7 +542,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="VolumePreBoil"
                                             placeholder="Volume Pre Boil" formControlName="volumePreBoil">
-                                        <select formControlName="VolumePreBoilUnitId"
+                                        <select formControlName="volumePreBoilUnitId"
                                             class="form-control input-dropdown">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -557,7 +557,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="VolumePostBoil"
                                             placeholder="Volume Post Boil" formControlName="volumePostBoil">
-                                        <select formControlName="VolumePostBoilUnitId"
+                                        <select formControlName="volumePostBoilUnitId"
                                             class="form-control input-dropdown">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -607,10 +607,12 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="SpargeTotalVolume"
                                             placeholder="Sparge Total Volume" formControlName="spargeTotalVolume">
-                                        <select class="form-control input-dropdown">
-                                            <option *ngFor="let SpargeTotalVolumeOption of SpargeTotalVolumeOptions ">
+                                        <select class="form-control input-dropdown" formControlname="spargeTotalVolumeUnitId">
+                                            <!-- <option *ngFor="let SpargeTotalVolumeOption of SpargeTotalVolumeOptions ">
                                                 {{SpargeTotalVolumeOption}}
-                                            </option>
+                                            </option> -->
+                                                <option *ngFor="let unit of units" [value]="unit.id">
+                                                    {{unit.symbol}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -654,7 +656,7 @@
                                         <input type="number" class="form-control" id="PostBoilVolume"
                                             placeholder="Post Boil Volume" formControlName="postBoilVolume">
                                         <select class="form-control input-dropdown"
-                                        formControlName="PostBoilVolumeunitId" id="QuantityUnitTypeId">
+                                        formControlName="postBoilVolumeUnitId" id="QuantityUnitTypeId">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
                                             </option>
@@ -688,7 +690,7 @@
                                         <input type="text" class="form-control" id="VolumeInFermentation"
                                             placeholder="Volume in Fermenter" formControlName="volumeInFermentation">
                                         <select class="form-control input-dropdown"
-                                        formControlName="VolumeInFermentationOptionId"
+                                        formControlName="volumeInFermentationOptionId"
                                         id="VolumeInFermentationOptionId" >
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -720,7 +722,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="VolumeIn" placeholder="Volume In"
                                             formControlName="volumeIn">
-                                        <select class="form-control input-dropdown" formControlName="VolumeInUnitId"
+                                        <select class="form-control input-dropdown" formControlName="volumeInUnitId"
                                         id="VolumeInUnitId">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -733,7 +735,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="Temperature"
                                             placeholder="Temperature" formControlName="temperature">
-                                        <select class="form-control input-dropdown" formControlName="TemperatureUnitId"
+                                        <select class="form-control input-dropdown" formControlName="temperatureUnitId"
                                         id="TemperatureUnitId">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -774,7 +776,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="recipe-temp"
                                             placeholder="Temperature" formControlName="temperature">
-                                        <select class="form-control input-dropdown" formControlName="TemperatureUnitId"
+                                        <select class="form-control input-dropdown" formControlName="temperatureUnitId"
                                         id="TemperatureUnitId">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -800,7 +802,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="recipe-duration"
                                             placeholder="Time Duration" formControlName="timeDuration">
-                                        <select class="form-control input-dropdown" formControlName="TimeDurationUnitId"
+                                        <select class="form-control input-dropdown" formControlName="timeDurationUnitId"
                                         id="VolumeInUnitId" >
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -875,7 +877,7 @@
                                         <input type="number" class="form-control" id="recipe-volumein"
                                             placeholder="Volume In" formControlName="volumeIn">
                                         <select class="form-control input-dropdown" 
-                                        formControlName="VolumeInUnitId"
+                                        formControlName="volumeInUnitId"
                                         id="VolumeInUnitId" >
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
@@ -914,7 +916,7 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="recipe-CO2" placeholder="CO2"
                                             formControlName="co2">
-                                        <select class="form-control input-dropdown" formControlName="Co2UnitId">
+                                        <select class="form-control input-dropdown" formControlName="co2UnitId">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
                                             </option>

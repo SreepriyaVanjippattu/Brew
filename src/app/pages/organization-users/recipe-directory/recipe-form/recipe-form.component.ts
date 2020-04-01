@@ -507,7 +507,7 @@ export class RecipeFormComponent implements OnInit {
         volumePostBoil: [''],
         volumePostBoilUnitId: [''],
         plato: [''],
-        Gravity: [''],
+        gravity: [''],
         ph: [''],
         notes: [''],
         isActive: [true],
@@ -593,7 +593,7 @@ export class RecipeFormComponent implements OnInit {
   }
 
   addAdditionalAdjuncts() {
-    const control = <FormArray>this.recipeDetailsForm.controls['AdditionalAdjuncts'];
+    const control = <FormArray>this.recipeDetailsForm.controls['additionalAdjuncts'];
     control.push(
       this.formBuilder.group({
         id: [Guid.raw()],

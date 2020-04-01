@@ -86,6 +86,7 @@ export class RecipeMashformComponent implements OnInit {
   removeStatus: boolean = false;
   tempUnitIdFromDb: any;
   preferedTempUnit: any;
+  styleName: any;
 
   constructor(private apiService: ApiProviderService,
     private formBuilder: FormBuilder,
@@ -94,7 +95,6 @@ export class RecipeMashformComponent implements OnInit {
     private route: ActivatedRoute) { }
 
   ngOnInit() {
-    
     this.page = this.route.snapshot.url[0].path;
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
@@ -142,13 +142,14 @@ export class RecipeMashformComponent implements OnInit {
       this.suppliers = JSON.parse(sessionStorage.suppliers);
       this.units = JSON.parse(sessionStorage.unitTypes);
     }
+    this.findUnits();
     this.initiateFormArrays();
-    // this.getPreferenceUsed();
   }
 
   findUnits() {
     this.units.forEach(element => {
-      if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
+      if ((!this.tempUnitIdFromDb && element.id === '2881d968-1c0e-4ca2-9819-c15b0dd7924d') ||
+        (!this.tempUnitIdFromDb && element.id === '3545a3b4-bf2e-4b94-a06e-5eea613f0e64')) {
         this.preferedUnit = element.symbol;
         this.preferedTempUnit = element.id;
       }
@@ -159,20 +160,13 @@ export class RecipeMashformComponent implements OnInit {
     });
   }
 
-  // getPreferenceUsed() {
-  //   const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
-  //   this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
-  //     if (response.status === 200) {
-  //       this.preference = response['body'];
-  //       sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
-  //       this.findUnits();
-  //       this.initiateFormArrays();
-  //     }
-  //   }, error => {
-  //     this.toast.warning('Your Preference Settings', 'Check');
-  //   });
-  // }
-
+  styleChange() {
+    let styleId = this.recipeMashForm.value.styleId;
+    for (let i = 0; i < this.styles.length; i++) {
+      if (styleId == this.styles[i].id)
+        this.styleName = this.styles[i].name;
+    }
+  }
 
   getRecipeDetailsById(recipeId) {
     this.apiService.getDataList(this.apiService.getRecipebyId, null, null, this.tenantId, recipeId).subscribe(response => {
@@ -189,6 +183,7 @@ export class RecipeMashformComponent implements OnInit {
         this.preference = JSON.parse(sessionStorage.preferenceUsed);
       }
       this.findUnits();
+      this.styleName = this.singleRecipeDetails.styleName;
       this.statusId = this.singleRecipeDetails.statusId;
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { // commit status
         // disable save and commit
@@ -257,7 +252,7 @@ export class RecipeMashformComponent implements OnInit {
       this.toast.danger(error.error.Message);
     });
   }
-  
+
   getUnitTypes() {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
@@ -335,7 +330,7 @@ export class RecipeMashformComponent implements OnInit {
         strikeWaterTemperature: ['', [Validators.required]],
         strikeWaterTemperatureUnitTypeId: [this.preferedTempUnit],
         mashpH: ['', [Validators.required]],
-        liquortogristratio: [''],
+        liquortoGristrRatio: [''],
         temperature: [this.showMultiTemps, [Validators.required]],
         isActive: [null],
         createdDate: ['2019-01-01T00:00:00'],
@@ -529,9 +524,9 @@ export class RecipeMashformComponent implements OnInit {
         }
       }
 
-      if (data.maltGrainBill != null) {
-        for (let i = 0; i < data.maltGrainBill.length; i++) {
-          this.maltBillArray.insert(i, this.formBuilder.group(data.maltGrainBill[i]));
+      if (data.maltGrainBills != null) {
+        for (let i = 0; i < data.maltGrainBills.length; i++) {
+          this.maltBillArray.insert(i, this.formBuilder.group(data.maltGrainBills[i]));
         }
       }
       if (data.recipeNotes != null) {
@@ -551,7 +546,7 @@ export class RecipeMashformComponent implements OnInit {
           fields.get('strikeWaterTemperature').setValue(data.mashingTargets.strikeWaterTemperature);
           fields.get('strikeWaterTemperatureUnitTypeId').setValue(data.mashingTargets.strikeWaterTemperatureUnitTypeId);
           fields.get('mashpH').setValue(data.mashingTargets.mashpH);
-          fields.get('liquortogristratio').setValue(data.mashingTargets.liquortogristratio);
+          fields.get('liquortoGristrRatio').setValue(data.mashingTargets.liquortoGristrRatio);
           fields.get('temperature').setValue(data.mashingTargets.temperature);
           fields.get('isActive').setValue(data.mashingTargets.isActive);
 
@@ -644,6 +639,7 @@ export class RecipeMashformComponent implements OnInit {
   }
 
   saveMashinForm() {
+debugger;
     if (formData && this.recipeMashForm.valid || this.removeStatus && this.recipeMashForm.valid) {
       this.recipeMashForm.get('id').setValue(this.recipeId);
 
@@ -652,7 +648,7 @@ export class RecipeMashformComponent implements OnInit {
         formData.kettleTargets = this.singleRecipeDetails.kettleTargets;
         formData.sparges = this.singleRecipeDetails.sparges;
         formData.whirlpoolTarget = this.singleRecipeDetails.whirlpoolTarget;
-        formData.coolingKnockoutTargets = this.singleRecipeDetails.coolingKnockoutTarget;
+        formData.coolingKnockoutTarget = this.singleRecipeDetails.coolingKnockoutTarget;
         formData.fermentationTargets = this.singleRecipeDetails.fermentationTargets;
         formData.diacetylRest = this.singleRecipeDetails.diacetylRest;
         formData.aging = this.singleRecipeDetails.aging;
@@ -665,6 +661,7 @@ export class RecipeMashformComponent implements OnInit {
       formData.id = this.recipeId;
       formData.name = this.recipeMashForm.value.receipeName;
       formData.styleId = this.recipeMashForm.value.styleId;
+      formData.styleName = this.styleName;
       formData.batchSize = this.recipeMashForm.value.batchSize;
       formData.batchSizeUnitId = this.recipeMashForm.value.batchSizeUnitId;
       formData.brewHouseEfficiency = this.recipeMashForm.value.brewHouseEfficiency;
@@ -682,7 +679,7 @@ export class RecipeMashformComponent implements OnInit {
           element.id = Guid.raw();
         }
       });
-      formData.maltGrainBill = maltbill;
+      formData.maltGrainBills = maltbill;
 
       //  Water Additions
       const wateradditions = (this.recipeMashForm.get('waterAdditions').value);
@@ -763,7 +760,7 @@ export class RecipeMashformComponent implements OnInit {
             }
           }
         }, error => {
-          this.toast.danger(error);
+          this.toast.danger(error.message);
         });
       }
       else {
@@ -789,7 +786,7 @@ export class RecipeMashformComponent implements OnInit {
             }
           }
         }, error => {
-          this.toast.danger(error);
+          this.toast.danger(error.message);
         });
       }
     }
@@ -799,7 +796,7 @@ export class RecipeMashformComponent implements OnInit {
 
     if (mashForm.get('tempSingle').value === 'single') {
       this.showMultiTemps = false;
-      mashForm.get('Temperature').setValue(this.showMultiTemps);
+      mashForm.get('temperature').setValue(this.showMultiTemps);
       let i = 0;
       i++;
       while (i < control.length) {
@@ -807,7 +804,7 @@ export class RecipeMashformComponent implements OnInit {
       }
     } else {
       this.showMultiTemps = true;
-      mashForm.get('Temperature').setValue(this.showMultiTemps);
+      mashForm.get('temperature').setValue(this.showMultiTemps);
     }
   }
   removeMashingTargetsTemperature(mashForm, i) {
@@ -823,7 +820,7 @@ export class RecipeMashformComponent implements OnInit {
   showRatio(event, mashins) {
     let ratio = event.target.value;
     ratio = ratio.replace(/[^\d:]/g, '');
-    mashins.get('liquortogristratio').setValue(ratio);
+    mashins.get('liquortoGristrRatio').setValue(ratio);
   }
 
   addNewSupplier() {
