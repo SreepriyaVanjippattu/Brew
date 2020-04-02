@@ -107,7 +107,6 @@ export class RecipeMashformComponent implements OnInit {
     this.getStyles();
     this.getSuppliers();
     this.getUnitTypes();
-    this.getPreferenceUsed();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -139,22 +138,24 @@ export class RecipeMashformComponent implements OnInit {
       if (response.status === 200) {
         this.preference = response['body'].preferenceSettings;
         this.findUnits();
-        this.initiateFormArrays();
       }
     });
   }
 
   findUnits() {
-    this.units.forEach(element => {
-      if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
-        this.preferedUnit = element.symbol;
-        this.preferedTempUnit = element.id;
-      }
-      if (this.tempUnitIdFromDb && element.id === this.tempUnitIdFromDb) {
-        this.preferedUnit = element.symbol;
-        this.preferedTempUnit = element.id;
-      }
-    });
+    if (this.units) {
+      this.units.forEach(element => {
+        if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
+          this.preferedUnit = element.symbol;
+          this.preferedTempUnit = element.id;
+        }
+        if (this.tempUnitIdFromDb && element.id === this.tempUnitIdFromDb) {
+          this.preferedUnit = element.symbol;
+          this.preferedTempUnit = element.id;
+        }
+      });
+    }
+    this.initiateFormArrays();
   }
 
   styleChange() {
@@ -213,8 +214,8 @@ export class RecipeMashformComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -227,8 +228,8 @@ export class RecipeMashformComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -241,8 +242,8 @@ export class RecipeMashformComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -250,12 +251,13 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
+        this.getPreferenceUsed();
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
+        }
+        this.toast.danger(error);
     });
   }
 
