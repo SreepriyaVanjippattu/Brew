@@ -77,7 +77,6 @@ export class RecipeConditioningComponent implements OnInit {
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
     this.getUnitTypes();
-    this.getPreferenceUsed();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -159,7 +158,8 @@ export class RecipeConditioningComponent implements OnInit {
       }
       this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
-      if (this.singleRecipeDetails.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { // commit status
+      if (this.singleRecipeDetails.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { 
+        // commit status
         // disable save and commit
         this.disableSave = true;
       } else {
@@ -172,6 +172,7 @@ export class RecipeConditioningComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
+        this.getPreferenceUsed();
       }
     }, error => {
       this.toast.danger(error.error.message);

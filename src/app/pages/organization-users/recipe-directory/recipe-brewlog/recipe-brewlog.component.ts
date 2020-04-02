@@ -93,7 +93,6 @@ export class RecipeBrewlogComponent implements OnInit {
     this.getMaltTypes();
     this.getSuppliers();
     this.getUnitTypes();
-    this.getPreferenceUsed();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -242,6 +241,7 @@ export class RecipeBrewlogComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
+        this.getPreferenceUsed();
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {

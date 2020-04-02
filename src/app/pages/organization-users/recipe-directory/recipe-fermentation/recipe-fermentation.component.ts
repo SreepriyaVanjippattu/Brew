@@ -92,7 +92,6 @@ export class RecipeFermentationComponent implements OnInit {
     this.getSuppliers();
     this.getYeastStrain();
     this.getUnitTypes();
-    this.getPreferenceUsed();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -190,6 +189,7 @@ export class RecipeFermentationComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
+        this.getPreferenceUsed();
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
