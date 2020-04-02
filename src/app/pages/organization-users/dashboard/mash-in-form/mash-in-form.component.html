@@ -71,25 +71,25 @@
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Brew Run ID</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="Brew Run ID"
-                                        [(ngModel)]="brew.BrewRunId" readonly>
+                                        [(ngModel)]="brewRunMashin.brewRunId" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Brewer</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="Brewer"
-                                        [(ngModel)]="brew.UserName" readonly>
+                                        [(ngModel)]="brewRunMashin.userName" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Tank Name</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="Tank Name"
-                                        [(ngModel)]="brew.TankName" readonly>
+                                        [(ngModel)]="brewRunMashin.tankName" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Recipe</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="Recipe"
-                                        [(ngModel)]="brew.RecipeName" readonly>
+                                        [(ngModel)]="brewRunMashin.recipeName" readonly>
                                 </div>
 
                             </div>
@@ -122,17 +122,17 @@
                     </div>
                     <div [ngbCollapse]="isCollapsed" class="collapse" aria-labelledby="headingTwo">
                         <div class="card-body">
-                            <div *ngFor="let MaltGrainBillDetail of brew.MaltGrainBillDetails; let i = index;">
+                            <div *ngFor="let maltGrainBillDetail of brewRunMashin.maltGrainBillDetails; let i = index;">
                                 <div class="card-sub-section mt-2"> Malt/Grain Bill. {{i+1}}</div>
                                 <div class="form-row">
 
                                     <div for="name" class="form-group col-md-3">
                                         <label for="postal">Name</label>
                                         <select class="form-control input-style input-dropdown" id=""
-                                            [(ngModel)]="brew.MaltGrainBillDetails[i].MaltGrainNameId">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].maltGrainNameId">
 
-                                            <option *ngFor="let maltNames of maltNames" [value]="maltNames.Id">
-                                                {{maltNames.Name}}</option>
+                                            <option *ngFor="let maltNames of maltNames" [value]="maltNames.id">
+                                                {{maltNames.name}}</option>
                                         </select>
                                     </div>
 
@@ -141,7 +141,7 @@
                                         <i class="material-icons  position-absolute cursor-click add-dropicon"
                                             data-toggle="modal" data-target="#typeModal">add_circle_outline</i>
                                         <select class="form-control input-style input-dropdown" id=""
-                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Type">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].type">
 
                                             <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
                                                 {{maltTypes.name}}</option>
@@ -151,7 +151,7 @@
                                     <div for="origin" class="form-group col-md-3">
                                         <label for="postal">Origin</label>
                                         <select class="form-control input-style input-dropdown" id=""
-                                            [(ngModel)]="brew.MaltGrainBillDetails[i].CountryId">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].countryId">
 
                                             <option *ngFor="let countries of countries" [value]="countries.id">
                                                 {{countries.countryName}}</option>
@@ -163,7 +163,7 @@
                                         <i class="material-icons  position-absolute cursor-click add-dropicon"
                                             data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
                                         <select class="form-control input-style input-dropdown" id=""
-                                            [(ngModel)]="brew.MaltGrainBillDetails[i].SupplierId">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].supplierId">
                                             <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
                                                 {{suppliers.name}}</option>
                                         </select>
@@ -174,9 +174,9 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewrrun-quantity"
                                                 placeholder="Quantity"
-                                                [(ngModel)]="brew.MaltGrainBillDetails[i].Quantity">
+                                                [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].quantity">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.MaltGrainBillDetails[i].QuantityUnitTypeId">
+                                                [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].quantityUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -190,25 +190,25 @@
                                         <label for="brewrun-id">% of Grain Bill</label>
                                         <input type="text" class="form-control" id="brewrun-id"
                                             placeholder="% of Grain Bill"
-                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Percentage">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].percentage">
                                     </div>
 
                                     <div class="form-group col-md-3">
                                         <label for="brewrun-id">SRM</label>
                                         <input type="text" class="form-control" id="brewrun-id" placeholder="SRM"
-                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Srm">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].srm">
                                     </div>
 
                                     <div class="form-group col-md-3">
                                         <label for="brewrun-id">Potential</label>
                                         <input type="text" class="form-control" id="brewrun-id" placeholder="Potential"
-                                            [(ngModel)]="brew.MaltGrainBillDetails[i].Potential">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].potential">
                                     </div>
 
 
                                 </div>
                             </div>
-                            <div *ngIf="brew.MaltGrainBillDetails != null" class="col-md-12 d-flex justify-content-end">
+                            <div *ngIf="brewRunMashin.maltGrainBillDetails != null" class="col-md-12 d-flex justify-content-end">
                                 <button type="button" class="btn btn-outline-light l-btn" [ngbCollapse]="isCollapsed"
                                     (click)="onMaltComplete('MaltGrainBill')">
                                     Complete
@@ -244,16 +244,16 @@
                     </div>
                     <div [ngbCollapse]="isCollapsedWater" class="collapse" aria-labelledby="headingThree">
                         <div class="card-body">
-                            <div *ngFor="let WaterAdditionDetail of brew.WaterAdditionDetails; let i = index;">
+                            <div *ngFor="let waterAdditionDetail of brewRunMashin.waterAdditionDetails; let i = index;">
                                 <div class="card-sub-section mt-2"> Water Additions. {{i+1}}</div>
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
                                         <label for="brewrrun-CaCl2">CaCl2</label>
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewrrun-CaCl2"
-                                                placeholder="CaCl2" [(ngModel)]="brew.WaterAdditionDetails[i].Cacl2">
+                                                placeholder="CaCl2" [(ngModel)]="brewRunMashin.waterAdditionDetails[i].cacl2">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].Cacl2UnitId">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].cacl2unitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -267,9 +267,9 @@
                                         <label for="brewerrun-gypsum">Gypsum</label>
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewerrun-gypsum"
-                                                placeholder="Gypsum" [(ngModel)]="brew.WaterAdditionDetails[i].Gypsum">
+                                                placeholder="Gypsum" [(ngModel)]="brewRunMashin.waterAdditionDetails[i].gypsum">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].GypsumUnitId">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].gypsumUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -284,9 +284,9 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewrrun-tablesalt"
                                                 placeholder="Table Salt"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].TableSalt">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].tableSalt">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].TableSaltUnitId">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].tableSaltUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -301,9 +301,9 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewerrun-epsomsalt"
                                                 placeholder="Epsom Salt"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].EpsomSalt">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].epsomSalt">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].EpsomSaltUnitId">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].epsomSaltUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -319,9 +319,9 @@
                                         <label for="brewrrun-CaCO3">CaCO3</label>
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewrrun-CaCO3"
-                                                placeholder="CaCO3" [(ngModel)]="brew.WaterAdditionDetails[i].CaCo3">
+                                                placeholder="CaCO3" [(ngModel)]="brewRunMashin.waterAdditionDetails[i].caCo3">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].CaCo3unitId">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].caCo3unitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -333,16 +333,16 @@
                                     <div class="form-group col-md-3">
                                         <label for="brewrrun-Quantity">Baking Soda Name</label>
                                         <input type="text" class="form-control" id="brewrrun-Quantity"
-                                            [(ngModel)]="brew.WaterAdditionDetails[i].BakingSodaName" placeholder="">
+                                            [(ngModel)]="brewRunMashin.waterAdditionDetails[i].bakingSodaName" placeholder="">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="brewerrun-bakingsoda">Baking Soda</label>
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewerrun-bakingsoda"
                                                 placeholder="Baking Soda"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].BakingSoda">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].bakingSoda">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].BakingSodaUnitId">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].bakingSodaUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -356,9 +356,9 @@
                                         <label for="brewrrun-H3PO4">H3PO4</label>
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewrrun-H3PO4"
-                                                placeholder="H3PO4" [(ngModel)]="brew.WaterAdditionDetails[i].H3po4">
+                                                placeholder="H3PO4" [(ngModel)]="brewRunMashin.waterAdditionDetails[i].h3po4">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.WaterAdditionDetails[i].H3po4unitId">
+                                                [(ngModel)]="brewRunMashin.waterAdditionDetails[i].h3po4unitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -372,7 +372,7 @@
 
                                 </div>
                             </div>
-                            <div *ngIf="brew.WaterAdditionDetails != null" class="col-md-12 d-flex justify-content-end">
+                            <div *ngIf="brewRunMashin.waterAdditionDetails != null" class="col-md-12 d-flex justify-content-end">
                                 <button type="button" class="btn btn-outline-light l-btn"
                                     [ngbCollapse]="isCollapsedWater" (click)="onWaterComplete('WaterAdditions')">
                                     Complete
@@ -411,7 +411,7 @@
                     <div [ngbCollapse]="isCollapsedMashing" class="collapse" aria-labelledby="headingFour"
                         data-parent="#accordionExample">
                         <div class="card-body">
-                            <div *ngFor="let MashingTargetDetail of brew.MashingTargetDetails; let i = index;">
+                            <div *ngFor="let MashingTargetDetail of brewRunMashin.mashingTargetDetails; let i = index;">
                                 <div class="form-row">
 
                                     <div class="col-md-6">
@@ -421,7 +421,7 @@
                                                 <label for="brewrun-id">Start Time</label>
                                                 <input type='hidden' class="form-control" id="mashinStart"
                                                     name="StartTime"
-                                                    [(ngModel)]="brew.MashingTargetDetails[i].StartTime">
+                                                    [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StartTime">
                                                 <input type='text' class="form-control" id="mashinStartTime"
                                                     name="StartTime" [value]="mashinStartTime">
                                             </div>
@@ -434,7 +434,7 @@
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">End Time</label>
                                                 <input type='hidden' class="form-control" id="mashinEnd" name="EndTime"
-                                                    [(ngModel)]="brew.MashingTargetDetails[i].EndTime">
+                                                    [(ngModel)]="brewRunMashin.mashingTargetDetails[i].EndTime">
                                                 <input type='text' class="form-control" id="mashinEndTime"
                                                     name="EndTime" [value]="mashinEndTime">
 
@@ -450,9 +450,9 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewrrun-volume"
                                                 placeholder="Strike Water Volume"
-                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterVolume">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterVolume">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterUnitTypeId">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterUnitTypeId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
@@ -469,9 +469,9 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewerrun-temperature"
                                                 placeholder="Strike Water Temperature"
-                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterTemperature">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterTemperature">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.MashingTargetDetails[i].StrikeWaterTemperatureUnitTypeId">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterTemperatureUnitTypeId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Temperature'" [value]="unit.Id">
@@ -487,13 +487,13 @@
                                     <div class="form-group col-md-6">
                                         <label for="brewrrun-ph">Mash pH</label>
                                         <input type="number" class="form-control" id="brewrrun-ph" placeholder="Mash pH"
-                                            [(ngModel)]="brew.MashingTargetDetails[i].MashpH">
+                                            [(ngModel)]="brewRunMashin.mashingTargetDetails[i].MashpH">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="brewerrun-ratio">Liquor to Grist Ratio</label>
                                         <input type="text" class="form-control" id="brewerrun-liquor"
                                             placeholder="Liquor to Grist Ratio"
-                                            [(ngModel)]="brew.MashingTargetDetails[i].Liquortogristratio">
+                                            [(ngModel)]="brewRunMashin.mashingTargetDetails[i].Liquortogristratio">
                                     </div>
                                 </div>
 
@@ -590,7 +590,7 @@
                         </div>
                         <div [ngbCollapse]="isCollapsedStarch" class="collapse" aria-labelledby="headingFifth">
                             <div class="card-body">
-                                <div class="form-row" *ngFor="let StartchTest of brew.StartchTest; let i = index;">
+                                <div class="form-row" *ngFor="let StartchTest of brewRunMashin.startchTest; let i = index;">
                                     <div class="form-group col-md-6">
 
                                         <div class='custom-radio-wrapper'>
@@ -644,11 +644,11 @@
                             aria-labelledby="headingSix" data-parent="#accordionExample">
                             <div class="card-body">
                                 <div class="form-row meshin-text"
-                                    *ngFor="let MashinDetailsNote of brew.MashinDetailsNotes; let i = index;">
+                                    *ngFor="let MashinDetailsNote of brewRunMashin.mashinDetailsNotes; let i = index;">
                                     <div class="form-group col-md-12">
                                         <textarea type="text" class="form-control" id="meshin-notes"
                                             placeholder="Type Text Here..."
-                                            [(ngModel)]="brew.MashinDetailsNotes[i].Notes"></textarea>
+                                            [(ngModel)]="brewRunMashin.mashinDetailsNotes[i].Notes"></textarea>
                                     </div>
                                 </div>
                             </div>

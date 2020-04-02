@@ -247,7 +247,8 @@ export class ConditionFormComponent implements OnInit {
   }
 
   getRecipeDetailsEdit() {
-    this.apiService.getDataList(this.apiService.getRecipebyId, null, null, this.tenantId, this.recipeId).subscribe(response => {
+    const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, this.recipeId);
+    this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
       if (response && response['body']) {
         this.recipeContent = response['body'];
         this.getConditionTargets(this.recipeContent);

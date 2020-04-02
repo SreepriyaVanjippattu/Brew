@@ -104,7 +104,7 @@
                                                 <input type="number" class="form-control" id="pre-boil"
                                                     placeholder="Volume Pre Boil" formControlName="volumePreBoil">
                                                 <select class="form-control input-dropdown"
-                                                   >
+                                                    formControlName="volumePreBoilUnitId">
                                                     <ng-container *ngFor="let unit of units">
                                                         <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
                                                             {{unit.symbol}}</option>
@@ -147,7 +147,7 @@
                                             <label for="plato">{{preferedPlato}}</label>
                                             <input type="number" class="form-control" id="plato"
                                                 placeholder="{{preferedPlato}}" formControlName="plato">
-                                            <div *ngIf="preferedPlato != 'plato'">
+                                            <div *ngIf="preferedPlato != 'Plato'">
                                                 <div *ngIf="kettleTargets.get('plato').invalid" class="valid-error">
                                                     Range should be from 1 to 1.100
                                                 </div>
@@ -277,7 +277,7 @@
                                                         First Runnings is required
                                                     </div>
                                                 </div>
-                                                <div *ngIf="preferedPlato != 'plato'">
+                                                <div *ngIf="preferedPlato != 'Plato'">
                                                     <div *ngIf="lauter.get('firstRunningPlato').invalid"
                                                         class="valid-error">
                                                         Range should be from 1 to 1.100
@@ -297,7 +297,7 @@
                                                         First Runnings is required
                                                     </div>
                                                 </div>
-                                                <div *ngIf="preferedPlato != 'plato'">
+                                                <div *ngIf="preferedPlato != 'Plato'">
                                                     <div *ngIf="lauter.get('lastRunningPlato').invalid"
                                                         class="valid-error">
                                                         Range should be from 1 to 1.100
@@ -355,7 +355,7 @@
                                             <input type="number" class="form-control" id="post-boil2"
                                                 placeholder="Volume Post Boil" formControlName="postBoilVolume">
                                             <select class="form-control input-dropdown"
-                                                formControlName="postBoilVolumeunitId">
+                                                formControlName="postBoilVolumeUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.category === 'Size'" [value]="unit.id">
@@ -364,7 +364,7 @@
                                             </select>
                                         </div>
                                         <div *ngIf="formSubmitted">
-                                            <div *ngIf="whirlpool.get('postBoilVolume').invalid || whirlpool.get('postBoilVolumeunitId').invalid "
+                                            <div *ngIf="whirlpool.get('postBoilVolume').invalid || whirlpool.get('postBoilVolumeUnitId').invalid "
                                                 class="valid-error">
                                                 Post Boil Volume and Unit is required
                                             </div>
@@ -406,7 +406,7 @@
                         </div>
                         <div [ngbCollapse]="isCollapsedCoolingKnockout" class="collapse" aria-labelledby="headingThree"
                             data-parent="#accordionExample">
-                            <div class="card-body" formArrayName="coolingKnockoutTargets"
+                            <div class="card-body" formArrayName="coolingKnockoutTarget"
                                 *ngFor="let coolingKnockout of coolingKnockoutTargetsArray.controls; let i=index">
                                 <div [formGroupName]="i">
                                     <div class="form-row">
@@ -418,7 +418,8 @@
                                             <div class='multiple-input'>
                                                 <input type="number" class="form-control" id="brewrrun-Quantity"
                                                     placeholder="Quantity" formControlName="volumeInFermentation">
-                                                <select class="form-control input-dropdown">
+                                                <select class="form-control input-dropdown"
+                                                    formControlName="volumeInFermentationOptionId">
 
                                                     <ng-container *ngFor="let unit of units">
                                                         <option *ngIf="unit.category === 'Volume'" [value]="unit.id">

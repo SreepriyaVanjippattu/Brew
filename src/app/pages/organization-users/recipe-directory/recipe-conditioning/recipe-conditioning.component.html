@@ -86,7 +86,7 @@
                         <select formControlName="volumeInUnitId" class="form-control input-dropdown">
                           <option disabled value="">Select</option>
                           <ng-container *ngFor="let unit of units">
-                            <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">{{unit.Symbol}}</option>
+                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}</option>
                           </ng-container>
                         </select>
                       </div>
@@ -116,7 +116,7 @@
                       <label for="recipe-spcplato">{{preferedPlato}}</label>
                       <input type="number" class="form-control" id="recipe-spcplato" placeholder="{{preferedPlato}}"
                         formControlName="plato">
-                      <div *ngIf="preferedPlato !== 'plato'">
+                      <div *ngIf="preferedPlato !== 'Plato'">
                         <div *ngIf="conditions.get('plato').invalid" class="valid-error">
                           Range should be from 1 to 1.100
                         </div>
@@ -131,7 +131,7 @@
                         <select formControlName="co2UnitId" class="form-control input-dropdown">
 
                           <ng-container *ngFor="let unit of units">
-                            <option *ngIf="unit.category === 'Pressure'" [value]="unit.Id">{{unit.symbol}}</option>
+                            <option *ngIf="unit.category === 'Pressure'" [value]="unit.id">{{unit.symbol}}</option>
                           </ng-container>
                         </select>
                       </div>

@@ -3,6 +3,7 @@ export const formData = {
     'id': '',
     'name': '',
     'styleId': '',
+    'styleName': '',
     'totalBrews': 0,
     'batchSize': 0,
     'batchSizeUnitId': '',
@@ -13,10 +14,11 @@ export const formData = {
     'modifiedDate': '2019-01-01T00:00:00',
     'yeastStrainId': '',
     'statusId': '966F3F12-E4E4-45EA-A6BF-3AE312BE0CCB',
+    'statusName': '',
     'tenantId': '',
     'isActive': true,
     'isRecipeFavourite': false,
-    'maltGrainBill': [
+    'maltGrainBills': [
 
     ],
     'waterAdditions': [
@@ -44,7 +46,7 @@ export const formData = {
     'whirlpoolTarget': {
 
     },
-    'coolingKnockoutTargets': {
+    'coolingKnockoutTarget': {
 
     },
     'fermentationTargets': {

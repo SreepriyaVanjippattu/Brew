@@ -344,10 +344,10 @@
                                             placeholder="Time In" formControlName="timeIn">
 
                                         <select formControlName="timeInUnitId" class="form-control input-dropdown">
-                                            <!-- <ng-container *ngFor="let unit of units"> -->
-                                                <option *ngFor="let unit of units" [value]="unit.id">
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.id">
                                                     {{unit.symbol}}</option>
-                                            <!-- </ng-container> -->
+                                            </ng-container>
                                         </select>
                                     </div>
                                 </div>
@@ -420,12 +420,12 @@
                                         <input type="number" class="form-control" id="brewrrun-Quantity"
                                             placeholder="Time In" formControlName="timeIn">
 
-                                            <select formControlName="timeInUnitId" class="form-control input-dropdown">
-                                                <!-- <ng-container *ngFor="let unit of units"> -->
-                                                    <option *ngFor="let unit of units" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
-                                                <!-- </ng-container> -->
-                                            </select>
+                                        <select formControlName="timeInUnitId" class="form-control input-dropdown">
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.id">
+                                                    {{unit.symbol}}</option>
+                                            </ng-container>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -607,12 +607,10 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="SpargeTotalVolume"
                                             placeholder="Sparge Total Volume" formControlName="spargeTotalVolume">
-                                        <select class="form-control input-dropdown" formControlname="spargeTotalVolumeUnitId">
-                                            <!-- <option *ngFor="let SpargeTotalVolumeOption of SpargeTotalVolumeOptions ">
+                                        <select class="form-control input-dropdown">
+                                            <option *ngFor="let SpargeTotalVolumeOption of SpargeTotalVolumeOptions ">
                                                 {{SpargeTotalVolumeOption}}
-                                            </option> -->
-                                                <option *ngFor="let unit of units" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>

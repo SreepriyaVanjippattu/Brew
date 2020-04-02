@@ -31,6 +31,8 @@ export class ApiProviderService {
   getBrewDetailsById = 'brewrun/v1/brewers/{0}/brewrun/{1}/details';
   editBrewRun = "brewrun/v1/brewers/{0}/brewrun/{1}"
   getAllArchievedBrewRun = 'brewrun/v1/brewers/{0}/brewrun/archived';
+  getBrewRunMashinMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/mashin/masterdetails'
+  getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
 
 
 
@@ -85,7 +87,7 @@ export class ApiProviderService {
 
   // recipe
   getAllRecipeByTenant = 'brewrun/v1/brewers/recipe/{0}';
-  getRecipebyId = 'brewrun/v1/brewers/recipe';
+  getRecipebyId = 'brewrun/v1/brewers/recipe/{0}/{1}';
   addRecipe = 'brewrun/v1/brewers/{0}/recipe/';
   saveEditedRecipe = 'brewrun/v1/brewers/{0}/recipe/{1}';
   commitRecipe = 'brewrun/v1/brewers/{0}/recipe/{1}/commit';
@@ -116,9 +118,9 @@ export class ApiProviderService {
   postEmail = 'ForgotPasswordLink';
 
 
-  addStyle = 'AddStyle';
-  addType = 'AddMaltGrainType';
-  addSupplier = 'AddSupplier';
+  addStyle = 'brewrun/v1/brewers/{0}/style/';
+  addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
+  addSupplier = 'brewrun/v1/brewers/{0}/supplier/';
 
   logoutApi = 'Logout';
 

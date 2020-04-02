@@ -72,7 +72,7 @@ export class RecipeConditioningComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.preference = JSON.parse(sessionStorage.getItem(''));
+    this.preference = JSON.parse(sessionStorage.preferenceUsed);
     this.units = JSON.parse(sessionStorage.getItem('unitTypes'));
     this.recipeId = sessionStorage.RecipeId;
     if (sessionStorage.page === 'edit') {
@@ -98,21 +98,21 @@ export class RecipeConditioningComponent implements OnInit {
   findUnits() {
     if (this.units !== null) {
       this.units.forEach(element => {
-        if (!this.tempUnitIdFromDb && element.Id === this.preference.TemperatureId) {
-          this.preferedUnit = element.Symbol;
-          this.preferedTempUnit = element.Id;
+        if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
+          this.preferedUnit = element.symbol;
+          this.preferedTempUnit = element.id;
         }
-        if (this.tempUnitIdFromDb && element.Id === this.tempUnitIdFromDb) {
-          this.preferedUnit = element.Symbol;
-          this.preferedTempUnit = element.Id;
+        if (this.tempUnitIdFromDb && element.id === this.tempUnitIdFromDb) {
+          this.preferedUnit = element.symbol;
+          this.preferedTempUnit = element.id;
         }
-        if (!this.platoUnitIdFromDb && element.Id === this.preference.GravityMeasurementId) {
-          this.preferedPlato = element.Name;
-          this.platoUnitId = element.Id;
+        if (!this.platoUnitIdFromDb && element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
         }
-        if (this.platoUnitIdFromDb && element.Id === this.platoUnitIdFromDb) {
-          this.preferedPlato = element.Name;
-          this.platoUnitId = element.Id;
+        if (this.platoUnitIdFromDb && element.id === this.platoUnitIdFromDb) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
         }
         if (this.preferedPlato === 'Plato') {
           this.validateGravity = [];
@@ -125,7 +125,8 @@ export class RecipeConditioningComponent implements OnInit {
   }
 
   getRecipeDetailsById(recipeId) {
-    this.apiService.getDataList(this.apiService.getRecipebyId, null, null, this.tenantId, recipeId).subscribe(response => {
+    const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, recipeId);
+    this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
       this.singleRecipeDetails = response['body'].recipe;
       if (this.singleRecipeDetails.kettleTargets.platoUnitId || this.singleRecipeDetails.sparges.length !== 0 &&
         this.singleRecipeDetails.sparges[0].platoUnitId ||
@@ -281,50 +282,27 @@ export class RecipeConditioningComponent implements OnInit {
       const carbonationtargets = JSON.stringify(this.recipeConditioningForm.get('carbonationTargets').value).replace(/^\[|]$/g, '');
       this.singleRecipeDetails.carbonationTargets = (JSON.parse(carbonationtargets));
 
-      if (sessionStorage.page === 'edit') {
-        const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
-        this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
-          if (response.status === 200) {
-            if (this.formSubmitted) {
-              this.router.navigate(['app/recipes']);
-            }
-            if (this.mashinClicked) {
-              this.router.navigate(['app/recipes/recipe-mashin']);
-            }
-            if (this.brewlogClicked) {
-              this.router.navigate(['/app/recipes/recipe-brewlog']);
-            }
-            if (this.fermentationClicked) {
-              this.router.navigate(['app/recipes/recipe-fermentation']);
-            }
-            if (this.conditioningClicked) {
-              this.router.navigate(['app/recipes/recipe-conditioning']);
-            }
+      const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
+      this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
+        if (response.status === 200) {
+          if (this.formSubmitted) {
+            this.router.navigate(['app/recipes']);
           }
-        });
-      }
-      else {
-        const addRecipeAPI = String.Format(this.apiService.addRecipe, this.tenantId);
-        this.apiService.postData(addRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
-          if (response.status === 200) {
-            if (this.formSubmitted) {
-              this.router.navigate(['app/recipes']);
-            }
-            if (this.mashinClicked) {
-              this.router.navigate(['app/recipes/recipe-mashin']);
-            }
-            if (this.brewlogClicked) {
-              this.router.navigate(['/app/recipes/recipe-brewlog']);
-            }
-            if (this.fermentationClicked) {
-              this.router.navigate(['app/recipes/recipe-fermentation']);
-            }
-            if (this.conditioningClicked) {
-              this.router.navigate(['app/recipes/recipe-conditioning']);
-            }
+          if (this.mashinClicked) {
+            this.router.navigate(['app/recipes/recipe-mashin']);
           }
-        });
-      }
+          if (this.brewlogClicked) {
+            this.router.navigate(['/app/recipes/recipe-brewlog']);
+          }
+          if (this.fermentationClicked) {
+            this.router.navigate(['app/recipes/recipe-fermentation']);
+          }
+          if (this.conditioningClicked) {
+            this.router.navigate(['app/recipes/recipe-conditioning']);
+          }
+        }
+      });
+
     } else {
       if (this.mashinClicked) {
         this.router.navigate(['app/recipes/recipe-mashin']);

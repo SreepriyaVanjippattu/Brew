@@ -149,7 +149,7 @@
                           Required
                         </div>
                       </div>
-                      <div *ngIf="preferedPlato != 'plato'">
+                      <div *ngIf="preferedPlato != 'Plato'">
                         <div *ngIf="ferment.get('plato').invalid" class="valid-error">
                           Range should be from 1 to 1.100
                         </div>
@@ -210,7 +210,7 @@
                         Required
                       </div>
                     </div>
-                    <div *ngIf="preferedPlato != 'plato'">
+                    <div *ngIf="preferedPlato != 'Plato'">
                       <div *ngIf="diacetyl.get('plato').invalid" class="valid-error">
                         Range should be from 1 to 1.100
                       </div>
@@ -257,7 +257,7 @@
                       <select formControlName="timeDurationUnitId" class="form-control input-dropdown">
                         <option disabled value="">Select</option>
                         <ng-container *ngFor="let unit of units">
-                          <option *ngIf="unit.category === 'Days'" [value]="unit.Id">{{unit.symbol}}</option>
+                          <option *ngIf="unit.category === 'Days'" [value]="unit.id">{{unit.symbol}}</option>
                         </ng-container>
                       </select>
                     </div>

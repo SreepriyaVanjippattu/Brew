@@ -1,5 +1,24 @@
 import { Guid } from 'guid-typescript';
 
+export class BrewRunMashin {
+    id: string;
+    brewRunId: string;
+    tenantId: string;
+    recipeId :string;
+    recipeName : string;
+    userId : string;
+    userName : string;
+    tankId:string;
+    tankName:string;
+
+    maltGrainBillDetails: MaltGrainBillDetail[];
+    waterAdditionDetails: WaterAdditionDetail[];
+    mashingTargetDetails: MashingTargetDetail[];
+    startchTest: StartchTest[];
+    mashinDetailsNotes: MashinDetailsNote[];
+
+}
+
 export class BrewRun {
     Id: string;
     BrewRunId: string;
