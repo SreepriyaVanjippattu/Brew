@@ -53,16 +53,25 @@ export class ListRecipeComponent implements OnInit {
   checkPermission: boolean = false;
   headerValue: any;
   pageControl;
+  recipeStatus: any = [];
 
   constructor(
     private apiService: ApiProviderService,
     private router: Router,
     private route: ActivatedRoute,
     private toast: NbToastrService,
-    private data: DataService,
-
-
-  ) { }
+    private data: DataService
+  ) {
+    this.recipeStatus = [
+      { "statusname": "Pending", "id": "6E7DF31B-5F6A-4029-91E0-5561807164DA" },
+      { "statusname": "Active", "id": "7CD88FFB-CF41-4EFC-9A17-D75BCB5B3770" },
+      { "statusname": "Inactive", "id": "4D2BA3C3-132E-489F-9C43-47A3996F74FA" },
+      { "statusname": "Archived", "id": "FC7178DD-C5C1-4776-944A-B50FE2C37F06" },
+      { "statusname": "In Progress", "id": "966f3f12-e4e4-45ea-a6bf-3ae312be0ccb" },
+      { "statusname": "Committed", "id": "4267ae2f-4b7f-4a70-a592-878744a13900" },
+      { "statusname": "Restored", "id": "5BB309CA-1C1E-444E-9BC8-645686D7F66A" },
+      { "statusname": "Completed", "id": "9231C5F1-2235-4F7B-B5E6-80694333DD72" }]
+  }
 
   ngOnInit() {
     const user = JSON.parse(sessionStorage.getItem('user'));
@@ -88,10 +97,16 @@ export class ListRecipeComponent implements OnInit {
     this.apiService.getDataList(getAllRecipeByTenantAPI, pageNumber, pageSize, null, null, null).subscribe(response => {
       if (response['body']) {
         this.recipeContent = response['body'].recipes;
+        for (let i = 0; i < this.recipeContent.length; i++) {
+          for (let j = 0; j < this.recipeStatus.length; j++) {
+            if (this.recipeContent[i].statusId == this.recipeStatus[j].id)
+              this.recipeContent[i].statusName = this.recipeStatus[j].statusname;
+          }
+        }
       }
-      this.headerValues = JSON.parse(response.headers.get('Paging-Headers'));
-      if (this.headerValues) {
-        this.config.totalItems = this.headerValues.TotalCount;
+      this.headerValue = response['body']['pagingDetails'];
+      if (this.headerValue) {
+        this.config.totalItems = this.headerValue.totalCount;
         if (this.config.totalItems === 0) {
           this.pageControl = true;
         }
@@ -163,7 +178,7 @@ export class ListRecipeComponent implements OnInit {
           this.changeData = response['body'];
           this.toast.success('Recipe Archived');
         } (error) => {
-          this.toast.danger(error.error.Message, 'Failed');
+          this.toast.danger(error.error.message, 'Failed');
         };
         this.router.navigate(['app/recipes/archives']);
       });
@@ -185,7 +200,7 @@ export class ListRecipeComponent implements OnInit {
           this.toast.success('Recipe Deleted');
           this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
         } (error) => {
-          this.toast.danger(error.error.Message, 'Failed');
+          this.toast.danger(error.error.message, 'Failed');
         };
       });
     } else {
@@ -220,12 +235,12 @@ export class ListRecipeComponent implements OnInit {
           this.config.totalItems = this.headerValue.TotalCount;
         }
         if (response && response['body']) {
-          this.recipeContent = response['body'];
-          this.recipeContent.map((recipe, idx) => {
-            if (recipe !== null) {
-              recipe.name = recipe.name !== null ? recipe.name : '';
-              recipe.styleName = recipe.styleName;
-              recipe.yeast.name = recipe.yeast.name;
+          this.recipeContent = response['body'].recipes;
+          this.recipeContent.map((recipes, id) => {
+            if (recipes !== null) {
+              recipes.name = recipes.name !== null ? recipes.name : '';
+              recipes.styleName = recipes.styleName;
+              recipes.yeast.name = recipes.yeast.name;
             }
           });
         }
@@ -274,7 +289,7 @@ export class ListRecipeComponent implements OnInit {
       }
       this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -301,7 +316,7 @@ export class ListRecipeComponent implements OnInit {
         }
       },
         error => {
-          this.toast.danger(error.error.Message);
+          this.toast.danger(error.error.message);
         });
     }
   }

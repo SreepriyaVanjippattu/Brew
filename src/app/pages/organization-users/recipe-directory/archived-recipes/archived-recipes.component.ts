@@ -62,9 +62,9 @@ export class ArchivedRecipesComponent implements OnInit {
     this.apiService.getDataList(getAllArchivedRecipesAPI, pageNumber, pageSize).subscribe(response => {
       this.archieveContent = response['body'].recipes;
 
-      this.jsonValue = JSON.parse(response.headers.get('paging-headers'));
-      if (this.jsonValue) {
-        this.config.totalItems = this.jsonValue.totalCount;
+      this.headerValue = response['body']['pagingDetails'];
+      if (this.headerValue) {
+        this.config.totalItems = this.headerValue.totalCount;
         if (this.config.totalItems === 0) {
           this.pageControl = true;
         }
@@ -93,12 +93,12 @@ export class ArchivedRecipesComponent implements OnInit {
 
       const deleteRecipeAPI = String.Format(this.apiService.deleteRecipe, this.tenantId, this.singleRecipeDelete.id);
       this.apiService.deleteData(deleteRecipeAPI).subscribe((response: any) => {
-        if (response.status === 200) {
+        if (response.status === "SUCCESS") {
           this.archieveContent = response['body'];
           this.toast.success('Recipe Deleted');
           this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
         } (error) => {
-          this.toast.danger(error.error.Message, 'Failed');
+          this.toast.danger(error.error.message, 'Failed');
         };
       });
     } else {
@@ -114,7 +114,7 @@ export class ArchivedRecipesComponent implements OnInit {
           this.archieveContent = response['body'];
           this.toast.success('Recipe Restored');
         } (error) => {
-          this.toast.danger(error.error.Message, 'Failed');
+          this.toast.danger(error.error.message, 'Failed');
         };
         this.router.navigate(['app/recipes']);
       });
@@ -210,7 +210,7 @@ export class ArchivedRecipesComponent implements OnInit {
         // });
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
   makeid(length) {

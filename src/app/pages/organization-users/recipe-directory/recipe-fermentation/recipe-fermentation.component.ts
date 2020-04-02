@@ -82,9 +82,8 @@ export class RecipeFermentationComponent implements OnInit {
 
   ngOnInit() {
     this.statusId = '949A12EA-878E-4310-8DD8-3002FD4464F5';
-    this.preference = JSON.parse(sessionStorage.getItem(''));
     this.units = JSON.parse(sessionStorage.getItem('unitTypes'));
-
+    this.preference = JSON.parse(sessionStorage.getItem('preferenceUsed'));
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
@@ -92,32 +91,18 @@ export class RecipeFermentationComponent implements OnInit {
       this.pageHeader = 'Edit Recipe';
       this.isCollapsedLauter = false;
       this.isCollapsedDiacetyl = false;
-      this.isCollapsedDiacetyl = false;
+      this.isCollapsedCooling = false;
       this.isCollapsedYeast = false;
-    
+
     } else {
       this.pageHeader = 'Add New Recipe';
     }
-    if (this.page === 'edit-recipe') {
-      this.id = '';
-      this.recipeId = this.route.snapshot.params.id;
-      sessionStorage.RecipeId = this.route.snapshot.params.id;
-      this.getRecipeDetailsById(this.recipeId);
-    } else if (sessionStorage.RecipeId) {
-      this.recipeId = sessionStorage.RecipeId;
-      this.id = '';
-      this.getRecipeDetailsById(this.recipeId);
-    } else {
-      this.recipeId = Guid.raw();
-      this.id = Guid.raw();
-      this.statusId = '966F3F12-E4E4-45EA-A6BF-3AE312BE0CCB';
-    }
+
     if (!sessionStorage.addins || !sessionStorage.countries ||
       !sessionStorage.suppliers || !sessionStorage.maltTypes || !sessionStorage.yeastStrain) {
       this.getCountries();
       this.getSuppliers();
       this.getYeastStrain();
-
     } else {
       this.addins = JSON.parse(sessionStorage.addins);
       this.countries = JSON.parse(sessionStorage.countries);
@@ -125,14 +110,12 @@ export class RecipeFermentationComponent implements OnInit {
       this.suppliers = JSON.parse(sessionStorage.suppliers);
       this.yeastStrain = JSON.parse(sessionStorage.yeastStrain);
     }
-
     if (sessionStorage.RecipeId) {
       this.recipeId = sessionStorage.RecipeId;
       this.getRecipeDetailsById(this.recipeId);
     } else {
       this.findUnits();
     }
-
   }
 
   findUnits() {
@@ -165,7 +148,8 @@ export class RecipeFermentationComponent implements OnInit {
   }
 
   getRecipeDetailsById(recipeId) {
-    this.apiService.getDataList(this.apiService.getRecipebyId, null, null, this.tenantId, recipeId).subscribe(response => {
+    const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, recipeId);
+    this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
       this.singleRecipeDetails = response['body'].recipe;
       if (this.singleRecipeDetails.kettleTargets.platoUnitId || this.singleRecipeDetails.sparges.length !== 0 &&
         this.singleRecipeDetails.sparges[0].platoUnitId ||
@@ -187,6 +171,7 @@ export class RecipeFermentationComponent implements OnInit {
         }
       }
       this.findUnits();
+
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { // commit status
         // disable save and commit
@@ -238,7 +223,7 @@ export class RecipeFermentationComponent implements OnInit {
         sessionStorage.setItem('suppliers', JSON.stringify(this.suppliers));
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -279,7 +264,7 @@ export class RecipeFermentationComponent implements OnInit {
 
 
       if (data.yeast != null) {
-        
+
         this.yeastArray.controls.forEach(fields => {
           fields.get('name').setValue(data.yeast.name);
           fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
@@ -427,8 +412,8 @@ export class RecipeFermentationComponent implements OnInit {
   }
 
   saveFermentation() {
-    
-    if (this.singleRecipeDetails && this.recipeFermentationForm.valid && this.recipeFermentationForm.dirty) {
+
+    if (this.singleRecipeDetails && this.recipeFermentationForm.valid) {
 
       this.yeastArray.controls.map(field => {
         this.singleRecipeDetails.yeastStrainId = field.get('yeastStrainId').value;
@@ -445,58 +430,29 @@ export class RecipeFermentationComponent implements OnInit {
       const yeast = JSON.stringify(this.recipeFermentationForm.get('yeast').value).replace(/^\[|]$/g, '');
       this.singleRecipeDetails['yeast'] = (JSON.parse(yeast));
 
-
-      if (this.page === 'edit-recipe' || sessionStorage.RecipeId) {
-        const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
-        this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
-          if (response) {
-            sessionStorage.setItem('RecipeId', this.recipeId);
-            if (this.formSubmitted) {
-              this.router.navigate(['/app/recipes/recipe-conditioning']);
-            }
-            if (this.mashinClicked) {
-              this.router.navigate(['app/recipes/recipe-mashin']);
-            }
-            if (this.brewlogClicked) {
-              this.router.navigate(['/app/recipes/recipe-brewlog']);
-            }
-            if (this.fermentationClicked) {
-              this.router.navigate(['app/recipes/recipe-fermentation']);
-            }
-            if (this.conditioningClicked) {
-              this.router.navigate(['app/recipes/recipe-conditioning']);
-            }
+      const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
+      this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
+        if (response) {
+          sessionStorage.setItem('RecipeId', this.recipeId);
+          if (this.formSubmitted) {
+            this.router.navigate(['/app/recipes/recipe-conditioning']);
           }
-        }, error => {
-          this.toast.danger(error);
-        });
-      }
-      else {
-        const addRecipeAPI = String.Format(this.apiService.addRecipe, this.tenantId, this.recipeId);
-        this.apiService.postData(addRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
-          if (response) {
-            this.recipeId = response['body'].recipeId;
-            sessionStorage.setItem('RecipeId', this.recipeId);
-            if (this.formSubmitted) {
-              this.router.navigate(['/app/recipes/recipe-conditioning']);
-            }
-            if (this.mashinClicked) {
-              this.router.navigate(['app/recipes/recipe-mashin']);
-            }
-            if (this.brewlogClicked) {
-              this.router.navigate(['/app/recipes/recipe-brewlog']);
-            }
-            if (this.fermentationClicked) {
-              this.router.navigate(['app/recipes/recipe-fermentation']);
-            }
-            if (this.conditioningClicked) {
-              this.router.navigate(['app/recipes/recipe-conditioning']);
-            }
+          if (this.mashinClicked) {
+            this.router.navigate(['app/recipes/recipe-mashin']);
           }
-        }, error => {
-          this.toast.danger(error);
-        });
-      }
+          if (this.brewlogClicked) {
+            this.router.navigate(['/app/recipes/recipe-brewlog']);
+          }
+          if (this.fermentationClicked) {
+            this.router.navigate(['app/recipes/recipe-fermentation']);
+          }
+          if (this.conditioningClicked) {
+            this.router.navigate(['app/recipes/recipe-conditioning']);
+          }
+        }
+      }, error => {
+        this.toast.danger(error.error.message);
+      });
     }
   }
 
@@ -506,15 +462,16 @@ export class RecipeFermentationComponent implements OnInit {
 
   addNewSupplier() {
     const params = {
-      Id: Guid.raw(),
-      Name: this.modalForms.get('supplierText').value,
-      IsActive: true,
+      id: Guid.raw(),
+      name: this.modalForms.get('supplierText').value,
+      isActive: true,
       CreatedDate: '2019-12-16T06:55:05.243',
       ModifiedDate: '2019-12-16T06:55:05.243',
-      TenantId: this.tenantId,
+      TenantId: this.tenantId
     };
     if (this.modalForms.get('supplierText').value) {
-      this.apiService.postData(this.apiService.addSupplier, params).subscribe((response: any) => {
+      const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);
+      this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
           this.getSuppliers();
           this.modalForms.reset();

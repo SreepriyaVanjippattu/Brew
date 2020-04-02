@@ -40,7 +40,7 @@ export class RecipeMashformComponent implements OnInit {
     mashingTargets: this.formBuilder.array([]),
     recipeNotes: this.formBuilder.array([]),
     id: [''],
-    receipeName: ['', [Validators.required]],
+    name: ['', [Validators.required]],
     styleId: ['', [Validators.required]],
     totalBrews: '',
     batchSize: ['', [Validators.required]],
@@ -111,17 +111,14 @@ export class RecipeMashformComponent implements OnInit {
       this.pageHeader = 'Add New Recipe';
     }
     if (this.page === 'edit-recipe') {
-      this.id = '';
       this.recipeId = this.route.snapshot.params.id;
       sessionStorage.RecipeId = this.route.snapshot.params.id;
       this.getRecipeDetailsById(this.recipeId);
     } else if (sessionStorage.RecipeId) {
       this.recipeId = sessionStorage.RecipeId;
-      this.id = '';
       this.getRecipeDetailsById(this.recipeId);
     } else {
       this.recipeId = Guid.raw();
-      this.id = Guid.raw();
       this.statusId = '966F3F12-E4E4-45EA-A6BF-3AE312BE0CCB';
     }
 
@@ -142,14 +139,24 @@ export class RecipeMashformComponent implements OnInit {
       this.suppliers = JSON.parse(sessionStorage.suppliers);
       this.units = JSON.parse(sessionStorage.unitTypes);
     }
-    this.findUnits();
-    this.initiateFormArrays();
+    this.getPreferenceUsed()
+  }
+
+  getPreferenceUsed() {
+    const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
+    this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
+      if (response.status === 200) {
+        this.preference = response['body'].preferenceSettings;
+        sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
+        this.findUnits();
+        this.initiateFormArrays();
+      }
+    });
   }
 
   findUnits() {
     this.units.forEach(element => {
-      if ((!this.tempUnitIdFromDb && element.id === '2881d968-1c0e-4ca2-9819-c15b0dd7924d') ||
-        (!this.tempUnitIdFromDb && element.id === '3545a3b4-bf2e-4b94-a06e-5eea613f0e64')) {
+      if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
         this.preferedUnit = element.symbol;
         this.preferedTempUnit = element.id;
       }
@@ -162,14 +169,12 @@ export class RecipeMashformComponent implements OnInit {
 
   styleChange() {
     let styleId = this.recipeMashForm.value.styleId;
-    for (let i = 0; i < this.styles.length; i++) {
-      if (styleId == this.styles[i].id)
-        this.styleName = this.styles[i].name;
-    }
+    this.styleName = this.styles.find(element => element.id === styleId).name;
   }
 
   getRecipeDetailsById(recipeId) {
-    this.apiService.getDataList(this.apiService.getRecipebyId, null, null, this.tenantId, recipeId).subscribe(response => {
+    const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, recipeId);
+    this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
       this.singleRecipeDetails = response['body'].recipe;
       if (this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
         this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId
@@ -223,7 +228,7 @@ export class RecipeMashformComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -236,7 +241,7 @@ export class RecipeMashformComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -249,7 +254,7 @@ export class RecipeMashformComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -260,7 +265,7 @@ export class RecipeMashformComponent implements OnInit {
         sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     })
   }
 
@@ -365,7 +370,7 @@ export class RecipeMashformComponent implements OnInit {
     const control = <FormArray>this.recipeMashForm.controls['maltGrainBill'];
     control.push(
       this.formBuilder.group({
-        id: [this.id],
+        id: [Guid.raw()],
         recipeId: [this.recipeId],
         name: ['', [Validators.required]],
         maltGrainTypeId: [''],
@@ -393,7 +398,7 @@ export class RecipeMashformComponent implements OnInit {
     const control = <FormArray>this.recipeMashForm.controls['waterAdditions'];
     control.push(
       this.formBuilder.group({
-        id: [this.id],
+        id: [Guid.raw()],
         recipeId: [this.recipeId],
         cacl2: [''],
         cacl2unitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c'],
@@ -427,7 +432,7 @@ export class RecipeMashformComponent implements OnInit {
     const control = <FormArray>this.recipeMashForm.controls['hops'];
     control.push(
       this.formBuilder.group({
-        id: [this.id],
+        id: [Guid.raw()],
         recipeId: [this.recipeId],
         name: ['', [Validators.required]],
         maltGrainTypeId: ['', [Validators.required]],
@@ -457,7 +462,7 @@ export class RecipeMashformComponent implements OnInit {
     const control = <FormArray>this.recipeMashForm.controls['adjuncts'];
     control.push(
       this.formBuilder.group({
-        id: [this.id],
+        id: [Guid.raw()],
         recipeId: [this.recipeId],
         name: [''],
         supplierId: [''],
@@ -484,7 +489,7 @@ export class RecipeMashformComponent implements OnInit {
 
   setValueToEdit(data) {
     if (data) {
-      this.recipeMashForm.get('receipeName').setValue(data.name);
+      this.recipeMashForm.get('name').setValue(data.name);
       this.recipeMashForm.get('styleId').setValue(data.styleId);
       this.recipeMashForm.get('batchSize').setValue(data.batchSize);
       this.recipeMashForm.get('batchSizeUnitId').setValue(data.batchSizeUnitId);
@@ -541,6 +546,7 @@ export class RecipeMashformComponent implements OnInit {
       if (data.mashingTargets != null) {
         this.addMashingTargets();
         this.mashinTargetsArray.controls.map((fields) => {
+          fields.get('id').setValue(data.mashingTargets.id);
           fields.get('strikeWaterVolume').setValue(data.mashingTargets.strikeWaterVolume);
           fields.get('strikeWaterUnitTypeId').setValue(data.mashingTargets.strikeWaterUnitTypeId);
           fields.get('strikeWaterTemperature').setValue(data.mashingTargets.strikeWaterTemperature);
@@ -639,7 +645,7 @@ export class RecipeMashformComponent implements OnInit {
   }
 
   saveMashinForm() {
-debugger;
+
     if (formData && this.recipeMashForm.valid || this.removeStatus && this.recipeMashForm.valid) {
       this.recipeMashForm.get('id').setValue(this.recipeId);
 
@@ -659,7 +665,7 @@ debugger;
       }
       // Recipe Details
       formData.id = this.recipeId;
-      formData.name = this.recipeMashForm.value.receipeName;
+      formData.name = this.recipeMashForm.value.name;
       formData.styleId = this.recipeMashForm.value.styleId;
       formData.styleName = this.styleName;
       formData.batchSize = this.recipeMashForm.value.batchSize;
@@ -697,6 +703,7 @@ debugger;
           element.id = Guid.raw();
         }
       });
+      
       if (!sessionStorage.RecipeId) {
         formData.hops = hops;
       } else {
@@ -760,7 +767,7 @@ debugger;
             }
           }
         }, error => {
-          this.toast.danger(error.message);
+          this.toast.danger(error.error.message);
         });
       }
       else {
@@ -786,7 +793,7 @@ debugger;
             }
           }
         }, error => {
-          this.toast.danger(error.message);
+          this.toast.danger(error.error.message);
         });
       }
     }
@@ -825,15 +832,16 @@ debugger;
 
   addNewSupplier() {
     const params = {
-      Id: Guid.raw(),
-      Name: this.modalForms.get('supplierText').value,
+      id: Guid.raw(),
+      name: this.modalForms.get('supplierText').value,
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId,
+      tenantId: this.tenantId
     };
     if (this.modalForms.get('supplierText').value) {
-      this.apiService.postData(this.apiService.addSupplier, params).subscribe((response: any) => {
+      const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);
+      this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
           this.getSuppliers();
           this.modalForms.reset();
@@ -844,17 +852,19 @@ debugger;
 
   addNewStyle() {
     const params = {
-      Id: Guid.raw(),
-      StyleName: this.modalForms.get('styleText').value,
+      id: Guid.raw(),
+      name: this.modalForms.get('styleText').value,
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId,
+      tenantId: this.tenantId
     };
     if (this.modalForms.get('styleText').value) {
-      this.apiService.postData(this.apiService.addStyle, params).subscribe((response: any) => {
+      const addStyleAPI = String.Format(this.apiService.addStyle, this.tenantId);
+      this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
-          this.getStyles();
+          // this.getStyles();
+          this.styles= response.body.style;
           this.modalForms.reset();
         }
       });
@@ -863,15 +873,16 @@ debugger;
 
   addNewType() {
     const params = {
-      Id: Guid.raw(),
-      TypeName: this.modalForms.get('typeText').value,
+      id: Guid.raw(),
+      name: this.modalForms.get('typeText').value,
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId,
+      tenantId: this.tenantId
     };
     if (this.modalForms.get('typeText').value) {
-      this.apiService.postData(this.apiService.addType, params).subscribe((response: any) => {
+      const addTypeAPI = String.Format(this.apiService.addType, this.tenantId);
+      this.apiService.postData(addTypeAPI, params).subscribe((response: any) => {
         if (response) {
           this.getMaltTypes();
           this.modalForms.reset();

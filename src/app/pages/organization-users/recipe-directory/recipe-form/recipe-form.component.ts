@@ -191,7 +191,7 @@ export class RecipeFormComponent implements OnInit {
       this.getSuppliers();
       this.getYeastStrain();
       this.getUnitTypes();
-      // this.getPreferenceUsed();
+      this.getPreferenceUsed();
     } else {
       this.styles = JSON.parse(sessionStorage.styles);
       this.addins = JSON.parse(sessionStorage.addins);
@@ -200,7 +200,7 @@ export class RecipeFormComponent implements OnInit {
       this.suppliers = JSON.parse(sessionStorage.suppliers);
       this.yeastStrain = JSON.parse(sessionStorage.yeastStrain);
       this.units= JSON.parse(sessionStorage.unitTYpes);
-      // this.preference = JSON.parse(sessionStorage.preferenceUsed);
+      this.preference = JSON.parse(sessionStorage.preferenceUsed);
     }
     this.recipeDetailsForm.disable();
   }
@@ -223,7 +223,7 @@ export class RecipeFormComponent implements OnInit {
     const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
-        this.preference = response['body'];
+        this.preference = response['body'].preferences;
         sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
         this.findUnits();
       }
@@ -237,7 +237,7 @@ export class RecipeFormComponent implements OnInit {
         sessionStorage.setItem('countries', JSON.stringify(this.countries));
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -250,7 +250,7 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -263,7 +263,7 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -276,7 +276,7 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -289,7 +289,7 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -311,12 +311,13 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error);
+      this.toast.danger(error.error.message);
     })
   }
 
   getRecipeDetailsEdit(tenantId) {
-    this.apiService.getDataList(this.apiService.getRecipebyId, null, null, tenantId, this.recipeId).subscribe(response => {
+    const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, this.recipeId);
+    this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
       if (response && response['body']) {
         this.recipeContent = response.body.recipe;
         this.recipeName = this.recipeContent.name;
