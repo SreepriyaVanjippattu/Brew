@@ -178,9 +178,12 @@ export class ListRecipeComponent implements OnInit {
         if (response.status === 200) {
           this.changeData = response['body'];
           this.toast.success('Recipe Archived');
-        } (error) => {
-          this.toast.danger(error.error.message, 'Failed');
-        };
+        } error => {
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message);
+          }
+          this.toast.danger(error);
+        }
         this.router.navigate(['app/recipes/archives']);
       });
     }
@@ -200,9 +203,12 @@ export class ListRecipeComponent implements OnInit {
           this.recipeContent = response['body'];
           this.toast.success('Recipe Deleted');
           this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
-        } (error) => {
-          this.toast.danger(error.error.message, 'Failed');
-        };
+        } error => {
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message);
+          }
+          this.toast.danger(error);
+        }
       });
     } else {
       this.toast.danger('Committed Recipe Cannot Delete');
@@ -292,8 +298,8 @@ export class ListRecipeComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -322,8 +328,8 @@ export class ListRecipeComponent implements OnInit {
         error => {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message);
-            }
-            this.toast.danger(error);
+          }
+          this.toast.danger(error);
         });
     }
   }

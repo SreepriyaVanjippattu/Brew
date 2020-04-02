@@ -221,8 +221,8 @@ export class RecipeFormComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -236,8 +236,8 @@ export class RecipeFormComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -251,8 +251,8 @@ export class RecipeFormComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -266,8 +266,8 @@ export class RecipeFormComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -281,8 +281,8 @@ export class RecipeFormComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -303,8 +303,8 @@ export class RecipeFormComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 

@@ -98,9 +98,12 @@ export class ArchivedRecipesComponent implements OnInit {
           this.archieveContent = response['body'];
           this.toast.success('Recipe Deleted');
           this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
-        } (error) => {
-          this.toast.danger(error.error.message, 'Failed');
-        };
+        } error => {
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message, 'Failed');
+          }
+          this.toast.danger(error);
+        }
       });
     } else {
       this.toast.danger('Committed Recipe Cannot Delete');
@@ -114,9 +117,12 @@ export class ArchivedRecipesComponent implements OnInit {
         if (response.status === 200) {
           this.archieveContent = response['body'];
           this.toast.success('Recipe Restored');
-        } (error) => {
-          this.toast.danger(error.error.message, 'Failed');
-        };
+        } error => {
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message,'Failed');
+          }
+          this.toast.danger(error);
+        }
         this.router.navigate(['app/recipes']);
       });
     }
@@ -213,8 +219,8 @@ export class ArchivedRecipesComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
   makeid(length) {

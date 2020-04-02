@@ -192,7 +192,10 @@ export class RecipeFermentationComponent implements OnInit {
         this.units = response['body'].unitTypebase;
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -203,7 +206,10 @@ export class RecipeFermentationComponent implements OnInit {
         this.maltTypes = response['body'];
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -256,8 +262,8 @@ export class RecipeFermentationComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -266,6 +272,7 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.fermentationTargets != null) {
         this.fermentationTargetsArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.fermentationTargets.id);
           fields.get('volumeIn').setValue(data.fermentationTargets.volumeIn);
           fields.get('volumeInUnitId').setValue(data.fermentationTargets.volumeInUnitId);
           fields.get('temperature').setValue(data.fermentationTargets.temperature);
@@ -280,6 +287,7 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.diacetylRest != null) {
         this.diacetylRestArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.diacetylRest.id);
           fields.get('temperature').setValue(data.diacetylRest.temperature);
           fields.get('temperatureUnitId').setValue(data.diacetylRest.TemperatureUnitId);
           fields.get('plato').setValue(data.diacetylRest.plato);
@@ -289,6 +297,7 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.aging != null) {
         this.agingArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.aging.id);
           fields.get('timeDuration').setValue(data.aging.timeDuration);
           fields.get('timeDurationUnitId').setValue(data.aging.timeDurationUnitId);
           fields.get('temperature').setValue(data.aging.temperature);
@@ -300,6 +309,7 @@ export class RecipeFermentationComponent implements OnInit {
       if (data.yeast != null) {
 
         this.yeastArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.yeast.id);
           fields.get('name').setValue(data.yeast.name);
           fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
           fields.get('countryId').setValue(data.yeast.countryId);
@@ -487,8 +497,8 @@ export class RecipeFermentationComponent implements OnInit {
       }, error => {
         if (error instanceof HttpErrorResponse) {
           this.toast.danger(error.error.message);
-          }
-          this.toast.danger(error);
+        }
+        this.toast.danger(error);
       });
     }
   }

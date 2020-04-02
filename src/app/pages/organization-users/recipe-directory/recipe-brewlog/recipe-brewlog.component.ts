@@ -233,8 +233,8 @@ export class RecipeBrewlogComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -246,8 +246,8 @@ export class RecipeBrewlogComponent implements OnInit {
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
-        }
-        this.toast.danger(error);
+      }
+      this.toast.danger(error);
     });
   }
 
@@ -269,6 +269,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.kettleTargets != null) {
         this.kettleTargetsArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.kettleTargets.id);
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
           fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
           fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
@@ -284,6 +285,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.whirlpoolTarget.id);
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
           fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
@@ -292,6 +294,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.coolingKnockoutTarget != null) {
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.coolingKnockoutTarget.id);
           fields.get('volumeInFermentation').setValue(data.coolingKnockoutTarget.volumeInFermentation);
           fields.get('volumeInFermentationOptionId').setValue(data.coolingKnockoutTarget.volumeInFermentationOptionId);
           fields.get('notes').setValue(data.coolingKnockoutTarget.notes);
