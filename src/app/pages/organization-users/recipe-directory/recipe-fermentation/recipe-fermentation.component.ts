@@ -6,6 +6,7 @@ import { formData } from '../../../../models/formData';
 import { NbToastrService } from '@nebular/theme';
 import { Guid } from 'guid-typescript';
 import { String } from 'typescript-string-operations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'recipe-fermentation',
@@ -223,7 +224,10 @@ export class RecipeFermentationComponent implements OnInit {
         sessionStorage.setItem('suppliers', JSON.stringify(this.suppliers));
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -451,7 +455,10 @@ export class RecipeFermentationComponent implements OnInit {
           }
         }
       }, error => {
-        this.toast.danger(error.error.message);
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message);
+          }
+          this.toast.danger(error);
       });
     }
   }

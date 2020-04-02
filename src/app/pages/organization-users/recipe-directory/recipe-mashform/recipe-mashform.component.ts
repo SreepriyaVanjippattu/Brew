@@ -6,6 +6,7 @@ import { formData } from '../../../../models/formData';
 import { Guid } from 'guid-typescript';
 import { NbToastrService } from '@nebular/theme';
 import { String } from 'typescript-string-operations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-recipe-mashform',
@@ -228,7 +229,10 @@ export class RecipeMashformComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -241,7 +245,10 @@ export class RecipeMashformComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -254,7 +261,10 @@ export class RecipeMashformComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -265,8 +275,11 @@ export class RecipeMashformComponent implements OnInit {
         sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
       }
     }, error => {
-      this.toast.danger(error.error.message);
-    })
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
+    });
   }
 
   get form() {
@@ -767,7 +780,10 @@ export class RecipeMashformComponent implements OnInit {
             }
           }
         }, error => {
-          this.toast.danger(error.error.message);
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message);
+            }
+            this.toast.danger(error);
         });
       }
       else {
@@ -793,7 +809,10 @@ export class RecipeMashformComponent implements OnInit {
             }
           }
         }, error => {
-          this.toast.danger(error.error.message);
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message);
+            }
+            this.toast.danger(error);
         });
       }
     }
@@ -884,7 +903,7 @@ export class RecipeMashformComponent implements OnInit {
       const addTypeAPI = String.Format(this.apiService.addType, this.tenantId);
       this.apiService.postData(addTypeAPI, params).subscribe((response: any) => {
         if (response) {
-          this.getMaltTypes();
+          this.maltTypes= response.body.maltTypes;
           this.modalForms.reset();
         }
       });

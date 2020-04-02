@@ -5,6 +5,7 @@ import { NbToastrService } from '@nebular/theme';
 import { StatusUse } from '../../../../models/status-id-name';
 import * as XLSX from 'xlsx';
 import { String } from 'typescript-string-operations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-archived-recipes',
@@ -210,7 +211,10 @@ export class ArchivedRecipesComponent implements OnInit {
         // });
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
   makeid(length) {

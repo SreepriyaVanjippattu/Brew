@@ -11,6 +11,7 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
 import { String } from 'typescript-string-operations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-list-recipe',
@@ -289,7 +290,10 @@ export class ListRecipeComponent implements OnInit {
       }
       this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -316,7 +320,10 @@ export class ListRecipeComponent implements OnInit {
         }
       },
         error => {
-          this.toast.danger(error.error.message);
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message);
+            }
+            this.toast.danger(error);
         });
     }
   }

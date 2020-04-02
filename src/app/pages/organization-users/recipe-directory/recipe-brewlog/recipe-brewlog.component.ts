@@ -5,6 +5,7 @@ import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Guid } from 'guid-typescript';
 import { NbToastrService } from '@nebular/theme';
 import { String } from 'typescript-string-operations';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'recipe-brewlog',
@@ -241,7 +242,10 @@ export class RecipeBrewlogComponent implements OnInit {
         sessionStorage.setItem('maltTypes', JSON.stringify(this.maltTypes));
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -252,8 +256,11 @@ export class RecipeBrewlogComponent implements OnInit {
         sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
       }
     }, error => {
-      this.toast.danger(error.error.message);
-    })
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
+    });
   }
 
   setValueToEdit(data) {
@@ -274,6 +281,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.kettleTargets != null) {
         this.kettleTargetsArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.kettleTargets.id);
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
           fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
           fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
@@ -289,6 +297,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.whirlpoolTarget.id);
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
           fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
@@ -297,6 +306,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.coolingKnockoutTarget != null) {
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
+          fields.get('id').setValue(data.coolingKnockoutTarget.id);
           fields.get('volumeInFermentation').setValue(data.coolingKnockoutTarget.volumeInFermentation);
           fields.get('volumeInFermentationOptionId').setValue(data.coolingKnockoutTarget.volumeInFermentationOptionId);
           fields.get('notes').setValue(data.coolingKnockoutTarget.notes);

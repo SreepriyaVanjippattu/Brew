@@ -9,6 +9,7 @@ import { String } from 'typescript-string-operations';
 
 import html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -237,7 +238,10 @@ export class RecipeFormComponent implements OnInit {
         sessionStorage.setItem('countries', JSON.stringify(this.countries));
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -250,7 +254,10 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -263,7 +270,10 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -276,7 +286,10 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -289,7 +302,10 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
     });
   }
 
@@ -311,8 +327,11 @@ export class RecipeFormComponent implements OnInit {
 
       }
     }, error => {
-      this.toast.danger(error.error.message);
-    })
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+        }
+        this.toast.danger(error);
+    });
   }
 
   getRecipeDetailsEdit(tenantId) {
