@@ -11,7 +11,7 @@ import { String } from 'typescript-string-operations';
 @Component({
   selector: 'recipe-conditioning',
   templateUrl: './recipe-conditioning.component.html',
-  styleUrls: ['./recipe-conditioning.component.scss']
+  styleUrls: ['./recipe-conditioning.component.scss'],
 })
 export class RecipeConditioningComponent implements OnInit {
 
@@ -72,9 +72,13 @@ export class RecipeConditioningComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.preference = JSON.parse(sessionStorage.preferenceUsed);
-    this.units = JSON.parse(sessionStorage.getItem('unitTypes'));
     this.recipeId = sessionStorage.RecipeId;
+    this.userDetails = sessionStorage.user;
+    const user = JSON.parse(this.userDetails);
+    this.tenantId = user['userDetails'].tenantId;
+    this.getUnitTypes();
+    this.getPreferenceUsed();
+
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
       this.isCollapsedFiltration = false;
@@ -84,19 +88,25 @@ export class RecipeConditioningComponent implements OnInit {
     } else {
       this.pageHeader = 'Add New Recipe';
     }
-    this.userDetails = sessionStorage.user;
-    const user = JSON.parse(this.userDetails);
-    this.tenantId = user['userDetails'].tenantId;
+
     if (sessionStorage.RecipeId) {
       this.recipeId = sessionStorage.RecipeId;
       this.getRecipeDetailsById(this.recipeId);
-    } else {
-      this.findUnits();
     }
   }
 
+  getPreferenceUsed() {
+    const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
+    this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
+      if (response.status === 200) {
+        this.preference = response['body'].preferenceSettings;
+        this.findUnits();
+      }
+    });
+  }
+
   findUnits() {
-    if (this.units !== null) {
+    if (this.units) {
       this.units.forEach(element => {
         if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
           this.preferedUnit = element.symbol;
@@ -155,6 +165,16 @@ export class RecipeConditioningComponent implements OnInit {
       } else {
         this.disableSave = false;
       }
+    });
+  }
+
+  getUnitTypes() {
+    this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
+      if (response) {
+        this.units = response['body'].unitTypebase;
+      }
+    }, error => {
+      this.toast.danger(error.error.message);
     });
   }
 

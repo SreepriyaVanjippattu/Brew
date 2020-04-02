@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'recipe-fermentation',
   templateUrl: './recipe-fermentation.component.html',
-  styleUrls: ['./recipe-fermentation.component.scss']
+  styleUrls: ['./recipe-fermentation.component.scss'],
 })
 export class RecipeFermentationComponent implements OnInit {
 
@@ -83,11 +83,17 @@ export class RecipeFermentationComponent implements OnInit {
 
   ngOnInit() {
     this.statusId = '949A12EA-878E-4310-8DD8-3002FD4464F5';
-    this.units = JSON.parse(sessionStorage.getItem('unitTypes'));
-    this.preference = JSON.parse(sessionStorage.getItem('preferenceUsed'));
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
+    this.getCountries();
+    this.getAddIns();
+    this.getMaltTypes();
+    this.getSuppliers();
+    this.getYeastStrain();
+    this.getUnitTypes();
+    this.getPreferenceUsed();
+
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
       this.isCollapsedLauter = false;
@@ -99,28 +105,24 @@ export class RecipeFermentationComponent implements OnInit {
       this.pageHeader = 'Add New Recipe';
     }
 
-    if (!sessionStorage.addins || !sessionStorage.countries ||
-      !sessionStorage.suppliers || !sessionStorage.maltTypes || !sessionStorage.yeastStrain) {
-      this.getCountries();
-      this.getSuppliers();
-      this.getYeastStrain();
-    } else {
-      this.addins = JSON.parse(sessionStorage.addins);
-      this.countries = JSON.parse(sessionStorage.countries);
-      this.maltTypes = JSON.parse(sessionStorage.maltTypes);
-      this.suppliers = JSON.parse(sessionStorage.suppliers);
-      this.yeastStrain = JSON.parse(sessionStorage.yeastStrain);
-    }
     if (sessionStorage.RecipeId) {
       this.recipeId = sessionStorage.RecipeId;
       this.getRecipeDetailsById(this.recipeId);
-    } else {
-      this.findUnits();
     }
   }
 
+  getPreferenceUsed() {
+    const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
+    this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
+      if (response.status === 200) {
+        this.preference = response['body'].preferenceSettings;
+        this.findUnits();
+      }
+    });
+  }
+
   findUnits() {
-    if (this.units !== null) {
+    if (this.units) {
       this.units.forEach(element => {
         if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
           this.preferedUnit = element.symbol;
@@ -174,11 +176,42 @@ export class RecipeFermentationComponent implements OnInit {
       this.findUnits();
 
       this.setValueToEdit(this.singleRecipeDetails);
-      if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { // commit status
+      if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+        // commit status
         // disable save and commit
         this.disableSave = true;
       } else {
         this.disableSave = false;
+      }
+    });
+  }
+
+  getUnitTypes() {
+    this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
+      if (response) {
+        this.units = response['body'].unitTypebase;
+      }
+    }, error => {
+      this.toast.danger(error.error.message);
+    });
+  }
+
+  getMaltTypes() {
+    const getAllActiveMaltGrainTypeAPI = String.Format(this.apiService.getAllActiveMaltGrainType, this.tenantId);
+    this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
+      if (response) {
+        this.maltTypes = response['body'];
+      }
+    }, error => {
+      this.toast.danger(error.error.message);
+    });
+  }
+
+  getAddIns() {
+    const getAllActiveAddInAPI = String.Format(this.apiService.getAllActiveAddIn, this.tenantId);
+    this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
+      if (response) {
+        this.addins = response['body'].addinBase;
       }
     });
   }
@@ -202,7 +235,6 @@ export class RecipeFermentationComponent implements OnInit {
     this.apiService.getData(getAllYeastStrainsAPI).subscribe(response => {
       if (response) {
         this.yeastStrain = response['body'].yeastStrainBase;
-        sessionStorage.setItem('yeastStrain', JSON.stringify(this.yeastStrain));
       }
     });
   }
@@ -211,7 +243,6 @@ export class RecipeFermentationComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
       if (response) {
         this.countries = response['body'].countrybase;
-        sessionStorage.setItem('countries', JSON.stringify(this.countries));
       }
     });
   }
@@ -221,7 +252,6 @@ export class RecipeFermentationComponent implements OnInit {
     this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
       if (response) {
         this.suppliers = response['body'].supplierBase;
-        sessionStorage.setItem('suppliers', JSON.stringify(this.suppliers));
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -474,7 +504,7 @@ export class RecipeFermentationComponent implements OnInit {
       isActive: true,
       CreatedDate: '2019-12-16T06:55:05.243',
       ModifiedDate: '2019-12-16T06:55:05.243',
-      TenantId: this.tenantId
+      TenantId: this.tenantId,
     };
     if (this.modalForms.get('supplierText').value) {
       const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);

@@ -174,40 +174,23 @@ export class RecipeFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    
     this.recipeId = this.route.snapshot.params.id;
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.tenantId = user['userDetails'].tenantId;
-    this.units = JSON.parse(sessionStorage.getItem('unitTypes'));
     this.getRecipeDetailsEdit(this.tenantId);
-
-    if (!sessionStorage.styles || !sessionStorage.addins ||
-      !sessionStorage.suppliers || !sessionStorage.maltTypes ||
-      !sessionStorage.countries || !sessionStorage.yeastStrain ||
-      !sessionStorage.preferenceUsed || !sessionStorage.unitTypes) {
-      this.getCountries();
-      this.getAddIns();
-      this.getMaltTypes();
-      this.getStyles();
-      this.getSuppliers();
-      this.getYeastStrain();
-      this.getUnitTypes();
-      this.getPreferenceUsed();
-    } else {
-      this.styles = JSON.parse(sessionStorage.styles);
-      this.addins = JSON.parse(sessionStorage.addins);
-      this.countries = JSON.parse(sessionStorage.countries);
-      this.maltTypes = JSON.parse(sessionStorage.maltTypes);
-      this.suppliers = JSON.parse(sessionStorage.suppliers);
-      this.yeastStrain = JSON.parse(sessionStorage.yeastStrain);
-      this.units= JSON.parse(sessionStorage.unitTYpes);
-      this.preference = JSON.parse(sessionStorage.preferenceUsed);
-    }
+    this.getCountries();
+    this.getAddIns();
+    this.getMaltTypes();
+    this.getStyles();
+    this.getSuppliers();
+    this.getYeastStrain();
+    this.getUnitTypes();
+    this.getPreferenceUsed();
     this.recipeDetailsForm.disable();
   }
 
   findUnits() {
-    if (this.units !== null || undefined) {
+    if (this.units) {
       this.units.forEach(element => {
         if (element.id === this.tempUnitIdFromDb) {
           this.preferedUnit = element.symbol;
@@ -225,7 +208,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body'].preferences;
-        sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
         this.findUnits();
       }
     });
@@ -235,7 +217,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
       if (response) {
         this.countries = response['body'].countrybase;
-        sessionStorage.setItem('countries', JSON.stringify(this.countries));
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -250,7 +231,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
       if (response) {
         this.maltTypes = response['body'].recipe;
-        sessionStorage.setItem('maltTypes', JSON.stringify(this.maltTypes));
 
       }
     }, error => {
@@ -266,7 +246,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
       if (response) {
         this.addins = response['body'].addinBase;
-        sessionStorage.setItem('addins', JSON.stringify(this.addins));
 
       }
     }, error => {
@@ -282,7 +261,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
       if (response) {
         this.suppliers = response['body'].supplierBase;
-        sessionStorage.setItem('suppliers', JSON.stringify(this.suppliers));
 
       }
     }, error => {
@@ -298,7 +276,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getData(getAllActiveStyleAPI).subscribe(response => {
       if (response) {
         this.styles = response['body'].style;
-        sessionStorage.setItem('styles', JSON.stringify(this.styles));
 
       }
     }, error => {
@@ -314,7 +291,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getData(getAllYeastStrainsAPI).subscribe(response => {
       if (response) {
         this.yeastStrain = response['body'].yeastStrainBase;
-        sessionStorage.setItem('yeastStrain', JSON.stringify(this.yeastStrain));
       }
     });
   }
@@ -323,8 +299,6 @@ export class RecipeFormComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
-        sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
-
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {

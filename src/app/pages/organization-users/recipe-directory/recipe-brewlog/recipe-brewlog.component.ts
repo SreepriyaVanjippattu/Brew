@@ -84,21 +84,22 @@ export class RecipeBrewlogComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    this.units = JSON.parse(sessionStorage.getItem('unitTypes'));
-    if (sessionStorage.preferenceUsed !== undefined && sessionStorage.preferenceUsed !== null) {
-      this.preference = JSON.parse(sessionStorage.preferenceUsed);
-    }
+
+    this.getCountries();
+    this.getAddIns();
+    this.getMaltTypes();
+    this.getSuppliers();
+    this.getUnitTypes();
+    this.getPreferenceUsed();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
       this.isCollapsedLauter = false;
       this.isCollapsedWhirlpool = false;
       this.isCollapsedCoolingKnockout = false;
-
     } else {
       this.pageHeader = 'Add New Recipe';
     }
@@ -106,29 +107,21 @@ export class RecipeBrewlogComponent implements OnInit {
     if (sessionStorage.RecipeId) {
       this.recipeId = sessionStorage.RecipeId;
       this.getRecipeDetailsById(this.recipeId);
-    } else {
-      this.findUnits();
-    }
-
-    if (!sessionStorage.addins || !sessionStorage.countries ||
-      !sessionStorage.suppliers || !sessionStorage.maltTypes ||
-      !sessionStorage.unitTypes) {
-      this.getCountries();
-      this.getAddIns();
-      this.getMaltTypes();
-      this.getSuppliers();
-      this.getUnitTypes();
-    } else {
-      this.addins = JSON.parse(sessionStorage.addins);
-      this.countries = JSON.parse(sessionStorage.countries);
-      this.maltTypes = JSON.parse(sessionStorage.maltTypes);
-      this.suppliers = JSON.parse(sessionStorage.suppliers);
-      this.units = JSON.parse(sessionStorage.unitTypes);
     }
   }
 
+  getPreferenceUsed() {
+    const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
+    this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
+      if (response.status === 200) {
+        this.preference = response['body'].preferenceSettings;
+        this.findUnits();
+      }
+    });
+  }
+
   findUnits() {
-    if (this.units !== null) {
+    if (this.units) {
       this.units.forEach(element => {
         if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
           this.preferedUnit = element.symbol;
@@ -180,9 +173,9 @@ export class RecipeBrewlogComponent implements OnInit {
           this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
       }
 
-      this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
-      if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { // commit status
+      if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+        // commit status
         this.disableSave = true;
       } else {
         this.disableSave = false;
@@ -209,7 +202,6 @@ export class RecipeBrewlogComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
       if (response) {
         this.countries = response['body'].countrybase;
-        sessionStorage.setItem('countries', JSON.stringify(this.countries));
       }
     });
   }
@@ -219,7 +211,6 @@ export class RecipeBrewlogComponent implements OnInit {
     this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
       if (response) {
         this.addins = response['body'].addinBase;
-        sessionStorage.setItem('addins', JSON.stringify(this.addins));
       }
     });
   }
@@ -229,7 +220,6 @@ export class RecipeBrewlogComponent implements OnInit {
     this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
       if (response) {
         this.suppliers = response['body'].supplierBase;
-        sessionStorage.setItem('suppliers', JSON.stringify(this.suppliers));
       }
     });
   }
@@ -239,7 +229,6 @@ export class RecipeBrewlogComponent implements OnInit {
     this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
       if (response) {
         this.maltTypes = response['body'];
-        sessionStorage.setItem('maltTypes', JSON.stringify(this.maltTypes));
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -253,7 +242,6 @@ export class RecipeBrewlogComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
-        sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -281,7 +269,6 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.kettleTargets != null) {
         this.kettleTargetsArray.controls.forEach(fields => {
-          fields.get('id').setValue(data.kettleTargets.id);
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
           fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
           fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
@@ -297,7 +284,6 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
-          fields.get('id').setValue(data.whirlpoolTarget.id);
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
           fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
@@ -306,7 +292,6 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.coolingKnockoutTarget != null) {
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
-          fields.get('id').setValue(data.coolingKnockoutTarget.id);
           fields.get('volumeInFermentation').setValue(data.coolingKnockoutTarget.volumeInFermentation);
           fields.get('volumeInFermentationOptionId').setValue(data.coolingKnockoutTarget.volumeInFermentationOptionId);
           fields.get('notes').setValue(data.coolingKnockoutTarget.notes);

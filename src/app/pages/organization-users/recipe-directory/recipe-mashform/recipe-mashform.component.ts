@@ -100,6 +100,15 @@ export class RecipeMashformComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
+
+    this.getCountries();
+    this.getAddIns();
+    this.getMaltTypes();
+    this.getStyles();
+    this.getSuppliers();
+    this.getUnitTypes();
+    this.getPreferenceUsed();
+
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
       this.isCollapsedMalt = false;
@@ -122,25 +131,6 @@ export class RecipeMashformComponent implements OnInit {
       this.recipeId = Guid.raw();
       this.statusId = '966F3F12-E4E4-45EA-A6BF-3AE312BE0CCB';
     }
-
-    if (!sessionStorage.styles || !sessionStorage.addins ||
-      !sessionStorage.suppliers || !sessionStorage.maltTypes ||
-      !sessionStorage.countries || !sessionStorage.unitTypes) {
-      this.getCountries();
-      this.getAddIns();
-      this.getMaltTypes();
-      this.getStyles();
-      this.getSuppliers();
-      this.getUnitTypes();
-    } else {
-      this.styles = JSON.parse(sessionStorage.styles);
-      this.addins = JSON.parse(sessionStorage.addins);
-      this.countries = JSON.parse(sessionStorage.countries);
-      this.maltTypes = JSON.parse(sessionStorage.maltTypes);
-      this.suppliers = JSON.parse(sessionStorage.suppliers);
-      this.units = JSON.parse(sessionStorage.unitTypes);
-    }
-    this.getPreferenceUsed()
   }
 
   getPreferenceUsed() {
@@ -148,7 +138,6 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body'].preferenceSettings;
-        sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
         this.findUnits();
         this.initiateFormArrays();
       }
@@ -169,7 +158,7 @@ export class RecipeMashformComponent implements OnInit {
   }
 
   styleChange() {
-    let styleId = this.recipeMashForm.value.styleId;
+    const styleId = this.recipeMashForm.value.styleId;
     this.styleName = this.styles.find(element => element.id === styleId).name;
   }
 
@@ -185,13 +174,10 @@ export class RecipeMashformComponent implements OnInit {
       }
 
       this.setValueToEdit(this.singleRecipeDetails);
-      if (sessionStorage.preferenceUsed != undefined && sessionStorage.preferenceUsed !== null) {
-        this.preference = JSON.parse(sessionStorage.preferenceUsed);
-      }
-      this.findUnits();
       this.styleName = this.singleRecipeDetails.styleName;
       this.statusId = this.singleRecipeDetails.statusId;
-      if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { // commit status
+      if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+        // commit status
         // disable save and commit
         this.disableSave = true;
       } else {
@@ -204,7 +190,6 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
       if (response) {
         this.countries = response['body'].countrybase;
-        sessionStorage.setItem('countries', JSON.stringify(this.countries));
       }
     });
   }
@@ -214,7 +199,6 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
       if (response) {
         this.addins = response['body'].addinBase;
-        sessionStorage.setItem('addins', JSON.stringify(this.addins));
 
       }
     });
@@ -225,8 +209,6 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
       if (response) {
         this.suppliers = response['body'].supplierBase;
-        sessionStorage.setItem('suppliers', JSON.stringify(this.suppliers));
-
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -241,8 +223,6 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
       if (response) {
         this.maltTypes = response['body'].recipe;
-        sessionStorage.setItem('maltTypes', JSON.stringify(this.maltTypes));
-
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -257,8 +237,6 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(getAllActiveStyleAPI).subscribe(response => {
       if (response) {
         this.styles = response['body'].style;
-        sessionStorage.setItem('styles', JSON.stringify(this.styles));
-
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -272,7 +250,6 @@ export class RecipeMashformComponent implements OnInit {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
         this.units = response['body'].unitTypebase;
-        sessionStorage.setItem('unitTypes', JSON.stringify(this.units));
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -308,7 +285,6 @@ export class RecipeMashformComponent implements OnInit {
   get recipeNotesArray(): FormArray {
     return <FormArray>this.recipeMashForm.get('recipeNotes');
   }
-
 
   initiateFormArrays() {
     if (!sessionStorage.RecipeId) {
@@ -716,7 +692,7 @@ export class RecipeMashformComponent implements OnInit {
           element.id = Guid.raw();
         }
       });
-      
+
       if (!sessionStorage.RecipeId) {
         formData.hops = hops;
       } else {
@@ -785,8 +761,7 @@ export class RecipeMashformComponent implements OnInit {
             }
             this.toast.danger(error);
         });
-      }
-      else {
+      } else {
         const addRecipeAPI = String.Format(this.apiService.addRecipe, this.tenantId, this.recipeId);
         this.apiService.postData(addRecipeAPI, formData).subscribe((response: any) => {
           if (response) {
@@ -809,10 +784,7 @@ export class RecipeMashformComponent implements OnInit {
             }
           }
         }, error => {
-          if (error instanceof HttpErrorResponse) {
-            this.toast.danger(error.error.message);
-            }
-            this.toast.danger(error);
+          this.toast.danger(error.error.message);
         });
       }
     }
@@ -856,7 +828,7 @@ export class RecipeMashformComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('supplierText').value) {
       const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);
@@ -876,14 +848,13 @@ export class RecipeMashformComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('styleText').value) {
       const addStyleAPI = String.Format(this.apiService.addStyle, this.tenantId);
       this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
-          // this.getStyles();
-          this.styles= response.body.style;
+          this.styles = response.body.style;
           this.modalForms.reset();
         }
       });
@@ -897,13 +868,13 @@ export class RecipeMashformComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('typeText').value) {
       const addTypeAPI = String.Format(this.apiService.addType, this.tenantId);
       this.apiService.postData(addTypeAPI, params).subscribe((response: any) => {
         if (response) {
-          this.maltTypes= response.body.maltTypes;
+          this.getMaltTypes();
           this.modalForms.reset();
         }
       });
