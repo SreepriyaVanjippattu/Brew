@@ -155,7 +155,7 @@ export class PreferencesComponent implements OnInit {
   getGeneraalSettings(tenantId) {
     const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, tenantId);
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
-      this.generalDetails = response['body'];
+      this.generalDetails = response['body'].preferenceSettings;
       if (this.generalDetails) {
         this.preferencesForm.get('timeZone').setValue(this.generalDetails.timeZoneId);
         this.preferencesForm.get('temperature').setValue(this.generalDetails.temperatureId);
@@ -166,7 +166,7 @@ export class PreferencesComponent implements OnInit {
   }
   getGeneralMeasurements() {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
-      this.preferenceDetails = response['body'];
+      this.preferenceDetails = response['body'].unitTypebase;
       this.preferenceDetails.map(units => {
         if (units.id === '29948d48-3bca-4786-a465-78e42693604f' || units.id == '0b1cc404-b982-451a-85b3-8fec59baf09a') {
           this.gravityMeasurement.push(units);

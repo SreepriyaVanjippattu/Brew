@@ -63,15 +63,7 @@ export class ListRecipeComponent implements OnInit {
     private toast: NbToastrService,
     private data: DataService
   ) {
-    this.recipeStatus = [
-      { "statusname": "Pending", "id": "6E7DF31B-5F6A-4029-91E0-5561807164DA" },
-      { "statusname": "Active", "id": "7CD88FFB-CF41-4EFC-9A17-D75BCB5B3770" },
-      { "statusname": "Inactive", "id": "4D2BA3C3-132E-489F-9C43-47A3996F74FA" },
-      { "statusname": "Archived", "id": "FC7178DD-C5C1-4776-944A-B50FE2C37F06" },
-      { "statusname": "In Progress", "id": "966f3f12-e4e4-45ea-a6bf-3ae312be0ccb" },
-      { "statusname": "Committed", "id": "4267ae2f-4b7f-4a70-a592-878744a13900" },
-      { "statusname": "Restored", "id": "5BB309CA-1C1E-444E-9BC8-645686D7F66A" },
-      { "statusname": "Completed", "id": "9231C5F1-2235-4F7B-B5E6-80694333DD72" }]
+    
   }
 
   ngOnInit() {
@@ -98,12 +90,7 @@ export class ListRecipeComponent implements OnInit {
     this.apiService.getDataList(getAllRecipeByTenantAPI, pageNumber, pageSize, null, null, null).subscribe(response => {
       if (response['body']) {
         this.recipeContent = response['body'].recipes;
-        for (let i = 0; i < this.recipeContent.length; i++) {
-          for (let j = 0; j < this.recipeStatus.length; j++) {
-            if (this.recipeContent[i].statusId == this.recipeStatus[j].id)
-              this.recipeContent[i].statusName = this.recipeStatus[j].statusname;
-          }
-        }
+
       }
       this.headerValue = response['body']['pagingDetails'];
       if (this.headerValue) {
@@ -243,12 +230,7 @@ export class ListRecipeComponent implements OnInit {
         }
         if (response && response['body']) {
           this.recipeContent = response['body'].recipes;
-          for (let i = 0; i < this.recipeContent.length; i++) {
-            for (let j = 0; j < this.recipeStatus.length; j++) {
-              if (this.recipeContent[i].statusId == this.recipeStatus[j].id)
-                this.recipeContent[i].statusName = this.recipeStatus[j].statusname;
-            }
-          }
+
           this.recipeContent.map((recipes, id) => {
             if (recipes !== null) {
               recipes.name = recipes.name !== null ? recipes.name : '';
