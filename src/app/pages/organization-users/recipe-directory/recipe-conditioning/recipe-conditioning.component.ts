@@ -77,6 +77,7 @@ export class RecipeConditioningComponent implements OnInit {
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
     this.getUnitTypes();
+    this.initiateFormArrays();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -130,7 +131,6 @@ export class RecipeConditioningComponent implements OnInit {
         }
       });
     }
-    this.initiateFormArrays();
   }
 
   getRecipeDetailsById(recipeId) {
@@ -156,7 +156,7 @@ export class RecipeConditioningComponent implements OnInit {
             this.singleRecipeDetails.MashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
         }
       }
-      this.findUnits();
+
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { 
         // commit status
@@ -180,15 +180,9 @@ export class RecipeConditioningComponent implements OnInit {
   }
 
   initiateFormArrays() {
-    const conditioningtargets = (this.recipeConditioningForm.get('conditioningTargets') as FormArray);
     this.addConditioningTargets();
-
-    const filterationtargets = (this.recipeConditioningForm.get('filterationTargets') as FormArray);
     this.addFilterationTargets();
-
-    const carbonationtargets = (this.recipeConditioningForm.get('carbonationTargets') as FormArray);
     this.addCarbonationTargets();
-
   }
 
   setValueToEdit(data) {

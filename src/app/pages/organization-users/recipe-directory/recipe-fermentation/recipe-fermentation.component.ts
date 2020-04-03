@@ -92,6 +92,7 @@ export class RecipeFermentationComponent implements OnInit {
     this.getSuppliers();
     this.getYeastStrain();
     this.getUnitTypes();
+    this.initiateFormArrays();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -146,7 +147,6 @@ export class RecipeFermentationComponent implements OnInit {
         }
       });
     }
-    this.initiateFormArrays();
   }
 
   getRecipeDetailsById(recipeId) {
@@ -172,8 +172,6 @@ export class RecipeFermentationComponent implements OnInit {
             this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
         }
       }
-      this.findUnits();
-
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
         // commit status
@@ -223,16 +221,9 @@ export class RecipeFermentationComponent implements OnInit {
   }
 
   initiateFormArrays() {
-    const fermentation = (this.recipeFermentationForm.get('fermentationTargets') as FormArray);
     this.addFermentationTargets();
-
-    const diacetylrest = (this.recipeFermentationForm.get('diacetylRest') as FormArray);
     this.addDiacetylRest();
-
-    const aging = (this.recipeFermentationForm.get('aging') as FormArray);
     this.addAging();
-
-    const yeast = (this.recipeFermentationForm.get('yeast') as FormArray);
     this.addYeast();
   }
 

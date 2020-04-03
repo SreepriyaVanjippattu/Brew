@@ -93,6 +93,7 @@ export class RecipeBrewlogComponent implements OnInit {
     this.getMaltTypes();
     this.getSuppliers();
     this.getUnitTypes();
+    this.initiateFormArrays();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -145,7 +146,6 @@ export class RecipeBrewlogComponent implements OnInit {
         }
       });
     }
-    this.initiateFormArrays();
   }
 
   getRecipeDetailsById(recipeId) {
@@ -184,16 +184,10 @@ export class RecipeBrewlogComponent implements OnInit {
 
   initiateFormArrays() {
     if (!sessionStorage.RecipeId) {
-      const sparges = (this.brewLogForm.get('sparges') as FormArray);
       this.addSparge();
     }
-    const kettleTargets = (this.brewLogForm.get('kettleTargets') as FormArray);
     this.addKettleTargets();
-
-    const whirlpoolTarget = (this.brewLogForm.get('whirlpoolTarget') as FormArray);
     this.addWhirlpoolTarget();
-
-    const coolingKnockoutTarget = (this.brewLogForm.get('coolingKnockoutTarget') as FormArray);
     this.addCoolingKnockoutTargets();
   }
 
