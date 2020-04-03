@@ -172,6 +172,8 @@ export class RecipeFermentationComponent implements OnInit {
             this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
         }
       }
+
+      this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
         // commit status

@@ -157,6 +157,7 @@ export class RecipeConditioningComponent implements OnInit {
         }
       }
 
+      this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { 
         // commit status
