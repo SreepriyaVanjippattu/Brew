@@ -171,7 +171,6 @@ export class RecipeBrewlogComponent implements OnInit {
         this.tempUnitIdFromDb = this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
           this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
       }
-     
 
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
@@ -184,10 +183,11 @@ export class RecipeBrewlogComponent implements OnInit {
   }
 
   initiateFormArrays() {
-    if (!sessionStorage.RecipeId){
+    if (!sessionStorage.RecipeId) {
       const sparges = (this.brewLogForm.get('sparges') as FormArray);
       this.addSparge();
-      const kettleTargets = (this.brewLogForm.get('kettleTargets') as FormArray);
+    }
+    const kettleTargets = (this.brewLogForm.get('kettleTargets') as FormArray);
     this.addKettleTargets();
 
     const whirlpoolTarget = (this.brewLogForm.get('whirlpoolTarget') as FormArray);
@@ -195,10 +195,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
     const coolingKnockoutTarget = (this.brewLogForm.get('coolingKnockoutTarget') as FormArray);
     this.addCoolingKnockoutTargets();
-}
-    
-   
-}
+  }
 
   getCountries() {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
@@ -271,7 +268,6 @@ export class RecipeBrewlogComponent implements OnInit {
       }
 
       if (data.kettleTargets != null) {
-        this.addKettleTargets();
         this.kettleTargetsArray.controls.forEach(fields => {
           fields.get('id').setValue(data.kettleTargets.id);
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
@@ -285,13 +281,9 @@ export class RecipeBrewlogComponent implements OnInit {
           fields.get('ph').setValue(data.kettleTargets.ph);
           fields.get('notes').setValue(data.kettleTargets.notes);
         });
-       
       }
-     
-      
 
       if (data.whirlpoolTarget != null) {
-        this.addWhirlpoolTarget();
         this.whirlpoolTargetArray.controls.forEach(fields => {
           fields.get('id').setValue(data.whirlpoolTarget.id);
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
@@ -301,7 +293,6 @@ export class RecipeBrewlogComponent implements OnInit {
       }
 
       if (data.coolingKnockoutTarget != null) {
-        this.addCoolingKnockoutTargets();
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
           fields.get('id').setValue(data.coolingKnockoutTarget.id);
           fields.get('volumeInFermentation').setValue(data.coolingKnockoutTarget.volumeInFermentation);
@@ -417,6 +408,7 @@ export class RecipeBrewlogComponent implements OnInit {
       this.singleRecipeDetails.sparges = sparge;
       const coolingKnockoutTarget = JSON.stringify(this.brewLogForm.get('coolingKnockoutTarget').value).replace(/^\[|]|$/g, '');
       this.singleRecipeDetails.coolingKnockoutTarget = JSON.parse(coolingKnockoutTarget);
+
       const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
       this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
         if (response) {
@@ -437,8 +429,7 @@ export class RecipeBrewlogComponent implements OnInit {
           }
         }
       });
-    } 
-    else {
+    } else {
       if (this.formSubmitted && this.brewLogForm.valid) {
         this.router.navigate(['/app/recipes/recipe-fermentation']);
       }

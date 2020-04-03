@@ -172,8 +172,7 @@ export class RecipeFermentationComponent implements OnInit {
             this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
         }
       }
-      // this.findUnits();
-
+      this.findUnits();
 
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
@@ -224,19 +223,17 @@ export class RecipeFermentationComponent implements OnInit {
   }
 
   initiateFormArrays() {
-    if (!sessionStorage.RecipeId) {
-      const fermentation = (this.recipeFermentationForm.get('fermentationTargets') as FormArray);
-      this.addFermentationTargets();
+    const fermentation = (this.recipeFermentationForm.get('fermentationTargets') as FormArray);
+    this.addFermentationTargets();
 
-      const diacetylrest = (this.recipeFermentationForm.get('diacetylRest') as FormArray);
-      this.addDiacetylRest();
+    const diacetylrest = (this.recipeFermentationForm.get('diacetylRest') as FormArray);
+    this.addDiacetylRest();
 
-      const aging = (this.recipeFermentationForm.get('aging') as FormArray);
-      this.addAging();
+    const aging = (this.recipeFermentationForm.get('aging') as FormArray);
+    this.addAging();
 
-      const yeast = (this.recipeFermentationForm.get('yeast') as FormArray);
-      this.addYeast();
-    }
+    const yeast = (this.recipeFermentationForm.get('yeast') as FormArray);
+    this.addYeast();
   }
 
   getYeastStrain() {
@@ -274,7 +271,6 @@ export class RecipeFermentationComponent implements OnInit {
     if (data) {
 
       if (data.fermentationTargets != null) {
-        this.addFermentationTargets();
         this.fermentationTargetsArray.controls.forEach(fields => {
           fields.get('id').setValue(data.fermentationTargets.id);
           fields.get('volumeIn').setValue(data.fermentationTargets.volumeIn);
@@ -290,7 +286,6 @@ export class RecipeFermentationComponent implements OnInit {
       }
 
       if (data.diacetylRest != null) {
-        this.addDiacetylRest();
         this.diacetylRestArray.controls.forEach(fields => {
           fields.get('id').setValue(data.diacetylRest.id);
           fields.get('temperature').setValue(data.diacetylRest.temperature);
@@ -301,7 +296,6 @@ export class RecipeFermentationComponent implements OnInit {
       }
 
       if (data.aging != null) {
-        this.addAging();
         this.agingArray.controls.forEach(fields => {
           fields.get('id').setValue(data.aging.id);
           fields.get('timeDuration').setValue(data.aging.timeDuration);
@@ -313,7 +307,7 @@ export class RecipeFermentationComponent implements OnInit {
 
 
       if (data.yeast != null) {
-        this.addYeast();
+
         this.yeastArray.controls.forEach(fields => {
           fields.get('id').setValue(data.yeast.id);
           fields.get('name').setValue(data.yeast.name);
