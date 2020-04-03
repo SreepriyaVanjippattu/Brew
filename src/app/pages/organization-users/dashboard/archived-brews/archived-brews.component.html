@@ -32,7 +32,7 @@
             <div class="d-flex header-search-wrapper">
                 <div class="d-flex l-search">
                     <i class="material-icons search-ico"> search </i>
-                    <input (keyup)="searchBrew($event)" type="text" class="l-searchbox" id=""
+                    <input (keyup.enter)="searchBrew($event)" type="text" class="l-searchbox" id=""
                         placeholder="Search Brew Run"> </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
@@ -134,7 +134,7 @@
                         screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
                         screenReaderCurrentLabel="You're on page" (pageChange)="onPageChange($event)">
                     </pagination-controls>
-                    <select [(ngModel)]="config.itemsPerPage">
+                    <select (change)="pageSize($event.target.value)">
                         <option value="5">5/Page</option>
                         <option value="10">10/Page</option>
                         <option value="20">20/Page</option>

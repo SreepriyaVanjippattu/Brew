@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
   disableDelete:  boolean;
   progressId: any;
   pageControl;
+  searchText: string;
 
 
   permission = permission;
@@ -66,7 +67,10 @@ export class DashboardComponent implements OnInit {
     private modalService: ModalService,
     private toastrService: NbToastrService,
     private data:DataService
-  ) { }
+  ) {
+      this.searchText = "";
+
+   }
 
   ngOnInit() {
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
@@ -75,21 +79,24 @@ export class DashboardComponent implements OnInit {
     this.currentUser = userDetails["userDetails"]["userId"];
     this.page = this.route.snapshot.queryParamMap.get('page');
     if (this.page) {
-      this.getDashBoardDetails(this.tenantId, this.page, this.config.itemsPerPage);
-    } else {
-      this.getDashBoardDetails(this.tenantId, this.config.currentPage, this.config.itemsPerPage);
+      this.config.currentPage = this.page 
     }
-  }
+    this.searchText =  this.route.snapshot.queryParamMap.get('searchText');
 
-  getDashBoardDetails(tenantId, pageNumber, pageSize) {
+    this.getDashBoardDetails();
+   }
+
+  getDashBoardDetails() {
     this.router.navigate(['app/dashboard'], {
       queryParams: {
         page: this.config.currentPage,
+        searchText : this.searchText
       },
     });
 
+
     const getAllBrewRunAPI= String.Format(this.apiService.getAllBrewRun, this.tenantId);
-    this.apiService.getDataByQueryParams(getAllBrewRunAPI, null, null, null, pageNumber, pageSize,null).subscribe(response => {
+    this.apiService.getDataByQueryParams(getAllBrewRunAPI, null, null, null, this.config.currentPage, this.config.itemsPerPage,this.searchText).subscribe(response => {
       this.brewRuns = response['body']['brewRuns'];
       const archivePermission = this.data.checkPermission(this.permission.Archive_Brew_Run.Id);
       if (this.brewRuns) {
@@ -116,17 +123,14 @@ export class DashboardComponent implements OnInit {
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getDashBoardDetails(this.tenantId, this.config.currentPage, this.config.itemsPerPage);
+    this.config.currentPage = 1;
+    this.getDashBoardDetails();
   }
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getDashBoardDetails(this.tenantId, this.config.currentPage, this.config.itemsPerPage);
-    this.router.navigate(['app/dashboard'], {
-      queryParams: {
-        page: nextPage,
-      },
-    });
+    this.getDashBoardDetails();
+ 
   }
 
   singleFermentationClick(value, fermentationId) {
@@ -197,7 +201,7 @@ export class DashboardComponent implements OnInit {
     };
     this.apiService.putData(this.apiService.changeBrewRunStatus, params).subscribe((response) => {
       if (response) {
-        this.getDashBoardDetails(this.tenantId, this.config.currentPage, this.config.itemsPerPage);
+        this.getDashBoardDetails();
         this.toastrService.success('Brew successfully deleted');
       }
     }, error => {
@@ -206,32 +210,14 @@ export class DashboardComponent implements OnInit {
   }
 
   searchBrew(event) {
-    const search = event.target.value;
+    this.searchText = event.target.value;
     this.config.currentPage = 1;
-    
-    const getAllBrewRunAPI= String.Format(this.apiService.getAllBrewRun, this.tenantId);
-    this.apiService.getDataByQueryParams( getAllBrewRunAPI, null, null, null,
-                            this.config.currentPage, this.config.totalItems,search).
-
-                           
-      subscribe((response) => {
-        this.headerValue = response['body']['pagingDetails'];
-        if (this.headerValue) {
-          this.config.totalItems = this.headerValue.totalCount;
-        }
-        if (response && response['body']) {
-          this.brewRuns = response['body']['brewRuns'];
-          this.brewRuns.map((brewRun, idx) => {
-            if (brewRun.OrgSuperUser !== null) {
-              this.brewProgressCalculation(brewRun);
-              brewRun.recipeName = brewRun.recipeName !== null ? brewRun.recipeName : '';
-              brewRun.startTime = brewRun.startTime;
-              brewRun.brewRunId = brewRun.brewRunId;
-            }
-          });
-        }
-       });
+    this.getDashBoardDetails();
+  
+  
   }
+
+
 
   brewProgressCalculation(brewRun) {
    let sDate: any;

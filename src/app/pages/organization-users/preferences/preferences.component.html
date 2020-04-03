@@ -31,9 +31,9 @@
             <label>Gravity Measurement</label>
             <div class='custom-radio-wrapper'>
               <div class='custom-radio' *ngFor="let measurements of gravityMeasurement">
-                <input type="radio" id="measurement_{{measurements.Id}}" formControlName="gravityMeasurement"
-                  value="{{measurements.Id}}">
-                <label for="measurement_{{measurements.Id}}">{{measurements.Name}}</label>
+                <input type="radio" id="measurement_{{measurements.id}}" formControlName="gravityMeasurement"
+                  value="{{measurements.id}}">
+                <label for="measurement_{{measurements.id}}">{{measurements.name}}</label>
               </div>
             </div>
             <div *ngIf="formSubmittedGenSet">
@@ -46,9 +46,9 @@
             <label>Temperature</label>
             <div class='custom-radio-wrapper'>
               <div class='custom-radio' *ngFor="let temperature of temperatureUnits">
-                <input type="radio" id="temperature_{{temperature.Id}}" name="temperature" formControlName="temperature"
-                  value="{{temperature.Id}}">
-                <label for="temperature_{{temperature.Id}}">{{temperature.Name}}</label>
+                <input type="radio" id="temperature_{{temperature.id}}" name="temperature" formControlName="temperature"
+                  value="{{temperature.id}}">
+                <label for="temperature_{{temperature.id}}">{{temperature.name}}</label>
               </div>
             </div>
             <div *ngIf="formSubmittedGenSet">
@@ -63,7 +63,7 @@
             <label>Time Zone</label>
             <select formControlName="timeZone" class="form-control input-dropdown">
               <option value="" disabled>Select</option>
-              <option *ngFor="let time of timeZoneList" value="{{time.Id}}">{{time.Id}}</option>
+              <option *ngFor="let time of timeZoneList" value="{{time.id}}">{{time.id}}</option>
             </select>
             <div *ngIf="formSubmittedGenSet">
               <div *ngIf="forms.timeZone.errors?.required" class="valid-error">
@@ -92,7 +92,7 @@
         <div class="preference-header-right">
           <div class="d-flex l-search">
             <i class="material-icons search-ico"> search </i>
-            <input class='l-searchbox' (keyup.enter)="SearchYeast($event)" value="" placeholder="Search" type="text">
+            <input class='l-searchbox' (keyup.enter)="searchYeast($event)" value="" placeholder="Search" type="text">
           </div>
           <button [disabled]="savenewYeastEnabled" class="btn l-btn-white" type="button" (click)="newYeastItem()">New
             Yeast</button>
@@ -114,19 +114,19 @@
 
             <tr [formGroupName]="i" class="w-100">
               <td>
-                <span> {{lists.value.Name}}</span>
-                <input *ngIf="enableeditYeastIndex && enableYeastEdit == i" formControlName="Name" class='form-control'
+                <span> {{lists.value.name}}</span>
+                <input *ngIf="enableeditYeastIndex && enableYeastEdit == i" formControlName="name" class='form-control'
                   placeholder="Yeast Strain">
                 <div *ngIf="formSubmitted && enableYeastEdit == i">
-                  <div *ngIf="yeastForms.controls[i].get('Name').invalid" class="valid-error">
+                  <div *ngIf="yeastForms.controls[i].get('name').invalid" class="valid-error">
                     Yeast Strain is required
                   </div>
                 </div>
               </td>
               <td>
-                <span> {{lists.value.CreatedDate}}</span>
+                <span> {{lists.value.createdDate}}</span>
                 <input disabled type="date" *ngIf="enableeditYeastIndex && enableYeastEdit == i"
-                  formControlName="CreatedDate" class='form-control' placeholder="Yeast Date">
+                  formControlName="createdDate" class='form-control' placeholder="Yeast Date">
                 <div *ngIf="formSubmitted && enableYeastEdit == i">
                 </div>
               </td>
@@ -179,7 +179,7 @@
         <div class="preference-header-right">
           <div class="d-flex l-search">
             <i class="material-icons search-ico"> search </i>
-            <input class='l-searchbox' (keyup.enter)="SearchTank($event)" placeholder="Search" type="text">
+            <input class='l-searchbox' (keyup.enter)="searchTank($event)" placeholder="Search" type="text">
           </div>
           <button [disabled]="savenewTankEnabled" class="btn l-btn-white" type="button" (click)="newTankItem()">New
             Tank</button>
@@ -212,7 +212,7 @@
               <td>
                 <select formControlName="tankTypeId" class="form-control input-dropdown-prefer">
                   <option value="" disabled>Select</option>
-                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.Id}}">{{tankTypes.Name}}</option>
+                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.id}}">{{tankTypes.name}}</option>
                 </select>
                 <div *ngIf="formSubmitted && enablenewTankValidation == i">
                   <div *ngIf="tankForms.controls[i].get('tankTypeId').invalid" class="valid-error">
@@ -234,7 +234,7 @@
                   <select formControlName="unit" class="form-control input-dropdown-capacity" style="min-width: 100px;">
                     <option value="" disabled>Select</option>
                     <ng-container *ngFor="let unitVol of unitTypeList">
-                      <option *ngIf="unitVol.Category === 'Size'" [value]="unitVol.Id">{{unitVol.Symbol}}</option>
+                      <option *ngIf="unitVol.category === 'Size'" [value]="unitVol.id">{{unitVol.symbol}}</option>
                     </ng-container>
                   </select>
                   <div *ngIf="formSubmitted && enableTankEdit == i">
@@ -266,20 +266,20 @@
           <!-- Add New Tank -->
           <tbody formArrayName="newTank" *ngFor="let tankItems of newTankForms.controls; let i = index;">
             <tr [formGroupName]="i" class="w-100">
-              <td> <input formControlName="tankname" class='form-control' placeholder="Tank Name">
+              <td> <input formControlName="tankName" class='form-control' placeholder="Tank Name">
                 <div *ngIf="formSubmitted && enablenewTankValidation == i">
-                  <div *ngIf="tankItems.get('tankname').invalid" class="valid-error">
+                  <div *ngIf="tankItems.get('tankName').invalid" class="valid-error">
                     Tank Name is required
                   </div>
                 </div>
               </td>
               <td>
-                <select formControlName="tanktype" class="form-control input-dropdown-prefer">
+                <select formControlName="tankType" class="form-control input-dropdown-prefer">
                   <option value="" disabled>Select</option>
-                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.Id}}">{{tankTypes.Name}}</option>
+                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.id}}">{{tankTypes.name}}</option>
                 </select>
                 <div *ngIf="formSubmitted && enablenewTankValidation == i">
-                  <div *ngIf="tankItems.get('tanktype').invalid" class="valid-error">
+                  <div *ngIf="tankItems.get('tankType').invalid" class="valid-error">
                     Tank Type is required
                   </div>
                 </div>
@@ -298,7 +298,7 @@
                     <option value="" disabled>Select</option>
 
                     <ng-container *ngFor="let unitVol of unitTypeList">
-                      <option *ngIf="unitVol.Category === 'Size'" [value]="unitVol.Id">{{unitVol.Symbol}}</option>
+                      <option *ngIf="unitVol.category === 'Size'" [value]="unitVol.id">{{unitVol.symbol}}</option>
                     </ng-container>
 
                   </select>

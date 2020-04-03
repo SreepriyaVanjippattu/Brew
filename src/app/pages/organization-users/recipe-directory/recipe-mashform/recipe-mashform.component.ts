@@ -833,7 +833,7 @@ export class RecipeMashformComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId,
+      tenantId: this.tenantId
     };
     if (this.modalForms.get('supplierText').value) {
       const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);
@@ -853,7 +853,7 @@ export class RecipeMashformComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId,
+      tenantId: this.tenantId
     };
     if (this.modalForms.get('styleText').value) {
       const addStyleAPI = String.Format(this.apiService.addStyle, this.tenantId);
@@ -873,7 +873,7 @@ export class RecipeMashformComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId,
+      tenantId: this.tenantId
     };
     if (this.modalForms.get('typeText').value) {
       const addTypeAPI = String.Format(this.apiService.addType, this.tenantId);
@@ -886,4 +886,3 @@ export class RecipeMashformComponent implements OnInit {
     }
   }
 }
-

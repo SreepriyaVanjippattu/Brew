@@ -243,6 +243,12 @@ export class ListRecipeComponent implements OnInit {
         }
         if (response && response['body']) {
           this.recipeContent = response['body'].recipes;
+          for (let i = 0; i < this.recipeContent.length; i++) {
+            for (let j = 0; j < this.recipeStatus.length; j++) {
+              if (this.recipeContent[i].statusId == this.recipeStatus[j].id)
+                this.recipeContent[i].statusName = this.recipeStatus[j].statusname;
+            }
+          }
           this.recipeContent.map((recipes, id) => {
             if (recipes !== null) {
               recipes.name = recipes.name !== null ? recipes.name : '';

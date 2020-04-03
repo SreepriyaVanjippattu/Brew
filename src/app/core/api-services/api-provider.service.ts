@@ -76,7 +76,7 @@ export class ApiProviderService {
 
   // preference
   getPreferenceSettings = 'brewrun/v1/brewers/settings/{0}/preference';
-  getAllTimeZone = 'brewrun/v1/brewers/recipe/getAllTimeZone';
+  getAllTimeZone = 'brewrun/v1/brewers/settings/getAllTimeZone';
   addPreference = 'AddPreference';
   addYeastStrain = 'AddYeastStrain';
   addTankConfiguration = 'AddTankConfiguration';
@@ -84,6 +84,8 @@ export class ApiProviderService {
   getAllTankConfigurationList = 'GetAllTankConfigurationList';
   editTankConfiguration = 'EditTankConfiguration';
   editYeastStrain = 'EditYeastStrain';
+
+  
 
   // recipe
   getAllRecipeByTenant = 'brewrun/v1/brewers/recipe/{0}';

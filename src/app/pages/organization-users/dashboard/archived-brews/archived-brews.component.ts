@@ -39,6 +39,7 @@ export class ArchivedBrewsComponent implements OnInit {
   toggleStatus: boolean = false;
   headerValue: any;
   jsonValue: any;
+  searchText :string;
 
   constructor(
     private apiService: ApiProviderService,
@@ -54,10 +55,10 @@ export class ArchivedBrewsComponent implements OnInit {
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
-    this.getDashBoardDetails( this.config.currentPage, this.config.itemsPerPage);
+    this.getDashBoardDetails();
   }
 
-  getDashBoardDetails(pageNumber, pageSize) {
+  getDashBoardDetails() {
     this.router.navigate(['dashboard/archives'], {
       queryParams: {
         page: this.config.currentPage,
@@ -107,7 +108,7 @@ export class ArchivedBrewsComponent implements OnInit {
       currentDate = year + "-" + this.month + "-" + this.day +"T"+this.hours+":"+this.minutes+":"+this.seconds;
       const getAllArchievedBrewRunAPI= String.Format(this.apiService.getAllArchievedBrewRun, this.tenantId);
 
-      this.apiService.getDataByQueryParams(getAllArchievedBrewRunAPI, null, null, null, pageNumber, pageSize,null).subscribe(response => {
+      this.apiService.getDataByQueryParams(getAllArchievedBrewRunAPI, null, null, null,  this.config.currentPage, this.config.itemsPerPage,this.searchText).subscribe(response => {
         this.config.totalItems = response['body']['pagingDetails']['totalCount'];
         this.archivedContent = response['body']['brewRuns'];
         if (this.archivedContent) {
@@ -131,14 +132,16 @@ export class ArchivedBrewsComponent implements OnInit {
 
   }
 
+  pageSize(newSize) {
+    this.config.itemsPerPage = newSize;
+    this.config.currentPage = 1;
+    this.getDashBoardDetails();
+  }
+
   onPageChange(event) {
     this.config.currentPage = event;
-    this.getDashBoardDetails(this.config.currentPage, this.config.itemsPerPage);
-    this.router.navigate(['app/dashboard/archives'], {
-      queryParams: {
-        page: event,
-      },
-    });
+    this.getDashBoardDetails();
+  
   }
 
   deleteItem(id, brewRunId){
@@ -147,27 +150,9 @@ export class ArchivedBrewsComponent implements OnInit {
   }
 
   searchBrew(event) {
-    const search = event.target.value;
-    this.apiService.getDataByQueryParams(this.apiService.getAllArchievedBrewRun + `&startwith=${search}`, null,
-     this.tenantId, null, this.config.currentPage, this.config.itemsPerPage).
-      subscribe((response) => {
-        const myHeaders = response.headers;
-        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
-        if (this.headerValue) {
-          this.config.totalItems = this.headerValue.TotalCount;
-        }
-        if (response && response['body']) {
-          this.archivedContent = response['body'];
-          this.archivedContent.map((ferment, idx) => {
-            if (ferment.OrgSuperUser !== null) {
-              this.brewProgressCalculation(ferment);
-              ferment.RecipeName = ferment.RecipeName !== null ? ferment.RecipeName : '';
-              ferment.StartTime = ferment.StartTime;
-              ferment.BrewRunId = ferment.BrewRunId;
-            }
-          });
-        }
-       });
+    this.searchText = event.target.value;
+    this.getDashBoardDetails();
+  
   }
 
   restoreArchivedBrew(fermentationId, brewRunId) {

@@ -11,7 +11,7 @@ import { String } from 'typescript-string-operations';
 @Component({
   selector: 'recipe-conditioning',
   templateUrl: './recipe-conditioning.component.html',
-  styleUrls: ['./recipe-conditioning.component.scss'],
+  styleUrls: ['./recipe-conditioning.component.scss']
 })
 export class RecipeConditioningComponent implements OnInit {
 
@@ -156,7 +156,7 @@ export class RecipeConditioningComponent implements OnInit {
             this.singleRecipeDetails.MashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
         }
       }
-      this.findUnits();
+      // this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { 
         // commit status
@@ -180,6 +180,7 @@ export class RecipeConditioningComponent implements OnInit {
   }
 
   initiateFormArrays() {
+    if(!sessionStorage.RecipeId){
     const conditioningtargets = (this.recipeConditioningForm.get('conditioningTargets') as FormArray);
     this.addConditioningTargets();
 
@@ -188,13 +189,14 @@ export class RecipeConditioningComponent implements OnInit {
 
     const carbonationtargets = (this.recipeConditioningForm.get('carbonationTargets') as FormArray);
     this.addCarbonationTargets();
-
   }
+}
 
   setValueToEdit(data) {
     if (data) {
 
       if (data.conditioningTargets != null) {
+        this.addConditioningTargets();
         this.conditioningTargetsArray.controls.forEach(fields => {
           fields.get('id').setValue(data.conditioningTargets.id);
           fields.get('volumeIn').setValue(data.conditioningTargets.volumeIn);
@@ -213,6 +215,7 @@ export class RecipeConditioningComponent implements OnInit {
       }
 
       if (data.filterationTargets != null) {
+        this.addFilterationTargets();
         this.filterationTargetsArray.controls.forEach(fields => {
           fields.get('id').setValue(data.filterationTargets.id);
           fields.get('temperature').setValue(data.filterationTargets.temperature);
@@ -222,6 +225,7 @@ export class RecipeConditioningComponent implements OnInit {
       }
 
       if (data.carbonationTargets != null) {
+        this.addCarbonationTargets();
         this.carbonationTargetsArray.controls.forEach(fields => {
           fields.get('id').setValue(data.carbonationTargets.id);
           fields.get('ph').setValue(data.carbonationTargets.ph);
