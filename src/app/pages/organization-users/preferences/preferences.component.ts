@@ -166,7 +166,7 @@ export class PreferencesComponent implements OnInit {
   }
   getGeneralMeasurements() {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
-      this.preferenceDetails = response['body'].unitTypebase;
+      this.preferenceDetails = response['body'].unitTypes;
       this.preferenceDetails.map(units => {
         if (units.id === '29948d48-3bca-4786-a465-78e42693604f' || units.id == '0b1cc404-b982-451a-85b3-8fec59baf09a') {
           this.gravityMeasurement.push(units);
@@ -216,9 +216,9 @@ export class PreferencesComponent implements OnInit {
     } else {
 
       const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastStrains, this.tenantId);
-      this.apiService.getData(getAllYeastStrainsAPI, null, null, null, null, search).subscribe(response => {
+      this.apiService.getDataList(getAllYeastStrainsAPI, null, null, null, null, search).subscribe(response => {
         if (response.status === 200) {
-          this.yeastStrain = response['body'].yeastStrainBase;
+          this.yeastStrain = response['body'].yeastStrains;
           let controls = <FormArray>this.tankyeastForm.controls.listYeast;
           this.yeastStrain.forEach(element => {
             controls.controls = [];
@@ -240,17 +240,17 @@ export class PreferencesComponent implements OnInit {
 
   listYeastItems() {
     const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastStrains, this.tenantId);
-    this.apiService.getData(getAllYeastStrainsAPI).subscribe(response => {
-      this.yeastStrain = response['body'];
+    this.apiService.getDataList(getAllYeastStrainsAPI).subscribe(response => {
+      this.yeastStrain = response['body'].yeastStrains;
       sessionStorage.yeastStrain = JSON.stringify(this.yeastStrain);
       let controls = <FormArray>this.tankyeastForm.controls.listYeast;
       this.yeastStrain.forEach(element => {
-        let date = new Date(element.CreatedDate).toString();
-        date = this.datePipe.transform(date, 'yyyy-MM-dd');
+        // let date = new Date(element.CreatedDate).toString();
+        // date = this.datePipe.transform(date, 'yyyy-MM-dd');
         controls.push(this.form.group({
           id: [element.id],
           name: [element.name, Validators.required],
-          createdDate: [date, Validators.required]
+          // createdDate: [date, Validators.required]
         }));
 
       });
@@ -267,12 +267,13 @@ export class PreferencesComponent implements OnInit {
 
     if (controlNewYeast.controls[i].status === 'VALID') {
       this.savenewYeastEnabled = false;
-      const params = {
-        name: controlNewYeast.controls[i].value.yeastStrain,
-        tenantId: this.tenantId,
-        isActive: "true",
-      };
-      this.apiService.postData(this.apiService.addYeastStrain, params).subscribe((response: any) => {
+      // const params = {
+      //   name: controlNewYeast.controls[i].value.yeastStrain,
+        // tenantId: this.tenantId,
+        // isActive: "true",
+      // };
+      const saveYeastStrainApi = String.Format(this.apiService.addYeastStrain, this.tenantId)
+      this.apiService.postData(saveYeastStrainApi).subscribe((response: any) => {
         if (response.status === 200) {
           this.listYeastItems();
           controlListYeast.controls = [];
@@ -359,8 +360,8 @@ export class PreferencesComponent implements OnInit {
   }
 
   listTankItems() {
-    this.apiService.getData(this.apiService.getAllTankConfigurationList, null, null, this.tenantId).subscribe(response => {
-      this.tankConfiguration = response['body'];
+    this.apiService.getDataList(this.apiService.getAllTankConfigurationList).subscribe(response => {
+      this.tankConfiguration = response['body'].tankType;
       let controls = <FormArray>this.tankForm.controls.listTank;
 
       this.tankConfiguration.forEach(element => {
@@ -420,9 +421,10 @@ export class PreferencesComponent implements OnInit {
       controls.controls = [];
       this.listTankItems();
     } else {
-      this.apiService.getDataByParams(this.apiService.getAllTankConfigurationList, this.tenantId, search).subscribe(response => {
+      const getAllTankTypesListApi =  String.Format(this.apiService.getAllTankConfigurationList, this.tenantId);
+      this.apiService.getDataList(getAllTankTypesListApi,null,null,null,null, search).subscribe(response => {
         if (response.status === 200) {
-          this.tankConfiguration = response['body'];
+          this.tankConfiguration = response['body'].tankType;
           let controls = <FormArray>this.tankForm.controls.listTank;
           this.tankConfiguration.forEach(element => {
             controls.controls = [];
@@ -443,8 +445,9 @@ export class PreferencesComponent implements OnInit {
     this.unitTypeList = JSON.parse(sessionStorage.getItem('units'));
   }
   tankTypeById(tenantId) {
-    this.apiService.getData(this.apiService.getAllActiveTankType, null, null, tenantId).subscribe(response => {
-      this.tankTypeList = response['body'];
+    const getTankTypeByIdApi = String.Format(this.apiService.getAllActiveTankType,tenantId);
+    this.apiService.getDataList(getTankTypeByIdApi).subscribe(response => {
+      this.tankTypeList = response['body'].tanks;
     });
   }
 

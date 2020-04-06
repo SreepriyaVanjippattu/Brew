@@ -78,11 +78,11 @@ export class ApiProviderService {
   // preference
   getPreferenceSettings = 'brewrun/v1/brewers/settings/{0}/preference';
   getAllTimeZone = 'brewrun/v1/brewers/settings/getAllTimeZone';
-  addPreference = 'AddPreference';
-  addYeastStrain = 'AddYeastStrain';
-  addTankConfiguration = 'AddTankConfiguration';
-  getAllActiveTankType = 'GetAllActiveTankType';
-  getAllTankConfigurationList = 'GetAllTankConfigurationList';
+  addPreference = 'brewrun/v1/brewers/{0}/preference';
+  addYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains';
+  addTankConfiguration = 'brewrun/v1/brewers/settings/tankType';
+  getAllActiveTankType = 'brewrun/v1/brewers/{0}/tanks';
+  getAllTankConfigurationList = 'brewrun/v1/brewers/settings/tanktype';
   editTankConfiguration = 'EditTankConfiguration';
   editYeastStrain = 'EditYeastStrain';
 
