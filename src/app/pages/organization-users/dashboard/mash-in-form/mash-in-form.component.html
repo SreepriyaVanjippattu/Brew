@@ -179,8 +179,8 @@
                                                 [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].quantityUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -256,8 +256,8 @@
                                                 [(ngModel)]="brewRunMashin.waterAdditionDetails[i].cacl2unitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -272,8 +272,8 @@
                                                 [(ngModel)]="brewRunMashin.waterAdditionDetails[i].gypsumUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -289,8 +289,8 @@
                                                 [(ngModel)]="brewRunMashin.waterAdditionDetails[i].tableSaltUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -306,8 +306,8 @@
                                                 [(ngModel)]="brewRunMashin.waterAdditionDetails[i].epsomSaltUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -324,8 +324,8 @@
                                                 [(ngModel)]="brewRunMashin.waterAdditionDetails[i].caCo3unitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -345,8 +345,8 @@
                                                 [(ngModel)]="brewRunMashin.waterAdditionDetails[i].bakingSodaUnitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -361,8 +361,8 @@
                                                 [(ngModel)]="brewRunMashin.waterAdditionDetails[i].h3po4unitId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -411,7 +411,7 @@
                     <div [ngbCollapse]="isCollapsedMashing" class="collapse" aria-labelledby="headingFour"
                         data-parent="#accordionExample">
                         <div class="card-body">
-                            <div *ngFor="let mashingTargetDetail of brewRunMashin.mashingTargetDetails; let i = index;">
+                            <div *ngFor="let MashingTargetDetail of brewRunMashin.mashingTargetDetails; let i = index;">
                                 <div class="form-row">
 
                                     <div class="col-md-6">
@@ -421,7 +421,7 @@
                                                 <label for="brewrun-id">Start Time</label>
                                                 <input type='hidden' class="form-control" id="mashinStart"
                                                     name="StartTime"
-                                                    [(ngModel)]="brewRunMashin.mashingTargetDetails[i].startTime">
+                                                    [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StartTime">
                                                 <input type='text' class="form-control" id="mashinStartTime"
                                                     name="StartTime" [value]="mashinStartTime">
                                             </div>
@@ -434,7 +434,7 @@
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">End Time</label>
                                                 <input type='hidden' class="form-control" id="mashinEnd" name="EndTime"
-                                                    [(ngModel)]="brewRunMashin.mashingTargetDetails[i].endTime">
+                                                    [(ngModel)]="brewRunMashin.mashingTargetDetails[i].EndTime">
                                                 <input type='text' class="form-control" id="mashinEndTime"
                                                     name="EndTime" [value]="mashinEndTime">
 
@@ -450,13 +450,13 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewrrun-volume"
                                                 placeholder="Strike Water Volume"
-                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].strikeWaterVolume">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterVolume">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].strikeWaterUnitTypeId">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterUnitTypeId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Size'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
 
                                             </select>
@@ -469,13 +469,13 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="brewerrun-temperature"
                                                 placeholder="Strike Water Temperature"
-                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].strikeWaterTemperature">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterTemperature">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].strikeWaterTemperatureUnitTypeId">
+                                                [(ngModel)]="brewRunMashin.mashingTargetDetails[i].StrikeWaterTemperatureUnitTypeId">
 
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Temperature'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
+                                                    <option *ngIf="unit.Category === 'Temperature'" [value]="unit.Id">
+                                                        {{unit.Symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -487,13 +487,13 @@
                                     <div class="form-group col-md-6">
                                         <label for="brewrrun-ph">Mash pH</label>
                                         <input type="number" class="form-control" id="brewrrun-ph" placeholder="Mash pH"
-                                            [(ngModel)]="brewRunMashin.mashingTargetDetails[i].mashpH">
+                                            [(ngModel)]="brewRunMashin.mashingTargetDetails[i].MashpH">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="brewerrun-ratio">Liquor to Grist Ratio</label>
                                         <input type="text" class="form-control" id="brewerrun-liquor"
                                             placeholder="Liquor to Grist Ratio"
-                                            [(ngModel)]="brewRunMashin.mashingTargetDetails[i].liquortogristratio">
+                                            [(ngModel)]="brewRunMashin.mashingTargetDetails[i].Liquortogristratio">
                                     </div>
                                 </div>
 
@@ -505,15 +505,15 @@
                                             <div class='custom-radio'>
                                                 <input type="radio" id="meshin-single" name="radio-gravity"
                                                     [value]="false" name="Temperature"
-                                                    [(ngModel)]="mashingTargetDetail.temperature"
-                                                    (click)="changeTemperatureType(mashingTargetDetail, 0)">
+                                                    [(ngModel)]="MashingTargetDetail.Temperature"
+                                                    (click)="changeTemperatureType(MashingTargetDetail, 0)">
                                                 <label for="meshin-single">Single</label>
                                             </div>
                                             <div class='custom-radio'>
                                                 <input type="radio" id="meshin-multiple" name="radio-gravity"
                                                     [value]="true" name="Temperature"
-                                                    [(ngModel)]="mashingTargetDetail.temperature"
-                                                    (click)="changeTemperatureType(mashingTargetDetail, 1)">
+                                                    [(ngModel)]="MashingTargetDetail.Temperature"
+                                                    (click)="changeTemperatureType(MashingTargetDetail, 1)">
                                                 <label for="meshin-multiple">Multiple</label>
                                             </div>
                                         </div>
@@ -522,30 +522,30 @@
                                 </div>
 
                                 <div class="form-row"
-                                    *ngFor="let temp of mashingTargetDetail.mashingTargetDetailsTemperature; let i = index;">
+                                    *ngFor="let temp of MashingTargetDetail.MashingTargetDetailsTemperature; let i = index;">
                                     <div class="form-group col-md-6 position-relative">
                                         <label for="temp">Temperature ({{preferedUnit}}) #{{i+1}}</label>
                                         <div class="position-relative">
                                             <input type="text" class="form-control mt-3" id="temp"
                                                 placeholder="Temperature #{{i+1}}"
-                                                [(ngModel)]="mashingTargetDetail.mashingTargetDetailsTemperature[i].temperature">
+                                                [(ngModel)]="MashingTargetDetail.MashingTargetDetailsTemperature[i].Temperature">
 
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex l-start mt-3">
                                             <label class="l-start-label"
-                                                (click)="setTempStartTime(i, mashingTargetDetail.mashingTargetDetailsTemperature[i])">START</label>
+                                                (click)="setTempStartTime(i, MashingTargetDetail.MashingTargetDetailsTemperature[i])">START</label>
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">Start Time</label>
                                                 <input class="form-control" id="tempStart{{i}}"
                                                     [(ngModel)]="temp.StartTime">
-                                                <i *ngIf="mashingTargetDetail.Temperature == true && i == 0"
+                                                <i *ngIf="MashingTargetDetail.Temperature == true && i == 0"
                                                     class="material-icons position-absolute outline-icon cursor-click"
-                                                    (click)="addMashingTemp(mashingTargetDetail)">add_circle_outline</i>
-                                                <i *ngIf="mashingTargetDetail.Temperature == true && i != 0"
+                                                    (click)="addMashingTemp(MashingTargetDetail)">add_circle_outline</i>
+                                                <i *ngIf="MashingTargetDetail.Temperature == true && i != 0"
                                                     class="material-icons position-absolute remove-icon cursor-click"
-                                                    (click)="removeMashingTemp(mashingTargetDetail, i)">remove_circle_outline</i>
+                                                    (click)="removeMashingTemp(MashingTargetDetail, i)">remove_circle_outline</i>
                                             </div>
                                         </div>
                                     </div>
@@ -698,13 +698,13 @@
                                 <div for="status" class="form-group col-md-3">
                                     <label for="postal">Name</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder=""
-                                        [value]="malt.name" disabled>
+                                        [value]="malt.Name" disabled>
                                 </div>
 
                                 <div for="status" class="form-group col-md-3">
                                     <label for="postal">Type</label>
                                     <select class="form-control input-style input-dropdown" id=""
-                                        [value]="malt.maltGrainTypeId" disabled>
+                                        [value]="malt.MaltGrainTypeId" disabled>
 
                                         <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
                                             {{maltTypes.name}}</option>
@@ -714,7 +714,7 @@
                                 <div for="status" class="form-group col-md-3">
                                     <label for="postal">Origin</label>
                                     <select class="form-control input-style input-dropdown" id=""
-                                        [value]="malt.countryId" disabled>
+                                        [value]="malt.CountryId" disabled>
 
                                         <option *ngFor="let countries of countries" [value]="countries.id">
                                             {{countries.countryName}}</option>
@@ -724,7 +724,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Supplier</label>
                                     <select class="form-control input-style input-dropdown" id=""
-                                        [value]="malt.supplierId" disabled>
+                                        [value]="malt.SupplierId" disabled>
                                         <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
                                             {{suppliers.name}}</option>
                                     </select>
@@ -734,13 +734,13 @@
                                     <label for="brewrrun-quantity">Quantity</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewrrun-quantity"
-                                            placeholder="Quantity" [value]="malt.quantity" disabled>
-                                        <select class="form-control input-dropdown" [value]="malt.quantityUnitId"
+                                            placeholder="Quantity" [value]="malt.Quantity" disabled>
+                                        <select class="form-control input-dropdown" [value]="malt.QuantityUnitId"
                                             disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -749,19 +749,19 @@
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">% of Grain Bill</label>
                                     <input type="text" class="form-control" id="brewrun-id"
-                                        placeholder="% of Grain Bill" [value]="malt.grainBillPercentage" disabled>
+                                        placeholder="% of Grain Bill" [value]="malt.GrainBillPercentage" disabled>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">SRM</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="SRM"
-                                        [value]="malt.srm" disabled>
+                                        [value]="malt.Srm" disabled>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Potential</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="Potential"
-                                        [value]="malt.potential" disabled>
+                                        [value]="malt.Potential" disabled>
                                 </div>
 
                             </div>
@@ -799,12 +799,12 @@
                                     <label for="brewrrun-CaCl2">CaCl2</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewrrun-CaCl2"
-                                            placeholder="CaCl2" [value]="water.cacl2" disabled>
-                                        <select class="form-control input-dropdown" [value]="water.cacl2Unitd" disabled>
+                                            placeholder="CaCl2" [value]="water.Cacl2" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.Cacl2Unitd" disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -814,13 +814,13 @@
                                     <label for="brewerrun-gypsum">Gypsum</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewerrun-gypsum"
-                                            placeholder="Gypsum" [value]="water.gypsum" disabled>
-                                        <select class="form-control input-dropdown" [value]="water.gypsumUnitId"
+                                            placeholder="Gypsum" [value]="water.Gypsum" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.GypsumUnitId"
                                             disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -830,13 +830,13 @@
                                     <label for="brewrrun-tablesalt">Table Salt</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewrrun-tablesalt"
-                                            placeholder="Table Salt" [value]="water.tableSalt" disabled>
-                                        <select class="form-control input-dropdown" [value]="water.tableSaltUnitId"
+                                            placeholder="Table Salt" [value]="water.TableSalt" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.TableSaltUnitId"
                                             disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -846,13 +846,13 @@
                                     <label for="brewerrun-epsomsalt">Epsom Salt</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewerrun-epsomsalt"
-                                            placeholder="Epsom Salt" [value]="water.epsomSalt" disabled>
-                                        <select class="form-control input-dropdown" [value]="water.epsomSaltUnitId"
+                                            placeholder="Epsom Salt" [value]="water.EpsomSalt" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.EpsomSaltUnitId"
                                             disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -864,13 +864,13 @@
                                     <label for="brewrrun-CaCO3">CaCO3</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewrrun-CaCO3"
-                                            placeholder="CaCO3" [value]="water.caCo3" disabled>
-                                        <select class="form-control input-dropdown" [value]="water.caCo3unitId"
+                                            placeholder="CaCO3" [value]="water.CaCo3" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.CaCo3unitId"
                                             disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -878,19 +878,19 @@
                                 <div class="form-group col-md-3">
                                     <label for="brewrrun-Quantity">Baking Soda Name</label>
                                     <input type="text" class="form-control" id="brewrrun-Quantity"
-                                        [value]="water.bakingSodaName" disabled placeholder="">
+                                        [value]="water.BakingSodaName" disabled placeholder="">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="brewerrun-bakingsoda">Baking Soda</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewerrun-bakingsoda"
-                                            placeholder="Baking Soda" [value]="water.bakingSoda" disabled>
-                                        <select class="form-control input-dropdown" [value]="water.bakingSodaUnitId"
+                                            placeholder="Baking Soda" [value]="water.BakingSoda" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.BakingSodaUnitId"
                                             disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -900,13 +900,13 @@
                                     <label for="brewrrun-H3PO4">H3PO4</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="brewrrun-H3PO4"
-                                            placeholder="H3PO4" [value]="water.h3po4" disabled>
-                                        <select class="form-control input-dropdown" [value]="water.h3po4unitId"
+                                            placeholder="H3PO4" [value]="water.H3po4" disabled>
+                                        <select class="form-control input-dropdown" [value]="water.H3po4unitId"
                                             disabled>
 
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
-                                                    {{unit.symbol}}</option>
+                                                <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
+                                                    {{unit.Symbol}}</option>
                                             </ng-container>
                                         </select>
                                     </div>
@@ -948,12 +948,12 @@
                                 <label for="brewrrun-volume">Strike Water Volume</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewrrun-volume"
-                                        placeholder="Strike Water Volume" [value]="mash.strikeWaterVolume" disabled>
-                                    <select class="form-control input-dropdown" [value]="mash.strikeWaterUnitTypeId"
+                                        placeholder="Strike Water Volume" [value]="mash.StrikeWaterVolume" disabled>
+                                    <select class="form-control input-dropdown" [value]="mash.StrikeWaterUnitTypeId"
                                         disabled>
 
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -965,14 +965,14 @@
                                     {{preferedUnit}})</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewerrun-temperature"
-                                        placeholder="Strike Water Temperature" [value]="mash.strikeWaterTemperature"
+                                        placeholder="Strike Water Temperature" [value]="mash.StrikeWaterTemperature"
                                         disabled>
                                     <select class="form-control input-dropdown"
-                                        [value]="mash.strikeWaterTemperatureUnitTypeId" disabled>
+                                        [value]="mash.StrikeWaterTemperatureUnitTypeId" disabled>
 
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Temperature'" [value]="unit.id">
-                                                {{unit.symbol}}</option>
+                                            <option *ngIf="unit.Category === 'Temperature'" [value]="unit.Id">
+                                                {{unit.Symbol}}</option>
                                         </ng-container>
                                     </select>
                                 </div>
@@ -984,12 +984,12 @@
                             <div class="form-group col-md-6">
                                 <label for="brewrrun-ph">Mash pH</label>
                                 <input type="number" class="form-control" id="brewrrun-ph" placeholder="Mash pH"
-                                    [value]="mash.mashpH" disabled>
+                                    [value]="mash.MashpH" disabled>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="brewerrun-ratio">Liquor to Grist Ratio</label>
                                 <input type="text" class="form-control" id="brewerrun-temperature"
-                                    placeholder="Liquor to Grist Ratio" [value]="mash.liquortogristratio" disabled>
+                                    placeholder="Liquor to Grist Ratio" [value]="mash.Liquortogristratio" disabled>
                             </div>
                         </div>
 
@@ -998,13 +998,13 @@
                             <div class="form-group col-md-6">
                                 <label>Temperature</label>
                                 <div class='custom-radio-wrapper'>
-                                    <div class='custom-radio' *ngIf="!mash.temperature">
-                                        <input type="radio" id="meshin-singlet" [value]="mash.temperature" checked
+                                    <div class='custom-radio' *ngIf="!mash.Temperature">
+                                        <input type="radio" id="meshin-singlet" [value]="mash.Temperature" checked
                                             disabled>
                                         <label for="meshin-single">Single</label>
                                     </div>
                                     <div class='custom-radio' *ngIf="mash.Temperature">
-                                        <input type="radio" id="meshin-multiplet" [value]="mash.temperature" checked
+                                        <input type="radio" id="meshin-multiplet" [value]="mash.Temperature" checked
                                             disabled>
                                         <label for="meshin-multiple">Multiple</label>
                                     </div>
@@ -1013,18 +1013,18 @@
 
                         </div>
 
-                        <div class="form-row" *ngFor="let temp of mash.mashingTargetTemperatures;let i=index;">
+                        <div class="form-row" *ngFor="let temp of mash.MashingTargetTemperature;let i=index;">
                             <div class="form-group col-md-6">
                                 <label for="brewrrun-temperature" *ngIf="i==0">Temperature (in {{preferedUnit}})</label>
                                 <label for="brewrrun-temperature" *ngIf="i!=0">Temperature #{{i+1}} (in
                                     {{preferedUnit}})</label>
                                 <input type="number" class="form-control" id="brewrrun-temperature"
-                                    placeholder="Temperature (in {{preferedUnit}})" [value]="temp.temperature" disabled>
+                                    placeholder="Temperature (in {{preferedUnit}})" [value]="temp.Temperature" disabled>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="brewerrun-time">Start Time</label>
                                 <input type="text" class="form-control" id="brewerrun-time" placeholder="Start Time"
-                                    [value]="temp.startTime" disabled>
+                                    [value]="temp.StartTime" disabled>
                             </div>
                         </div>
 

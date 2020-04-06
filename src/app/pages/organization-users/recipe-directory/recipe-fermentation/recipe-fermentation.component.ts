@@ -93,6 +93,9 @@ export class RecipeFermentationComponent implements OnInit {
     this.getYeastStrain();
     this.getUnitTypes();
     this.initiateFormArrays();
+    
+
+  
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -100,15 +103,20 @@ export class RecipeFermentationComponent implements OnInit {
       this.isCollapsedDiacetyl = false;
       this.isCollapsedCooling = false;
       this.isCollapsedYeast = false;
+      this.recipeId= this.route.snapshot.queryParams.recipeId;
+      this.getRecipeDetailsById(this.recipeId);
 
     } else {
       this.pageHeader = 'Add New Recipe';
-    }
-
-    if (sessionStorage.RecipeId) {
-      this.recipeId = sessionStorage.RecipeId;
+      this.recipeId= this.route.snapshot.queryParams.recipeId;
       this.getRecipeDetailsById(this.recipeId);
     }
+
+    // if (sessionStorage.RecipeId) {
+    //   this.recipeId = sessionStorage.RecipeId;
+    //   this.getRecipeDetailsById(this.recipeId);
+    // }
+   
   }
 
   getPreferenceUsed() {
@@ -124,18 +132,22 @@ export class RecipeFermentationComponent implements OnInit {
   findUnits() {
     if (this.units) {
       this.units.forEach(element => {
+        if(this.preference.temperatureId){
         if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.id;
         }
+      }
         if (this.tempUnitIdFromDb && element.id === this.tempUnitIdFromDb) {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.Id;
         }
+        if(this.preference.gravityMeasurementId){
         if (!this.platoUnitIdFromDb && element.id === this.preference.gravityMeasurementId) {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
         }
+      }
         if (this.platoUnitIdFromDb && element.id === this.platoUnitIdFromDb) {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
@@ -172,8 +184,9 @@ export class RecipeFermentationComponent implements OnInit {
             this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
         }
       }
-
-      this.findUnits();
+      if (sessionStorage.page == "add") {
+        this.findUnits();
+      }
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
         // commit status
@@ -413,7 +426,7 @@ export class RecipeFermentationComponent implements OnInit {
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
     } else {
-      this.router.navigate(['app/recipes/recipe-mashin']);
+      this.router.navigate(['app/recipes/recipe-mashin'],{queryParams:{recipeId:this.recipeId}});
     }
   }
 
@@ -422,7 +435,7 @@ export class RecipeFermentationComponent implements OnInit {
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
     } else {
-      this.router.navigate(['/app/recipes/recipe-brewlog']);
+      this.router.navigate(['/app/recipes/recipe-brewlog'],{queryParams:{recipeId:this.recipeId}});
     }
   }
 
@@ -431,7 +444,7 @@ export class RecipeFermentationComponent implements OnInit {
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
     } else {
-      this.router.navigate(['app/recipes/recipe-fermentation']);
+      this.router.navigate(['app/recipes/recipe-fermentation'],{queryParams:{recipeId:this.recipeId}});
     }
   }
 
@@ -440,7 +453,7 @@ export class RecipeFermentationComponent implements OnInit {
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
     } else {
-      this.router.navigate(['app/recipes/recipe-conditioning']);
+      this.router.navigate(['app/recipes/recipe-conditioning'],{queryParams:{recipeId:this.recipeId}});
     }
   }
 
@@ -468,19 +481,19 @@ export class RecipeFermentationComponent implements OnInit {
         if (response) {
           sessionStorage.setItem('RecipeId', this.recipeId);
           if (this.formSubmitted) {
-            this.router.navigate(['/app/recipes/recipe-conditioning']);
+            this.router.navigate(['/app/recipes/recipe-conditioning'],{queryParams:{recipeId:this.recipeId}});
           }
           if (this.mashinClicked) {
-            this.router.navigate(['app/recipes/recipe-mashin']);
+            this.router.navigate(['app/recipes/recipe-mashin'],{queryParams:{recipeId:this.recipeId}});
           }
           if (this.brewlogClicked) {
-            this.router.navigate(['/app/recipes/recipe-brewlog']);
+            this.router.navigate(['/app/recipes/recipe-brewlog'],{queryParams:{recipeId:this.recipeId}});
           }
           if (this.fermentationClicked) {
-            this.router.navigate(['app/recipes/recipe-fermentation']);
+            this.router.navigate(['app/recipes/recipe-fermentation'],{queryParams:{recipeId:this.recipeId}});
           }
           if (this.conditioningClicked) {
-            this.router.navigate(['app/recipes/recipe-conditioning']);
+            this.router.navigate(['app/recipes/recipe-conditioning'],{queryParams:{recipeId:this.recipeId}});
           }
         }
       }, error => {

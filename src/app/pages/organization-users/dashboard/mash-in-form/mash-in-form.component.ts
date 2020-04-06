@@ -63,8 +63,6 @@ export class MashInFormComponent implements OnInit {
   statusDate;
   starchStatus = [];
   currentUser: any;
-  brewerName:any;
-  mashinAvailable : boolean
 
   constructor(
     private dataService: DashboardService,
@@ -85,14 +83,10 @@ export class MashInFormComponent implements OnInit {
     
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
-    this.brewerName = userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"];
 
-    
-    this.getPreferenceUsed();
+    this.units = JSON.parse(sessionStorage.getItem('units'));
     this.getMashinMasterDetails();
-    
     this.getMashinDetails(this.tenantId , this.brewId);
-
   }
 
   getMashinMasterDetails()
@@ -105,9 +99,8 @@ export class MashInFormComponent implements OnInit {
         this.suppliers = response['body']['mashinMasterDetails']['suppliers'];
         this.maltTypes = response['body']['mashinMasterDetails']['maltGrainTypes'];
         this.maltNames = response['body']['mashinMasterDetails']['maltGrainBills'];
-        this.styles = response['body']['mashinMasterDetails']['styles'];
-        this.units = response['body']['mashinMasterDetails']['units']
-        this.findUnits();
+        this.styles = response['body']['mashinMasterDetails']['style'];
+        
         
       }
     });
@@ -124,13 +117,6 @@ export class MashInFormComponent implements OnInit {
       this.apiService.getDataByQueryParams(getBrewRunMashinDetailsAPI, null, tenantId, brewId).subscribe(response => {
       if (response.status === 200) {
         this.brewRunMashin = response['body']['brewRunMashin'];
-        this.maltTarget = response['body']['recipe']['maltGrainBills'];
-        this.waterTarget =  response['body']['recipe']['waterAdditions'];
-        this.mashinTarget.push( response['body']['recipe']['mashingTargets']);
-        this.starchTarget = response['body']['recipe'];
-        this.mashinAvailable = response['body']['mashinAvailable'];
-        console.log(this.mashinAvailable);
-
         if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
           this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
         }
@@ -178,21 +164,20 @@ export class MashInFormComponent implements OnInit {
 
 
   findUnits() {
-    console.log(this.units);
     this.units.forEach(element => {
-      if (element.id === this.preference.temperatureId) {
-        this.preferedUnit = element.symbol;
+      if (element.Id === this.preference.TemperatureId) {
+        this.preferedUnit = element.Symbol;
       }
     });
-    console.log(this.preferedUnit)
   }
 
   getPreferenceUsed() {
     const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
-        this.preference = response['body']['preferenceSettings'];
-       
+        this.preference = response['body'];
+        sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
+        this.findUnits();
       }
     }, error => {
       console.error(error);
@@ -217,6 +202,9 @@ export class MashInFormComponent implements OnInit {
     }
   }
 
+  activeBrewClick() {
+    this.dataService.changeMessage('Hello from sibling');
+  }
 
   mashInFormClick() {
     this.saveGo('app/dashboard/brew-log-form/' + this.brewId);
@@ -243,54 +231,37 @@ export class MashInFormComponent implements OnInit {
 
   saveGo(url: string) {
     if (this.status === 'Pass') {
-      this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
-        mash.startTime = this.mashinStartTime;
-        mash.endTime = this.mashinEndTime;
-
+      this.brewRunMashin.waterAdditionDetails.forEach((wateraddition: WaterAdditionDetail) => {
+        wateraddition.TenantId = this.tenantId;
       });
-      if (!this.mashinAvailable)
-      {
-         let addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-         this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-          this.mashinAvailable = response['body']['mashinAvailable'];
+      this.brewRunMashin.maltGrainBillDetails.forEach((mash: MaltGrainBillDetail) => {
+        mash.BrewId = this.brewId;
+        mash.RecipeId = this.recipeId;
+        mash.TenantId = this.tenantId;
+      });
+
+      this.brewRunMashin.mashingTargetDetails.forEach((mash: MashingTargetDetail) => {
+        mash.BrewId = this.brewId;
+        mash.RecipeId = this.recipeId;
+        mash.TenantId = this.tenantId;
+        mash.StartTime = this.mashinStartTime;
+        mash.EndTime = this.mashinEndTime;
+        mash.MashingTargetDetailsTemperature.forEach((mtdt: MashingTargetDetailsTemperature) => {
+          mtdt.TenantId = this.tenantId;
+        });
+      });
+      this.apiService.postData(this.apiService.addBrewRun, this.brewRunMashin).subscribe(response => {
+        if (response) {
           this.router.navigate([url]);
-         }, error => {
-           this.toast.danger(error.error.Message);
-         });
-      }
-      else
-      {
-         let editMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-         this.apiService.putData(editMashinAPI, this.brewRunMashin).subscribe(response => {
-          this.mashinAvailable = response['body']['mashinAvailable'];
-          this.router.navigate([url]);
-         }, error => {
-           this.toast.danger(error.error.Message);
-         });
-      }
-     } else {
+        }
+      }, error => {
+        this.toast.danger(error.error.Message);
+      });
+    } else {
       document.getElementById('openModalButton').click();
     }
   }
 
-  setStartTime(): any {
-    this.mashinStartTime = new Date();
-    document.getElementById('mashinStart').setAttribute('value', this.mashinStartTime);
-    document.getElementById('mashinStartTime').setAttribute('value', this.mashinStartTime);
-
-  }
-
-  setEndTime(): any {
-    var endTime = new Date();
-    this.mashinEndTime = endTime;;
-    this.mashinEndTime = endTime;
-    document.getElementById('mashinEnd').setAttribute('value', this.mashinEndTime);
-    document.getElementById('mashinStartTime').setAttribute('value', this.mashinEndTime);
-
-  }
-
-
-  /*
   setStartTime(): any {
     var startTime = this.timezone(new Date().toUTCString());
     this.mashinStartTime = startTime.split(' ').slice(0, 5).join(' ');
@@ -309,11 +280,7 @@ export class MashInFormComponent implements OnInit {
 
   }
 
-  
-
   timezone(dateTime) {
-    
-
     // Timezone convertion
     const timeZone = JSON.parse(sessionStorage.preferenceUsed);
     const preferedZone = timeZone.BaseUtcOffset;
@@ -328,7 +295,10 @@ export class MashInFormComponent implements OnInit {
       const newDateTime = dateTime + ' ' + `${zone}`;
       return new Date(newDateTime).toUTCString();
     }
-    setTempStartTime(i, start) {
+  }
+
+
+  setTempStartTime(i, start) {
     this.tempStartTime = this.timezone(new Date().toUTCString());
     this.tempStartTime = this.tempStartTime.split(' ').slice(0, 5).join(' ');
 
@@ -337,18 +307,36 @@ export class MashInFormComponent implements OnInit {
     console.log('start.StartTime', start.StartTime);
 
   }
-  }*/
 
+  getRecipeDetailsEdit() {
+    const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, this.recipeId);
+    this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
+      if (response && response['body']) {
+        this.recipeContent = response['body'];
+        this.getMaltTargets(this.recipeContent);
+        this.getWaterTargets(this.recipeContent);
+        this.getMashinTargets(this.recipeContent);
+        this.getStarchTargets(this.recipeContent);
 
-  setTempStartTime(i, start) {
-    this.tempStartTime = new Date();
-    document.getElementById(`tempStart${i}`).setAttribute('value', this.tempStartTime);
-    start.StartTime = this.tempStartTime;
-    }
+      }
+    });
+  }
 
+  getMaltTargets(recipe) {
+    this.maltTarget = recipe.MaltGrainBill;
+  }
 
+  getWaterTargets(recipe) {
+    this.waterTarget = recipe.WaterAdditions;
+  }
 
- 
+  getMashinTargets(recipe) {
+    this.mashinTarget.push(recipe.MashingTargets);
+  }
+
+  getStarchTargets(recipe) {
+    this.starchTarget = recipe;
+  }
 
   addNewSupplier() {
     const params = {
@@ -383,7 +371,7 @@ export class MashInFormComponent implements OnInit {
       const addStyleAPI = String.Format(this.apiService.addStyle, this.tenantId);
       this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
-          this.styles = response.body.styles;
+          this.styles = response.body.style;
           this.modalForms.reset();
         }
       });
@@ -413,203 +401,31 @@ export class MashInFormComponent implements OnInit {
     }
   }
 
-  getMaltTypeName(maltTypeId)
-  {
-    let maltTypeName = '';
-    for(var maltType of  this.maltTypes )
-    {
-      if (maltType.id === maltTypeId)
-      {
-        maltTypeName = maltType.name;
-        break;
-      }
-    }
-    return maltTypeName;
-  }
-
-  getCountryName(countryId)
-  {
-    let countryName = '';
-    for(var country of   this.countries )
-    {
-      if (country.id === countryId)
-      {
-        countryName = country.countryName;
-        break;
-      }
-    }
-    return countryName;
-  }
-
-  
-  getSupplierName(supplierId)
-  {
-    let supplierName = '';
-    for(var supplier of   this.suppliers )
-    {
-      if (supplier.id === supplierId)
-      {
-        supplierName = supplier.name;
-        break;
-      }
-    }
-    return supplierName;
-  }
-
-  getUnitName(unitId)
-  {
-    let unitName = '';
-    for(var unit of   this.units )
-    {
-      if (unit.id === unitId)
-      {
-        unitName = unit.name;
-        break;
-      }
-    }
-    return unitName;
-  }
-
   onMaltComplete(editedSectionName) {
     this.isCollapsed = !this.isCollapsed;
-    this.brewRunMashin.maltGrainBillDetails.forEach(maltGrainBillDetail =>{
-      maltGrainBillDetail.isCompleted = true;
-      maltGrainBillDetail.maltGrainType = this.getMaltTypeName(maltGrainBillDetail.maltGrainTypeId);
-      maltGrainBillDetail.country = this.getCountryName(maltGrainBillDetail.countryId);
-      maltGrainBillDetail.supplier = this.getSupplierName(maltGrainBillDetail.supplierId);
-      maltGrainBillDetail.quantityUnit = this.getUnitName(maltGrainBillDetail.quantityUnitId)
-      maltGrainBillDetail.completedUserId = this.currentUser;
-      maltGrainBillDetail.completedUserName = this.brewerName;
-     });
-     if (!this.mashinAvailable)
-     {
-        let addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-        this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-          this.mashinAvailable = response['body']['mashinAvailable'];
-          this.setClass = true;
-        }, error => {
-          this.toast.danger(error.error.Message);
-        });
-     }
-     else
-     {
-        let editMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-        this.apiService.putData(editMashinAPI, this.brewRunMashin).subscribe(response => {
-          this.mashinAvailable = response['body']['mashinAvailable'];
-          this.setClass = true;
-        }, error => {
-          this.toast.danger(error.error.Message);
-        });
-     }
+    this.brewRunMashin.maltGrainBillDetails[0].IsCompleted = true;
+    this.setClass = true;
     
-   
   }
-
 
   onWaterComplete(editedSectionName) {
     this.isCollapsedWater = !this.isCollapsedWater;
-    this.brewRunMashin.waterAdditionDetails.forEach(waterAdditionDetail =>{
-      waterAdditionDetail.isCompleted = true;
-      waterAdditionDetail.completedUserId = this.currentUser;
-      waterAdditionDetail.completedUserName = this.brewerName;
-      waterAdditionDetail.cacl2unit = this.getUnitName(waterAdditionDetail.cacl2unitId);
-      waterAdditionDetail.gypsumUnit = this.getUnitName(waterAdditionDetail.gypsumUnitId);
-      waterAdditionDetail.tableSaltUnit = this.getUnitName(waterAdditionDetail.tableSaltUnitId);
-      waterAdditionDetail.epsomSaltUnit = this.getUnitName(waterAdditionDetail.epsomSaltUnitId);
-      waterAdditionDetail.caCo3unit = this.getUnitName(waterAdditionDetail.caCo3unitId);
-      waterAdditionDetail.bakingSodaUnit = this.getUnitName(waterAdditionDetail.bakingSodaUnitId);
-      waterAdditionDetail.h3po4unit = this.getUnitName(waterAdditionDetail.h3po4unitId);
-
-    });
-    if (!this.mashinAvailable)
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-      this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-        this.mashinAvailable = response['body']['mashinAvailable'];
-        this.setClassWater = true;
-      }, error => {
-        this.toast.danger(error.error.Message);
-      });
-    }
-    else
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-      this.apiService.putData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-        this.mashinAvailable = response['body']['mashinAvailable'];
-        this.setClassWater = true;
-      }, error => {
-        this.toast.danger(error.error.Message);
-      });
-    }
-  
+    this.brewRunMashin.waterAdditionDetails[0].IsCompleted = true;
+    this.setClassWater = true;
+    
   }
 
   onMashinComplete(i, editedSectionName) {
     this.isCollapsedMashing = !this.isCollapsedMashing;
-    this.brewRunMashin.mashingTargetDetails.forEach(mashingTargetDetail =>{
-      mashingTargetDetail.isCompleted = true;
-      mashingTargetDetail.completedUserId = this.currentUser;
-      mashingTargetDetail.completedUserName = this.brewerName;
-      mashingTargetDetail.strikeWaterUnitType = this.getUnitName(mashingTargetDetail.strikeWaterTemperatureUnitTypeId);
-      mashingTargetDetail.strikeWaterTemperatureUnitType = this.getUnitName(mashingTargetDetail.strikeWaterTemperatureUnitTypeId);
-      if (mashingTargetDetail.mashingTargetDetailsTemperature !== null)
-      {
-          mashingTargetDetail.mashingTargetDetailsTemperature.forEach(temperature => {
-            temperature.temperatureUnitType = this.getUnitName(temperature.temperatureUnitTypeId)
-          });
-      }
-    });
-    if (!this.mashinAvailable)
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-      this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-        this.mashinAvailable = response['body']['mashinAvailable'];
-        this.setClassMashin = true;
-      }, error => {
-        this.toast.danger(error.error.Message);
-      });
-    }
-    else
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-      this.apiService.putData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-        this.mashinAvailable = response['body']['mashinAvailable'];
-        this.setClassMashin = true;
-      }, error => {
-        this.toast.danger(error.error.Message);
-      });
-    }
-    
-  
+    this.brewRunMashin.mashingTargetDetails[i].IsCompleted = true;
+    this.setClassMashin = true;
+   
   }
 
   onStarchComplete(i, editedSectionName) {
     this.isCollapsedStarch = !this.isCollapsedStarch;
-    this.brewRunMashin.startchTest.forEach(test =>{
-      test.isCompleted = true;
-      test.completedUserId = this.currentUser;
-      test.completedUserName = this.brewerName;
-    });
-    if (!this.mashinAvailable)
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-      this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-        this.mashinAvailable = response['body']['mashinAvailable'];
-        this.setClassStarch = true;
-      }, error => {
-        this.toast.danger(error.error.Message);
-      });
-    }
-    else
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-      this.apiService.putData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-        this.mashinAvailable = response['body']['mashinAvailable'];
-        this.setClassStarch = true;
-      }, error => {
-        this.toast.danger(error.error.Message);
-      });
-    }
+    this.brewRunMashin.startchTest[i].IsCompleted = true;
+    this.setClassStarch = true;
     
   }
 
@@ -658,10 +474,9 @@ export class MashInFormComponent implements OnInit {
     } else {
       this.status = 'Fail';
     }
-    //let dateTime = this.timezone(new Date(this.statusDate).toUTCString());
-    //dateTime = dateTime.split(' ').slice(0, 5).join(' ');
-    //this.statusDate = new Date(dateTime).toLocaleString();
-    this.statusDate = new Date();
+    let dateTime = this.timezone(new Date(this.statusDate).toUTCString());
+    dateTime = dateTime.split(' ').slice(0, 5).join(' ');
+    this.statusDate = new Date(dateTime).toLocaleString();
     const statusData = new StarchTestResultList();
     statusData.StarchTestId = this.brewRunMashin.startchTest[0].Id;
     statusData.TestName = 'Test ';
