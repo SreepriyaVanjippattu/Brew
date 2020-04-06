@@ -140,27 +140,28 @@ export class BrewLogFormComponent implements OnInit {
     this.brew = new BrewRun();
     this.brewId = this.route.snapshot.paramMap.get('id');
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
+    this.currentUser = userDetails['UserProfile'].Id;
+    this.tenantId = userDetails['CompanyDetails'].Id;
+
+    this.units = JSON.parse(sessionStorage.getItem('units'));
+
     this.getPreferenceUsed();
-    this.getMashinMasterDetails();
-    
-  
-  }
-  getMashinMasterDetails()
-  {
-    const getMashinMasterDetailsAPI = String.Format(this.apiService.getBrewRunMashinMasterDetails, this.tenantId);
-    this.apiService.getDataList(getMashinMasterDetailsAPI).subscribe(response => {
-      if (response) {
-        this.countries = response['body']['mashinMasterDetails']['countries'];
-        this.addins = response['body']['mashinMasterDetails']['addIns'];
-        this.suppliers = response['body']['mashinMasterDetails']['suppliers'];
-        this.maltTypes = response['body']['mashinMasterDetails']['maltGrainTypes'];
-        this.maltNames = response['body']['mashinMasterDetails']['maltGrainBills'];
-        this.styles = response['body']['mashinMasterDetails']['styles'];
-        this.units = response['body']['mashinMasterDetails']['units']
-        this.findUnits();
-        
-      }
-    });
+    if (!sessionStorage.styles || !sessionStorage.addins ||
+      !sessionStorage.suppliers || !sessionStorage.maltTypes ||
+      !sessionStorage.countries) {
+      this.getCountries();
+      this.getAddIns();
+      this.getMaltTypes();
+      this.getStyles();
+      this.getSuppliers();
+    } else {
+      this.styles = JSON.parse(sessionStorage.styles);
+      this.addins = JSON.parse(sessionStorage.addins);
+      this.countries = JSON.parse(sessionStorage.countries);
+      this.maltTypes = JSON.parse(sessionStorage.maltTypes);
+      this.suppliers = JSON.parse(sessionStorage.suppliers);
+    }
+    this.getSingleBrewDetails(this.tenantId, this.brewId);
   }
 
   /**

@@ -33,7 +33,6 @@ export class ApiProviderService {
   getAllArchievedBrewRun = 'brewrun/v1/brewers/{0}/brewrun/archived';
   getBrewRunMashinMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/mashin/masterdetails'
   getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
-  mashin = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/'
 
 
 

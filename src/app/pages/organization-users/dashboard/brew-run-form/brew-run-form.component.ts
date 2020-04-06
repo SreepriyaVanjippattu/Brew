@@ -122,7 +122,6 @@ export class BrewRunFormComponent implements OnInit {
       if (tank["id"] === selectedTankId)
       {
          tankName = tank["name"]
-         break;
       }
     }
     return tankName;
