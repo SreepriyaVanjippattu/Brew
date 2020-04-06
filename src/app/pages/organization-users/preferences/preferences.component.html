@@ -63,7 +63,7 @@
             <label>Time Zone</label>
             <select formControlName="timeZone" class="form-control input-dropdown">
               <option value="" disabled>Select</option>
-              <option *ngFor="let time of timeZoneList" value="{{time.id}}">{{time.id}}</option>
+              <option *ngFor="let time of timeZoneList" value="{{time.Id}}">{{time.Id}}</option>
             </select>
             <div *ngIf="formSubmittedGenSet">
               <div *ngIf="forms.timeZone.errors?.required" class="valid-error">

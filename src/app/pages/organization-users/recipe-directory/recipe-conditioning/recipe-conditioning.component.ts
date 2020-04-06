@@ -172,7 +172,7 @@ export class RecipeConditioningComponent implements OnInit {
   getUnitTypes() {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
-        this.units = response['body'].unitTypebase;
+        this.units = response['body'].unitTypes;
         this.getPreferenceUsed();
       }
     }, error => {

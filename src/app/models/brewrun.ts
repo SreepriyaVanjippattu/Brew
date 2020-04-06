@@ -11,11 +11,11 @@ export class BrewRunMashin {
     tankId:string;
     tankName:string;
 
-    maltGrainBillDetails: MaltGrainBillDetail[];
-    waterAdditionDetails: WaterAdditionDetail[];
-    mashingTargetDetails: MashingTargetDetail[];
-    startchTest: StartchTest[];
-    mashinDetailsNotes: MashinDetailsNote[];
+    maltGrainBillDetails: any[];
+    waterAdditionDetails: any[];
+    mashingTargetDetails: any[];
+    startchTest: any[];
+    mashinDetailsNotes: any[];
 
 }
 

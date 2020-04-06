@@ -188,7 +188,7 @@ export class RecipeFermentationComponent implements OnInit {
   getUnitTypes() {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
-        this.units = response['body'].unitTypebase;
+        this.units = response['body'].unitTypes;
         this.getPreferenceUsed();
       }
     }, error => {
@@ -203,7 +203,7 @@ export class RecipeFermentationComponent implements OnInit {
     const getAllActiveMaltGrainTypeAPI = String.Format(this.apiService.getAllActiveMaltGrainType, this.tenantId);
     this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
       if (response) {
-        this.maltTypes = response['body'];
+        this.maltTypes = response['body'].maltTypes;
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -217,7 +217,7 @@ export class RecipeFermentationComponent implements OnInit {
     const getAllActiveAddInAPI = String.Format(this.apiService.getAllActiveAddIn, this.tenantId);
     this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
       if (response) {
-        this.addins = response['body'].addinBase;
+        this.addins = response['body'].addIns;
       }
     });
   }
@@ -233,7 +233,7 @@ export class RecipeFermentationComponent implements OnInit {
     const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastStrains, this.tenantId);
     this.apiService.getData(getAllYeastStrainsAPI).subscribe(response => {
       if (response) {
-        this.yeastStrain = response['body'].yeastStrainBase;
+        this.yeastStrain = response['body'].yeastStrains;
       }
     });
   }
@@ -241,7 +241,7 @@ export class RecipeFermentationComponent implements OnInit {
   getCountries() {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
       if (response) {
-        this.countries = response['body'].countrybase;
+        this.countries = response['body'].countries;
       }
     });
   }
@@ -250,7 +250,7 @@ export class RecipeFermentationComponent implements OnInit {
     const getAllActiveSupplierAPI = String.Format(this.apiService.getAllActiveSupplier, this.tenantId);
     this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
       if (response) {
-        this.suppliers = response['body'].supplierBase;
+        this.suppliers = response['body'].suppliers;
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {

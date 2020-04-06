@@ -190,7 +190,7 @@ export class RecipeMashformComponent implements OnInit {
   getCountries() {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
       if (response) {
-        this.countries = response['body'].countrybase;
+        this.countries = response['body'].countries;
       }
     });
   }
@@ -199,7 +199,7 @@ export class RecipeMashformComponent implements OnInit {
     const getAllActiveAddInAPI = String.Format(this.apiService.getAllActiveAddIn, this.tenantId);
     this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
       if (response) {
-        this.addins = response['body'].addinBase;
+        this.addins = response['body'].addIns;
 
       }
     });
@@ -209,7 +209,7 @@ export class RecipeMashformComponent implements OnInit {
     const getAllActiveSupplierAPI = String.Format(this.apiService.getAllActiveSupplier, this.tenantId);
     this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
       if (response) {
-        this.suppliers = response['body'].supplierBase;
+        this.suppliers = response['body'].suppliers;
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -223,7 +223,7 @@ export class RecipeMashformComponent implements OnInit {
     const getAllActiveMaltGrainTypeAPI = String.Format(this.apiService.getAllActiveMaltGrainType, this.tenantId);
     this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
       if (response) {
-        this.maltTypes = response['body'].recipe;
+        this.maltTypes = response['body'].maltTypes;
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -237,7 +237,7 @@ export class RecipeMashformComponent implements OnInit {
     const getAllActiveStyleAPI = String.Format(this.apiService.getAllActiveStyle, this.tenantId);
     this.apiService.getDataList(getAllActiveStyleAPI).subscribe(response => {
       if (response) {
-        this.styles = response['body'].style;
+        this.styles = response['body'].styles;
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
@@ -250,7 +250,7 @@ export class RecipeMashformComponent implements OnInit {
   getUnitTypes() {
     this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
       if (response) {
-        this.units = response['body'].unitTypebase;
+        this.units = response['body'].unitTypes;
         this.getPreferenceUsed();
       }
     }, error => {
@@ -859,7 +859,7 @@ export class RecipeMashformComponent implements OnInit {
       const addStyleAPI = String.Format(this.apiService.addStyle, this.tenantId);
       this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
-          this.styles = response.body.style;
+          this.styles = response.body.styles;
           this.modalForms.reset();
         }
       });
