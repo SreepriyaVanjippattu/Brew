@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Guid } from 'guid-typescript';
 import { NbToastrService } from '@nebular/theme';
@@ -52,8 +52,7 @@ export class RecipeBrewlogComponent implements OnInit {
   constructor(private apiService: ApiProviderService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private toast: NbToastrService,
-    private route: ActivatedRoute) { }
+    private toast: NbToastrService) { }
 
   brewLogForm = this.formBuilder.group({
     kettleTargets: this.formBuilder.array([]),
@@ -101,21 +100,14 @@ export class RecipeBrewlogComponent implements OnInit {
       this.isCollapsedLauter = false;
       this.isCollapsedWhirlpool = false;
       this.isCollapsedCoolingKnockout = false;
-      this.recipeId= this.route.snapshot.queryParams.recipeId;
-      this.getRecipeDetailsById(this.recipeId);
     } else {
       this.pageHeader = 'Add New Recipe';
-      this.recipeId= this.route.snapshot.queryParams.recipeId;
-      this.getRecipeDetailsById(this.recipeId);
     }
 
-    // if (sessionStorage.RecipeId) {
-    //   this.recipeId = sessionStorage.RecipeId;
-    //   this.getRecipeDetailsById(this.recipeId);
-    // }
-   
-    
-        
+    if (sessionStorage.RecipeId) {
+      this.recipeId = sessionStorage.RecipeId;
+      this.getRecipeDetailsById(this.recipeId);
+    }
   }
 
   getPreferenceUsed() {
@@ -131,22 +123,18 @@ export class RecipeBrewlogComponent implements OnInit {
   findUnits() {
     if (this.units) {
       this.units.forEach(element => {
-        if(this.preference.temperatureId){
         if (!this.tempUnitIdFromDb && element.id === this.preference.temperatureId) {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.id;
         }
-      }
         if (this.tempUnitIdFromDb && element.id === this.tempUnitIdFromDb) {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.id;
         }
-        if(this.preference.gravityMeasurementId){
         if (!this.platoUnitIdFromDb && element.id === this.preference.gravityMeasurementId) {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
         }
-      }
         if (element.id === this.platoUnitIdFromDb) {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
@@ -183,9 +171,8 @@ export class RecipeBrewlogComponent implements OnInit {
         this.tempUnitIdFromDb = this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
           this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
       }
-      if(sessionStorage.page=="add"){
-        this.findUnits();
-  }
+
+      this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
         // commit status
@@ -197,7 +184,7 @@ export class RecipeBrewlogComponent implements OnInit {
   }
 
   initiateFormArrays() {
-    if (sessionStorage.page !== 'edit') {
+    if (!sessionStorage.RecipeId) {
       this.addSparge();
     }
     this.addKettleTargets();
@@ -421,37 +408,37 @@ export class RecipeBrewlogComponent implements OnInit {
       this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
         if (response) {
           if (this.formSubmitted) {
-            this.router.navigate(['/app/recipes/recipe-fermentation'],{queryParams:{recipeId:this.recipeId}});
+            this.router.navigate(['/app/recipes/recipe-fermentation']);
           }
           if (this.mashinClicked) {
-            this.router.navigate(['app/recipes/recipe-mashin'],{queryParams:{recipeId:this.recipeId}});
+            this.router.navigate(['app/recipes/recipe-mashin']);
           }
           if (this.brewlogClicked) {
-            this.router.navigate(['/app/recipes/recipe-brewlog'],{queryParams:{recipeId:this.recipeId}});
+            this.router.navigate(['/app/recipes/recipe-brewlog']);
           }
           if (this.fermentationClicked) {
-            this.router.navigate(['app/recipes/recipe-fermentation'],{queryParams:{recipeId:this.recipeId}});
+            this.router.navigate(['app/recipes/recipe-fermentation']);
           }
           if (this.conditioningClicked) {
-            this.router.navigate(['app/recipes/recipe-conditioning'],{queryParams:{recipeId:this.recipeId}});
+            this.router.navigate(['app/recipes/recipe-conditioning']);
           }
         }
       });
     } else {
       if (this.formSubmitted && this.brewLogForm.valid) {
-        this.router.navigate(['/app/recipes/recipe-fermentation'],{queryParams:{recipeId:this.recipeId}});
+        this.router.navigate(['/app/recipes/recipe-fermentation']);
       }
       if (this.mashinClicked) {
-        this.router.navigate(['app/recipes/recipe-mashin'],{queryParams:{recipeId:this.recipeId}});
+        this.router.navigate(['app/recipes/recipe-mashin']);
       }
       if (this.brewlogClicked) {
-        this.router.navigate(['/app/recipes/recipe-brewlog'],{queryParams:{recipeId:this.recipeId}});
+        this.router.navigate(['/app/recipes/recipe-brewlog']);
       }
       if (this.fermentationClicked) {
-        this.router.navigate(['app/recipes/recipe-fermentation'],{queryParams:{recipeId:this.recipeId}});
+        this.router.navigate(['app/recipes/recipe-fermentation']);
       }
       if (this.conditioningClicked) {
-        this.router.navigate(['app/recipes/recipe-conditioning'],{queryParams:{recipeId:this.recipeId}});
+        this.router.navigate(['app/recipes/recipe-conditioning']);
       }
     }
   }
@@ -461,7 +448,7 @@ export class RecipeBrewlogComponent implements OnInit {
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
     } else {
-      this.router.navigate(['app/recipes/recipe-mashin'],{queryParams:{recipeId:this.recipeId}});
+      this.router.navigate(['app/recipes/recipe-mashin']);
     }
   }
 
@@ -470,7 +457,7 @@ export class RecipeBrewlogComponent implements OnInit {
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
     } else {
-      this.router.navigate(['/app/recipes/recipe-brewlog'],{queryParams:{recipeId:this.recipeId}});
+      this.router.navigate(['/app/recipes/recipe-brewlog']);
     }
   }
 
@@ -479,7 +466,7 @@ export class RecipeBrewlogComponent implements OnInit {
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
     } else {
-      this.router.navigate(['app/recipes/recipe-fermentation'],{queryParams:{recipeId:this.recipeId}});
+      this.router.navigate(['app/recipes/recipe-fermentation']);
     }
   }
 
@@ -488,7 +475,7 @@ export class RecipeBrewlogComponent implements OnInit {
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
     } else {
-      this.router.navigate(['app/recipes/recipe-conditioning'],{queryParams:{recipeId:this.recipeId}});
+      this.router.navigate(['app/recipes/recipe-conditioning']);
     }
   }
 
