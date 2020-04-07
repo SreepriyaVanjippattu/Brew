@@ -50,8 +50,8 @@ export class RecipeMashformComponent implements OnInit {
     abv: ['', [Validators.required]],
     ibus: ['', [Validators.required]],
     tenantId: [''],
-    createdDate: ['2019-01-01T00:00:00'],
-    modifiedDate: ['2019-01-01T00:00:00'],
+    createdDate: [new Date()],
+    modifiedDate: [new Date()],
     yeastStrainId: [''],
     statusId: [''],
     isActive: [''],
@@ -88,6 +88,7 @@ export class RecipeMashformComponent implements OnInit {
   tempUnitIdFromDb: any;
   preferedTempUnit: any;
   styleName: any;
+  userId: string;
 
   constructor(private apiService: ApiProviderService,
     private formBuilder: FormBuilder,
@@ -100,13 +101,7 @@ export class RecipeMashformComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-
-    // this.getCountries();
-    // this.getAddIns();
-    // this.getMaltTypes();
-    // this.getStyles();
-    // this.getSuppliers();
-    // this.getUnitTypes();
+    this.userId= user['userDetails'].userId;
     this.getAllRecipeSystemData();
 
     if (sessionStorage.page === 'edit') {
@@ -324,8 +319,8 @@ export class RecipeMashformComponent implements OnInit {
         recipeId: [this.recipeId],
         notes: [''],
         isActive: [''],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }),
     );
@@ -345,8 +340,8 @@ export class RecipeMashformComponent implements OnInit {
         liquortoGristrRatio: [''],
         temperature: [this.showMultiTemps, [Validators.required]],
         isActive: [null],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
         tempSingle: ['single'],
         mashingTargetTemperatures: this.formBuilder.array([this.mashingTargetTemperatures]),
@@ -367,8 +362,8 @@ export class RecipeMashformComponent implements OnInit {
       startTime: [''],
       mashingTargetId: ['00000000-0000-0000-0000-000000000000'],
       isActive: [1],
-      createdDate: ['2019-01-01T00:00:00'],
-      modifiedDate: ['2019-01-01T00:00:00'],
+      createdDate: [new Date()],
+      modifiedDate: [new Date()],
       tenantId: [this.tenantId],
     });
   }
@@ -389,8 +384,8 @@ export class RecipeMashformComponent implements OnInit {
         srm: [''],
         potential: [''],
         isActive: [null],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -423,8 +418,8 @@ export class RecipeMashformComponent implements OnInit {
         h3po4: [''],
         h3po4unitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c'],
         isActive: [null],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -453,8 +448,8 @@ export class RecipeMashformComponent implements OnInit {
         timeInUnitId: ['944db4fe-e508-43a6-b599-e11556cfc844', [Validators.required]],
         additionalHopesStatus: [false],
         isActive: [false],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -480,8 +475,8 @@ export class RecipeMashformComponent implements OnInit {
         timeInUnitId: ['944db4fe-e508-43a6-b599-e11556cfc844'],
         additionalAdjunctsStatus: [false],
         isActive: [null],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
         countryId: ['bcab5d2f-32c6-48c2-880b-ec4eb214fe30'],
       }));
@@ -673,6 +668,7 @@ export class RecipeMashformComponent implements OnInit {
       // Recipe Details
       formData.id = this.recipeId;
       formData.name = this.recipeMashForm.value.name;
+      formData.createdByUserId = this.userId;
       formData.styleId = this.recipeMashForm.value.styleId;
       formData.styleName = this.styleName;
       formData.batchSize = this.recipeMashForm.value.batchSize;
@@ -847,8 +843,8 @@ export class RecipeMashformComponent implements OnInit {
       id: Guid.raw(),
       name: this.modalForms.get('supplierText').value,
       isActive: true,
-      createdDate: '2019-12-16T06:55:05.243',
-      modifiedDate: '2019-12-16T06:55:05.243',
+      createdDate: new Date(),
+      modifiedDate: new Date(),
       tenantId: this.tenantId
     };
     if (this.modalForms.get('supplierText').value) {
@@ -867,8 +863,8 @@ export class RecipeMashformComponent implements OnInit {
       id: Guid.raw(),
       name: this.modalForms.get('styleText').value,
       isActive: true,
-      createdDate: '2019-12-16T06:55:05.243',
-      modifiedDate: '2019-12-16T06:55:05.243',
+      createdDate: new Date(),
+      modifiedDate: new Date(),
       tenantId: this.tenantId
     };
     if (this.modalForms.get('styleText').value) {
@@ -887,8 +883,8 @@ export class RecipeMashformComponent implements OnInit {
       id: Guid.raw(),
       name: this.modalForms.get('typeText').value,
       isActive: true,
-      createdDate: '2019-12-16T06:55:05.243',
-      modifiedDate: '2019-12-16T06:55:05.243',
+      createdDate: new Date(),
+      modifiedDate: new Date(),
       tenantId: this.tenantId
     };
     if (this.modalForms.get('typeText').value) {

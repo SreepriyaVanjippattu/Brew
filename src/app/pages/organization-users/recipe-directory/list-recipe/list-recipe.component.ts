@@ -217,6 +217,7 @@ export class ListRecipeComponent implements OnInit {
   }
 
   searchRecipe(event) {
+
     const search = event.target.value;
 
     const getAllRecipeByTenantAPI = String.Format(this.apiService.getAllRecipeByTenant, this.tenantId);

@@ -133,7 +133,7 @@ export class ArchivedRecipesComponent implements OnInit {
   }
   
   searchRecipe(event) {
-
+debugger;
     const search = event.target.value;
 
     const getAllArchivedRecipesAPI = String.Format(this.apiService.getAllArchivedRecipes, this.tenantId);

@@ -87,12 +87,6 @@ export class RecipeBrewlogComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-
-    // this.getCountries();
-    // this.getAddIns();
-    // this.getMaltTypes();
-    // this.getSuppliers();
-    // this.getUnitTypes();
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
@@ -211,59 +205,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
   }
 
-  getCountries() {
-    this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
-      if (response) {
-        this.countries = response['body'].countries;
-      }
-    });
-  }
-
-  getAddIns() {
-    const getAllActiveAddInAPI = String.Format(this.apiService.getAllActiveAddIn, this.tenantId);
-    this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
-      if (response) {
-        this.addins = response['body'].addIns;
-      }
-    });
-  }
-
-  getSuppliers() {
-    const getAllActiveSupplierAPI = String.Format(this.apiService.getAllActiveSupplier, this.tenantId);
-    this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
-      if (response) {
-        this.suppliers = response['body'].suppliers;
-      }
-    });
-  }
-
-  getMaltTypes() {
-    const getAllActiveMaltGrainTypeAPI = String.Format(this.apiService.getAllActiveMaltGrainType, this.tenantId);
-    this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
-      if (response) {
-        this.maltTypes = response['body'].maltTypes;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
-  getUnitTypes() {
-    this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
-      if (response) {
-        this.units = response['body'].unitTypes;
-        this.getPreferenceUsed();
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
+  
 
   setValueToEdit(data) {
 
@@ -286,16 +228,16 @@ export class RecipeBrewlogComponent implements OnInit {
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
           fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
           fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
-          if(data.kettleTargets.volumePreBoilUnitId){
-          fields.get('volumePreBoilUnitId').setValue(data.kettleTargets.volumePreBoilUnitId);
+          if (data.kettleTargets.volumePreBoilUnitId) {
+            fields.get('volumePreBoilUnitId').setValue(data.kettleTargets.volumePreBoilUnitId);
           }
           fields.get('volumePostBoil').setValue(data.kettleTargets.volumePostBoil);
-          if(data.kettleTargets.volumePostBoilUnitId){
-          fields.get('volumePostBoilUnitId').setValue(data.kettleTargets.volumePostBoilUnitId);
+          if (data.kettleTargets.volumePostBoilUnitId) {
+            fields.get('volumePostBoilUnitId').setValue(data.kettleTargets.volumePostBoilUnitId);
           }
           fields.get('plato').setValue(data.kettleTargets.plato);
-          if(data.kettleTargets.platoUnitId){
-          fields.get('platoUnitId').setValue(data.kettleTargets.platoUnitId);
+          if (data.kettleTargets.platoUnitId) {
+            fields.get('platoUnitId').setValue(data.kettleTargets.platoUnitId);
           }
           fields.get('ph').setValue(data.kettleTargets.ph);
           fields.get('notes').setValue(data.kettleTargets.notes);
@@ -307,8 +249,8 @@ export class RecipeBrewlogComponent implements OnInit {
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
-          if(data.whirlpoolTarget.postBoilVolumeUnitId){
-          fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
+          if (data.whirlpoolTarget.postBoilVolumeUnitId) {
+            fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
           }
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
         });
@@ -318,10 +260,9 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.coolingKnockoutTarget != null) {
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
-          fields.get('id').setValue(data.coolingKnockoutTarget.id);
           fields.get('volumeInFermentation').setValue(data.coolingKnockoutTarget.volumeInFermentation);
-          if(!data.coolingKnockoutTarget.volumeInFermentationOptionId(Guid.EMPTY) ){
-          fields.get('volumeInFermentationOptionId').setValue(data.coolingKnockoutTarget.volumeInFermentationOptionId);
+          if (data.coolingKnockoutTarget.volumeInFermentationOptionId !== Guid.EMPTY) {
+            fields.get('volumeInFermentationOptionId').setValue(data.coolingKnockoutTarget.volumeInFermentationOptionId);
           }
           fields.get('notes').setValue(data.coolingKnockoutTarget.notes);
         });
@@ -348,8 +289,8 @@ export class RecipeBrewlogComponent implements OnInit {
         ph: ['', Validators.required],
         notes: [''],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -369,8 +310,8 @@ export class RecipeBrewlogComponent implements OnInit {
         platoUnitId: [this.platoUnitId],
         notes: [''],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -390,8 +331,8 @@ export class RecipeBrewlogComponent implements OnInit {
         postBoilVolumeUnitId: ['58c07c47-a13e-4464-bec8-628fe11f027a', Validators.required],
         notes: [''],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -544,15 +485,15 @@ export class RecipeBrewlogComponent implements OnInit {
       id: Guid.raw(),
       name: this.modalForms.get('supplierText').value,
       isActive: true,
-      createdDate: '2019-12-16T06:55:05.243',
-      modifiedDate: '2019-12-16T06:55:05.243',
+      createdDate: new Date(),
+      modifiedDate:new Date(),
       tenantId: this.tenantId,
     };
     if (this.modalForms.get('supplierText').value) {
       const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);
       this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
-          this.getSuppliers();
+          this.suppliers = response.body.suppliers;
           this.modalForms.reset();
         }
       });
@@ -564,15 +505,15 @@ export class RecipeBrewlogComponent implements OnInit {
       id: Guid.raw(),
       name: this.modalForms.get('typeText').value,
       isActive: true,
-      createdDate: '2019-12-16T06:55:05.243',
-      modifiedDate: '2019-12-16T06:55:05.243',
+      createdDate: new Date(),
+      modifiedDate: new Date(),
       tenantId: this.tenantId,
     };
     if (this.modalForms.get('typeText').value) {
       const addTypeAPI = String.Format(this.apiService.addType, this.tenantId);
       this.apiService.postData(addTypeAPI, params).subscribe((response: any) => {
         if (response) {
-          this.getMaltTypes();
+          this.maltTypes = response.body.maltTypes;
           this.modalForms.reset();
         }
       });

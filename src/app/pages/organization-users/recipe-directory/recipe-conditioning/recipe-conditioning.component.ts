@@ -76,7 +76,6 @@ export class RecipeConditioningComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    // this.getUnitTypes();
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
@@ -181,17 +180,6 @@ export class RecipeConditioningComponent implements OnInit {
     });
   }
 
-  getUnitTypes() {
-    this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
-      if (response) {
-        this.units = response['body'].unitTypes;
-        this.getPreferenceUsed();
-      }
-    }, error => {
-      this.toast.danger(error.error.message);
-    });
-  }
-
   initiateFormArrays() {
     this.addConditioningTargets();
     this.addFilterationTargets();
@@ -204,22 +192,22 @@ export class RecipeConditioningComponent implements OnInit {
       if (data.conditioningTargets != null) {
         this.conditioningTargetsArray.controls.forEach(fields => {
           fields.get('volumeIn').setValue(data.conditioningTargets.volumeIn);
-          if(data.conditioningTargets.volumeInUnitId){
-          fields.get('volumeInUnitId').setValue(data.conditioningTargets.volumeInUnitId);
+          if (data.conditioningTargets.volumeInUnitId) {
+            fields.get('volumeInUnitId').setValue(data.conditioningTargets.volumeInUnitId);
           }
           fields.get('temperature').setValue(data.conditioningTargets.temperature);
-          if(data.conditioningTargets.temperatureUnitId){
-          fields.get('temperatureUnitId').setValue(data.conditioningTargets.temperatureUnitId);
+          if (data.conditioningTargets.temperatureUnitId) {
+            fields.get('temperatureUnitId').setValue(data.conditioningTargets.temperatureUnitId);
           }
           fields.get('pressure').setValue(data.conditioningTargets.pressure);
-          if(data.conditioningTargets.pressureUnitId){
-          fields.get('pressureUnitId').setValue(data.conditioningTargets.pressureUnitId);
+          if (data.conditioningTargets.pressureUnitId) {
+            fields.get('pressureUnitId').setValue(data.conditioningTargets.pressureUnitId);
           }
           fields.get('ph').setValue(data.conditioningTargets.ph);
           fields.get('plato').setValue(data.conditioningTargets.plato);
           fields.get('co2').setValue(data.conditioningTargets.co2);
-          if(data.conditioningTargets.co2UnitId){
-          fields.get('co2UnitId').setValue(data.conditioningTargets.co2UnitId);
+          if (data.conditioningTargets.co2UnitId) {
+            fields.get('co2UnitId').setValue(data.conditioningTargets.co2UnitId);
           }
           fields.get('notes').setValue(data.conditioningTargets.notes);
 
@@ -229,8 +217,8 @@ export class RecipeConditioningComponent implements OnInit {
       if (data.filterationTargets != null) {
         this.filterationTargetsArray.controls.forEach(fields => {
           fields.get('temperature').setValue(data.filterationTargets.temperature);
-          if(data.filterationTargets.temperatureUnitId){
-          fields.get('temperatureUnitId').setValue(data.filterationTargets.temperatureUnitId);
+          if (data.filterationTargets.temperatureUnitId) {
+            fields.get('temperatureUnitId').setValue(data.filterationTargets.temperatureUnitId);
           }
           fields.get('notes').setValue(data.filterationTargets.notes);
         });
@@ -240,8 +228,8 @@ export class RecipeConditioningComponent implements OnInit {
         this.carbonationTargetsArray.controls.forEach(fields => {
           fields.get('ph').setValue(data.carbonationTargets.ph);
           fields.get('pressure').setValue(data.carbonationTargets.pressure);
-          if(data.carbonationTargets.pressureUnitId){
-          fields.get('pressureUnitId').setValue(data.carbonationTargets.pressureUnitId);
+          if (data.carbonationTargets.pressureUnitId) {
+            fields.get('pressureUnitId').setValue(data.carbonationTargets.pressureUnitId);
           }
           fields.get('notes').setValue(data.carbonationTargets.notes);
         });
@@ -269,8 +257,8 @@ export class RecipeConditioningComponent implements OnInit {
         co2UnitId: ['e05e1543-9b78-413a-bbd5-2621901ba3b9'],
         notes: [''],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -285,8 +273,8 @@ export class RecipeConditioningComponent implements OnInit {
         temperatureUnitId: [this.tempUnitIdFromDb],
         notes: [''],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -302,8 +290,8 @@ export class RecipeConditioningComponent implements OnInit {
         pressureUnitId: ['1D211DBF-1A2C-470F-9795-6001C627AC44'],
         notes: [''],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }

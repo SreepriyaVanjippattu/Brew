@@ -86,12 +86,7 @@ export class RecipeFermentationComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    // this.getCountries();
-    // this.getAddIns();
-    // this.getMaltTypes();
-    // this.getSuppliers();
     this.getYeastStrain();
-    // this.getUnitTypes();
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
@@ -202,43 +197,6 @@ export class RecipeFermentationComponent implements OnInit {
     });
   }
 
-  getUnitTypes() {
-    this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
-      if (response) {
-        this.units = response['body'].unitTypes;
-        this.getPreferenceUsed();
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
-  getMaltTypes() {
-    const getAllActiveMaltGrainTypeAPI = String.Format(this.apiService.getAllActiveMaltGrainType, this.tenantId);
-    this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
-      if (response) {
-        this.maltTypes = response['body'].maltTypes;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
-  getAddIns() {
-    const getAllActiveAddInAPI = String.Format(this.apiService.getAllActiveAddIn, this.tenantId);
-    this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
-      if (response) {
-        this.addins = response['body'].addIns;
-      }
-    });
-  }
-
   initiateFormArrays() {
     this.addFermentationTargets();
     this.addDiacetylRest();
@@ -255,53 +213,31 @@ export class RecipeFermentationComponent implements OnInit {
     });
   }
 
-  getCountries() {
-    this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
-      if (response) {
-        this.countries = response['body'].countries;
-      }
-    });
-  }
-
-  getSuppliers() {
-    const getAllActiveSupplierAPI = String.Format(this.apiService.getAllActiveSupplier, this.tenantId);
-    this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
-      if (response) {
-        this.suppliers = response['body'].suppliers;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
   setValueToEdit(data) {
     if (data) {
 
       if (data.fermentationTargets != null) {
         this.fermentationTargetsArray.controls.forEach(fields => {
           fields.get('volumeIn').setValue(data.fermentationTargets.volumeIn);
-          if(data.fermentationTargets.volumeInUnitId){
-          fields.get('volumeInUnitId').setValue(data.fermentationTargets.volumeInUnitId);
+          if (data.fermentationTargets.volumeInUnitId) {
+            fields.get('volumeInUnitId').setValue(data.fermentationTargets.volumeInUnitId);
           }
           fields.get('temperature').setValue(data.fermentationTargets.temperature);
-          if(data.fermentationTargets.temperatureUnitId){
-          fields.get('temperatureUnitId').setValue(data.fermentationTargets.temperatureUnitId);
+          if (data.fermentationTargets.temperatureUnitId) {
+            fields.get('temperatureUnitId').setValue(data.fermentationTargets.temperatureUnitId);
           }
           fields.get('pressure').setValue(data.fermentationTargets.pressure);
-          if(data.fermentationTargets.pressureUnitId){
-          fields.get('pressureUnitId').setValue(data.fermentationTargets.pressureUnitId);
+          if (data.fermentationTargets.pressureUnitId) {
+            fields.get('pressureUnitId').setValue(data.fermentationTargets.pressureUnitId);
           }
           fields.get('ph').setValue(data.fermentationTargets.ph);
           fields.get('plato').setValue(data.fermentationTargets.plato);
-          if(data.fermentationTargets.platoUnitId){
-          fields.get('platoUnitId').setValue(data.fermentationTargets.platoUnitId);
+          if (data.fermentationTargets.platoUnitId) {
+            fields.get('platoUnitId').setValue(data.fermentationTargets.platoUnitId);
           }
         });
       }
-     
+
 
       if (data.diacetylRest != null) {
         this.diacetylRestArray.controls.forEach(fields => {
@@ -329,21 +265,21 @@ export class RecipeFermentationComponent implements OnInit {
           }
         });
       }
-    
+
 
 
       if (data.yeast != null) {
 
         this.yeastArray.controls.forEach(fields => {
           fields.get('name').setValue(data.yeast.name);
-          if(data.yeast.yeastStrainId){
-          fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
+          if (data.yeast.yeastStrainId) {
+            fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
           }
-          if(data.yeast.countryId){
-          fields.get('countryId').setValue(data.yeast.countryId);
+          if (data.yeast.countryId) {
+            fields.get('countryId').setValue(data.yeast.countryId);
           }
-          if(data.yeast.supplierId){
-          fields.get('supplierId').setValue(data.yeast.supplierId);
+          if (data.yeast.supplierId) {
+            fields.get('supplierId').setValue(data.yeast.supplierId);
           }
         });
       }
@@ -367,8 +303,8 @@ export class RecipeFermentationComponent implements OnInit {
         plato: ['', this.validateGravity],
         platoUnitId: [this.platoUnitId],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -383,8 +319,8 @@ export class RecipeFermentationComponent implements OnInit {
         plato: ['', this.validateGravity],
         platoUnitId: [this.platoUnitId],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -399,8 +335,8 @@ export class RecipeFermentationComponent implements OnInit {
         temperature: ['', Validators.required],
         temperatureUnitId: [this.tempUnitIdFromDb],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -416,8 +352,8 @@ export class RecipeFermentationComponent implements OnInit {
         countryId: ['bcab5d2f-32c6-48c2-880b-ec4eb214fe30'],
         supplierId: [''],
         isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
+        createdDate: [new Date()],
+        modifiedDate: [new Date()],
         tenantId: [this.tenantId],
       }));
   }
@@ -541,15 +477,15 @@ export class RecipeFermentationComponent implements OnInit {
       id: Guid.raw(),
       name: this.modalForms.get('supplierText').value,
       isActive: true,
-      createdDate: '2019-12-16T06:55:05.243',
-      modifiedDate: '2019-12-16T06:55:05.243',
+      createdDate: new Date(),
+      modifiedDate: new Date(),
       tenantId: this.tenantId
     };
     if (this.modalForms.get('supplierText').value) {
       const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);
       this.apiService.postData(addStyleAPI, params).subscribe((response: any) => {
         if (response) {
-          this.getSuppliers();
+          this.suppliers = response.body.suppliers;
           this.modalForms.reset();
         }
       });
