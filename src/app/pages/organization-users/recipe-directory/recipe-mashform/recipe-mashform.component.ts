@@ -101,12 +101,13 @@ export class RecipeMashformComponent implements OnInit {
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
 
-    this.getCountries();
-    this.getAddIns();
-    this.getMaltTypes();
-    this.getStyles();
-    this.getSuppliers();
-    this.getUnitTypes();
+    // this.getCountries();
+    // this.getAddIns();
+    // this.getMaltTypes();
+    // this.getStyles();
+    // this.getSuppliers();
+    // this.getUnitTypes();
+    this.getAllRecipeSystemData();
 
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
@@ -130,6 +131,21 @@ export class RecipeMashformComponent implements OnInit {
       this.recipeId = Guid.raw();
       this.statusId = '966F3F12-E4E4-45EA-A6BF-3AE312BE0CCB';
     }
+  }
+
+  getAllRecipeSystemData() {
+    const getAllRecipeSystemDataAPI = String.Format(this.apiService.getRecipeMasterDetails, this.tenantId);
+    this.apiService.getDataList(getAllRecipeSystemDataAPI).subscribe(response => {
+      if (response) {
+        this.addins = response['body'].addIns;
+        this.countries = response['body'].countries;
+        this.suppliers = response['body'].suppliers;
+        this.maltTypes = response['body'].maltGrainTypes;
+        this.styles = response['body'].styles;
+        this.units = response['body'].unitTypes;
+        this.getPreferenceUsed();
+      }
+    });
   }
 
   getPreferenceUsed() {

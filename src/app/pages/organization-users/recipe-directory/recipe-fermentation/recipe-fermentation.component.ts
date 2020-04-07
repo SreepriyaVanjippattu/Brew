@@ -86,12 +86,13 @@ export class RecipeFermentationComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    this.getCountries();
-    this.getAddIns();
-    this.getMaltTypes();
-    this.getSuppliers();
+    // this.getCountries();
+    // this.getAddIns();
+    // this.getMaltTypes();
+    // this.getSuppliers();
     this.getYeastStrain();
-    this.getUnitTypes();
+    // this.getUnitTypes();
+    this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
     if (sessionStorage.page === 'edit') {
@@ -105,10 +106,20 @@ export class RecipeFermentationComponent implements OnInit {
       this.pageHeader = 'Add New Recipe';
     }
 
-    if (sessionStorage.RecipeId) {
-      this.recipeId = sessionStorage.RecipeId;
-      this.getRecipeDetailsById(this.recipeId);
-    }
+   
+  }
+  getAllRecipeSystemData() {
+    const getAllRecipeSystemDataAPI = String.Format(this.apiService.getRecipeMasterDetails, this.tenantId);
+    this.apiService.getDataList(getAllRecipeSystemDataAPI).subscribe(response => {
+      if (response) {
+        this.addins = response['body'].addIns;
+        this.countries = response['body'].countries;
+        this.suppliers = response['body'].suppliers;
+        this.maltTypes = response['body'].maltGrainTypes;
+        this.units = response['body'].unitTypes;
+        this.getPreferenceUsed();
+      }
+    });
   }
 
   getPreferenceUsed() {
@@ -116,7 +127,13 @@ export class RecipeFermentationComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body'].preferenceSettings;
+        if (sessionStorage.RecipeId) {
+          this.recipeId = sessionStorage.RecipeId;
+          this.getRecipeDetailsById(this.recipeId);
+        }
+        else{
         this.findUnits();
+        }
       }
     });
   }
@@ -266,48 +283,71 @@ export class RecipeFermentationComponent implements OnInit {
       if (data.fermentationTargets != null) {
         this.fermentationTargetsArray.controls.forEach(fields => {
           fields.get('volumeIn').setValue(data.fermentationTargets.volumeIn);
+          if(data.fermentationTargets.volumeInUnitId){
           fields.get('volumeInUnitId').setValue(data.fermentationTargets.volumeInUnitId);
+          }
           fields.get('temperature').setValue(data.fermentationTargets.temperature);
+          if(data.fermentationTargets.temperatureUnitId){
           fields.get('temperatureUnitId').setValue(data.fermentationTargets.temperatureUnitId);
+          }
           fields.get('pressure').setValue(data.fermentationTargets.pressure);
+          if(data.fermentationTargets.pressureUnitId){
           fields.get('pressureUnitId').setValue(data.fermentationTargets.pressureUnitId);
+          }
           fields.get('ph').setValue(data.fermentationTargets.ph);
           fields.get('plato').setValue(data.fermentationTargets.plato);
+          if(data.fermentationTargets.platoUnitId){
           fields.get('platoUnitId').setValue(data.fermentationTargets.platoUnitId);
+          }
         });
       }
+     
 
       if (data.diacetylRest != null) {
         this.diacetylRestArray.controls.forEach(fields => {
           fields.get('temperature').setValue(data.diacetylRest.temperature);
-          fields.get('temperatureUnitId').setValue(data.diacetylRest.TemperatureUnitId);
+          if (data.diacetylRest.temperatureUnitId) {
+            fields.get('temperatureUnitId').setValue(data.diacetylRest.temperatureUnitId);
+          }
           fields.get('plato').setValue(data.diacetylRest.plato);
-          fields.get('platoUnitId').setValue(data.diacetylRest.platoUnitId);
+          if (data.diacetylRest.platoUnitId) {
+            fields.get('platoUnitId').setValue(data.diacetylRest.platoUnitId);
+          }
         });
       }
+      
 
       if (data.aging != null) {
         this.agingArray.controls.forEach(fields => {
           fields.get('timeDuration').setValue(data.aging.timeDuration);
-          fields.get('timeDurationUnitId').setValue(data.aging.timeDurationUnitId);
+          if (data.aging.timeDurationUnitId) {
+            fields.get('timeDurationUnitId').setValue(data.aging.timeDurationUnitId);
+          }
           fields.get('temperature').setValue(data.aging.temperature);
-          fields.get('temperatureUnitId').setValue(data.aging.temperatureUnitId);
+          if (data.aging.temperatureUnitId) {
+            fields.get('temperatureUnitId').setValue(data.aging.temperatureUnitId);
+          }
         });
       }
+    
 
 
       if (data.yeast != null) {
 
         this.yeastArray.controls.forEach(fields => {
           fields.get('name').setValue(data.yeast.name);
+          if(data.yeast.yeastStrainId){
           fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
+          }
+          if(data.yeast.countryId){
           fields.get('countryId').setValue(data.yeast.countryId);
+          }
+          if(data.yeast.supplierId){
           fields.get('supplierId').setValue(data.yeast.supplierId);
-          if (data.yeast.countryId === null) {
-            fields.get('countryId').setValue('bcab5d2f-32c6-48c2-880b-ec4eb214fe30');
           }
         });
       }
+     
     }
   }
 

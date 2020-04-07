@@ -145,12 +145,12 @@ export class ArchivedRecipesComponent implements OnInit {
         this.config.totalItems = this.headerValue.TotalCount;
       }
       if (response && response['body']) {
-        this.archieveContent = response['body'];
+        this.archieveContent = response['body'].recipes;
         this.archieveContent.map((recipe, idx) => {
           if (recipe !== null) {
-            recipe.ReceipeName = recipe.ReceipeName !== null ? recipe.ReceipeName : '';
-            recipe.StyleName = recipe.StyleName;
-            recipe.YeastStrainName = recipe.YeastStrainName;
+            recipe.ReceipeName = recipe.name !== null ? recipe.name : '';
+            recipe.StyleName = recipe.styleName;
+            recipe.YeastStrainName = recipe.yeastStrainName;
           }
         });
       }

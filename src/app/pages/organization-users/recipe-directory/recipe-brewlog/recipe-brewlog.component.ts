@@ -88,11 +88,12 @@ export class RecipeBrewlogComponent implements OnInit {
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
 
-    this.getCountries();
-    this.getAddIns();
-    this.getMaltTypes();
-    this.getSuppliers();
-    this.getUnitTypes();
+    // this.getCountries();
+    // this.getAddIns();
+    // this.getMaltTypes();
+    // this.getSuppliers();
+    // this.getUnitTypes();
+    this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
     if (sessionStorage.page === 'edit') {
@@ -104,18 +105,35 @@ export class RecipeBrewlogComponent implements OnInit {
       this.pageHeader = 'Add New Recipe';
     }
 
-    if (sessionStorage.RecipeId) {
-      this.recipeId = sessionStorage.RecipeId;
-      this.getRecipeDetailsById(this.recipeId);
-    }
+    
+  
   }
 
+  getAllRecipeSystemData() {
+    const getAllRecipeSystemDataAPI = String.Format(this.apiService.getRecipeMasterDetails, this.tenantId);
+    this.apiService.getDataList(getAllRecipeSystemDataAPI).subscribe(response => {
+      if (response) {
+        this.addins = response['body'].addIns;
+        this.countries = response['body'].countries;
+        this.suppliers = response['body'].suppliers;
+        this.maltTypes = response['body'].maltGrainTypes;
+        this.units = response['body'].unitTypes;
+        this.getPreferenceUsed();
+      }
+    });
+  }
   getPreferenceUsed() {
     const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body'].preferenceSettings;
-        this.findUnits();
+        if (sessionStorage.RecipeId) {
+          this.recipeId = sessionStorage.RecipeId;
+          this.getRecipeDetailsById(this.recipeId);
+        }
+        else {
+          this.findUnits();
+        }
       }
     });
   }
@@ -171,7 +189,6 @@ export class RecipeBrewlogComponent implements OnInit {
         this.tempUnitIdFromDb = this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
           this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
       }
-
       this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
       if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
@@ -190,6 +207,8 @@ export class RecipeBrewlogComponent implements OnInit {
     this.addKettleTargets();
     this.addWhirlpoolTarget();
     this.addCoolingKnockoutTargets();
+
+
   }
 
   getCountries() {
@@ -264,38 +283,50 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.kettleTargets != null) {
         this.kettleTargetsArray.controls.forEach(fields => {
-          fields.get('id').setValue(data.kettleTargets.id);
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
           fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
           fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
+          if(data.kettleTargets.volumePreBoilUnitId){
           fields.get('volumePreBoilUnitId').setValue(data.kettleTargets.volumePreBoilUnitId);
+          }
           fields.get('volumePostBoil').setValue(data.kettleTargets.volumePostBoil);
+          if(data.kettleTargets.volumePostBoilUnitId){
           fields.get('volumePostBoilUnitId').setValue(data.kettleTargets.volumePostBoilUnitId);
+          }
           fields.get('plato').setValue(data.kettleTargets.plato);
+          if(data.kettleTargets.platoUnitId){
           fields.get('platoUnitId').setValue(data.kettleTargets.platoUnitId);
+          }
           fields.get('ph').setValue(data.kettleTargets.ph);
           fields.get('notes').setValue(data.kettleTargets.notes);
         });
       }
+     
+     
 
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
-          fields.get('id').setValue(data.whirlpoolTarget.id);
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
+          if(data.whirlpoolTarget.postBoilVolumeUnitId){
           fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
+          }
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
         });
       }
+     
+     
 
       if (data.coolingKnockoutTarget != null) {
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
           fields.get('id').setValue(data.coolingKnockoutTarget.id);
           fields.get('volumeInFermentation').setValue(data.coolingKnockoutTarget.volumeInFermentation);
+          if(!data.coolingKnockoutTarget.volumeInFermentationOptionId(Guid.EMPTY) ){
           fields.get('volumeInFermentationOptionId').setValue(data.coolingKnockoutTarget.volumeInFermentationOptionId);
+          }
           fields.get('notes').setValue(data.coolingKnockoutTarget.notes);
         });
       }
-
+     
     }
   }
 

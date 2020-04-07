@@ -178,14 +178,29 @@ export class RecipeFormComponent implements OnInit {
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.tenantId = user['userDetails'].tenantId;
     this.getRecipeDetailsEdit(this.tenantId);
-    this.getCountries();
-    this.getAddIns();
-    this.getMaltTypes();
-    this.getStyles();
-    this.getSuppliers();
+    // this.getCountries();
+    // this.getAddIns();
+    // this.getMaltTypes();
+    // this.getStyles();
+    // this.getSuppliers();
+    // this.getUnitTypes();
+    this.getAllRecipeSystemData();
     this.getYeastStrain();
-    this.getUnitTypes();
     this.recipeDetailsForm.disable();
+  }
+  getAllRecipeSystemData() {
+    const getAllRecipeSystemDataAPI = String.Format(this.apiService.getRecipeMasterDetails, this.tenantId);
+    this.apiService.getDataList(getAllRecipeSystemDataAPI).subscribe(response => {
+      if (response) {
+        this.addins = response['body'].addIns;
+        this.countries = response['body'].countries;
+        this.suppliers = response['body'].suppliers;
+        this.maltTypes = response['body'].maltGrainTypes;
+        this.styles = response['body'].styles;
+        this.units = response['body'].unitTypes;
+        this.getPreferenceUsed();
+      }
+    });
   }
 
   findUnits() {

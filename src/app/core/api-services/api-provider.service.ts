@@ -107,6 +107,7 @@ export class ApiProviderService {
   getAllActiveMaltGrainType = 'brewrun/v1/brewers/recipe/{0}/maltgraintype';
   getAllActiveUnitType = 'brewrun/v1/brewers/settings/unittype';
   getAllActiveStyle = 'brewrun/v1/brewers/settings/{0}/styles';
+  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails'
 
 
   changeBrewRunStatus = 'ChangeBrewRunStatus';

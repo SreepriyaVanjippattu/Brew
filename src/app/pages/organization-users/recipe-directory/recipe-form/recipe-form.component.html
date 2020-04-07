@@ -607,10 +607,13 @@
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="SpargeTotalVolume"
                                             placeholder="Sparge Total Volume" formControlName="spargeTotalVolume">
-                                        <select class="form-control input-dropdown">
-                                            <option *ngFor="let SpargeTotalVolumeOption of SpargeTotalVolumeOptions ">
-                                                {{SpargeTotalVolumeOption}}
-                                            </option>
+                                            <select class="form-control input-dropdown"
+                                            formControlName="spargeTotalVolumeUnitId">
+
+                                            <ng-container *ngFor="let unit of units">
+                                                <option *ngIf="unit.category === 'Size'" [value]="unit.id">
+                                                    {{unit.symbol}}</option>
+                                            </ng-container>
                                         </select>
                                     </div>
                                 </div>
