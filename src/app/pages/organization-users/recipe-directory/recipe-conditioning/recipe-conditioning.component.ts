@@ -191,6 +191,9 @@ export class RecipeConditioningComponent implements OnInit {
 
       if (data.conditioningTargets != null) {
         this.conditioningTargetsArray.controls.forEach(fields => {
+          if (data.conditioningTargets.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.conditioningTargets.id);
+          }
           fields.get('volumeIn').setValue(data.conditioningTargets.volumeIn);
           if (data.conditioningTargets.volumeInUnitId) {
             fields.get('volumeInUnitId').setValue(data.conditioningTargets.volumeInUnitId);
@@ -216,6 +219,9 @@ export class RecipeConditioningComponent implements OnInit {
 
       if (data.filterationTargets != null) {
         this.filterationTargetsArray.controls.forEach(fields => {
+          if (data.filterationTargets.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.filterationTargets.id);
+          }
           fields.get('temperature').setValue(data.filterationTargets.temperature);
           if (data.filterationTargets.temperatureUnitId) {
             fields.get('temperatureUnitId').setValue(data.filterationTargets.temperatureUnitId);
@@ -226,6 +232,9 @@ export class RecipeConditioningComponent implements OnInit {
 
       if (data.carbonationTargets != null) {
         this.carbonationTargetsArray.controls.forEach(fields => {
+          if (data.carbonationTargets.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.carbonationTargets.id);
+          }
           fields.get('ph').setValue(data.carbonationTargets.ph);
           fields.get('pressure').setValue(data.carbonationTargets.pressure);
           if (data.carbonationTargets.pressureUnitId) {

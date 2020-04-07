@@ -218,6 +218,9 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.fermentationTargets != null) {
         this.fermentationTargetsArray.controls.forEach(fields => {
+          if (data.fermentationTargets.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.fermentationTargets.id);
+          }
           fields.get('volumeIn').setValue(data.fermentationTargets.volumeIn);
           if (data.fermentationTargets.volumeInUnitId) {
             fields.get('volumeInUnitId').setValue(data.fermentationTargets.volumeInUnitId);
@@ -241,6 +244,9 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.diacetylRest != null) {
         this.diacetylRestArray.controls.forEach(fields => {
+          if (data.diacetylRest.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.diacetylRest.id);
+          }
           fields.get('temperature').setValue(data.diacetylRest.temperature);
           if (data.diacetylRest.temperatureUnitId) {
             fields.get('temperatureUnitId').setValue(data.diacetylRest.temperatureUnitId);
@@ -255,6 +261,9 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.aging != null) {
         this.agingArray.controls.forEach(fields => {
+          if (data.aging.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.aging.id);
+          }
           fields.get('timeDuration').setValue(data.aging.timeDuration);
           if (data.aging.timeDurationUnitId) {
             fields.get('timeDurationUnitId').setValue(data.aging.timeDurationUnitId);
@@ -271,6 +280,9 @@ export class RecipeFermentationComponent implements OnInit {
       if (data.yeast != null) {
 
         this.yeastArray.controls.forEach(fields => {
+          if (data.yeast.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.yeast.id);
+          }
           fields.get('name').setValue(data.yeast.name);
           if (data.yeast.yeastStrainId) {
             fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);

@@ -225,6 +225,9 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.kettleTargets != null) {
         this.kettleTargetsArray.controls.forEach(fields => {
+          if (data.kettleTargets.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.kettleTargets.id);
+          }
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
           fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
           fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
@@ -248,6 +251,9 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
+          if (data.whirlpoolTarget.id !== Guid.EMPTY) {
+            fields.get('id').setValue(data.whirlpoolTarget.id);
+          }
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
           if (data.whirlpoolTarget.postBoilVolumeUnitId) {
             fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
