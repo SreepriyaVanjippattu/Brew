@@ -86,6 +86,7 @@ export class RecipeFermentationComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
+    this.recipeId= this.route.snapshot.queryParams.recipeId;
     this.getYeastStrain();
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
@@ -122,8 +123,8 @@ export class RecipeFermentationComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body'].preferenceSettings;
-        if (sessionStorage.RecipeId) {
-          this.recipeId = sessionStorage.RecipeId;
+        if (this.recipeId) {
+          // this.recipeId = sessionStorage.RecipeId;
           this.getRecipeDetailsById(this.recipeId);
         }
         else{
@@ -400,7 +401,10 @@ export class RecipeFermentationComponent implements OnInit {
     this.mashinClicked = true;
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
-    } else {
+    }  else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
+    }
+    else {
       this.router.navigate(['app/recipes/recipe-mashin']);
     }
   }
@@ -409,6 +413,9 @@ export class RecipeFermentationComponent implements OnInit {
     this.brewlogClicked = true;
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
+    }
+    else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
     } else {
       this.router.navigate(['/app/recipes/recipe-brewlog']);
     }
@@ -418,7 +425,10 @@ export class RecipeFermentationComponent implements OnInit {
     this.fermentationClicked = true;
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
-    } else {
+    } 
+    else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
+    }else {
       this.router.navigate(['app/recipes/recipe-fermentation']);
     }
   }
@@ -427,7 +437,10 @@ export class RecipeFermentationComponent implements OnInit {
     this.conditioningClicked = true;
     if (!this.disableSave && this.recipeFermentationForm.dirty) {
       this.saveFermentation();
-    } else {
+    } 
+    else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
+    }else {
       this.router.navigate(['app/recipes/recipe-conditioning']);
     }
   }
@@ -454,21 +467,21 @@ export class RecipeFermentationComponent implements OnInit {
       const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
       this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
         if (response) {
-          sessionStorage.setItem('RecipeId', this.recipeId);
+          // sessionStorage.setItem('RecipeId', this.recipeId);
           if (this.formSubmitted) {
-            this.router.navigate(['/app/recipes/recipe-conditioning']);
+            this.router.navigate(['/app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
           }
           if (this.mashinClicked) {
-            this.router.navigate(['app/recipes/recipe-mashin']);
+            this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
           }
           if (this.brewlogClicked) {
-            this.router.navigate(['/app/recipes/recipe-brewlog']);
+            this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
           }
           if (this.fermentationClicked) {
-            this.router.navigate(['app/recipes/recipe-fermentation']);
+            this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
           }
           if (this.conditioningClicked) {
-            this.router.navigate(['app/recipes/recipe-conditioning']);
+            this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
           }
         }
       }, error => {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { NbToastrService } from '@nebular/theme';
 import { Guid } from 'guid-typescript';
@@ -50,6 +50,7 @@ export class RecipeConditioningComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toast: NbToastrService,
     private data: DataService,
+    private route: ActivatedRoute
   ) { }
 
   recipeConditioningForm = this.formBuilder.group({
@@ -72,10 +73,11 @@ export class RecipeConditioningComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.recipeId = sessionStorage.RecipeId;
+    // this.recipeId = sessionStorage.RecipeId;
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
+    this.recipeId= this.route.snapshot.queryParams.recipeId;
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
@@ -105,8 +107,8 @@ export class RecipeConditioningComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body'].preferenceSettings;
-        if (sessionStorage.RecipeId) {
-          this.recipeId = sessionStorage.RecipeId;
+        if (this.recipeId) {
+          // this.recipeId = sessionStorage.RecipeId;
           this.getRecipeDetailsById(this.recipeId);
         }
         else{
@@ -326,32 +328,32 @@ export class RecipeConditioningComponent implements OnInit {
             this.router.navigate(['app/recipes']);
           }
           if (this.mashinClicked) {
-            this.router.navigate(['app/recipes/recipe-mashin']);
+            this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
           }
           if (this.brewlogClicked) {
-            this.router.navigate(['/app/recipes/recipe-brewlog']);
+            this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
           }
           if (this.fermentationClicked) {
-            this.router.navigate(['app/recipes/recipe-fermentation']);
+            this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
           }
           if (this.conditioningClicked) {
-            this.router.navigate(['app/recipes/recipe-conditioning']);
+            this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
           }
         }
       });
 
     } else {
       if (this.mashinClicked) {
-        this.router.navigate(['app/recipes/recipe-mashin']);
+        this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
       }
       if (this.brewlogClicked) {
-        this.router.navigate(['/app/recipes/recipe-brewlog']);
+        this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
       }
       if (this.fermentationClicked) {
-        this.router.navigate(['app/recipes/recipe-fermentation']);
+        this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
       }
       if (this.conditioningClicked) {
-        this.router.navigate(['app/recipes/recipe-conditioning']);
+        this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
       }
     }
   }
@@ -385,7 +387,10 @@ export class RecipeConditioningComponent implements OnInit {
     this.mashinClicked = true;
     if (!this.disableSave && this.recipeConditioningForm.dirty) {
       this.saveConditioning();
-    } else {
+    }  else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
+    }
+    else {
       this.router.navigate(['app/recipes/recipe-mashin']);
     }
   }
@@ -394,7 +399,10 @@ export class RecipeConditioningComponent implements OnInit {
     this.brewlogClicked = true;
     if (!this.disableSave && this.recipeConditioningForm.dirty) {
       this.saveConditioning();
-    } else {
+    } 
+    else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
+    }else {
       this.router.navigate(['/app/recipes/recipe-brewlog']);
     }
   }
@@ -403,7 +411,10 @@ export class RecipeConditioningComponent implements OnInit {
     this.fermentationClicked = true;
     if (!this.disableSave && this.recipeConditioningForm.dirty) {
       this.saveConditioning();
-    } else {
+    }  else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
+    }
+    else {
       this.router.navigate(['app/recipes/recipe-fermentation']);
     }
   }
@@ -412,7 +423,10 @@ export class RecipeConditioningComponent implements OnInit {
     this.conditioningClicked = true;
     if (!this.disableSave && this.recipeConditioningForm.dirty) {
       this.saveConditioning();
-    } else {
+    }  else if(this.recipeId) {
+      this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
+    }
+    else {
       this.router.navigate(['app/recipes/recipe-conditioning']);
     }
   }
