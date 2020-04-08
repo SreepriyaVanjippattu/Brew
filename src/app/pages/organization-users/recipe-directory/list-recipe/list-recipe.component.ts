@@ -169,7 +169,9 @@ export class ListRecipeComponent implements OnInit {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message);
           }
-          this.toast.danger(error);
+          else {
+            this.toast.danger(error);
+          }
         }
         this.router.navigate(['app/recipes/archives']);
       });
@@ -194,7 +196,9 @@ export class ListRecipeComponent implements OnInit {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message);
           }
-          this.toast.danger(error);
+          else {
+            this.toast.danger(error);
+          }
         }
       });
     } else {
@@ -284,10 +288,12 @@ export class ListRecipeComponent implements OnInit {
       }
       this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
     }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message);
+        }
+        else {
+          this.toast.danger(error);
+        }
     });
   }
 
@@ -317,7 +323,9 @@ export class ListRecipeComponent implements OnInit {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message);
           }
-          this.toast.danger(error);
+          else {
+            this.toast.danger(error);
+          }
         });
     }
   }

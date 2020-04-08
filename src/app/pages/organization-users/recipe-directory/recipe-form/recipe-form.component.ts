@@ -178,12 +178,6 @@ export class RecipeFormComponent implements OnInit {
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.tenantId = user['userDetails'].tenantId;
     this.getRecipeDetailsEdit(this.tenantId);
-    // this.getCountries();
-    // this.getAddIns();
-    // this.getMaltTypes();
-    // this.getStyles();
-    // this.getSuppliers();
-    // this.getUnitTypes();
     this.getAllRecipeSystemData();
     this.getYeastStrain();
     this.recipeDetailsForm.disable();
@@ -227,78 +221,7 @@ export class RecipeFormComponent implements OnInit {
     });
   }
 
-  getCountries() {
-    this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
-      if (response) {
-        this.countries = response['body'].countries;
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
-  getMaltTypes() {
-    const getAllActiveMaltGrainTypeAPI = String.Format(this.apiService.getAllActiveMaltGrainType, this.tenantId);
-    this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
-      if (response) {
-        this.maltTypes = response['body'].maltTypes;
-
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
-  getAddIns() {
-    const getAllActiveAddInAPI = String.Format(this.apiService.getAllActiveAddIn, this.tenantId);
-    this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
-      if (response) {
-        this.addins = response['body'].addIns;
-
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
-  getSuppliers() {
-    const getAllActiveSupplierAPI = String.Format(this.apiService.getAllActiveSupplier, this.tenantId);
-    this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
-      if (response) {
-        this.suppliers = response['body'].suppliers;
-
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
-
-  getStyles() {
-    const getAllActiveStyleAPI = String.Format(this.apiService.getAllActiveStyle, this.tenantId);
-    this.apiService.getData(getAllActiveStyleAPI).subscribe(response => {
-      if (response) {
-        this.styles = response['body'].styles;
-
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
+  
 
   getYeastStrain() {
     const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastStrains, this.tenantId);
@@ -309,19 +232,7 @@ export class RecipeFormComponent implements OnInit {
     });
   }
 
-  getUnitTypes() {
-    this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
-      if (response) {
-        this.units = response['body'].unitTypes;
-        this.getPreferenceUsed();
-      }
-    }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
-    });
-  }
+ 
 
   getRecipeDetailsEdit(tenantId) {
     const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, this.recipeId);

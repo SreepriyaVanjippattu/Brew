@@ -124,7 +124,6 @@ export class RecipeBrewlogComponent implements OnInit {
       if (response.status === 200) {
         this.preference = response['body'].preferenceSettings;
         if (this.recipeId) {
-          // this.recipeId = sessionStorage.RecipeId;
           this.getRecipeDetailsById(this.recipeId);
         }
         else {
@@ -388,37 +387,37 @@ export class RecipeBrewlogComponent implements OnInit {
       this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
         if (response) {
           if (this.formSubmitted) {
-            this.router.navigate(['/app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
+            this.router.navigate(['/app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
           }
           if (this.mashinClicked) {
-            this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
+            this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
           }
           if (this.brewlogClicked) {
-            this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
+            this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
           }
           if (this.fermentationClicked) {
-            this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
+            this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
           }
           if (this.conditioningClicked) {
-            this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
+            this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
           }
         }
       });
     } else {
       if (this.formSubmitted && this.brewLogForm.valid) {
-        this.router.navigate(['/app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
+        this.router.navigate(['/app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
       }
       if (this.mashinClicked) {
-        this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
+        this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
       }
       if (this.brewlogClicked) {
-        this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
+        this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
       }
       if (this.fermentationClicked) {
-        this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
+        this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
       }
       if (this.conditioningClicked) {
-        this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
+        this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
       }
     }
   }
@@ -427,11 +426,9 @@ export class RecipeBrewlogComponent implements OnInit {
     this.mashinClicked = true;
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
-    } else if(this.recipeId) {
-      this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId } });
     }
-    else{
-      this.router.navigate(['app/recipes/recipe-mashin']);
+    else {
+      this.router.navigate(['app/recipes/recipe-mashin'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
     }
   }
 
@@ -439,11 +436,9 @@ export class RecipeBrewlogComponent implements OnInit {
     this.brewlogClicked = true;
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
-    } else if(this.recipeId){
-      this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId } });
     }
-    else{
-      this.router.navigate(['app/recipes/recipe-brewlog']);
+    else {
+      this.router.navigate(['app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
     }
   }
 
@@ -451,11 +446,9 @@ export class RecipeBrewlogComponent implements OnInit {
     this.fermentationClicked = true;
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
-    } else if(this.recipeId) {
-      this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId } });
     }
-    else{
-      this.router.navigate(['app/recipes/recipe-fermentation']);
+    else {
+      this.router.navigate(['app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
     }
   }
 
@@ -463,11 +456,9 @@ export class RecipeBrewlogComponent implements OnInit {
     this.conditioningClicked = true;
     if (!this.disableSave && this.brewLogForm.dirty) {
       this.saveBrewLog();
-    }else if (this.recipeId) {
-        this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId } });
-      }
-     else {
-      this.router.navigate(['app/recipes/recipe-conditioning']);
+    }
+    else {
+      this.router.navigate(['app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
     }
   }
 

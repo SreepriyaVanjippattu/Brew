@@ -102,7 +102,9 @@ export class ArchivedRecipesComponent implements OnInit {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message, 'Failed');
           }
-          this.toast.danger(error);
+          else {
+            this.toast.danger(error);
+          }
         }
       });
     } else {
@@ -121,7 +123,9 @@ export class ArchivedRecipesComponent implements OnInit {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message, 'Failed');
           }
-          this.toast.danger(error);
+          else {
+            this.toast.danger(error);
+          }
         }
         this.router.navigate(['app/recipes']);
       });
@@ -197,10 +201,12 @@ export class ArchivedRecipesComponent implements OnInit {
         this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
       }
     }, error => {
-      if (error instanceof HttpErrorResponse) {
-        this.toast.danger(error.error.message);
-      }
-      this.toast.danger(error);
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message);
+        }
+        else {
+          this.toast.danger(error);
+        }
     });
   }
   makeid(length) {
