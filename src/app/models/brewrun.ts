@@ -11,936 +11,1028 @@ export class BrewRunMashin {
     tankId:string;
     tankName:string;
 
-    maltGrainBillDetails: any[];
-    waterAdditionDetails: any[];
-    mashingTargetDetails: any[];
-    startchTest: any[];
-    mashinDetailsNotes: any[];
+    maltGrainBillDetails: MaltGrainBillDetail[];
+    waterAdditionDetails: WaterAdditionDetail[];
+    mashingTargetDetails: MashingTargetDetail[];
+    startchTest: StartchTest[];
+    mashinDetailsNotes: MashinDetailsNote[];
 
 }
 
-export class BrewRun {
-    Id: string;
-    BrewRunId: string;
-    StartTime: Date;
-    EndTime: Date;
-    RecipeId: string;
-    TankId: string;
-    UserId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    Status: string;
-    RecipeName: string;
-    TankName: string;
-    UserName: string;
-
-    MaltGrainBillDetails: MaltGrainBillDetail[];
-    WaterAdditionDetails: WaterAdditionDetail[];
-    MashingTargetDetails: MashingTargetDetail[];
-    StartchTest: StartchTest[];
-    MashinDetailsNotes: MashinDetailsNote[];
-
-    Vorlauf: Vorlauf[];
-    SpargeDetails: SpargeDetail[];
-    FirstRunnings: FirstRunning[];
-    LastRunnings: LastRunning[];
-    KettleDataEntryDetails: KettleDataEntryDetail[];
-    HopesDetails: HopesDetail[];
-    AdjunctsDetails: AdjunctsDetail[];
-    PostBoilData: PostBoilData[];
-    WhirlPoolDataEntry: WhirlPoolDataEntry[];
-    PostWhirlpoolDetails: PostWhirlpoolDetail[];
-    CoolingKnockouDetails: CoolingKnockouDetail[];
-    BrewLogDetailsNotes: BrewLogDetailsNote[];
-
-    FermentationDataEntry: FermentationDataEntry[];
-    YeastDataDetails: YeastDataDetail[];
-    DiacetylRestDataDetails: DiacetylRestDataDetail[];
-    AgingDetails: AgingDetail[];
-    EnterFermentationData: EnterFermentationData[];
-    FermentationDetailsNotes: FermentationDetailsNote[];
-
-    ConditioningDetails: ConditioningDetail[];
-    FilterationDetails: FilterationDetail[];
-    CarbonationDetails: CarbonationDetail[];
-    ConditioningDetailsNotes: ConditioningDetailsNote[];
-    BrewRunCompletionDetails: BrewRunCompletionDetail[]
-
-    constructor() {
-        this.Id = Guid.raw();
-        this.CreatedDate = new Date();
-    }
+export class BrewRunLog{
+    id: string;
+    brewRunId: string;
+    tenantId: string;
+    recipeId :string;
+    recipeName : string;
+    userId : string;
+    userName : string;
+    tankId:string;
+    tankName:string;
+    hopesDetails: HopesDetail[];
+    adjunctsDetails: AdjunctsDetail[];
+    vorlauf: Vorlauf[];
+    spargeDetails: SpargeDetail[];
+    firstRunnings: FirstRunning[];
+    lastRunnings: LastRunning[];
+    kettleDataEntryDetails: KettleDataEntryDetail[];
+    postBoilData: PostBoilData[];
+    whirlPoolDataEntry: WhirlPoolDataEntry[];
+    postWhirlpoolDetails: PostWhirlpoolDetail[];
+    coolingKnockouDetails: CoolingKnockouDetail[];
+    brewLogDetailsNotes: BrewLogDetailsNote[];
 }
+
+export class BrewRunFermentation{
+    id: string;
+    brewRunId: string;
+    tenantId: string;
+    recipeId :string;
+    recipeName : string;
+    userId : string;
+    userName : string;
+    tankId:string;
+    tankName:string;
+    hopesDetails: HopesDetail[];
+    adjunctsDetails: AdjunctsDetail[];
+    fermentationDataEntry: FermentationDataEntry[];
+    yeastDataDetails: YeastDataDetail[];
+    diacetylRestDataDetails: DiacetylRestDataDetail[];
+    agingDetails: AgingDetail[];
+    enterFermentationData: EnterFermentationData[];
+    fermentationDetailsNotes: FermentationDetailsNote[];
+}
+
+export class BrewRunConditioning{
+    id: string;
+    brewRunId: string;
+    tenantId: string;
+    recipeId :string;
+    recipeName : string;
+    userId : string;
+    userName : string;
+    tankId:string;
+    tankName:string;
+    status: string;
+    
+    conditioningDetails: ConditioningDetail[];
+    filterationDetails: FilterationDetail[];
+    carbonationDetails: CarbonationDetail[];
+    conditioningDetailsNotes: ConditioningDetailsNote[];
+    crewRunCompletionDetails: BrewRunCompletionDetail[]
+}
+
+
 
 export class MaltGrainBillDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    MaltGrainNameId: string;
-    Type: string;
-    CountryId: string;
-    SupplierId: string;
-    Quantity: number;
-    QuantityUnitTypeId: string;
-    Percentage: number;
-    Srm: number;
-    Potential: number;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    maltGrainNameId: string;
+    maltGrainTypeId: string;
+    countryId: string;
+    supplierId: string;
+    quantity: number;
+    quantityUnitId: string;
+    percentage: number;
+    srm: number;
+    potential: number;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
+    maltGrainType: string;
+    country : string;
+    supplier: string;
+    quantityUnit: string;
+    completedUserId: string;
+    maltGrainBillDetail: string;
+    completedUserName:string;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.BrewId = "";
-        this.RecipeId = "";
-        this.MaltGrainNameId = "";
-        this.Type = "";
-        this.CountryId = "";
-        this.SupplierId = "";
-        this.Quantity = null;
-        this.QuantityUnitTypeId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.Percentage = null;
-        this.Srm = null;
-        this.Potential = null;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.brewId = "";
+        this.recipeId = "";
+        this.maltGrainNameId = "";
+        this.maltGrainTypeId = "";
+        this.countryId = "";
+        this.supplierId = "";
+        this.quantity = null;
+        this.quantityUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.percentage = null;
+        this.srm = null;
+        this.potential = null;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
-export class WaterAdditionDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    Cacl2: number;
-    Cacl2UnitId: string;
-    Gypsum: number;
-    GypsumUnitId: string;
-    TableSalt: number;
-    TableSaltUnitId: string;
-    EpsomSalt: number;
-    EpsomSaltUnitId: string;
-    CaCo3: number;
-    CaCo3unitId: string;
-    BakingSodaName: string;
-    BakingSoda: number;
-    BakingSodaUnitId: string;
-    H3po4: number;
-    H3po4unitId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+
+
+
+export class BrewRun {
+    id: string;
+    brewRunId: string;
+    startTime: Date;
+    endTime: Date;
+    recipeId: string;
+    tankId: string;
+    userId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    status: string;
+    recipeName: string;
+    tankName: string;
+    userName: string;
+
+    maltGrainBillDetails: MaltGrainBillDetail[];
+    waterAdditionDetails: WaterAdditionDetail[];
+    mashingTargetDetails: MashingTargetDetail[];
+    startchTest: StartchTest[];
+    mashinDetailsNotes: MashinDetailsNote[];
+
+    vorlauf: Vorlauf[];
+    spargeDetails: SpargeDetail[];
+    firstRunnings: FirstRunning[];
+    lastRunnings: LastRunning[];
+    kettleDataEntryDetails: KettleDataEntryDetail[];
+    hopesDetails: HopesDetail[];
+    adjunctsDetails: AdjunctsDetail[];
+    postBoilData: PostBoilData[];
+    whirlPoolDataEntry: WhirlPoolDataEntry[];
+    postWhirlpoolDetails: PostWhirlpoolDetail[];
+    coolingKnockouDetails: CoolingKnockouDetail[];
+    brewLogDetailsNotes: BrewLogDetailsNote[];
+
+    fermentationDataEntry: FermentationDataEntry[];
+    yeastDataDetails: YeastDataDetail[];
+    diacetylRestDataDetails: DiacetylRestDataDetail[];
+    agingDetails: AgingDetail[];
+    enterFermentationData: EnterFermentationData[];
+    fermentationDetailsNotes: FermentationDetailsNote[];
+
+    conditioningDetails: ConditioningDetail[];
+    filterationDetails: FilterationDetail[];
+    carbonationDetails: CarbonationDetail[];
+    conditioningDetailsNotes: ConditioningDetailsNote[];
+    brewRunCompletionDetails: BrewRunCompletionDetail[]
 
     constructor() {
-        this.Id = Guid.raw();
-        this.BrewId = "";
-        this.RecipeId = "";
-        this.Cacl2 = null;
-        this.Cacl2UnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.Gypsum = null;
-        this.GypsumUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.TableSalt = null;
-        this.TableSaltUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.EpsomSalt = null;
-        this.EpsomSaltUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.CaCo3 = null;
-        this.BakingSodaName = null;
-        this.CaCo3unitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.BakingSoda = null;
-        this.BakingSodaUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.H3po4 = null;
-        this.H3po4unitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.createdDate = new Date();
+    }
+}
+
+
+
+export class WaterAdditionDetail {
+    id: string;
+    brewId: string;
+    recipeId: string;
+    cacl2: number;
+    cacl2unitId: string;
+    gypsum: number;
+    gypsumUnitId: string;
+    tableSalt: number;
+    tableSaltUnitId: string;
+    epsomSalt: number;
+    epsomSaltUnitId: string;
+    caCo3: number;
+    caCo3unitId: string;
+    bakingSodaName: string;
+    bakingSoda: number;
+    bakingSodaUnitId: string;
+    h3po4: number;
+    h3po4unitId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
+    completedUserId: string;
+    completedUserName: string;
+    cacl2unit : string;
+    gypsumUnit: string;
+    tableSaltUnit: string;
+    epsomSaltUnit: string;
+    caCo3unit: string;
+    bakingSodaUnit: string;
+    h3po4unit : string;
+
+    constructor() {
+        this.id = Guid.raw();
+        this.brewId = "";
+        this.recipeId = "";
+        this.cacl2 = null;
+        this.cacl2unitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.gypsum = null;
+        this.gypsumUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.tableSalt = null;
+        this.tableSaltUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.epsomSalt = null;
+        this.epsomSaltUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.caCo3 = null;
+        this.bakingSodaName = null;
+        this.caCo3unitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.bakingSoda = null;
+        this.bakingSodaUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.h3po4 = null;
+        this.h3po4unitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class MashingTargetDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    StrikeWaterVolume: number;
-    StrikeWaterUnitTypeId: string;
-    StrikeWaterTemperature: number;
-    StrikeWaterTemperatureUnitTypeId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    strikeWaterVolume: number;
+    strikeWaterUnitTypeId: string;
+    strikeWaterTemperature: number;
+    strikeWaterTemperatureUnitTypeId: string;
     MashpH: number;
-    Liquortogristratio: string;
-    Temperature: boolean;
-    StartTime: string;
-    EndTime: Date;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
-    MashingTargetDetailsTemperature: MashingTargetDetailsTemperature[];
+    liquortogristratio: string;
+    temperature: boolean;
+    startTime: string;
+    endTime: Date;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
+    mashingTargetDetailsTemperature: MashingTargetDetailsTemperature[];
+    completedUserId: string;
+    completedUserName: string;
+    strikeWaterUnitType: string;
+    strikeWaterTemperatureUnitType: string;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.BrewId = "";
-        this.RecipeId = "";
-        this.StrikeWaterVolume = null;
-        this.StrikeWaterUnitTypeId = '58c07c47-a13e-4464-bec8-628fe11f027a';
-        this.StrikeWaterTemperature = null;
-        this.StrikeWaterTemperatureUnitTypeId = "";
-        this.Liquortogristratio = "";
-        this.Temperature = false;
+        this.id = Guid.raw();
+        this.brewId = "";
+        this.recipeId = "";
+        this.strikeWaterVolume = null;
+        this.strikeWaterUnitTypeId = '58c07c47-a13e-4464-bec8-628fe11f027a';
+        this.strikeWaterTemperature = null;
+        this.strikeWaterTemperatureUnitTypeId = "";
+        this.liquortogristratio = "";
+        this.temperature = false;
         this.MashpH = null;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
 
 
     }
 }
 
 export class MashingTargetDetailsTemperature {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    MashingTargeDetailstId: string;
-    Temperature: number;
-    TemperatureUnitTypeId: string;
-    StartTime: string;
-    EndTime: Date;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    mashingTargeDetailstId: string;
+    temperature: number;
+    temperatureUnitTypeId: string;
+    startTime: string;
+    endTime: Date;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    temperatureUnitType :string;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.BrewId = "";
-        this.RecipeId = "";
-        this.Temperature = null;
-        this.MashingTargeDetailstId = "";
-        this.TemperatureUnitTypeId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
+        this.id = Guid.raw();
+        this.brewId = "";
+        this.recipeId = "";
+        this.temperature = null;
+        this.mashingTargeDetailstId = "";
+        this.temperatureUnitTypeId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
     }
 }
 
 export class StartchTest {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
     PassStatus: boolean;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
-    StarchTestResultList: StarchTestResultList[];
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
+    starchTestResultList: StarchTestResultList[];
+    completedUserId: string;
+    completedUserName: string;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
         this.PassStatus = false;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
-        this.StarchTestResultList = [];
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
+        this.starchTestResultList = [];
     }
 }
 
 export class StarchTestResultList {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    StarchTestId: string;
-    TestName: string;
-    TimeStamp: any;
-    TestResult: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    starchTestId: string;
+    testName: string;
+    timeStamp: any;
+    testResult: string;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.TestName = null;
-        this.TimeStamp = new Date();
-        this.TestResult = null;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = new Date();
-        this.TenantId = '';
+        this.id = Guid.raw();
+        this.testName = null;
+        this.timeStamp = new Date();
+        this.testResult = null;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = new Date();
+        this.tenantId = '';
     }
 }
 
 export class MashinDetailsNote {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    Notes: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    notes: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.Notes = "";
-
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
+        this.id = Guid.raw();
+        this.notes = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
     }
 }
 
 export class Vorlauf {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
 
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class SpargeDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    SpargeWaterTemperature: number;
-    SpargeWaterTemperatureUnitId: string;
-    SpargeTotalVolume: number;
-    SpargeTotalVolumeUnitId: string;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    spargeWaterTemperature: number;
+    spargeWaterTemperatureUnitId: string;
+    spargeTotalVolume: number;
+    spargeTotalVolumeUnitId: string;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.SpargeWaterTemperature = null;
-        this.SpargeWaterTemperatureUnitId = "";
-        this.SpargeTotalVolume = null;
-        this.SpargeTotalVolumeUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.spargeWaterTemperature = null;
+        this.spargeWaterTemperatureUnitId = "";
+        this.spargeTotalVolume = null;
+        this.spargeTotalVolumeUnitId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class FirstRunning {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    PlatoGravity: number;
-    PlatoGravityUnitId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    platoGravity: number;
+    platoGravityUnitId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.PlatoGravity = null;
-        this.PlatoGravityUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.platoGravity = null;
+        this.platoGravityUnitId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class LastRunning {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    PlatoGravity: number;
-    PlatoGravityUnitId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    platoGravity: number;
+    platoGravityUnitId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.PlatoGravity = null;
+        this.id = Guid.raw();
+        this.platoGravity = null;
 
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class KettleDataEntryDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    StartTime: string;
-    EndTime: string;
-    BoilLength: number;
-    BoilLengthUnitId: string;
-    VolumePreBoil: number;
-    VolumePreBoilUnitId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    startTime: string;
+    endTime: string;
+    boilLength: number;
+    boilLengthUnitId: string;
+    volumePreBoil: number;
+    volumePreBoilUnitId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.BoilLength = null;
-        this.BoilLengthUnitId = "";
-        this.VolumePreBoil = null;
-        this.VolumePreBoilUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.boilLength = null;
+        this.boilLengthUnitId = "";
+        this.volumePreBoil = null;
+        this.volumePreBoilUnitId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class HopesDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    StartTime: any;
-    EndTime: Date;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    startTime: any;
+    endTime: Date;
     Name: string;
-    CountryId: string;
-    SupplierId: string;
-    Alpha: number;
-    Quantity: number;
-    QuantityUnitTypeId: string;
-    AddInId: string;
-    AdditionalHopesStatus: boolean;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    countryId: string;
+    supplierId: string;
+    alpha: number;
+    quantity: number;
+    quantityUnitTypeId: string;
+    addInId: string;
+    additionalHopesStatus: boolean;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
         this.Name = "";
-        this.StartTime = new Date();
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
-        this.QuantityUnitTypeId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.startTime = new Date();
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
+        this.quantityUnitTypeId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
     }
 }
 
 export class AdjunctsDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
     Name: string;
-    CountryId: string;
-    SupplierId: string;
-    Quantity: number;
-    QuantityOptionId: string;
-    AddInId: string;
-    StartTime: any;
-    AdditionalAdjunctsStatus: boolean;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
-    QuantityUnitTypeId: string;
+    countryId: string;
+    supplierId: string;
+    quantity: number;
+    quantityOptionId: string;
+    addInId: string;
+    startTime: any;
+    additionalAdjunctsStatus: boolean;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
+    quantityUnitTypeId: string;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
         this.Name = "";
-        this.CountryId = "";
-        this.SupplierId = "";
-        this.Quantity = null;
-        this.QuantityOptionId = "";
-        this.AddInId = null;
-        this.AdditionalAdjunctsStatus = false;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
-        this.QuantityUnitTypeId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
+        this.countryId = "";
+        this.supplierId = "";
+        this.quantity = null;
+        this.quantityOptionId = "";
+        this.addInId = null;
+        this.additionalAdjunctsStatus = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
+        this.quantityUnitTypeId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
     }
 }
 
 export class PostBoilData {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    VolumePostBoil: number;
-    VolumePostBoilOptionId: string;
-    Plato: number;
-    Ph: number;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    volumePostBoil: number;
+    volumePostBoilOptionId: string;
+    plato: number;
+    ph: number;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.VolumePostBoil = null;
-        this.VolumePostBoilOptionId = "";
-        this.Plato = null;
-        this.Ph = null;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.volumePostBoil = null;
+        this.volumePostBoilOptionId = "";
+        this.plato = null;
+        this.ph = null;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class WhirlPoolDataEntry {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
 
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class PostWhirlpoolDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    VolumeOut: number;
-    VolumeOutOptionId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    volumeOut: number;
+    volumeOutOptionId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
 
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class CoolingKnockouDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    VolumeInFermentation: number;
-    VolumeInFermentationOptionId: string;
-    ActualTemperature: number;
-    ActualTemperatureUnitId: string;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    volumeInFermentation: number;
+    volumeInFermentationOptionId: string;
+    actualTemperature: number;
+    actualTemperatureUnitId: string;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
 
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class BrewLogDetailsNote {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    Notes: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    notes: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
 
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
     }
 }
 
 export class FermentationDataEntry {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    VolumeIn: number;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    volumeIn: number;
     VolumeInUnitId: string;
-    ActualTemperature: number;
-    ActualTemperatureUnitId: string;
-    ActualPressure: number;
-    ActualPressureUnitId: string;
+    actualTemperature: number;
+    actualTemperatureUnitId: string;
+    actualpressure: number;
+    ActualpressureUnitId: string;
     ActualPh: number;
     ActualPlatoGravity: string;
     ActualPlatoGravityUnitId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.VolumeIn = null;
+        this.id = Guid.raw();
+        this.volumeIn = null;
         this.VolumeInUnitId = '58c07c47-a13e-4464-bec8-628fe11f027a';
-        this.ActualTemperature = null;
-        this.ActualTemperatureUnitId = "";
-        this.ActualPressure = null;
-        this.ActualPressureUnitId = 'e05e1543-9b78-413a-bbd5-2621901ba3b9';
+        this.actualTemperature = null;
+        this.actualTemperatureUnitId = "";
+        this.actualpressure = null;
+        this.ActualpressureUnitId = 'e05e1543-9b78-413a-bbd5-2621901ba3b9';
         this.ActualPh = null;
         this.ActualPlatoGravity = null;
         this.ActualPlatoGravityUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class YeastDataDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
     YeastStrainId: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
     Generation: string;
     CellCount: string;
     Viability: string;
-    IsCompleted: boolean;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
         this.YeastStrainId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
         this.Generation = null;
         this.CellCount = null;
         this.Viability = null;
-        this.IsCompleted = false;
+        this.isCompleted = false;
     }
 }
 
 export class DiacetylRestDataDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
     ActualTemperatureIn: number;
     ActualTemperatureInUnitId: string;
     PlatoGravityValue: number;
-    PlatoGravityUnitId: string;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    platoGravityUnitId: string;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
         this.ActualTemperatureIn = null;
         this.ActualTemperatureInUnitId = "";
         this.PlatoGravityValue = null;
-        this.PlatoGravityUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.platoGravityUnitId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class AgingDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
     ActualTemperatureIn: number;
     ActualTemperatureInUnitId: string;
     TimeDuration: number;
     TimeDurationUnitId: string;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
         this.ActualTemperatureIn = null;
         this.ActualTemperatureInUnitId = "";
         this.TimeDuration = null;
         this.TimeDurationUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class EnterFermentationData {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
     DateAndTime: any;
-    Plato: number;
-    Temperature: number;
-    TemperatureUnitId: string;
-    Ph: number;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    plato: number;
+    temperature: number;
+    temperatureUnitId: string;
+    ph: number;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
+        this.id = Guid.raw();
         this.DateAndTime = new Date();
-        this.Plato = null;
-        this.Temperature = null;
-        this.TemperatureUnitId = "";
-        this.Ph = null;
-        this.Plato = null;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.plato = null;
+        this.temperature = null;
+        this.temperatureUnitId = "";
+        this.ph = null;
+        this.plato = null;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
 
     }
 }
 
 export class FermentationDetailsNote {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    Notes: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    notes: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.Notes = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
+        this.id = Guid.raw();
+        this.notes = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
     }
 }
 
 export class ConditioningDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    VolumeIn: number;
-    VolumeInOptionId: string;
-    TemperatureIn: number;
-    TemperatureUnitId: string;
-    ActualPressure: number;
-    ActualPressurUnitId: string;
-    Ph: number;
-    ActualPlato: number;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    volumeIn: number;
+    volumeInOptionId: string;
+    temperatureIn: number;
+    temperatureUnitId: string;
+    actualpressure: number;
+    actualPressurUnitId: string;
+    ph: number;
+    actualPlato: number;
     Co2: number;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.VolumeIn = null;
-        this.VolumeInOptionId = '58c07c47-a13e-4464-bec8-628fe11f027a';
-        this.TemperatureIn = null;
-        this.TemperatureUnitId = "";
-        this.ActualPressure = null;
-        this.ActualPressurUnitId = "";
-        this.Ph = null;
-        this.ActualPlato = null;
+        this.id = Guid.raw();
+        this.volumeIn = null;
+        this.volumeInOptionId = '58c07c47-a13e-4464-bec8-628fe11f027a';
+        this.temperatureIn = null;
+        this.temperatureUnitId = "";
+        this.actualpressure = null;
+        this.actualPressurUnitId = "";
+        this.ph = null;
+        this.actualPlato = null;
         this.Co2 = null;
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class FilterationDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    TemperatureIn: number;
-    TemperatureUnitId: string;
-    StartTime: Date;
-    EndTime: Date;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    temperatureIn: number;
+    temperatureUnitId: string;
+    startTime: Date;
+    endTime: Date;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.TemperatureIn = null;
-        this.TemperatureUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.temperatureIn = null;
+        this.temperatureUnitId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.isCompleted = false;
     }
 }
 
 export class CarbonationDetail {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    Temperature: number;
-    TemperatureUnitId: string;
-    Pressure: number;
-    PressureUnitId: string;
-    StartTime: string;
-    EndTime: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
-    PlatoUnitId: string;
-    IsCompleted: boolean;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    temperature: number;
+    temperatureUnitId: string;
+    pressure: number;
+    pressureUnitId: string;
+    startTime: string;
+    endTime: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    platoUnitId: string;
+    isCompleted: boolean;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.Temperature = null;
-        this.TemperatureUnitId = "";
-        this.Pressure = null;
-        this.PressureUnitId = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
-        this.PlatoUnitId = null;
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.temperature = null;
+        this.temperatureUnitId = "";
+        this.pressure = null;
+        this.pressureUnitId = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
+        this.platoUnitId = null;
+        this.isCompleted = false;
     }
 }
 
 export class ConditioningDetailsNote {
-    Id: string;
-    BrewId: string;
-    RecipeId: string;
-    Notes: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    TenantId: string;
+    id: string;
+    brewId: string;
+    recipeId: string;
+    notes: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
 
     constructor() {
-        this.Id = Guid.raw();
-        this.Notes = "";
-        this.IsActive = true;
-        this.CreatedDate = new Date();
-        this.ModifiedDate = null;
-        this.TenantId = "";
+        this.id = Guid.raw();
+        this.notes = "";
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = null;
+        this.tenantId = "";
     }
 }
 
 export class BrewRunCompletionDetail {
 
-    Id: string;
-    BrewRunId: string;
-    Section: string;
-    IsCompleted: boolean;
+    id: string;
+    brewRunId: string;
+    section: string;
+    isCompleted: boolean;
     CompletedDateTime: Date;
-    CreatedBy: string;
-    CreatedDateTimeString: string;
+    createdBy: string;
+    createdDateTimeString: string;
 
 
     constructor() {
-        this.Id = Guid.raw();
-        this.BrewRunId = "";
-        this.Section = "";
-        this.IsCompleted = false;
+        this.id = Guid.raw();
+        this.brewRunId = "";
+        this.section = "";
+        this.isCompleted = false;
         this.CompletedDateTime = null;
-        this.CreatedBy = "";
-        this.CreatedDateTimeString = "";
+        this.createdBy = "";
+        this.createdDateTimeString = "";
     }
 }

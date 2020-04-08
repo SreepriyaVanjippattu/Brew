@@ -71,21 +71,21 @@
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Brew Run ID</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="Brew Run ID"
-                                        [(ngModel)]="brew.BrewRunId" readonly>
+                                        [(ngModel)]="brewRunFermentation.brewRunId" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="brewer">Brewer</label>
                                     <input type="text" class="form-control" id="brewer" placeholder="Brewer"
-                                        [(ngModel)]="brew.UserName" readonly>
+                                        [(ngModel)]="brewRunFermentation.userName" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="tank-name">Tank Name</label>
 
-                                    <select class="form-control input-dropdown" [(ngModel)]="brew.TankId"
+                                    <select class="form-control input-dropdown" [(ngModel)]="brewRunFermentation.tankId"
                                         (change)="currentValue($event)">
-                                        <option disabled value="brew.TankName">Select</option>
+                                        <option disabled value="brewRunFermentation.tankName">Select</option>
                                         <option *ngFor="let tank of tankList" [value]="tank.Id">{{tank.Name}}</option>
                                     </select>
 
@@ -94,7 +94,7 @@
                                 <div class="form-group col-md-3">
                                     <label for="recipe-name">Recipe</label>
                                     <input type="text" class="form-control" id="recipe-name" placeholder="Recipe"
-                                        [(ngModel)]="brew.RecipeName" readonly>
+                                        [(ngModel)]="brewRunFermentation.recipeName" readonly>
                                 </div>
 
                             </div>
@@ -130,16 +130,16 @@
                     <div [ngbCollapse]="isCollapsedFermentation" class="collapse" aria-labelledby="headingTwo"
                         data-parent="#accordionExample">
                         <div class="card-body">
-                            <div *ngFor="let FermentationDataEntry of brew.FermentationDataEntry; let i = index;">
+                            <div *ngFor="let fermentationDataEntry of brewRunFermentation.fermentationDataEntry; let i = index;">
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="ferment-volume">Volume In</label>
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="ferment-volume"
                                                 placeholder="Volume In"
-                                                [(ngModel)]="brew.FermentationDataEntry[i].VolumeIn">
+                                                [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].volumeIn">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.FermentationDataEntry[i].VolumeInUnitId">
+                                                [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].volumeInUnitId">
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
                                                         {{unit.Symbol}}</option>
@@ -152,7 +152,7 @@
                                         <label for="ferment-acttemp">Actual Temperature (in {{preferedUnit}})</label>
                                         <input type="text" class="form-control" id="ferment-acttemp"
                                             placeholder="Actual Temperature"
-                                            [(ngModel)]="brew.FermentationDataEntry[i].ActualTemperature">
+                                            [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualTemperature">
 
 
                                     </div>
@@ -167,9 +167,9 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="ferment-pressure"
                                                 placeholder="Actual Pressure (in PSI)"
-                                                [(ngModel)]="brew.FermentationDataEntry[i].ActualPressure">
+                                                [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPressure">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.FermentationDataEntry[i].ActualPressureUnitId">
+                                                [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPressureUnitId">
                                                 <option disabled value="">Select</option>
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Pressure'" [value]="unit.Id">
@@ -182,7 +182,7 @@
                                     <div class="form-group col-md-6">
                                         <label for="ferment-ph">Actual pH</label>
                                         <input type="text" class="form-control" id="ferment-ph" placeholder="Actual pH"
-                                            [(ngModel)]="brew.FermentationDataEntry[i].ActualPh">
+                                            [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPh">
                                     </div>
 
                                 </div>
@@ -192,7 +192,7 @@
                                         <label for="ferment-plato">Actual {{preferedPlato}}</label>
                                         <input type="text" class="form-control" id="ferment-plato"
                                             placeholder="{{preferedPlato}}"
-                                            [(ngModel)]="brew.FermentationDataEntry[i].ActualPlatoGravity">
+                                            [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPlatoGravity">
                                     </div>
                                 </div>
 
@@ -235,13 +235,13 @@
                     </div>
                     <div [ngbCollapse]="isCollapsedYeast" class="collapse" aria-labelledby="headingThree">
                         <div class="card-body">
-                            <div *ngFor="let YeastDataDetail of brew.YeastDataDetails; let i = index;">
+                            <div *ngFor="let yeastDataDetail of brewRunFermentation.yeastDataDetails; let i = index;">
                                 <div class="form-row">
 
                                     <div class="form-group col-md-6">
                                         <label for="strain">Strain</label>
                                         <select class="form-control input-style input-dropdown" id=""
-                                            [(ngModel)]="brew.YeastDataDetails[i].YeastStrainId">
+                                            [(ngModel)]="brewRunFermentation.yeastDataDetails[i].yeastStrainId">
                                             <option disabled value="">Select</option>
                                             <option *ngFor="let yeastStrain of yeastStrain" [value]="yeastStrain.Id">
                                                 {{yeastStrain.Name}}</option>
@@ -251,7 +251,7 @@
                                     <div for="status" class="form-group col-md-6">
                                         <label for="generation">Generation</label>
                                         <input type="number" class="form-control" id="generation"
-                                            placeholder="Generation" [(ngModel)]="brew.YeastDataDetails[i].Generation">
+                                            placeholder="Generation" [(ngModel)]="brewRunFermentation.yeastDataDetails[i].generation">
 
                                     </div>
 
@@ -263,13 +263,13 @@
                                     <div class="form-group col-md-6">
                                         <label for="count">Cell Count</label>
                                         <input type="number" class="form-control" id="count" placeholder="Cell Count"
-                                            [(ngModel)]="brew.YeastDataDetails[i].CellCount">
+                                            [(ngModel)]="brewRunFermentation.yeastDataDetails[i].cellCount">
                                     </div>
 
                                     <div class="form-group col-md-6">
                                         <label for="viable">Viability</label>
                                         <input type="number" class="form-control" id="viable" placeholder="Viability"
-                                            [(ngModel)]="brew.YeastDataDetails[i].Viability">
+                                            [(ngModel)]="brewRunFermentation.yeastDataDetails[i].viability">
                                     </div>
 
 
@@ -316,16 +316,16 @@
                     <div [ngbCollapse]="isCollapsedHops" class="collapse" aria-labelledby="headingTwo"
                         data-parent="#accordionExample">
                         <div *ngIf="addInHopsFermentation.length > 0" class="card-body">
-                            <div *ngFor="let fermentationHopesDetails of brew.HopesDetails; let i = index;">
-                                <div *ngIf="fermentationHopesDetails.AddInId == addInConstants.Fermentation.Id">
+                            <div *ngFor="let fermentationHopesDetails of brewRunFermentation.hopesDetails; let i = index;">
+                                <div *ngIf="fermentationHopesDetails.addInId == addInConstants.Fermentation.Id">
 
                                     <div class="card-sub-section mt-2">Hops.
-                                        {{getHopsCountFerm(fermentationHopesDetails.Id)}}</div>
+                                        {{getHopsCountFerm(fermentationHopesDetails.id)}}</div>
                                     <div class="form-row">
                                         <div class="form-group col-md-3">
                                             <label for="brewrun-name">Name</label>
                                             <input type="text" class="form-control" id="brewrun-name" placeholder=""
-                                                [(ngModel)]="brew.HopesDetails[i].Name">
+                                                [(ngModel)]="brewRunFermentation.hopesDetails[i].name">
                                         </div>
 
                                         <div for="status" class="form-group col-md-3">
@@ -333,7 +333,7 @@
                                             <i class="material-icons  position-absolute cursor-click add-dropicon"
                                                 data-toggle="modal" data-target="#typeModal">add_circle_outline</i>
                                             <select class="form-control input-style input-dropdown" id=""
-                                                [(ngModel)]="brew.HopesDetails[i].MaltGrainTypeId">
+                                                [(ngModel)]="brewRunFermentation.hopesDetails[i].maltGrainTypeId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let maltType of maltTypes" [value]="maltType.id">
                                                     {{maltType.name}}</option>
@@ -343,7 +343,7 @@
                                         <div for="status" class="form-group col-md-3">
                                             <label for="postal">Origin</label>
                                             <select class="form-control input-style input-dropdown" id=""
-                                                [(ngModel)]="brew.HopesDetails[i].CountryId">
+                                                [(ngModel)]="brewRunFermentation.hopesDetails[i].countryId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let country of countries" [value]="country.id">
                                                     {{country.countryName}}</option>
@@ -355,7 +355,7 @@
                                             <i class="material-icons  position-absolute cursor-click add-dropicon"
                                                 data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
                                             <select class="form-control input-style input-dropdown" id=""
-                                                [(ngModel)]="brew.HopesDetails[i].SupplierId">
+                                                [(ngModel)]="brewRunFermentation.hopesDetails[i].supplierId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
                                                     {{suppliers.name}}</option>
@@ -368,16 +368,16 @@
                                         <div class="form-group col-md-3">
                                             <label for="brewrun-alpha">Alpha (%)</label>
                                             <input type="text" class="form-control" id="brewrun-alpha"
-                                                placeholder="Alpha (%)" [(ngModel)]="brew.HopesDetails[i].Alpha">
+                                                placeholder="Alpha (%)" [(ngModel)]="brewRunFermentation.hopesDetails[i].alpha">
                                         </div>
 
                                         <div class="form-group col-md-3">
                                             <label for="brewrrun-quantity">Quantity</label>
                                             <div class='multiple-input'>
                                                 <input type="number" class="form-control" id="brewrrun-quantity"
-                                                    placeholder="Quantity" [(ngModel)]="brew.HopesDetails[i].Quantity">
+                                                    placeholder="Quantity" [(ngModel)]="brewRunFermentation.hopesDetails[i].quantity">
                                                 <select class="form-control input-dropdown"
-                                                    [(ngModel)]="brew.HopesDetails[i].QuantityUnitTypeId">
+                                                    [(ngModel)]="brewRunFermentation.hopesDetails[i].quantityUnitTypeId">
                                                     <option disabled value="">Select</option>
                                                     <ng-container *ngFor="let unit of units">
                                                         <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -390,7 +390,7 @@
                                         <div for="status" class="form-group col-md-3">
                                             <label for="add-in">Add In</label>
                                             <select class="form-control input-style input-dropdown" id="add-in"
-                                                [(ngModel)]="brew.HopesDetails[i].AddInId">
+                                                [(ngModel)]="brewRunFermentation.hopesDetails[i].addInId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let addins of addins" [value]="addins.Id">
                                                     {{addins.Name}}</option>
@@ -402,7 +402,7 @@
                                             <label for="brewrun-id">Start</label>
                                             <input class="form-control" [owlDateTime]="startTime" id="brewrun-id"
                                                 [owlDateTimeTrigger]="startTime" [min]="minStarTime"
-                                                [max]="maxStartTime" [(ngModel)]="brew.HopesDetails[i].StartTime">
+                                                [max]="maxStartTime" [(ngModel)]="brewRunFermentation.hopesDetails[i].startTime">
                                             <owl-date-time #startTime></owl-date-time>
                                         </div>
 
@@ -446,21 +446,21 @@
                     <div [ngbCollapse]="isCollapsedAdjuncts" class="collapse" aria-labelledby="headingTwo"
                         data-parent="#accordionExample">
                         <div *ngIf="addInAdjunctsFermentation.length > 0" class="card-body">
-                            <div *ngFor="let fermentationAdjunctsDetails of brew.AdjunctsDetails; let i = index;">
-                                <div *ngIf="fermentationAdjunctsDetails.AddInId == addInConstants.Fermentation.Id">
+                            <div *ngFor="let fermentationAdjunctsDetails of brewRunFermentation.adjunctsDetails; let i = index;">
+                                <div *ngIf="fermentationAdjunctsDetails.addInId == addInConstants.Fermentation.Id">
                                     <div class="card-sub-section mt-2">Adjuncts.
-                                        {{getAdjCountFerm(fermentationAdjunctsDetails.Id)}}</div>
+                                        {{getAdjCountFerm(fermentationAdjunctsDetails.id)}}</div>
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
                                             <label for="brewrun-alpha">Name</label>
                                             <input type="text" class="form-control" id="brewrun-alpha"
-                                                placeholder="Name" [(ngModel)]="brew.AdjunctsDetails[i].Name">
+                                                placeholder="Name" [(ngModel)]="brewRunFermentation.adjunctsDetails[i].name">
                                         </div>
 
                                         <div for="status" class="form-group col-md-4">
                                             <label for="postal">Origin</label>
                                             <select class="form-control input-style input-dropdown" id=""
-                                                [(ngModel)]="brew.AdjunctsDetails[i].CountryId">
+                                                [(ngModel)]="brewRunFermentation.adjunctsDetails[i].countryId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let countries of countries" [value]="countries.id">
                                                     {{countries.countryName}}</option>
@@ -472,7 +472,7 @@
                                             <i class="material-icons  position-absolute cursor-click add-dropicon"
                                                 data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
                                             <select class="form-control input-style input-dropdown" id=""
-                                                [(ngModel)]="brew.AdjunctsDetails[i].SupplierId">
+                                                [(ngModel)]="brewRunFermentation.adjunctsDetails[i].supplierId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
                                                     {{suppliers.name}}</option>
@@ -487,9 +487,9 @@
                                             <div class='multiple-input'>
                                                 <input type="number" class="form-control" id="brewrrun-quantity"
                                                     placeholder="Quantity"
-                                                    [(ngModel)]="brew.AdjunctsDetails[i].Quantity">
+                                                    [(ngModel)]="brewRunFermentation.adjunctsDetails[i].quantity">
                                                 <select class="form-control input-dropdown"
-                                                    [(ngModel)]="brew.AdjunctsDetails[i].QuantityUnitTypeId">
+                                                    [(ngModel)]="brewRunFermentation.adjunctsDetails[i].quantityUnitTypeId">
                                                     <option disabled value="">Select</option>
                                                     <ng-container *ngFor="let unit of units">
                                                         <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
@@ -502,7 +502,7 @@
                                         <div for="status" class="form-group col-md-4">
                                             <label for="add-in">Add In</label>
                                             <select class="form-control input-style input-dropdown" id="add-in"
-                                                [(ngModel)]="brew.AdjunctsDetails[i].AddInId">
+                                                [(ngModel)]="brewRunFermentation.adjunctsDetails[i].addInId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let addin of addins" [value]="addin.Id">{{addin.Name}}
                                                 </option>
@@ -513,7 +513,7 @@
                                             <label for="brewrun-id">Start</label><br />
                                             <input class="form-control" [owlDateTime]="startTime"
                                                 [owlDateTimeTrigger]="startTime" [min]="minStarTime"
-                                                [max]="maxStartTime" [(ngModel)]="brew.AdjunctsDetails[i].StartTime">
+                                                [max]="maxStartTime" [(ngModel)]="brewRunFermentation.adjunctsDetails[i].startTime">
                                             <owl-date-time #startTime></owl-date-time>
                                         </div>
 
@@ -559,21 +559,21 @@
                     <div [ngbCollapse]="isCollapsedDiacetyl" class="collapse" aria-labelledby="headingThree"
                         data-parent="#accordionExample">
                         <div class="card-body">
-                            <div *ngFor="let DiacetylRestDataDetail of brew.DiacetylRestDataDetails; let i = index;">
+                            <div *ngFor="let diacetylRestDataDetail of brewRunFermentation.diacetylRestDataDetails; let i = index;">
                                 <div class="form-row">
 
                                     <div class="form-group col-md-6">
                                         <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="brewrun-id"
                                             placeholder="Actual Temperature"
-                                            [(ngModel)]="brew.DiacetylRestDataDetails[i].ActualTemperatureIn">
+                                            [(ngModel)]=" brewRunFermentation.diacetylRestDataDetails[i].actualTemperatureIn">
                                     </div>
 
                                     <div class="form-group col-md-4">
                                         <label for="brewrun-id">{{preferedPlato}}</label>
                                         <input type="number" class="form-control" id="brewrun-id"
                                             placeholder="{{preferedPlato}}"
-                                            [(ngModel)]="brew.DiacetylRestDataDetails[i].PlatoGravityValue">
+                                            [(ngModel)]=" brewRunFermentation.diacetylRestDataDetails[i].platoGravityValue">
                                     </div>
                                 </div>
 
@@ -582,11 +582,11 @@
                                     <div class="col-md-6">
                                         <div class="d-flex l-start">
                                             <label class="l-start-label"
-                                                (click)="setStartDia(i,brew.DiacetylRestDataDetails[i])">START</label>
+                                                (click)="setStartDia(i, brewRunFermentation.diacetylRestDataDetails[i])">START</label>
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">Start Time</label>
                                                 <input type="text" class="form-control"
-                                                    [(ngModel)]="DiacetylRestDataDetail.StartTime">
+                                                    [(ngModel)]="diacetylRestDataDetail.startTime">
                                             </div>
                                         </div>
                                     </div>
@@ -594,11 +594,11 @@
                                     <div class="col-md-6">
                                         <div class="d-flex l-start">
                                             <label class="l-start-label"
-                                                (click)="setEndDia(i,brew.DiacetylRestDataDetails[i])">END</label>
+                                                (click)="setEndDia(i, brewRunFermentation.diacetylRestDataDetails[i])">END</label>
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">End Time</label>
                                                 <input type="text" class="form-control"
-                                                    [(ngModel)]="DiacetylRestDataDetail.EndTime">
+                                                    [(ngModel)]="diacetylRestDataDetail.endTime">
                                             </div>
                                         </div>
                                     </div>
@@ -646,14 +646,14 @@
                     <div [ngbCollapse]="isCollapsedCooling" class="collapse" aria-labelledby="headingThree"
                         data-parent="#accordionExample">
                         <div class="card-body">
-                            <div *ngFor="let AgingDetail of brew.AgingDetails; let i = index;">
+                            <div *ngFor="let agingDetail of brewRunFermentation.agingDetails; let i = index;">
                                 <div class="form-row">
 
                                     <div class="form-group col-md-6">
                                         <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="brewrun-id"
                                             placeholder="Actual Temperature"
-                                            [(ngModel)]="brew.AgingDetails[i].ActualTemperature">
+                                            [(ngModel)]="brewRunFermentation.agingDetails[i].ActualTemperature">
                                     </div>
 
                                     <div class="form-group col-md-6">
@@ -661,9 +661,9 @@
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="vol-out"
                                                 placeholder="Time Duration"
-                                                [(ngModel)]="brew.AgingDetails[i].TimeDuration">
+                                                [(ngModel)]="brewRunFermentation.agingDetails[i].timeDuration">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brew.AgingDetails[i].TimeDurationUnitId">
+                                                [(ngModel)]="brewRunFermentation.agingDetails[i].timeDurationUnitId">
                                                 <option disabled value="">Select</option>
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">
@@ -681,11 +681,11 @@
                                     <div class="col-md-6">
                                         <div class="d-flex l-start">
                                             <label class="l-start-label"
-                                                (click)="setStartTemp(i,brew.AgingDetails[i])">START</label>
+                                                (click)="setStartTemp(i,brewRunFermentation.agingDetails[i])">START</label>
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">Start Time</label>
                                                 <input type="text" class="form-control"
-                                                    [(ngModel)]="AgingDetail.StartTime">
+                                                    [(ngModel)]="agingDetail.startTime">
 
                                             </div>
                                         </div>
@@ -694,11 +694,11 @@
                                     <div class="col-md-6">
                                         <div class="d-flex l-start">
                                             <label class="l-start-label"
-                                                (click)="endTemp(i,brew.AgingDetails[i])">END</label>
+                                                (click)="endTemp(i,brewRunFermentation.agingDetails[i])">END</label>
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">End Time</label>
                                                 <input type="text" class="form-control"
-                                                    [(ngModel)]="AgingDetail.EndTime">
+                                                    [(ngModel)]="agingDetail.endTime">
                                             </div>
                                         </div>
                                     </div>
@@ -760,11 +760,11 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                        *ngFor="let EnterFermentationData of brew.EnterFermentationData; let i = index;">
-                                        <th>{{EnterFermentationData.DateAndTime | date: 'MM/dd/yyyy  HH:mm:ss' }}</th>
-                                        <td>{{EnterFermentationData.Plato}}</td>
-                                        <td>{{EnterFermentationData.Temperature}}</td>
-                                        <td>{{EnterFermentationData.Ph}}</td>
+                                        *ngFor="let enterFermentationData of brewRunFermentation.enterFermentationData; let i = index;">
+                                        <th>{{enterFermentationData.DateAndTime | date: 'MM/dd/yyyy  HH:mm:ss' }}</th>
+                                        <td>{{enterFermentationData.Plato}}</td>
+                                        <td>{{enterFermentationData.Temperature}}</td>
+                                        <td>{{enterFermentationData.Ph}}</td>
                                         <td>
                                             <span class="edit-ico ml-2 cursor-click">
                                                 <img (click)="editClientDirectory(i)"
@@ -778,7 +778,7 @@
                             <div class="form-row">
                                 <div class="col-md-12 d-flex justify-content-end">
                                     <button type="button" class="btn btn-outline-light l-btn"
-                                        (click)="onPrevFermComplete(brew.EnterFermentationData.length,'FermentationMeasurements')">
+                                        (click)="onPrevFermComplete(brewRunFermentation.enterFermentationData.length,'FermentationMeasurements')">
                                         Complete
                                     </button>
                                 </div>
@@ -822,7 +822,7 @@
 
                                         <input [owlDateTimeTrigger]="vorlauf_start" [owlDateTime]="vorlauf_start"
                                             class="form-control" value=""
-                                            [(ngModel)]="brew.EnterFermentationData[selectedPos].DateAndTime">
+                                            [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].dateAndTime">
                                         <owl-date-time #vorlauf_start></owl-date-time>
                                     </div>
 
@@ -831,7 +831,7 @@
                                         <label for="brewrun-id">{{preferedPlato}}</label>
                                         <input type="number" class="form-control" id="brewrun-id"
                                             placeholder="{{preferedPlato}}"
-                                            [(ngModel)]="brew.EnterFermentationData[selectedPos].Plato">
+                                            [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].plato">
                                     </div>
                                 </div>
 
@@ -840,13 +840,13 @@
                                         <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="ferment-acttemp"
                                             placeholder="Temperature"
-                                            [(ngModel)]="brew.EnterFermentationData[selectedPos].Temperature">
+                                            [(ngModel)]="brewRunFermentation.EnterFermentationData[selectedPos].Temperature">
                                     </div>
 
                                     <div class="form-group col-md-6">
                                         <label for="ferment-ph">pH</label>
                                         <input type="number" class="form-control" id="ferment-ph" placeholder="pH"
-                                            [(ngModel)]="brew.EnterFermentationData[selectedPos].Ph">
+                                            [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].ph">
                                     </div>
                                 </div>
 
@@ -876,11 +876,11 @@
                         data-parent="#accordionExample">
                         <div class="card-body">
                             <div class="form-row ferment-text"
-                                *ngFor="let FermentationDetailsNote of brew.FermentationDetailsNotes; let i = index;">
+                                *ngFor="let fermentationDetailsNote of brewRunFermentation.fermentationDetailsNotes; let i = index;">
                                 <div class="form-group col-md-12">
                                     <textarea type="text" class="form-control" id="meshin-notes"
                                         placeholder="Type Text Here..."
-                                        [(ngModel)]="brew.FermentationDetailsNotes[i].Notes"></textarea>
+                                        [(ngModel)]="brewRunFermentation.fermentationDetailsNotes[i].Notes"></textarea>
                                 </div>
                             </div>
                         </div>

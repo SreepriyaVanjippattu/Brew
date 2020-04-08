@@ -71,25 +71,25 @@
                                 <div class="form-group col-md-3">
                                     <label for="brewrun-id">Brew Run ID</label>
                                     <input type="text" class="form-control" id="brewrun-id" placeholder="Brew Run ID"
-                                        [(ngModel)]="brew.BrewRunId" readonly>
+                                        [(ngModel)]="brewRunConditioning.brewRunId" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="brewer">Brewer</label>
                                     <input type="text" class="form-control" id="brewer" placeholder="Brewer"
-                                        [(ngModel)]="brew.UserName" readonly>
+                                        [(ngModel)]="brewRunConditioning.userName" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="tank-name">Tank Name</label>
                                     <input type="text" class="form-control" id="tank-name" placeholder="Tank Name"
-                                        [(ngModel)]="brew.TankName" readonly>
+                                        [(ngModel)]="brewRunConditioning.tankName" readonly>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label for="recipe-name">Recipe</label>
                                     <input type="text" class="form-control" id="recipe-name" placeholder="Recipe"
-                                        [(ngModel)]="brew.RecipeName" readonly>
+                                        [(ngModel)]="brewRunConditioning.recipeName" readonly>
                                 </div>
 
                             </div>
@@ -126,7 +126,7 @@
                             <div [ngbCollapse]="isCollapsedConditioning" class="collapse show"
                                 aria-labelledby="headingOne" data-parent="#accordionExample">
                                 <div class="card-body">
-                                    <div *ngFor="let ConditioningDetail of brew.ConditioningDetails; let i = index;">
+                                    <div *ngFor="let conditioningDetail of brewRunConditioning.conditioningDetails; let i = index;">
                                         <div class="form-row">
 
                                             <div class="form-group col-md-6">
@@ -134,9 +134,9 @@
                                                 <div class='multiple-input'>
                                                     <input type="number" class="form-control" id="ferment-volume"
                                                         placeholder="Volume In"
-                                                        [(ngModel)]="brew.ConditioningDetails[i].VolumeIn">
+                                                        [(ngModel)]="brewRunConditioning.conditioningDetails[i].volumeIn">
                                                     <select class="form-control input-dropdown"
-                                                        [(ngModel)]="brew.ConditioningDetails[i].VolumeInOptionId">
+                                                        [(ngModel)]="brewRunConditioning.conditioningDetails[i].volumeInOptionId">
 
                                                         <ng-container *ngFor="let unit of units">
                                                             <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
@@ -150,7 +150,7 @@
                                                 <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
                                                 <input type="text" class="form-control" id="ferment-acttemp"
                                                     placeholder="Temperature (In Celcius)"
-                                                    [(ngModel)]="brew.ConditioningDetails[i].TemperatureIn">
+                                                    [(ngModel)]="brewRunConditioning.conditioningDetails[i].TemperatureIn">
                                             </div>
 
                                         </div>
@@ -160,12 +160,12 @@
                                                 <label for="ferment-ph">Actual Pressure ( in PSI)</label>
                                                 <input type="text" class="form-control" id="ferment-ph"
                                                     placeholder="Pressure"
-                                                    [(ngModel)]="brew.ConditioningDetails[i].ActualPressure">
+                                                    [(ngModel)]="brewRunConditioning.conditioningDetails[i].actualPressure">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="ferment-ph">pH</label>
                                                 <input type="text" class="form-control" id="ferment-ph" placeholder="pH"
-                                                    [(ngModel)]="brew.ConditioningDetails[i].Ph">
+                                                    [(ngModel)]="brewRunConditioning.conditioningDetails[i].ph">
                                             </div>
                                         </div>
 
@@ -174,13 +174,13 @@
                                                 <label for="ferment-plato">Actual {{preferedPlato}}</label>
                                                 <input type="text" class="form-control" id="ferment-plato"
                                                     placeholder="Actual {{preferedPlato}}"
-                                                    [(ngModel)]="brew.ConditioningDetails[i].ActualPlato">
+                                                    [(ngModel)]="brewRunConditioning.conditioningDetails[i].actualPlato">
                                             </div>
 
                                             <div class="form-group col-md-6">
                                                 <label for="ferment-plato">CO2</label>
                                                 <input type="text" class="form-control" id="ferment-plato"
-                                                    placeholder="co2" [(ngModel)]="brew.ConditioningDetails[i].Co2">
+                                                    placeholder="co2" [(ngModel)]="brewRunConditioning.conditioningDetails[i].co2">
                                             </div>
                                         </div>
 
@@ -189,11 +189,11 @@
                                             <div class="col-md-6">
                                                 <div class="d-flex l-start">
                                                     <label class="l-start-label"
-                                                        (click)="setConStart(i,brew.ConditioningDetails[i])">START</label>
+                                                        (click)="setConStart(i,brewRunConditioning.conditioningDetails[i])">START</label>
                                                     <div class="form-group w-100">
                                                         <label for="brewrun-id">Start Time</label><br />
                                                         <input type="text" class="form-control"
-                                                            [(ngModel)]="ConditioningDetail.StartTime">
+                                                            [(ngModel)]="conditioningDetail.startTime">
                                                     </div>
                                                 </div>
                                             </div>
@@ -201,11 +201,11 @@
                                             <div class="col-md-6">
                                                 <div class="d-flex l-start">
                                                     <label class="l-start-label"
-                                                        (click)="setConEnd(i,brew.ConditioningDetails[i])">END</label>
+                                                        (click)="setConEnd(i,brewRunConditioning.conditioningDetails[i])">END</label>
                                                     <div class="form-group w-100">
                                                         <label for="brewrun-id">End Time</label><br />
                                                         <input type="text" class="form-control"
-                                                            [(ngModel)]="ConditioningDetail.EndTime">
+                                                            [(ngModel)]="conditioningDetail.endTime">
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,12 +254,12 @@
                                 aria-labelledby="headingOne" data-parent="#accordionExample">
                                 <div class="card-body">
                                     <div class="form-row"
-                                        *ngFor="let FilterationDetail of brew.FilterationDetails; let i = index;">
+                                        *ngFor="let filterationDetail of brewRunConditioning.filterationDetails; let i = index;">
                                         <div class="form-group col-md-12">
                                             <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
                                             <input type="text" class="form-control" id="ferment-plato"
                                                 placeholder="Temperature"
-                                                [(ngModel)]="brew.FilterationDetails[i].TemperatureIn">
+                                                [(ngModel)]="brewRunConditioning.filterationDetails[i].temperatureIn">
                                         </div>
 
                                         <div class="col-md-12 d-flex justify-content-end">
@@ -305,20 +305,20 @@
                             <div [ngbCollapse]="isCollapsedCarbonation" class="collapse show"
                                 aria-labelledby="headingOne" data-parent="#accordionExample">
                                 <div class="card-body">
-                                    <div *ngFor="let CarbonationDetail of brew.CarbonationDetails; let i = index;">
+                                    <div *ngFor="let carbonationDetail of brewRunConditioning.carbonationDetails; let i = index;">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
                                                 <input type="text" class="form-control" id="ferment-plato"
                                                     placeholder="Temperature"
-                                                    [(ngModel)]="brew.CarbonationDetails[i].Temperature">
+                                                    [(ngModel)]="brewRunConditioning.carbonationDetails[i].temperature">
                                             </div>
 
                                             <div class="form-group col-md-6">
                                                 <label for="ferment-plato">Pressure (in PSI)</label>
                                                 <input type="text" class="form-control" id="ferment-plato"
                                                     placeholder="Pressure"
-                                                    [(ngModel)]="brew.CarbonationDetails[i].Pressure">
+                                                    [(ngModel)]="brewRunConditioning.carbonationDetails[i].pressure">
                                             </div>
                                         </div>
 
@@ -327,11 +327,11 @@
                                             <div class="col-md-6">
                                                 <div class="d-flex l-start">
                                                     <label class="l-start-label"
-                                                        (click)="setCarbStart(i,brew.CarbonationDetails[i])">START</label>
+                                                        (click)="setCarbStart(i,brewRunConditioning.carbonationDetails[i])">START</label>
                                                     <div class="form-group w-100">
                                                         <label for="brewrun-id">Start Time</label>
                                                         <input type="text" class="form-control"
-                                                            [(ngModel)]="CarbonationDetail.StartTime">
+                                                            [(ngModel)]="carbonationDetail.startTime">
 
                                                     </div>
                                                 </div>
@@ -340,11 +340,11 @@
                                             <div class="col-md-6">
                                                 <div class="d-flex l-start">
                                                     <label class="l-start-label"
-                                                        (click)="setCarbEnd(i,brew.CarbonationDetails[i])">END</label>
+                                                        (click)="setCarbEnd(i,brewRunConditioning.carbonationDetails[i])">END</label>
                                                     <div class="form-group w-100">
                                                         <label for="brewrun-id">End Time</label>
                                                         <input type="text" class="form-control"
-                                                            [(ngModel)]="CarbonationDetail.EndTime">
+                                                            [(ngModel)]="carbonationDetail.endTime">
                                                     </div>
                                                 </div>
                                             </div>
@@ -379,11 +379,11 @@
                                 data-parent="#accordionExample">
                                 <div class="card-body">
                                     <div class="form-row condition-text"
-                                        *ngFor="let ConditioningDetailsNote of brew.ConditioningDetailsNotes; let i = index;">
+                                        *ngFor="let conditioningDetailsNote of brewRunConditioning.conditioningDetailsNotes; let i = index;">
                                         <div class="form-group col-md-12">
                                             <textarea type="text" class="form-control" id="meshin-notes"
                                                 placeholder="Type Text Here..."
-                                                [(ngModel)]="brew.ConditioningDetailsNotes[i].Notes"></textarea>
+                                                [(ngModel)]="brewRunConditioning.conditioningDetailsNotes[i].Notes"></textarea>
                                         </div>
                                     </div>
                                 </div>

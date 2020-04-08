@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
-  BrewRun, FermentationDataEntry, YeastDataDetail, DiacetylRestDataDetail, AgingDetail,
+  BrewRunFermentation, FermentationDataEntry, YeastDataDetail, DiacetylRestDataDetail, AgingDetail,
   EnterFermentationData, FermentationDetailsNote, AdjunctsDetail, HopesDetail,
 } from '../../../../models/brewrun';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
@@ -36,7 +36,7 @@ export class FermentationFormComponent implements OnInit {
   tenantId: any;
   brewId: any;
 
-  brew: BrewRun;
+  brewRunFermentation: BrewRunFermentation;
 
   diaStartTime: any = '';
   diaEndTime: any = '';
@@ -109,7 +109,7 @@ export class FermentationFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.brew = new BrewRun();
+    this.brewRunFermentation = new BrewRunFermentation();
     this.brewId = this.route.snapshot.paramMap.get('id');
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
     this.currentUser = userDetails['UserProfile'].Id;
@@ -157,80 +157,80 @@ export class FermentationFormComponent implements OnInit {
   getSingleBrewDetails(tenantId, brewId) {
     this.apiService.getDataByQueryParams(this.apiService.getBrewRunById, null, tenantId, brewId).subscribe(response => {
       if (response.status === 200) {
-        this.brew = response['body'];
-        this.currentTank = this.brew.TankName;
+        this.brewRunFermentation = response['body'];
+        this.currentTank = this.brewRunFermentation.tankName;
         this.recipeId = response['body'].RecipeId;
         this.getRecipeDetailsEdit();
-        this.brew.HopesDetails.forEach(element => {
+        this.brewRunFermentation.hopesDetails.forEach(element => {
           // fermentation data
-          if (element.AddInId === this.addInConstants.Fermentation.Id) {
-            if (element.StartTime === null) {
-              element.StartTime = new Date();
+          if (element.addInId === this.addInConstants.Fermentation.Id) {
+            if (element.startTime === null) {
+              element.startTime = new Date();
             }
-            let dateTime = this.timezone(new Date(element.StartTime).toUTCString());
+            let dateTime = this.timezone(new Date(element.startTime).toUTCString());
             dateTime = dateTime.split(' ').slice(0, 5).join(' ');
-            element.StartTime = new Date(dateTime);
+            element.startTime = new Date(dateTime);
             this.addInHopsFermentation.push(element);
           }
         });
 
-        this.brew.AdjunctsDetails.forEach(element => {
+        this.brewRunFermentation.adjunctsDetails.forEach(element => {
           // fermentation data
-          if (element.AddInId === this.addInConstants.Fermentation.Id) {
-            if (element.StartTime === null) {
-              element.StartTime = new Date();
+          if (element.addInId === this.addInConstants.Fermentation.Id) {
+            if (element.startTime === null) {
+              element.startTime = new Date();
             }
 
-            let dateTime = this.timezone(new Date(element.StartTime).toUTCString());
+            let dateTime = this.timezone(new Date(element.startTime).toUTCString());
             dateTime = dateTime.split(' ').slice(0, 5).join(' ');
-            element.StartTime = new Date(dateTime);
+            element.startTime = new Date(dateTime);
             this.addInAdjunctsFermentation.push(element);
           }
         });
 
-        if (this.brew.FermentationDataEntry.length == 0) {
-          this.brew.FermentationDataEntry.push(new FermentationDataEntry());
+        if (this.brewRunFermentation.fermentationDataEntry.length == 0) {
+          this.brewRunFermentation.fermentationDataEntry.push(new FermentationDataEntry());
         }
-        if (this.brew.YeastDataDetails.length == 0) {
+        if (this.brewRunFermentation.yeastDataDetails.length == 0) {
 
-          this.brew.YeastDataDetails.push(new YeastDataDetail());
-          this.brew.YeastDataDetails[this.brew.YeastDataDetails.length - 1].TenantId = this.tenantId;
+          this.brewRunFermentation.yeastDataDetails.push(new YeastDataDetail());
+          this.brewRunFermentation.yeastDataDetails[this.brewRunFermentation.yeastDataDetails.length - 1].tenantId = this.tenantId;
         }
-        if (this.brew.DiacetylRestDataDetails.length == 0) {
-          this.brew.DiacetylRestDataDetails.push(new DiacetylRestDataDetail());
-          this.brew.DiacetylRestDataDetails[this.brew.DiacetylRestDataDetails.length - 1].TenantId = this.tenantId;
-
-        } else {
-          this.brew.DiacetylRestDataDetails.map((diaTimes: DiacetylRestDataDetail) => {
-            diaTimes.StartTime = this.datePipe.transform(diaTimes.StartTime, 'E, dd LLL yyyy HH:mm:ss');
-            diaTimes.EndTime = this.datePipe.transform(diaTimes.EndTime, 'E, dd LLL yyyy HH:mm:ss');
-          });
-        }
-        if (this.brew.AgingDetails.length == 0) {
-          this.brew.AgingDetails.push(new AgingDetail());
-          this.brew.AgingDetails[this.brew.AgingDetails.length - 1].TenantId = this.tenantId;
+        if (this.brewRunFermentation.diacetylRestDataDetails.length == 0) {
+          this.brewRunFermentation.diacetylRestDataDetails.push(new DiacetylRestDataDetail());
+          this.brewRunFermentation.diacetylRestDataDetails[this.brewRunFermentation.diacetylRestDataDetails.length - 1].tenantId = this.tenantId;
 
         } else {
-          this.brew.AgingDetails.map((agingTimes: AgingDetail) => {
-            agingTimes.StartTime = this.datePipe.transform(agingTimes.StartTime, 'E, dd LLL yyyy HH:mm:ss');
-            agingTimes.EndTime = this.datePipe.transform(agingTimes.EndTime, 'E, dd LLL yyyy HH:mm:ss');
+          this.brewRunFermentation.diacetylRestDataDetails.map((diaTimes: DiacetylRestDataDetail) => {
+            diaTimes.startTime = this.datePipe.transform(diaTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
+            diaTimes.endTime = this.datePipe.transform(diaTimes.endTime, 'E, dd LLL yyyy HH:mm:ss');
           });
         }
-        this.brew.EnterFermentationData.push(new EnterFermentationData);
-        this.brew.EnterFermentationData[this.brew.EnterFermentationData.length - 1].TenantId = this.tenantId;
-        this.selectedPos = this.brew.EnterFermentationData.length - 1;
-        this.brew.EnterFermentationData.map((enter: EnterFermentationData, i) => {
+        if (this.brewRunFermentation.agingDetails.length == 0) {
+          this.brewRunFermentation.agingDetails.push(new AgingDetail());
+          this.brewRunFermentation.agingDetails[this.brewRunFermentation.agingDetails.length - 1].tenantId = this.tenantId;
+
+        } else {
+          this.brewRunFermentation.agingDetails.map((agingTimes: AgingDetail) => {
+            agingTimes.startTime = this.datePipe.transform(agingTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
+            agingTimes.endTime = this.datePipe.transform(agingTimes.endTime, 'E, dd LLL yyyy HH:mm:ss');
+          });
+        }
+        this.brewRunFermentation.enterFermentationData.push(new EnterFermentationData());
+        this.brewRunFermentation.enterFermentationData[this.brewRunFermentation.enterFermentationData.length - 1].tenantId = this.tenantId;
+        this.selectedPos = this.brewRunFermentation.enterFermentationData.length - 1;
+        this.brewRunFermentation.enterFermentationData.map((enter: EnterFermentationData, i) => {
 
           let dateTime = this.timezone(new Date(enter.DateAndTime).toUTCString());
           dateTime = dateTime.split(' ').slice(0, 5).join(' ');
           enter.DateAndTime = new Date(dateTime);
         });
-        if (this.brew.FermentationDetailsNotes.length == 0) {
-          this.brew.FermentationDetailsNotes.push(new FermentationDetailsNote());
-          this.brew.FermentationDetailsNotes[this.brew.FermentationDetailsNotes.length - 1].TenantId = this.tenantId;
+        if (this.brewRunFermentation.fermentationDetailsNotes.length == 0) {
+          this.brewRunFermentation.fermentationDetailsNotes.push(new FermentationDetailsNote());
+          this.brewRunFermentation.fermentationDetailsNotes[this.brewRunFermentation.fermentationDetailsNotes.length - 1].tenantId = this.tenantId;
 
         }
-        this.checkIfComplete(this.brew);
+        this.checkIfComplete(this.brewRunFermentation);
       }
 
     });
@@ -360,53 +360,53 @@ export class FermentationFormComponent implements OnInit {
     this.selectedPos = pos;
   }
   addClientDirectory() {
-    this.brew.EnterFermentationData.push(new EnterFermentationData());
-    this.brew.EnterFermentationData[this.brew.EnterFermentationData.length - 1].TenantId = this.tenantId;
-    this.selectedPos = this.brew.EnterFermentationData.length - 1;
-    let dateTime = this.timezone(new Date(this.brew.EnterFermentationData[this.selectedPos].DateAndTime).toUTCString());
+    this.brewRunFermentation.enterFermentationData.push(new EnterFermentationData());
+    this.brewRunFermentation.enterFermentationData[this.brewRunFermentation.enterFermentationData.length - 1].tenantId = this.tenantId;
+    this.selectedPos = this.brewRunFermentation.enterFermentationData.length - 1;
+    let dateTime = this.timezone(new Date(this.brewRunFermentation.enterFermentationData[this.selectedPos].DateAndTime).toUTCString());
     dateTime = dateTime.split(' ').slice(0, 5).join(' ');
-    this.brew.EnterFermentationData[this.selectedPos].DateAndTime = new Date(dateTime);
+    this.brewRunFermentation.enterFermentationData[this.selectedPos].DateAndTime = new Date(dateTime);
   }
   activeBrewClick() {
 
   }
 
   saveGo(url: string) {
-    this.brew.DiacetylRestDataDetails.forEach((dia: DiacetylRestDataDetail) => {
-      dia.TenantId = this.tenantId;
+    this.brewRunFermentation.diacetylRestDataDetails.forEach((dia: DiacetylRestDataDetail) => {
+      dia.tenantId = this.tenantId;
 
     });
-    this.brew.AgingDetails.forEach((cool: AgingDetail) => {
-      cool.TenantId = this.tenantId;
+    this.brewRunFermentation.agingDetails.forEach((cool: AgingDetail) => {
+      cool.tenantId = this.tenantId;
 
     });
 
-    this.brew.HopesDetails.map((hop: HopesDetail) => {
-      if (hop.AddInId === this.addInConstants.Fermentation.Id) {
-        const dateTime2 = hop.StartTime.toString().split(' ').slice(0, 5).join(' ');
+    this.brewRunFermentation.hopesDetails.map((hop: HopesDetail) => {
+      if (hop.addInId === this.addInConstants.Fermentation.Id) {
+        const dateTime2 = hop.startTime.toString().split(' ').slice(0, 5).join(' ');
         const timeZone = JSON.parse(sessionStorage.preferenceUsed);
         const preferedZone = timeZone.BaseUtcOffset;
         let zone = preferedZone.replace(/:/gi, '');
         zone = zone.slice(0, -2);
         const newDateTime = dateTime2 + ' GMT' + `${zone}`;
-        hop.StartTime = new Date(newDateTime).toLocaleString();
+        hop.startTime = new Date(newDateTime).toLocaleString();
       }
     });
-    this.brew.AdjunctsDetails.map((adjunct: AdjunctsDetail) => {
-      if (adjunct.AddInId === this.addInConstants.Fermentation.Id) {
-        const dateTime2 = adjunct.StartTime.toString().split(' ').slice(0, 5).join(' ');
+    this.brewRunFermentation.adjunctsDetails.map((adjunct: AdjunctsDetail) => {
+      if (adjunct.addInId === this.addInConstants.Fermentation.Id) {
+        const dateTime2 = adjunct.startTime.toString().split(' ').slice(0, 5).join(' ');
         const timeZone = JSON.parse(sessionStorage.preferenceUsed);
         const preferedZone = timeZone.BaseUtcOffset;
         let zone = preferedZone.replace(/:/gi, '');
         zone = zone.slice(0, -2);
         const newDateTime = dateTime2 + ' GMT' + `${zone}`;
-        adjunct.StartTime = new Date(newDateTime).toLocaleString();
+        adjunct.startTime = new Date(newDateTime).toLocaleString();
       }
     });
 
-    this.brew.EnterFermentationData.map((enter: EnterFermentationData, i) => {
-      if (enter.Plato === null && enter.Temperature === null && enter.Ph === null) {
-        this.brew.EnterFermentationData.splice(i, 1);
+    this.brewRunFermentation.enterFermentationData.map((enter: EnterFermentationData, i) => {
+      if (enter.plato === null && enter.temperature === null && enter.ph === null) {
+        this.brewRunFermentation.enterFermentationData.splice(i, 1);
       }
       const dateTime2 = enter.DateAndTime.toString().split(' ').slice(0, 5).join(' ');
       const timeZone = JSON.parse(sessionStorage.preferenceUsed);
@@ -417,7 +417,7 @@ export class FermentationFormComponent implements OnInit {
       enter.DateAndTime = new Date(newDateTime).toLocaleString();
     });
 
-    this.apiService.postData(this.apiService.addBrewRun, this.brew).subscribe(response => {
+    this.apiService.postData(this.apiService.addBrewRun, this.brewRunFermentation).subscribe(response => {
       if (response) {
         this.router.navigate([url]);
       }
@@ -432,7 +432,7 @@ export class FermentationFormComponent implements OnInit {
       IsActive: true,
       CreatedDate: '2019-12-16T06:55:05.243',
       ModifiedDate: '2019-12-16T06:55:05.243',
-      TenantId: this.tenantId,
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('styleText').value) {
       this.apiService.postData(this.apiService.addStyle, params).subscribe((response: any) => {
@@ -452,7 +452,7 @@ export class FermentationFormComponent implements OnInit {
       IsActive: true,
       CreatedDate: '2019-12-16T06:55:05.243',
       ModifiedDate: '2019-12-16T06:55:05.243',
-      TenantId: this.tenantId,
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('typeText').value) {
       this.apiService.postData(this.apiService.addType, params).subscribe((response: any) => {
@@ -473,7 +473,7 @@ export class FermentationFormComponent implements OnInit {
       IsActive: true,
       CreatedDate: '2019-12-16T06:55:05.243',
       ModifiedDate: '2019-12-16T06:55:05.243',
-      TenantId: this.tenantId,
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('supplierText').value) {
       this.apiService.postData(this.apiService.addSupplier, params).subscribe((response: any) => {
@@ -489,25 +489,25 @@ export class FermentationFormComponent implements OnInit {
   setStartTemp(i, start) {
     this.coolStartTime = this.timezone(new Date().toUTCString());
     this.coolStartTime = this.coolStartTime.split(' ').slice(0, 5).join(' ');
-    start.StartTime = this.coolStartTime;
+    start.startTime = this.coolStartTime;
   }
 
   endTemp(i, end) {
     this.coolEndTime = this.timezone(new Date().toUTCString());
     this.coolEndTime = this.coolEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.coolEndTime;
+    end.endTime = this.coolEndTime;
   }
 
   setStartDia(i, start) {
     this.diaStartTime = this.timezone(new Date().toUTCString());
     this.diaStartTime = this.diaStartTime.split(' ').slice(0, 5).join(' ');
-    start.StartTime = this.diaStartTime;
+    start.startTime = this.diaStartTime;
   }
 
   setEndDia(i, end) {
     this.diaEndTime = this.timezone(new Date().toUTCString());
     this.diaEndTime = this.diaEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.diaEndTime;
+    end.endTime = this.diaEndTime;
   }
 
   timezone(dateTime) {
@@ -553,12 +553,12 @@ export class FermentationFormComponent implements OnInit {
   }
   getHopsTargets(recipeContent: any) {
     if (recipeContent.Hops.length !== 0) {
-      this.hopsTarget = recipeContent.Hops.filter(x => x.AddInId === this.addInConstants.Fermentation.Id);
+      this.hopsTarget = recipeContent.Hops.filter(x => x.addInId === this.addInConstants.Fermentation.Id);
     }
   }
   getAdjunctsTargets(recipeContent: any) {
     if (recipeContent.Adjuncts.length !== 0) {
-      this.adjunctsTarget = recipeContent.Adjuncts.filter(x => x.AddInId === this.addInConstants.Fermentation.Id);
+      this.adjunctsTarget = recipeContent.Adjuncts.filter(x => x.addInId === this.addInConstants.Fermentation.Id);
     }
   }
   getDiacetylTargets(recipeContent: any) {
@@ -574,9 +574,9 @@ export class FermentationFormComponent implements OnInit {
 
   getAdjCountFerm(uid: string): number {
     let count = 1;
-    const specials = this.brew.AdjunctsDetails.filter(x => x.AddInId === this.addInConstants.Fermentation.Id);
+    const specials = this.brewRunFermentation.adjunctsDetails.filter(x => x.addInId === this.addInConstants.Fermentation.Id);
     specials.forEach((adj: AdjunctsDetail, i: number) => {
-      if (adj.Id === uid) {
+      if (adj.id === uid) {
         count = i + 1;
       }
     });
@@ -585,7 +585,7 @@ export class FermentationFormComponent implements OnInit {
 
   getAdjCountFermTargets(uid: string): number {
     let count = 1;
-    const specials = this.recipeContent.Adjuncts.filter(x => x.AddInId === this.addInConstants.Fermentation.Id);
+    const specials = this.recipeContent.Adjuncts.filter(x => x.addInId === this.addInConstants.Fermentation.Id);
     specials.forEach((adj, i: number) => {
       if (adj.Id === uid) {
         count = i + 1;
@@ -596,9 +596,9 @@ export class FermentationFormComponent implements OnInit {
 
   getHopsCountFerm(uid: string): number {
     let count = 1;
-    const specials = this.brew.HopesDetails.filter(x => x.AddInId === this.addInConstants.Fermentation.Id);
+    const specials = this.brewRunFermentation.hopesDetails.filter(x => x.addInId === this.addInConstants.Fermentation.Id);
     specials.forEach((hop: HopesDetail, i: number) => {
-      if (hop.Id === uid) {
+      if (hop.id === uid) {
         count = i + 1;
       }
     });
@@ -607,9 +607,9 @@ export class FermentationFormComponent implements OnInit {
 
   getHopsCountFermTargets(uid: string): number {
     let count = 1;
-    const specials = this.recipeContent.Hops.filter(x => x.AddInId === this.addInConstants.Fermentation.Id);
+    const specials = this.recipeContent.Hops.filter(x => x.addInId === this.addInConstants.Fermentation.Id);
     specials.forEach((hop, i: number) => {
-      if (hop.Id === uid) {
+      if (hop.id === uid) {
         count = i + 1;
       }
     });
@@ -618,23 +618,23 @@ export class FermentationFormComponent implements OnInit {
 
   onFermentComplete(i, editedSectionName) {
     this.isCollapsedFermentation = !this.isCollapsedFermentation;
-    this.brew.FermentationDataEntry[i].IsCompleted = true;
+    this.brewRunFermentation.fermentationDataEntry[i].isCompleted = true;
     this.setClass = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
   onYeastComplete(i, editedSectionName) {
     this.isCollapsedYeast = !this.isCollapsedYeast;
-    this.brew.YeastDataDetails[i].IsCompleted = true;
+    this.brewRunFermentation.yeastDataDetails[i].isCompleted = true;
     this.setClassYeast = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
   onHopsComplete(editedSectionName) {
     this.isCollapsedHops = !this.isCollapsedHops;
-    this.brew.HopesDetails.map(element => {
-      if (element.AddInId === this.addInConstants.Fermentation.Id) {
-        element.IsCompleted = true;
+    this.brewRunFermentation.hopesDetails.map(element => {
+      if (element.addInId === this.addInConstants.Fermentation.Id) {
+        element.isCompleted = true;
       }
     });
     this.setClassHops = true;
@@ -643,9 +643,9 @@ export class FermentationFormComponent implements OnInit {
 
   onAdjunctsComplete(editedSectionName) {
     this.isCollapsedAdjuncts = !this.isCollapsedAdjuncts;
-    this.brew.AdjunctsDetails.map(element => {
-      if (element.AddInId === this.addInConstants.Fermentation.Id) {
-        element.IsCompleted = true;
+    this.brewRunFermentation.adjunctsDetails.map(element => {
+      if (element.addInId === this.addInConstants.Fermentation.Id) {
+        element.isCompleted = true;
       }
     });
     this.setClassAdjuncts = true;
@@ -654,85 +654,85 @@ export class FermentationFormComponent implements OnInit {
 
   onDiacetylComplete(i, editedSectionName) {
     this.isCollapsedDiacetyl = !this.isCollapsedDiacetyl;
-    this.brew.DiacetylRestDataDetails[i].IsCompleted = true;
+    this.brewRunFermentation.diacetylRestDataDetails[i].isCompleted = true;
     this.setClassDia = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
   onCoolingComplete(i, editedSectionName) {
     this.isCollapsedCooling = !this.isCollapsedCooling;
-    this.brew.AgingDetails[i].IsCompleted = true;
+    this.brewRunFermentation.agingDetails[i].isCompleted = true;
     this.setClassCool = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
   onPrevFermComplete(length, editedSectionName) {
     this.isCollapsedFermentationPrevious = !this.isCollapsedFermentationPrevious;
-    this.brew.EnterFermentationData.map(element => {
-      element.IsCompleted = true;
+    this.brewRunFermentation.enterFermentationData.map(element => {
+      element.isCompleted = true;
     });
     this.setClassPrevFerm = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
-  checkIfComplete(brew: BrewRun) {
-    if (brew.FermentationDataEntry.length !== 0) {
-      brew.FermentationDataEntry.map(element => {
-        if (element.IsCompleted === true) {
+  checkIfComplete(brew: BrewRunFermentation) {
+    if (brew.fermentationDataEntry.length !== 0) {
+      brew.fermentationDataEntry.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedFermentation = !this.isCollapsedFermentation;
           this.setClass = true;
         }
       });
     }
 
-    if (brew.YeastDataDetails.length !== 0) {
-      brew.YeastDataDetails.map(element => {
-        if (element.IsCompleted === true) {
+    if (brew.yeastDataDetails.length !== 0) {
+      brew.yeastDataDetails.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedYeast = !this.isCollapsedYeast;
           this.setClassYeast = true;
         }
       });
     }
 
-    if (brew.HopesDetails.length !== 0) {
-      brew.HopesDetails.map(element => {
-        if (element.AddInId === this.addInConstants.Fermentation.Id && element.IsCompleted === true) {
+    if (brew.hopesDetails.length !== 0) {
+      brew.hopesDetails.map(element => {
+        if (element.addInId === this.addInConstants.Fermentation.Id && element.isCompleted === true) {
           this.isCollapsedHops = !this.isCollapsedHops;
           this.setClassHops = true;
         }
       });
     }
 
-    if (brew.AdjunctsDetails.length !== 0) {
-      brew.AdjunctsDetails.map(element => {
-        if (element.AddInId === this.addInConstants.Fermentation.Id && element.IsCompleted === true) {
+    if (brew.adjunctsDetails.length !== 0) {
+      brew.adjunctsDetails.map(element => {
+        if (element.addInId === this.addInConstants.Fermentation.Id && element.isCompleted === true) {
           this.isCollapsedAdjuncts = !this.isCollapsedAdjuncts;
           this.setClassAdjuncts = true;
         }
       });
     }
 
-    if (brew.DiacetylRestDataDetails.length !== 0) {
-      brew.DiacetylRestDataDetails.map(element => {
-        if (element.IsCompleted === true) {
+    if (brew.diacetylRestDataDetails.length !== 0) {
+      brew.diacetylRestDataDetails.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedDiacetyl = !this.isCollapsedDiacetyl;
           this.setClassDia = true;
         }
       });
     }
 
-    if (brew.AgingDetails.length !== 0) {
-      brew.AgingDetails.map(element => {
-        if (element.IsCompleted === true) {
+    if (brew.agingDetails.length !== 0) {
+      brew.agingDetails.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedCooling = !this.isCollapsedCooling;
           this.setClassCool = true;
         }
       });
     }
 
-    if (brew.EnterFermentationData.length !== 0) {
-      brew.EnterFermentationData.map(element => {
-        if (element.IsCompleted === true) {
+    if (brew.enterFermentationData.length !== 0) {
+      brew.enterFermentationData.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedFermentationPrevious = !this.isCollapsedFermentationPrevious;
           this.setClassPrevFerm = true;
         }
@@ -742,11 +742,10 @@ export class FermentationFormComponent implements OnInit {
 
   addbrewUserAuditTrail(editedSectionName) {
     const params = {
-      Id: this.brew.Id,
-      BrewRunId: this.brew.BrewRunId,
-      CreatedDate: this.brew.CreatedDate,
+      Id: this.brewRunFermentation.id,
+      BrewRunId: this.brewRunFermentation.brewRunId,
       CreatedByUserId: this.currentUser,
-      TenantId: this.brew.TenantId,
+      tenantId: this.brewRunFermentation.tenantId,
       CurrentEditedSectionName: editedSectionName,
     };
     this.apiService.postData(this.apiService.addBrewUserAuditTrail, params).subscribe((response: any) => {

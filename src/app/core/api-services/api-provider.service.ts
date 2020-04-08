@@ -34,6 +34,8 @@ export class ApiProviderService {
   getBrewRunMashinMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/mashin/masterdetails'
   getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
   mashin = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/'
+  getBrewLogMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/brewlog/masterdetails'
+  getBrewLogDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewlog/'
 
 
 
@@ -77,16 +79,14 @@ export class ApiProviderService {
 
   // preference
   getPreferenceSettings = 'brewrun/v1/brewers/settings/{0}/preference';
-  getAllTimeZone = 'brewrun/v1/brewers/settings/getAllTimeZone';
-  addPreference = 'brewrun/v1/brewers/{0}/preference';
+  getAllPreferenceMasterDetails = 'brewrun/v1/brewers/settings/{0}/preferenceSettings';
+  addPreference = 'brewrun/v1/brewers/{0}/preference/';
   addYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains';
-  addTankConfiguration = 'brewrun/v1/brewers/settings/tankType';
-  getAllActiveTankType = 'brewrun/v1/brewers/{0}/tanks';
-  getAllTankConfigurationList = 'brewrun/v1/brewers/settings/tanktype';
-  editTankConfiguration = 'EditTankConfiguration';
-  editYeastStrain = 'EditYeastStrain';
-
-  
+  addTankConfiguration = 'brewrun/v1/brewers/{0}/tank/';
+  getAllTankConfigurationList = 'brewrun/v1/brewers/{0}/tanksDetails';
+  getAllYeastList = 'brewrun/v1/brewers/{0}/yeastStrainsDetails';
+  editTankConfiguration = 'brewrun/v1/brewers/{0}/tank/{1}';
+  editYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains/{1}';
 
   // recipe
   getAllRecipeByTenant = 'brewrun/v1/brewers/recipe/{0}';
@@ -100,6 +100,7 @@ export class ApiProviderService {
   getAllArchivedRecipes = 'brewrun/v1/brewers/recipe/{0}/archived';
   archivedRecipe = 'brewrun/v1/brewers/{0}/recipe/{1}/archive';
   getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeastStrains';
+  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails'
 
   getAllActiveCountry = 'brewrun/v1/brewers/settings/country';
   getAllActiveAddIn = 'brewrun/v1/brewers/recipe/{0}/addin';
@@ -107,7 +108,6 @@ export class ApiProviderService {
   getAllActiveMaltGrainType = 'brewrun/v1/brewers/recipe/{0}/maltgraintype';
   getAllActiveUnitType = 'brewrun/v1/brewers/settings/unittype';
   getAllActiveStyle = 'brewrun/v1/brewers/settings/{0}/styles';
-  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails'
 
 
   changeBrewRunStatus = 'ChangeBrewRunStatus';

@@ -539,11 +539,11 @@
                                             <div class="form-group w-100">
                                                 <label for="brewrun-id">Start Time</label>
                                                 <input class="form-control" id="tempStart{{i}}"
-                                                    [(ngModel)]="temp.StartTime">
-                                                <i *ngIf="mashingTargetDetail.Temperature == true && i == 0"
+                                                    [(ngModel)]="temp.startTime">
+                                                <i *ngIf="mashingTargetDetail.temperature == true && i == 0"
                                                     class="material-icons position-absolute outline-icon cursor-click"
                                                     (click)="addMashingTemp(mashingTargetDetail)">add_circle_outline</i>
-                                                <i *ngIf="mashingTargetDetail.Temperature == true && i != 0"
+                                                <i *ngIf="mashingTargetDetail.temperature == true && i != 0"
                                                     class="material-icons position-absolute remove-icon cursor-click"
                                                     (click)="removeMashingTemp(mashingTargetDetail, i)">remove_circle_outline</i>
                                             </div>
@@ -590,20 +590,20 @@
                         </div>
                         <div [ngbCollapse]="isCollapsedStarch" class="collapse" aria-labelledby="headingFifth">
                             <div class="card-body">
-                                <div class="form-row" *ngFor="let StartchTest of brewRunMashin.startchTest; let i = index;">
+                                <div class="form-row" *ngFor="let startchTest of brewRunMashin.startchTest; let i = index;">
                                     <div class="form-group col-md-6">
 
                                         <div class='custom-radio-wrapper'>
                                             <div class='custom-radio'>
                                                 <input type="radio" id="meshin-pass" name="radio-gravity" [value]="true"
                                                     name="PassStatus" (change)="radioChange('Pass')"
-                                                    [(ngModel)]="StartchTest.PassStatus">
+                                                    [(ngModel)]="startchTest.passStatus">
                                                 <label for="meshin-pass">Pass</label>
                                             </div>
                                             <div class='custom-radio'>
                                                 <input type="radio" id="meshin-fail" name="radio-gravity"
                                                     [value]="false" name="PassStatus" (change)="radioChange('Fail')"
-                                                    [(ngModel)]="StartchTest.PassStatus">
+                                                    [(ngModel)]="startchTest.passStatus">
                                                 <label for="meshin-fail">Fail</label>
                                             </div>
 
@@ -611,9 +611,9 @@
                                     </div>
                                     <div class="form-group col-md-12">
                                         <ul *ngFor="let stat of sortData; let i = index;" style="list-style-type: none">
-                                            <li *ngIf="stat != null"><label>{{stat.TestName}} {{i+1}}
-                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.TimeStamp | date: 'medium'}}
-                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.TestResult}}</label></li>
+                                            <li *ngIf="stat != null"><label>{{stat.testName}} {{i+1}}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.timeStamp | date: 'medium'}}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.testResult}}</label></li>
                                         </ul>
                                     </div>
 

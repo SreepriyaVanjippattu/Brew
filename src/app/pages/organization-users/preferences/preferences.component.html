@@ -233,7 +233,7 @@
                 <div>
                   <select formControlName="unit" class="form-control input-dropdown-capacity" style="min-width: 100px;">
                     <option value="" disabled>Select</option>
-                    <ng-container *ngFor="let unitVol of unitTypeList">
+                    <ng-container *ngFor="let unitVol of unitTypes">
                       <option *ngIf="unitVol.category === 'Size'" [value]="unitVol.id">{{unitVol.symbol}}</option>
                     </ng-container>
                   </select>
@@ -297,7 +297,7 @@
                   <select formControlName="unit" class="form-control input-dropdown-prefer" style="min-width: 90px;">
                     <option value="" disabled>Select</option>
 
-                    <ng-container *ngFor="let unitVol of unitTypeList">
+                    <ng-container *ngFor="let unitVol of unitTypes">
                       <option *ngIf="unitVol.category === 'Size'" [value]="unitVol.id">{{unitVol.symbol}}</option>
                     </ng-container>
 

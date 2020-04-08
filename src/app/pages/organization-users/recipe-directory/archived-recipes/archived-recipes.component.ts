@@ -119,7 +119,7 @@ export class ArchivedRecipesComponent implements OnInit {
           this.toast.success('Recipe Restored');
         } error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger(error.error.message,'Failed');
+            this.toast.danger(error.error.message, 'Failed');
           }
           this.toast.danger(error);
         }
@@ -131,30 +131,30 @@ export class ArchivedRecipesComponent implements OnInit {
   onPageChange(event) {
     this.config.currentPage = event;
   }
-  
+
   searchRecipe(event) {
-debugger;
+
     const search = event.target.value;
 
     const getAllArchivedRecipesAPI = String.Format(this.apiService.getAllArchivedRecipes, this.tenantId);
     this.apiService.getDataList(getAllArchivedRecipesAPI, this.config.currentPage, this.config.itemsPerPage, null, null, search)
       .subscribe((response) => {
-      const myHeaders = response.headers;
-      this.headerValue = JSON.parse(response.headers.get('paging-headers'));
-      if (this.headerValue) {
-        this.config.totalItems = this.headerValue.TotalCount;
-      }
-      if (response && response['body']) {
-        this.archieveContent = response['body'].recipes;
-        this.archieveContent.map((recipe, idx) => {
-          if (recipe !== null) {
-            recipe.ReceipeName = recipe.name !== null ? recipe.name : '';
-            recipe.StyleName = recipe.styleName;
-            recipe.YeastStrainName = recipe.yeastStrainName;
-          }
-        });
-      }
-    });
+        const myHeaders = response.headers;
+        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
+        if (this.headerValue) {
+          this.config.totalItems = this.headerValue.TotalCount;
+        }
+        if (response && response['body']) {
+          this.archieveContent = response['body'].recipes;
+          this.archieveContent.map((recipe, idx) => {
+            if (recipe !== null) {
+              recipe.ReceipeName = recipe.name !== null ? recipe.name : '';
+              recipe.StyleName = recipe.styleName;
+              recipe.YeastStrainName = recipe.yeastStrainName;
+            }
+          });
+        }
+      });
   }
 
   filter(label) {
@@ -193,28 +193,8 @@ debugger;
     this.apiService.postData(cloneRecipeAPI).subscribe(response => {
       if (response) {
         const recipeConent = response['body'];
-        // const splitBy = recipeConent.name.split('_copy');
-        // this.archieveContent.forEach(element => {
-        //   if (element.name.includes(splitBy[0])) {
-        //     this.copyContent.push(element);
-        //   }
-        // });
-        // const makeIdVal = this.copyContent.length;
-        // const receipeNameCopy = recipeConent.name + '_copy_' + makeIdVal;
-        // recipeConent.ReceipeName = receipeNameCopy;
-        // recipeConent.Id = '00000000-0000-0000-0000-000000000000';
-        // const paramsCopy = {
-        //   Id: recipeId,
-        //   TenantId: this.tenantId,
-        // };
-        // this.apiService.postData(this.apiService.recipeCopy, paramsCopy).subscribe((response) => {
-        //   if (response) {
-            this.toast.show('', 'Recipe Copied');
-            this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
-        //   }
-        // }, error => {
-        //   this.toast.danger(error.error.Message);
-        // });
+        this.toast.show('', 'Recipe Copied');
+        this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {

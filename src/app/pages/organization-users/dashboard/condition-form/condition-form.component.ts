@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BrewRun, ConditioningDetail, FilterationDetail, CarbonationDetail, ConditioningDetailsNote } from '../../../../models/brewrun';
+import { BrewRunConditioning, ConditioningDetail, FilterationDetail, CarbonationDetail, ConditioningDetailsNote } from '../../../../models/brewrun';
 import { DashboardService } from '../dashboard.service';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { NbToastrService } from '@nebular/theme';
@@ -27,7 +27,7 @@ export class ConditionFormComponent implements OnInit {
   tenantId: any;
   brewId: any;
 
-  brew: BrewRun;
+  brewRunConditioning: BrewRunConditioning;
 
   conStartTime: any = '';
   conEndTime: any = '';
@@ -63,12 +63,12 @@ export class ConditionFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.brew = new BrewRun();
+   this.brewRunConditioning = new BrewRunConditioning();
 
     this.brewId = this.route.snapshot.paramMap.get('id');
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    this.tenantId = userDetails['CompanyDetails'].Id;
-    this.currentUser = userDetails['UserProfile'].Id;
+    this.tenantId = userDetails['CompanyDetails'].id;
+    this.currentUser = userDetails['UserProfile'].id;
     this.units = JSON.parse(sessionStorage.getItem('units'));
     this.getPreferenceUsed();
 
@@ -84,55 +84,55 @@ export class ConditionFormComponent implements OnInit {
     this.apiService.getDataByQueryParams(this.apiService.getBrewRunById, null, tenantId, brewId).subscribe(response => {
       if (response.status === 200) {
         console.log('MashEdit', response['body']);
-        this.brew = response['body'];
+       this.brewRunConditioning = response['body'];
         this.recipeId = response['body'].RecipeId;
         this.getRecipeDetailsEdit();
-        if (this.brew.ConditioningDetails.length == 0) {
-          this.brew.ConditioningDetails.push(new ConditioningDetail());
-          this.brew.ConditioningDetails[this.brew.ConditioningDetails.length - 1].TenantId = this.tenantId;
+        if (this.brewRunConditioning.conditioningDetails.length == 0) {
+         this.brewRunConditioning.conditioningDetails.push(new ConditioningDetail());
+         this.brewRunConditioning.conditioningDetails[this.brewRunConditioning.conditioningDetails.length - 1].tenantId = this.tenantId;
 
         } else {
-          this.brew.ConditioningDetails.map((conTimes: ConditioningDetail) => {
-            conTimes.StartTime = this.datePipe.transform(conTimes.StartTime, 'E, dd LLL yyyy HH:mm:ss');
-            conTimes.EndTime = this.datePipe.transform(conTimes.EndTime, 'E, dd LLL yyyy HH:mm:ss');
+         this.brewRunConditioning.conditioningDetails.map((conTimes: ConditioningDetail) => {
+            conTimes.startTime = this.datePipe.transform(conTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
+            conTimes.endTime = this.datePipe.transform(conTimes.endTime, 'E, dd LLL yyyy HH:mm:ss');
           })
         }
-        if (this.brew.FilterationDetails.length === 0) {
-          this.brew.FilterationDetails.push(new FilterationDetail());
+        if (this.brewRunConditioning.filterationDetails.length === 0) {
+         this.brewRunConditioning.filterationDetails.push(new FilterationDetail());
         }
-        if (this.brew.CarbonationDetails.length == 0) {
-          this.brew.CarbonationDetails.push(new CarbonationDetail());
-          this.brew.CarbonationDetails[this.brew.CarbonationDetails.length - 1].TenantId = this.tenantId;
+        if (this.brewRunConditioning.carbonationDetails.length == 0) {
+         this.brewRunConditioning.carbonationDetails.push(new CarbonationDetail());
+         this.brewRunConditioning.carbonationDetails[this.brewRunConditioning.carbonationDetails.length - 1].tenantId = this.tenantId;
 
         } else {
-          this.brew.CarbonationDetails.map((carTimes: CarbonationDetail) => {
-            carTimes.StartTime = this.datePipe.transform(carTimes.StartTime, 'E, dd LLL yyyy HH:mm:ss');
-            carTimes.EndTime = this.datePipe.transform(carTimes.EndTime, 'E, dd LLL yyyy HH:mm:ss');
+         this.brewRunConditioning.carbonationDetails.map((carTimes: CarbonationDetail) => {
+            carTimes.startTime = this.datePipe.transform(carTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
+            carTimes.endTime = this.datePipe.transform(carTimes.endTime, 'E, dd LLL yyyy HH:mm:ss');
           })
         }
-        if (this.brew.ConditioningDetailsNotes.length == 0) {
-          this.brew.ConditioningDetailsNotes.push(new ConditioningDetailsNote());
-          this.brew.ConditioningDetailsNotes[this.brew.ConditioningDetailsNotes.length - 1].TenantId = this.tenantId;
+        if (this.brewRunConditioning.conditioningDetailsNotes.length == 0) {
+         this.brewRunConditioning.conditioningDetailsNotes.push(new ConditioningDetailsNote());
+         this.brewRunConditioning.conditioningDetailsNotes[this.brewRunConditioning.conditioningDetailsNotes.length - 1].tenantId = this.tenantId;
 
         }
-        this.checkIfComplete(this.brew);
+        this.checkIfComplete(this.brewRunConditioning);
       }
-      this.conStartTime = this.datePipe.transform(this.brew.ConditioningDetails[0].StartTime, 'E, dd LLL yyyy HH:mm:ss');
-      this.conEndTime = this.datePipe.transform(this.brew.ConditioningDetails[0].EndTime, 'E, dd LLL yyyy HH:mm:ss');
-      this.carStartTime = this.datePipe.transform(this.brew.CarbonationDetails[0].StartTime, 'E, dd LLL yyyy HH:mm:ss');
-      this.carEndTime = this.datePipe.transform(this.brew.CarbonationDetails[0].EndTime, 'E, dd LLL yyyy HH:mm:ss');
+      this.conStartTime = this.datePipe.transform(this.brewRunConditioning.conditioningDetails[0].startTime, 'E, dd LLL yyyy HH:mm:ss');
+      this.conEndTime = this.datePipe.transform(this.brewRunConditioning.conditioningDetails[0].endTime, 'E, dd LLL yyyy HH:mm:ss');
+      this.carStartTime = this.datePipe.transform(this.brewRunConditioning.carbonationDetails[0].startTime, 'E, dd LLL yyyy HH:mm:ss');
+      this.carEndTime = this.datePipe.transform(this.brewRunConditioning.carbonationDetails[0].endTime, 'E, dd LLL yyyy HH:mm:ss');
 
     });
   }
 
   findUnits() {
     this.units.forEach(element => {
-      if (element.Id === this.preference.TemperatureId) {
+      if (element.id === this.preference.TemperatureId) {
         this.preferedUnit = element.Symbol;
       }
-      if (element.Id === this.preference.GravityMeasurementId) {
+      if (element.id === this.preference.GravityMeasurementId) {
         this.preferedPlato = element.Name;
-        this.platoUnitId = element.Id;
+        this.platoUnitId = element.id;
       }
     });
   }
@@ -174,29 +174,29 @@ export class ConditionFormComponent implements OnInit {
     if (!data) {
       this.toast.danger('You don\'t have access', 'Error');
     } else {
-      this.brew.Status = this.status.commited.id;
+     this.brewRunConditioning.status = this.status.commited.id;
       this.committed = true;
       this.saveGo('app/dashboard');
     }
   }
 
   completeBrewRun() {
-    this.brew.Status = this.status.Compleated.id;
+   this.brewRunConditioning.status = this.status.Compleated.id;
     this.saveGo('app/dashboard/view-brew-run/' + this.brewId);
   }
   saveGo(url: string) {
 
-    this.brew.ConditioningDetails.forEach((con: ConditioningDetail) => {
-      con.TenantId = this.tenantId;
+   this.brewRunConditioning.conditioningDetails.forEach((con: ConditioningDetail) => {
+      con.tenantId = this.tenantId;
     });
-    this.brew.CarbonationDetails.forEach((car: CarbonationDetail) => {
-      car.TenantId = this.tenantId;
+   this.brewRunConditioning.carbonationDetails.forEach((car: CarbonationDetail) => {
+      car.tenantId = this.tenantId;
     });
 
-    this.apiService.postData(this.apiService.addBrewRun, this.brew).subscribe(response => {
+    this.apiService.postData(this.apiService.addBrewRun,this.brewRunConditioning).subscribe(response => {
       if (response) {
         if (this.committed) {
-          this.toast.success('The Brew Run' + '' + this.brew.BrewRunId + ' ' + 'Successfully Committed');
+          this.toast.success('The Brew Run' + '' +this.brewRunConditioning.brewRunId + ' ' + 'Successfully Committed');
         }
         this.router.navigate([url]);
       }
@@ -208,25 +208,25 @@ export class ConditionFormComponent implements OnInit {
   setConStart(i, start) {
     this.conStartTime = this.timezone(new Date().toUTCString());
     this.conStartTime = this.conStartTime.split(' ').slice(0, 5).join(' ');
-    start.StartTime = this.conStartTime;
+    start.startTime = this.conStartTime;
   }
 
   setConEnd(i, end) {
     this.conEndTime = this.timezone(new Date().toUTCString());
     this.conEndTime = this.conEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.conEndTime;
+    end.endTime = this.conEndTime;
   }
 
   setCarbStart(i, start) {
     this.carStartTime = this.timezone(new Date().toUTCString());
     this.carStartTime = this.carStartTime.split(' ').slice(0, 5).join(' ');
-    start.StartTime = this.carStartTime;
+    start.startTime = this.carStartTime;
   }
 
   setCarbEnd(i, end) {
     this.carEndTime = this.timezone(new Date().toUTCString());
     this.carEndTime = this.carEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.carEndTime;
+    end.endTime = this.carEndTime;
   }
 
   timezone(dateTime) {
@@ -276,47 +276,47 @@ export class ConditionFormComponent implements OnInit {
 
   onFiltrationComplete(i, editedSectionName) {
     this.isCollapsedFiltration = !this.isCollapsedFiltration;
-    this.brew.FilterationDetails[i].IsCompleted = true;
+   this.brewRunConditioning.filterationDetails[i].isCompleted = true;
     this.setClass = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
   onCarbonationComplete(i, editedSectionName) {
     this.isCollapsedCarbonation = !this.isCollapsedCarbonation;
-    this.brew.CarbonationDetails[i].IsCompleted = true;
+   this.brewRunConditioning.carbonationDetails[i].isCompleted = true;
     this.setClassCarb = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
   onConditioningComplete(i, editedSectionName) {
     this.isCollapsedConditioning = !this.isCollapsedConditioning;
-    this.brew.ConditioningDetails[i].IsCompleted = true;
+   this.brewRunConditioning.conditioningDetails[i].isCompleted = true;
     this.setClassCond = true;
     this.addbrewUserAuditTrail(editedSectionName);
   }
 
-  checkIfComplete(brew: BrewRun) {
-    if (brew.FilterationDetails.length !== 0) {
-      brew.FilterationDetails.map(element => {
-        if (element.IsCompleted === true) {
+  checkIfComplete(brew: BrewRunConditioning) {
+    if (brew.filterationDetails.length !== 0) {
+      brew.filterationDetails.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedFiltration = !this.isCollapsedFiltration;
           this.setClass = true;
         }
       });
     }
 
-    if (brew.CarbonationDetails.length !== 0) {
-      brew.CarbonationDetails.map(element => {
-        if (element.IsCompleted === true) {
+    if (brew.carbonationDetails.length !== 0) {
+      brew.carbonationDetails.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedCarbonation = !this.isCollapsedCarbonation;
           this.setClassCarb = true;
         }
       });
     }
 
-    if (brew.ConditioningDetails.length !== 0) {
-      brew.ConditioningDetails.map(element => {
-        if (element.IsCompleted === true) {
+    if (brew.conditioningDetails.length !== 0) {
+      brew.conditioningDetails.map(element => {
+        if (element.isCompleted === true) {
           this.isCollapsedConditioning = !this.isCollapsedConditioning;
           this.setClassCond = true;
         }
@@ -326,11 +326,10 @@ export class ConditionFormComponent implements OnInit {
 
   addbrewUserAuditTrail(editedSectionName) {
     const params = {
-      Id: this.brew.Id,
-      BrewRunId: this.brew.BrewRunId,
-      CreatedDate: this.brew.CreatedDate,
-      CreatedByUserId: this.currentUser,
-      TenantId: this.brew.TenantId,
+      Id:this.brewRunConditioning.id,
+      brewRunId:this.brewRunConditioning.brewRunId,
+       CreatedByUserId: this.currentUser,
+      tenantId:this.brewRunConditioning.tenantId,
       CurrentEditedSectionName: editedSectionName,
     };
     this.apiService.postData(this.apiService.addBrewUserAuditTrail, params).subscribe((response: any) => {
