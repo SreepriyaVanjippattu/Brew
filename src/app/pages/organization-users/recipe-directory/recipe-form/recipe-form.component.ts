@@ -221,7 +221,7 @@ export class RecipeFormComponent implements OnInit {
     });
   }
 
-  
+
 
   getYeastStrain() {
     const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastStrains, this.tenantId);
@@ -232,7 +232,7 @@ export class RecipeFormComponent implements OnInit {
     });
   }
 
- 
+
 
   getRecipeDetailsEdit(tenantId) {
     const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, this.recipeId);

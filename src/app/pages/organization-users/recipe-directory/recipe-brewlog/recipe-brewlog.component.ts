@@ -88,7 +88,7 @@ export class RecipeBrewlogComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    this.recipeId= this.route.snapshot.queryParams.recipeId;
+    this.recipeId = this.route.snapshot.queryParams.recipeId;
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
@@ -101,8 +101,8 @@ export class RecipeBrewlogComponent implements OnInit {
       this.pageHeader = 'Add New Recipe';
     }
 
-    
-  
+
+
   }
 
   getAllRecipeSystemData() {
@@ -206,7 +206,7 @@ export class RecipeBrewlogComponent implements OnInit {
 
   }
 
-  
+
 
   setValueToEdit(data) {
 
@@ -247,8 +247,8 @@ export class RecipeBrewlogComponent implements OnInit {
           fields.get('notes').setValue(data.kettleTargets.notes);
         });
       }
-     
-     
+
+
 
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
@@ -262,8 +262,8 @@ export class RecipeBrewlogComponent implements OnInit {
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
         });
       }
-     
-     
+
+
 
       if (data.coolingKnockoutTarget != null) {
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
@@ -274,7 +274,7 @@ export class RecipeBrewlogComponent implements OnInit {
           fields.get('notes').setValue(data.coolingKnockoutTarget.notes);
         });
       }
-     
+
     }
   }
 
@@ -497,7 +497,7 @@ export class RecipeBrewlogComponent implements OnInit {
       name: this.modalForms.get('supplierText').value,
       isActive: true,
       createdDate: new Date(),
-      modifiedDate:new Date(),
+      modifiedDate: new Date(),
       tenantId: this.tenantId,
     };
     if (this.modalForms.get('supplierText').value) {

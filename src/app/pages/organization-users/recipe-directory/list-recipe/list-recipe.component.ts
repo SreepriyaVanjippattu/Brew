@@ -63,7 +63,7 @@ export class ListRecipeComponent implements OnInit {
     private toast: NbToastrService,
     private data: DataService
   ) {
-    
+
   }
 
   ngOnInit() {
@@ -288,12 +288,12 @@ export class ListRecipeComponent implements OnInit {
       }
       this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
     }, error => {
-        if (error instanceof HttpErrorResponse) {
-          this.toast.danger(error.error.message);
-        }
-        else {
-          this.toast.danger(error);
-        }
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message);
+      }
+      else {
+        this.toast.danger(error);
+      }
     });
   }
 

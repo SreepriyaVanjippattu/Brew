@@ -76,7 +76,7 @@ export class RecipeConditioningComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    this.recipeId= this.route.snapshot.queryParams.recipeId;
+    this.recipeId = this.route.snapshot.queryParams.recipeId;
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
 
@@ -90,7 +90,7 @@ export class RecipeConditioningComponent implements OnInit {
       this.pageHeader = 'Add New Recipe';
     }
 
-   
+
   }
   getAllRecipeSystemData() {
     const getAllRecipeSystemDataAPI = String.Format(this.apiService.getRecipeMasterDetails, this.tenantId);
@@ -109,8 +109,8 @@ export class RecipeConditioningComponent implements OnInit {
         if (this.recipeId) {
           this.getRecipeDetailsById(this.recipeId);
         }
-        else{
-        this.findUnits();
+        else {
+          this.findUnits();
         }
       }
     });
@@ -170,7 +170,7 @@ export class RecipeConditioningComponent implements OnInit {
 
       this.findUnits();
       this.setValueToEdit(this.singleRecipeDetails);
-      if (this.singleRecipeDetails.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') { 
+      if (this.singleRecipeDetails.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
         // commit status
         // disable save and commit
         this.disableSave = true;

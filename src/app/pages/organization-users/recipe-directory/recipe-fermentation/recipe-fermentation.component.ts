@@ -86,7 +86,7 @@ export class RecipeFermentationComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    this.recipeId= this.route.snapshot.queryParams.recipeId;
+    this.recipeId = this.route.snapshot.queryParams.recipeId;
     this.getYeastStrain();
     this.getAllRecipeSystemData();
     this.initiateFormArrays();
@@ -102,7 +102,7 @@ export class RecipeFermentationComponent implements OnInit {
       this.pageHeader = 'Add New Recipe';
     }
 
-   
+
   }
   getAllRecipeSystemData() {
     const getAllRecipeSystemDataAPI = String.Format(this.apiService.getRecipeMasterDetails, this.tenantId);
@@ -126,8 +126,8 @@ export class RecipeFermentationComponent implements OnInit {
         if (this.recipeId) {
           this.getRecipeDetailsById(this.recipeId);
         }
-        else{
-        this.findUnits();
+        else {
+          this.findUnits();
         }
       }
     });
@@ -257,7 +257,7 @@ export class RecipeFermentationComponent implements OnInit {
           }
         });
       }
-      
+
 
       if (data.aging != null) {
         this.agingArray.controls.forEach(fields => {
@@ -295,7 +295,7 @@ export class RecipeFermentationComponent implements OnInit {
           }
         });
       }
-     
+
     }
   }
 
@@ -475,12 +475,12 @@ export class RecipeFermentationComponent implements OnInit {
           }
         }
       }, error => {
-          if (error instanceof HttpErrorResponse) {
-            this.toast.danger(error.error.message);
-          }
-          else {
-            this.toast.danger(error);
-          }
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message);
+        }
+        else {
+          this.toast.danger(error);
+        }
       });
     }
   }

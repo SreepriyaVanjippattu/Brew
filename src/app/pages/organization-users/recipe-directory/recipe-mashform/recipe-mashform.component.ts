@@ -102,10 +102,10 @@ export class RecipeMashformComponent implements OnInit {
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    this.userId= user['userDetails'].userId;
-    if(this.route.snapshot.queryParams.recipeId){
-    this.recipeId= this.route.snapshot.queryParams.recipeId;
-    this.hasRecipeIdGenerated = true;
+    this.userId = user['userDetails'].userId;
+    if (this.route.snapshot.queryParams.recipeId) {
+      this.recipeId = this.route.snapshot.queryParams.recipeId;
+      this.hasRecipeIdGenerated = true;
     }
     this.getAllRecipeSystemData();
 
@@ -703,12 +703,12 @@ export class RecipeMashformComponent implements OnInit {
             }
           }
         }, error => {
-            if (error instanceof HttpErrorResponse) {
-              this.toast.danger(error.error.message);
-            }
-            else {
-              this.toast.danger(error);
-            }
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message);
+          }
+          else {
+            this.toast.danger(error);
+          }
         });
       } else {
         const addRecipeAPI = String.Format(this.apiService.addRecipe, this.tenantId, this.recipeId);
@@ -733,11 +733,11 @@ export class RecipeMashformComponent implements OnInit {
             }
           }
         }, error => {
-            if (error instanceof HttpErrorResponse) {
-              this.toast.danger(error.error.message);
-            } else {
-              this.toast.danger(error);
-            }
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message);
+          } else {
+            this.toast.danger(error);
+          }
         });
       }
     }

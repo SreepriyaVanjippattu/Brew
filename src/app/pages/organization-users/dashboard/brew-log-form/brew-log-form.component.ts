@@ -163,7 +163,6 @@ export class BrewLogFormComponent implements OnInit {
         this.maltTypes = response['body']['brewLogMasterDetails']['maltGrainTypes'];
         this.styles = response['body']['brewLogMasterDetails']['styles'];
         this.units = response['body']['brewLogMasterDetails']['units']
-        
         this.findUnits();
         
       }
@@ -182,6 +181,7 @@ export class BrewLogFormComponent implements OnInit {
     this.apiService.getDataByQueryParams(getBrewLogDetailsAPI, null, this.tenantId, this.brewId).subscribe(response => {
       if (response.status === 200) {
         this.brewRunLog = response['body']['brewRunLog'];
+       
 
         this.recipeContent = response['body']['recipe'];
         this.getVorlaufTargets(this.recipeContent);
@@ -195,6 +195,7 @@ export class BrewLogFormComponent implements OnInit {
         this.getPostWhirlpoolTargets(this.recipeContent);
         this.getCoolingTargets(this.recipeContent);
         this.getKettleTargets(this.recipeContent);
+             
         this.brewRunLog.hopesDetails.forEach(element => {
           if (element.addInId === '255ce5b1-4b1a-4da8-b269-5a0b81d9db23') {
             this.addInHopsKettle.push(element);
@@ -211,7 +212,6 @@ export class BrewLogFormComponent implements OnInit {
             this.addInAdjunctsWhirlpool.push(element);
           }
         });
-
         if (this.brewRunLog.vorlauf.length == 0) {
           this.brewRunLog.vorlauf.push(new Vorlauf());
         } else {
@@ -302,14 +302,13 @@ export class BrewLogFormComponent implements OnInit {
 
 
   findUnits() {
-    console.log(this.units);
     this.units.forEach(element => {
-      if (element.Id === this.preference.temperatureId) {
-        this.preferedUnit = element.Symbol;
+      if (element.id === this.preference.temperatureId) {
+        this.preferedUnit = element.symbol;
       }
-      if (element.Id === this.preference.gravityMeasurementId) {
-        this.preferedPlato = element.Name;
-        this.platoUnitId = element.Id;
+      if (element.id === this.preference.gravityMeasurementId) {
+        this.preferedPlato = element.name;
+        this.platoUnitId = element.id;
       }
     });
   }
@@ -538,7 +537,7 @@ export class BrewLogFormComponent implements OnInit {
   setVEnd(i, end): any {
     this.vorlaufEndTime = this.timezone(new Date().toUTCString());
     this.vorlaufEndTime = this.vorlaufEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.vorlaufEndTime;
+    end.endTime = this.vorlaufEndTime;
   }
 
   setSpargeStart(i, start) {
@@ -550,7 +549,7 @@ export class BrewLogFormComponent implements OnInit {
   setSpargeEnd(i, end) {
     this.spargeEndTime = this.timezone(new Date().toUTCString());
     this.spargeEndTime = this.spargeEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.spargeEndTime;
+    end.endTime = this.spargeEndTime;
   }
 
   setKettleStart(i, start) {
@@ -563,7 +562,7 @@ export class BrewLogFormComponent implements OnInit {
 
     this.kettleEndTime = this.timezone(new Date().toUTCString());
     this.kettleEndTime = this.kettleEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.kettleEndTime;
+    end.endTime = this.kettleEndTime;
   }
 
   setWhirlStart(i, start) {
@@ -582,13 +581,12 @@ export class BrewLogFormComponent implements OnInit {
   setCoolEnd(i, end) {
     this.coolEndTime = this.timezone(new Date().toUTCString());
     this.coolEndTime = this.coolEndTime.split(' ').slice(0, 5).join(' ');
-    end.EndTime = this.coolEndTime;
+    end.endTime = this.coolEndTime;
   }
 
   timezone(dateTime) {
 
-    const timeZone = JSON.parse(sessionStorage.preferenceUsed);
-    const preferedZone = timeZone.BaseUtcOffset;
+    const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
       let zone = preferedZone.replace(/:/gi, '');
       zone = zone.slice(0, -2);

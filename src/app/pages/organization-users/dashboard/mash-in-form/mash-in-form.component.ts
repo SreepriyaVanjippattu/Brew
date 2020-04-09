@@ -3,7 +3,7 @@ import { DashboardService } from '../dashboard.service';
 
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BrewRunMashin,BrewRun, MaltGrainBillDetail, WaterAdditionDetail, MashingTargetDetail, StartchTest, MashinDetailsNote, MashingTargetDetailsTemperature, StarchTestResultList } from '../../../../models/brewrun';
+import { BrewRunMashin, BrewRun, MaltGrainBillDetail, WaterAdditionDetail, MashingTargetDetail, StartchTest, MashinDetailsNote, MashingTargetDetailsTemperature, StarchTestResultList } from '../../../../models/brewrun';
 import { NbToastrService } from '@nebular/theme';
 import { FormBuilder } from '@angular/forms';
 import { Guid } from 'guid-typescript';
@@ -63,8 +63,8 @@ export class MashInFormComponent implements OnInit {
   statusDate;
   starchStatus = [];
   currentUser: any;
-  brewerName:any;
-  mashinAvailable : boolean
+  brewerName: any;
+  mashinAvailable: boolean
 
   constructor(
     private dataService: DashboardService,
@@ -82,21 +82,20 @@ export class MashInFormComponent implements OnInit {
 
     this.brewId = this.route.snapshot.paramMap.get('id');
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    
+
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
     this.brewerName = userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"];
 
-    
+
     this.getPreferenceUsed();
     this.getMashinMasterDetails();
-    
-    this.getMashinDetails(this.tenantId , this.brewId);
+
+    this.getMashinDetails(this.tenantId, this.brewId);
 
   }
 
-  getMashinMasterDetails()
-  {
+  getMashinMasterDetails() {
     const getMashinMasterDetailsAPI = String.Format(this.apiService.getBrewRunMashinMasterDetails, this.tenantId);
     this.apiService.getDataList(getMashinMasterDetailsAPI).subscribe(response => {
       if (response) {
@@ -108,7 +107,7 @@ export class MashInFormComponent implements OnInit {
         this.styles = response['body']['mashinMasterDetails']['styles'];
         this.units = response['body']['mashinMasterDetails']['units']
         this.findUnits();
-        
+
       }
     });
   }
@@ -120,16 +119,16 @@ export class MashInFormComponent implements OnInit {
    */
 
   getMashinDetails(tenantId, brewId) {
-    const getBrewRunMashinDetailsAPI = String.Format(this.apiService.getBrewRunMashinDetails, tenantId,brewId);
-      this.apiService.getDataByQueryParams(getBrewRunMashinDetailsAPI, null, tenantId, brewId).subscribe(response => {
+    const getBrewRunMashinDetailsAPI = String.Format(this.apiService.getBrewRunMashinDetails, tenantId, brewId);
+    this.apiService.getDataByQueryParams(getBrewRunMashinDetailsAPI, null, tenantId, brewId).subscribe(response => {
       if (response.status === 200) {
         this.brewRunMashin = response['body']['brewRunMashin'];
         this.maltTarget = response['body']['recipe']['maltGrainBills'];
-        this.waterTarget =  response['body']['recipe']['waterAdditions'];
-        this.mashinTarget.push( response['body']['recipe']['mashingTargets']);
+        this.waterTarget = response['body']['recipe']['waterAdditions'];
+        this.mashinTarget.push(response['body']['recipe']['mashingTargets']);
         this.starchTarget = response['body']['recipe'];
         this.mashinAvailable = response['body']['mashinAvailable'];
-    
+
         if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
           this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
         }
@@ -152,15 +151,19 @@ export class MashInFormComponent implements OnInit {
           }
         });
 
-        
+
         if (this.brewRunMashin.startchTest.length == 0) {
           this.brewRunMashin.startchTest.push(new StartchTest());
         } else {
-          if (this.brewRunMashin.startchTest[0].PassStatus) {
-            this.status = 'Pass';
+          for(let startchTest of this.brewRunMashin.startchTest[0].starchTestResultList)
+          {
+              if (startchTest.testResult === 'Pass') {
+                this.status = 'Pass';
+              }
           }
+          
         }
-        
+
         if (this.brewRunMashin.mashinDetailsNotes.length == 0) {
           this.brewRunMashin.mashinDetailsNotes.push(new MashinDetailsNote());
         }
@@ -171,11 +174,6 @@ export class MashInFormComponent implements OnInit {
     });
 
   }
-
-
- 
-
-
 
   findUnits() {
     this.units.forEach(element => {
@@ -190,7 +188,7 @@ export class MashInFormComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body']['preferenceSettings'];
-       
+
       }
     }, error => {
       console.error(error);
@@ -246,37 +244,35 @@ export class MashInFormComponent implements OnInit {
         mash.endTime = this.mashinEndTime;
 
       });
-      if (!this.mashinAvailable)
-      {
-         let addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-         this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
+      if (!this.mashinAvailable) {
+        let addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
+        this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
           this.mashinAvailable = response['body']['mashinAvailable'];
           this.router.navigate([url]);
-         }, error => {
-           this.toast.danger(error.error.Message);
-         });
+        }, error => {
+          this.toast.danger(error.error.Message);
+        });
       }
-      else
-      {
-         let editMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-         this.apiService.putData(editMashinAPI, this.brewRunMashin).subscribe(response => {
+      else {
+        let editMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
+        this.apiService.putData(editMashinAPI, this.brewRunMashin).subscribe(response => {
           this.mashinAvailable = response['body']['mashinAvailable'];
           this.router.navigate([url]);
-         }, error => {
-           this.toast.danger(error.error.Message);
-         });
+        }, error => {
+          this.toast.danger(error.error.Message);
+        });
       }
-     } else {
+    } else {
       document.getElementById('openModalButton').click();
     }
   }
 
- 
-  
+
+
   setStartTime(): any {
     var startTime = this.timezone(new Date().toUTCString());
     this.mashinStartTime = startTime.split(' ').slice(0, 5).join(' ');
-    this.mashinStartTime = moment(this.mashinStartTime).format('MMMM Do YYYY, h:mm:ss a');
+    this.mashinStartTime = moment(this.mashinStartTime).format('L, h:mm:ss a');
     document.getElementById('mashinStart').setAttribute('value', this.mashinStartTime);
     document.getElementById('mashinStartTime').setAttribute('value', this.mashinStartTime);
 
@@ -285,18 +281,17 @@ export class MashInFormComponent implements OnInit {
   setEndTime(): any {
     var endTime = this.timezone(new Date().toUTCString());
     this.mashinEndTime = endTime.split(' ').slice(0, 5).join(' ');
-    this.mashinEndTime = moment(this.mashinEndTime).format('MMMM Do YYYY, h:mm:ss a');
+    this.mashinEndTime = moment(this.mashinEndTime).format('L, h:mm:ss a');
     document.getElementById('mashinEnd').setAttribute('value', this.mashinEndTime);
     document.getElementById('mashinStartTime').setAttribute('value', this.mashinEndTime);
 
   }
 
-  
+
 
   timezone(dateTime) {
-        // Timezone convertion
-    const timeZone = JSON.parse(sessionStorage.preferenceUsed);
-    const preferedZone = timeZone.BaseUtcOffset;
+    // Timezone convertion
+    const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
       let zone = preferedZone.replace(/:/gi, '');
       zone = zone.slice(0, -2);
@@ -309,16 +304,16 @@ export class MashInFormComponent implements OnInit {
       return new Date(newDateTime).toUTCString();
     }
   }
-    setTempStartTime(i, start) {
+
+  setTempStartTime(i, start) {
     this.tempStartTime = this.timezone(new Date().toUTCString());
     this.tempStartTime = this.tempStartTime.split(' ').slice(0, 5).join(' ');
-    document.getElementById(`tempStart${i}`).setAttribute('value', this.tempStartTime);
-    start.StartTime = this.tempStartTime;
-    console.log('start.StartTime', start.StartTime);
-
+    this.tempStartTime = moment(this.mashinEndTime).format('L, h:mm:ss a');
+    let elementId = 'tempStart'+i;
+    document.getElementById(elementId).setAttribute('value', this.tempStartTime);
+    start.startTime = this.tempStartTime;
+    
   }
-  
-
 
   addNewSupplier() {
     const params = {
@@ -362,7 +357,7 @@ export class MashInFormComponent implements OnInit {
 
 
 
-  
+
   addNewType() {
     const params = {
       id: Guid.raw(),
@@ -383,13 +378,10 @@ export class MashInFormComponent implements OnInit {
     }
   }
 
-  getMaltTypeName(maltTypeId)
-  {
+  getMaltTypeName(maltTypeId) {
     let maltTypeName = '';
-    for(var maltType of  this.maltTypes )
-    {
-      if (maltType.id === maltTypeId)
-      {
+    for (var maltType of this.maltTypes) {
+      if (maltType.id === maltTypeId) {
         maltTypeName = maltType.name;
         break;
       }
@@ -397,13 +389,10 @@ export class MashInFormComponent implements OnInit {
     return maltTypeName;
   }
 
-  getCountryName(countryId)
-  {
+  getCountryName(countryId) {
     let countryName = '';
-    for(var country of   this.countries )
-    {
-      if (country.id === countryId)
-      {
+    for (var country of this.countries) {
+      if (country.id === countryId) {
         countryName = country.countryName;
         break;
       }
@@ -411,14 +400,11 @@ export class MashInFormComponent implements OnInit {
     return countryName;
   }
 
-  
-  getSupplierName(supplierId)
-  {
+
+  getSupplierName(supplierId) {
     let supplierName = '';
-    for(var supplier of   this.suppliers )
-    {
-      if (supplier.id === supplierId)
-      {
+    for (var supplier of this.suppliers) {
+      if (supplier.id === supplierId) {
         supplierName = supplier.name;
         break;
       }
@@ -426,13 +412,10 @@ export class MashInFormComponent implements OnInit {
     return supplierName;
   }
 
-  getUnitName(unitId)
-  {
+  getUnitName(unitId) {
     let unitName = '';
-    for(var unit of   this.units )
-    {
-      if (unit.id === unitId)
-      {
+    for (var unit of this.units) {
+      if (unit.id === unitId) {
         unitName = unit.name;
         break;
       }
@@ -442,7 +425,7 @@ export class MashInFormComponent implements OnInit {
 
   onMaltComplete(editedSectionName) {
     this.isCollapsed = !this.isCollapsed;
-    this.brewRunMashin.maltGrainBillDetails.forEach(maltGrainBillDetail =>{
+    this.brewRunMashin.maltGrainBillDetails.forEach(maltGrainBillDetail => {
       maltGrainBillDetail.isCompleted = true;
       maltGrainBillDetail.maltGrainType = this.getMaltTypeName(maltGrainBillDetail.maltGrainTypeId);
       maltGrainBillDetail.country = this.getCountryName(maltGrainBillDetail.countryId);
@@ -450,35 +433,33 @@ export class MashInFormComponent implements OnInit {
       maltGrainBillDetail.quantityUnit = this.getUnitName(maltGrainBillDetail.quantityUnitId)
       maltGrainBillDetail.completedUserId = this.currentUser;
       maltGrainBillDetail.completedUserName = this.brewerName;
-     });
-     if (!this.mashinAvailable)
-     {
-        let addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-        this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
-          this.mashinAvailable = response['body']['mashinAvailable'];
-          this.setClass = true;
-        }, error => {
-          this.toast.danger(error.error.Message);
-        });
-     }
-     else
-     {
-        let editMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
-        this.apiService.putData(editMashinAPI, this.brewRunMashin).subscribe(response => {
-          this.mashinAvailable = response['body']['mashinAvailable'];
-          this.setClass = true;
-        }, error => {
-          this.toast.danger(error.error.Message);
-        });
-     }
-    
-   
+    });
+    if (!this.mashinAvailable) {
+      let addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
+      this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
+        this.mashinAvailable = response['body']['mashinAvailable'];
+        this.setClass = true;
+      }, error => {
+        this.toast.danger(error.error.Message);
+      });
+    }
+    else {
+      let editMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
+      this.apiService.putData(editMashinAPI, this.brewRunMashin).subscribe(response => {
+        this.mashinAvailable = response['body']['mashinAvailable'];
+        this.setClass = true;
+      }, error => {
+        this.toast.danger(error.error.Message);
+      });
+    }
+
+
   }
 
 
   onWaterComplete(editedSectionName) {
     this.isCollapsedWater = !this.isCollapsedWater;
-    this.brewRunMashin.waterAdditionDetails.forEach(waterAdditionDetail =>{
+    this.brewRunMashin.waterAdditionDetails.forEach(waterAdditionDetail => {
       waterAdditionDetail.isCompleted = true;
       waterAdditionDetail.completedUserId = this.currentUser;
       waterAdditionDetail.completedUserName = this.brewerName;
@@ -491,9 +472,8 @@ export class MashInFormComponent implements OnInit {
       waterAdditionDetail.h3po4unit = this.getUnitName(waterAdditionDetail.h3po4unitId);
 
     });
-    if (!this.mashinAvailable)
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
+    if (!this.mashinAvailable) {
+      const addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
       this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         this.setClassWater = true;
@@ -501,9 +481,8 @@ export class MashInFormComponent implements OnInit {
         this.toast.danger(error.error.Message);
       });
     }
-    else
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
+    else {
+      const addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
       this.apiService.putData(addMashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         this.setClassWater = true;
@@ -511,27 +490,25 @@ export class MashInFormComponent implements OnInit {
         this.toast.danger(error.error.Message);
       });
     }
-  
+
   }
 
   onMashinComplete(i, editedSectionName) {
     this.isCollapsedMashing = !this.isCollapsedMashing;
-    this.brewRunMashin.mashingTargetDetails.forEach(mashingTargetDetail =>{
+    this.brewRunMashin.mashingTargetDetails.forEach(mashingTargetDetail => {
       mashingTargetDetail.isCompleted = true;
       mashingTargetDetail.completedUserId = this.currentUser;
       mashingTargetDetail.completedUserName = this.brewerName;
       mashingTargetDetail.strikeWaterUnitType = this.getUnitName(mashingTargetDetail.strikeWaterTemperatureUnitTypeId);
       mashingTargetDetail.strikeWaterTemperatureUnitType = this.getUnitName(mashingTargetDetail.strikeWaterTemperatureUnitTypeId);
-      if (mashingTargetDetail.mashingTargetDetailsTemperature !== null)
-      {
-          mashingTargetDetail.mashingTargetDetailsTemperature.forEach(temperature => {
-            temperature.temperatureUnitType = this.getUnitName(temperature.temperatureUnitTypeId)
-          });
+      if (mashingTargetDetail.mashingTargetDetailsTemperature !== null) {
+        mashingTargetDetail.mashingTargetDetailsTemperature.forEach(temperature => {
+          temperature.temperatureUnitType = this.getUnitName(temperature.temperatureUnitTypeId)
+        });
       }
     });
-    if (!this.mashinAvailable)
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
+    if (!this.mashinAvailable) {
+      const addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
       this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         this.setClassMashin = true;
@@ -539,9 +516,8 @@ export class MashInFormComponent implements OnInit {
         this.toast.danger(error.error.Message);
       });
     }
-    else
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
+    else {
+      const addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
       this.apiService.putData(addMashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         this.setClassMashin = true;
@@ -549,20 +525,19 @@ export class MashInFormComponent implements OnInit {
         this.toast.danger(error.error.Message);
       });
     }
-    
-  
+
+
   }
 
   onStarchComplete(i, editedSectionName) {
     this.isCollapsedStarch = !this.isCollapsedStarch;
-    this.brewRunMashin.startchTest.forEach(test =>{
+    this.brewRunMashin.startchTest.forEach(test => {
       test.isCompleted = true;
       test.completedUserId = this.currentUser;
       test.completedUserName = this.brewerName;
     });
-    if (!this.mashinAvailable)
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
+    if (!this.mashinAvailable) {
+      const addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
       this.apiService.postData(addMashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         this.setClassStarch = true;
@@ -570,9 +545,8 @@ export class MashInFormComponent implements OnInit {
         this.toast.danger(error.error.Message);
       });
     }
-    else
-    {
-      const addMashinAPI= String.Format(this.apiService.mashin, this.tenantId,this.brewId);
+    else {
+      const addMashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
       this.apiService.putData(addMashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         this.setClassStarch = true;
@@ -580,7 +554,7 @@ export class MashInFormComponent implements OnInit {
         this.toast.danger(error.error.Message);
       });
     }
-    
+
   }
 
   checkIfComplete(brewRunMashin: BrewRunMashin) {
@@ -628,7 +602,6 @@ export class MashInFormComponent implements OnInit {
     } else {
       this.status = 'Fail';
     }
-    console.log(this.brewRunMashin)
     let dateTime = this.timezone(new Date(this.statusDate).toUTCString());
     dateTime = dateTime.split(' ').slice(0, 5).join(' ');
     this.statusDate = new Date(dateTime).toLocaleString();
@@ -648,5 +621,5 @@ export class MashInFormComponent implements OnInit {
       });
     }
   }
-  
+
 }
