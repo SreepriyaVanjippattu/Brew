@@ -39,6 +39,7 @@ export class ArchivedRecipesComponent implements OnInit {
   statusName: any;
   recipeStatusName: any;
   headerValue: any;
+  searchText: any;
   constructor(
     private apiService: ApiProviderService,
     private router: Router,
@@ -49,10 +50,10 @@ export class ArchivedRecipesComponent implements OnInit {
     this.recipeStatusName = sessionStorage.getItem('recipeStatus');
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.tenantId = user['userDetails'].tenantId;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
-  getArchieveDetails(pageNumber, pageSize, tenantId) {
+  getArchieveDetails(pageNumber, pageSize, tenantId,searchText) {
     this.router.navigate(['app/recipes/archives'], {
       queryParams: {
         page: this.config.currentPage,
@@ -60,7 +61,7 @@ export class ArchivedRecipesComponent implements OnInit {
     });
     tenantId = this.tenantId;
     const getAllArchivedRecipesAPI = String.Format(this.apiService.getAllArchivedRecipes, this.tenantId);
-    this.apiService.getDataList(getAllArchivedRecipesAPI, pageNumber, pageSize).subscribe(response => {
+    this.apiService.getDataList(getAllArchivedRecipesAPI, pageNumber, pageSize, null, null, searchText).subscribe(response => {
       this.archieveContent = response['body'].recipes;
 
       this.headerValue = response['body']['pagingDetails'];
@@ -75,13 +76,13 @@ export class ArchivedRecipesComponent implements OnInit {
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
     this.router.navigate(['app/recipes/archives'], { queryParams: { page: nextPage } });
   }
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
   deleteClick(recipe) {
@@ -97,7 +98,7 @@ export class ArchivedRecipesComponent implements OnInit {
         if (response.status === "SUCCESS") {
           this.archieveContent = response['body'];
           this.toast.success('Recipe Deleted');
-          this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+          this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         } error => {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message, 'Failed');
@@ -137,16 +138,18 @@ export class ArchivedRecipesComponent implements OnInit {
   }
 
   searchRecipe(event) {
-
     const search = event.target.value;
-
+     this.searchText = search;
     const getAllArchivedRecipesAPI = String.Format(this.apiService.getAllArchivedRecipes, this.tenantId);
-    this.apiService.getDataList(getAllArchivedRecipesAPI, this.config.currentPage, this.config.itemsPerPage, null, null, search)
+    this.apiService.getDataList(getAllArchivedRecipesAPI, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {
         const myHeaders = response.headers;
-        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
+        this.headerValue = response['body']['pagingDetails'];
         if (this.headerValue) {
-          this.config.totalItems = this.headerValue.TotalCount;
+          this.config.totalItems = this.headerValue.totalCount;
+          if (this.config.totalItems === 0) {
+            this.pageControl = true;
+          }
         }
         if (response && response['body']) {
           this.archieveContent = response['body'].recipes;
@@ -198,7 +201,7 @@ export class ArchivedRecipesComponent implements OnInit {
       if (response) {
         const recipeConent = response['body'];
         this.toast.show('', 'Recipe Copied');
-        this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+        this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {

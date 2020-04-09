@@ -55,6 +55,7 @@ export class ListRecipeComponent implements OnInit {
   headerValue: any;
   pageControl;
   recipeStatus: any = [];
+  searchText: any;
 
   constructor(
     private apiService: ApiProviderService,
@@ -72,22 +73,21 @@ export class ListRecipeComponent implements OnInit {
     this.tenantId = this.userCompany.tenantId;
     this.page = this.route.snapshot.queryParamMap.get('page');
     if (this.page) {
-      this.getRecipeDetails(this.page, this.config.itemsPerPage, this.tenantId);
+      this.getRecipeDetails(this.page, this.config.itemsPerPage, this.tenantId, null);
     } else {
-      this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+      this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
     }
   }
 
-  getRecipeDetails(pageNumber, pageSize, tenantId) {
+  getRecipeDetails(pageNumber, pageSize, tenantId, searchText) {
     this.router.navigate(['app/recipes'], {
       queryParams: {
         page: this.config.currentPage,
       },
     });
     tenantId = this.tenantId;
-
     const getAllRecipeByTenantAPI = String.Format(this.apiService.getAllRecipeByTenant, tenantId);
-    this.apiService.getDataList(getAllRecipeByTenantAPI, pageNumber, pageSize, null, null, null).subscribe(response => {
+    this.apiService.getDataList(getAllRecipeByTenantAPI, pageNumber, pageSize, null, null, searchText).subscribe(response => {
       if (response['body']) {
         this.recipeContent = response['body'].recipes;
 
@@ -104,7 +104,7 @@ export class ListRecipeComponent implements OnInit {
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+    this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
     this.router.navigate(['app/recipes'], {
       queryParams: {
         page: nextPage,
@@ -123,7 +123,7 @@ export class ListRecipeComponent implements OnInit {
 
   pageSize(pagesize) {
     this.config.itemsPerPage = pagesize;
-    this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+    this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
   editRecipe(recipeId, recipelist) {
@@ -191,7 +191,7 @@ export class ListRecipeComponent implements OnInit {
         if (response.status === "SUCCESS") {
           this.recipeContent = response['body'];
           this.toast.success('Recipe Deleted');
-          this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+          this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         } error => {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message);
@@ -223,14 +223,17 @@ export class ListRecipeComponent implements OnInit {
   searchRecipe(event) {
 
     const search = event.target.value;
-
+    this.searchText = search;
     const getAllRecipeByTenantAPI = String.Format(this.apiService.getAllRecipeByTenant, this.tenantId);
-    this.apiService.getDataList(getAllRecipeByTenantAPI, this.config.currentPage, this.config.itemsPerPage, null, null, search)
+    this.apiService.getDataList(getAllRecipeByTenantAPI, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {
         const myHeaders = response.headers;
-        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
+        this.headerValue = response['body']['pagingDetails'];
         if (this.headerValue) {
-          this.config.totalItems = this.headerValue.TotalCount;
+          this.config.totalItems = this.headerValue.totalCount;
+          if (this.config.totalItems === 0) {
+            this.pageControl = true;
+          }
         }
         if (response && response['body']) {
           this.recipeContent = response['body'].recipes;
@@ -286,7 +289,7 @@ export class ListRecipeComponent implements OnInit {
       if (response === 200) {
         this.changeData = response['body'];
       }
-      this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+      this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
     }, error => {
       if (error instanceof HttpErrorResponse) {
         this.toast.danger(error.error.message);
@@ -301,7 +304,7 @@ export class ListRecipeComponent implements OnInit {
     const favoriteRecipeAPI = String.Format(this.apiService.favoriteRecipe, this.tenantId, recipe.id);
     this.apiService.patchData(favoriteRecipeAPI).subscribe((response: any) => {
       this.changeData = response['body'];
-      this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+      this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
     });
   }
 
@@ -316,7 +319,7 @@ export class ListRecipeComponent implements OnInit {
       this.apiService.postData(cloneRecipeAPI).subscribe(response => {
         if (response) {
           this.toast.show('', 'New Recipe Created');
-          this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId);
+          this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         }
       },
         error => {
