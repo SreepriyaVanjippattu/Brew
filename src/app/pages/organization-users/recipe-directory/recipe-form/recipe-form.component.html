@@ -345,7 +345,7 @@
 
                                         <select formControlName="timeInUnitId" class="form-control input-dropdown">
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.id">
+                                                <option *ngIf="unit.category === 'Days'" [value]="unit.id">
                                                     {{unit.symbol}}</option>
                                             </ng-container>
                                         </select>
@@ -422,7 +422,7 @@
 
                                         <select formControlName="timeInUnitId" class="form-control input-dropdown">
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.Category === 'Days'" [value]="unit.id">
+                                                <option *ngIf="unit.category === 'Days'" [value]="unit.id">
                                                     {{unit.symbol}}</option>
                                             </ng-container>
                                         </select>

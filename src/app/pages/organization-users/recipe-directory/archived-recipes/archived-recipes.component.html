@@ -35,7 +35,7 @@
             <div class="d-flex header-search-wrapper">
                 <div class="d-flex l-search">
                     <i class="material-icons search-ico"> search </i>
-                    <input (keyup)="searchRecipe($event)" class='l-searchbox' placeholder="Search Archived Recipes"
+                    <input (keyup)="searchRecipe()" [(ngModel)]= "searchText" class='l-searchbox' placeholder="Search Archived Recipes"
                         type="text">
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>

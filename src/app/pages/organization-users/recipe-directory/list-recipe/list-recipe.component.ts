@@ -220,10 +220,8 @@ export class ListRecipeComponent implements OnInit {
     }
   }
 
-  searchRecipe(event) {
-
-    const search = event.target.value;
-    this.searchText = search;
+  searchRecipe(){
+    
     const getAllRecipeByTenantAPI = String.Format(this.apiService.getAllRecipeByTenant, this.tenantId);
     this.apiService.getDataList(getAllRecipeByTenantAPI, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {

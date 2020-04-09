@@ -256,7 +256,7 @@ export class RecipeBrewlogComponent implements OnInit {
             fields.get('id').setValue(data.whirlpoolTarget.id);
           }
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
-          if (data.whirlpoolTarget.postBoilVolumeUnitId) {
+          if (data.whirlpoolTarget.postBoilVolumeUnitId !== Guid.EMPTY) {
             fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
           }
           fields.get('notes').setValue(data.whirlpoolTarget.notes);

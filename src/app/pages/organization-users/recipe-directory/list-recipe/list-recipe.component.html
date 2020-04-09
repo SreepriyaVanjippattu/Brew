@@ -29,7 +29,7 @@
             <div class="d-flex user-search-wrap">
                 <div class="d-flex l-search">
                     <i class="material-icons search-ico"> search </i>
-                    <input (keyup.enter)="searchRecipe($event)" class='l-searchbox' placeholder="Search Recipe"
+                    <input (keyup.enter)="searchRecipe()" [(ngModel)]= "searchText" class='l-searchbox' placeholder="Search Recipe"
                         type="text">
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
