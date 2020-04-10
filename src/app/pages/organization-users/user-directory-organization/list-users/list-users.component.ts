@@ -10,6 +10,7 @@ import { StatusUse } from '../../../../models/status-id-name';
 import * as XLSX from 'xlsx';
 import { DataService } from '../../../../data.service';
 import { permission } from '../../../../models/rolePermission';
+import { String } from 'typescript-string-operations';
 
 @Component({
   selector: 'app-list-users',
@@ -46,6 +47,9 @@ export class ListUsersComponent implements OnInit {
   archiveId: any;
   currentUserId: any;
   headerValue: any;
+  userDetails: any;
+  tenantId: any;
+  searchText: any;
 
   constructor(
     private router: Router,
@@ -59,27 +63,30 @@ export class ListUsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = this.userProfile.TenantId;
-    this.currentUserId = this.userProfile.Id;
+    this.userDetails = sessionStorage.user;
+    const user = JSON.parse(this.userDetails);
+    this.tenantId = user['userDetails'].tenantId;
+    this.currentUserId = user['userDetails'].userId;
     this.page = this.route.snapshot.queryParamMap.get('page');
     if (this.page) {
-      this.getuserDetails(this.page, this.config.itemsPerPage, this.currentUser);
+      this.getuserDetails(this.page, this.config.itemsPerPage, this.tenantId, null);
     } else {
-      this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+      this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
     }
   }
 
-  getuserDetails(pageNumber, pageSize, currentUser) {
+  getuserDetails(pageNumber, pageSize, tenantId, searchText) {
     this.router.navigate(['app/user-directory'], {
       queryParams: {
         page: this.config.currentPage,
       },
     });
-    this.apiService.getData(this.apiService.getAllActiveUsers, pageNumber, pageSize, currentUser).subscribe(response => {
-      this.userContent = response['body'];
-      this.jsonValue = JSON.parse(response.headers.get('paging-headers'));
-      if (this.jsonValue) {
-        this.config.totalItems = this.jsonValue.TotalCount;
+    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers,tenantId)
+    this.apiService.getDataList(getAllActiveUsersApi, pageNumber, pageSize, null,null, searchText).subscribe(response => {
+      this.userContent = response['body']['users'];
+      this.headerValue = response['body']['pagingDetails'];
+      if (this.headerValue) {
+        this.config.totalItems = this.headerValue.totalCount;
         if (this.config.totalItems === 0) {
           this.pageControl = true;
         }
@@ -89,12 +96,12 @@ export class ListUsersComponent implements OnInit {
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+    this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
     this.router.navigate(['app/user-directory'], { queryParams: { page: nextPage } });
   }
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+    this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
   goToArchive() {
@@ -135,17 +142,17 @@ export class ListUsersComponent implements OnInit {
 
   deleteUser() {
     const anyObject = {
-      Id: this.deleteId,
-      FirstName: this.deleteUserDetails.FirstName,
-      LastName: this.deleteUserDetails.LastName,
-      EmailAddress: this.deleteUserDetails.EmailAddress,
-      PrimaryPhone: this.deleteUserDetails.PrimaryPhone,
-      CompanyName: this.deleteUserDetails.CompanyName,
-      Password: this.deleteUserDetails.Password,
-      ImageUrl: '',
-      Position: this.deleteUserDetails.Position,
-      IsActive: true,
-      TenantId: this.deleteUserDetails.TenantId,
+      id: this.deleteId,
+      firstName: this.deleteUserDetails.firstName,
+      lastName: this.deleteUserDetails.lastName,
+      emailAddress: this.deleteUserDetails.emailAddress,
+      phone: this.deleteUserDetails.phone,
+      companyName: this.deleteUserDetails.companyName,
+      password: this.deleteUserDetails.password,
+      imageUrl: '',
+      position: this.deleteUserDetails.position,
+      isActive: true,
+      tenantId: this.deleteUserDetails.tenantId,
 
     };
     const endpoint = this.apiService.deleteUsers;
@@ -157,7 +164,7 @@ export class ListUsersComponent implements OnInit {
     this.httpClient.delete(url.toString(), httpOptions)
       .subscribe(response => {
         this.toastrService.show('User Deleted', 'Success');
-        this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+        this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       },
         (error) => {
           this.toastrService.danger(error.error.Message);
@@ -169,22 +176,24 @@ export class ListUsersComponent implements OnInit {
     this.router.navigate([`/app/user-directory`]);
   }
 
-  searchUser(event) {
-    const search = event.target.value;
-    this.apiService.getData(this.apiService.getAllActiveUsers + `&startwith=${search}`,
-      this.config.currentPage, this.config.itemsPerPage, this.currentUser).subscribe((response) => {
-        const myHeaders = response.headers;
-        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
-        if (this.headerValue) {
-          this.config.totalItems = this.headerValue.TotalCount;
+  searchUser() {
+    const getAllusersListApi = String.Format(this.apiService.getAllActiveUsers, this.tenantId);
+    this.apiService.getDataList(getAllusersListApi, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
+    .subscribe((response) => {
+        this.headerValue = response['body']['pagingDetails'];
+      if (this.headerValue) {
+        this.config.totalItems = this.headerValue.totalCount;
+        if (this.config.totalItems === 0) {
+          this.pageControl = true;
         }
+      }
         if (response && response['body']) {
-          this.userContent = response['body'];
+          this.userContent = response['body']['users'];
           this.userContent.map((user, idx) => {
             if (user !== null) {
-              user.Name = user.FirstName !== null ? user.FirstName : '';
-              user.UserName = user.UserName;
-              user.PrimaryPhone = user.PrimaryPhone;
+              user.name = user.firstName !== null ? user.firstName : '';
+              user.userName = user.userName;
+              user.phone = user.phone;
             }
           });
         }
@@ -228,27 +237,27 @@ export class ListUsersComponent implements OnInit {
       }
     });
     const params = {
-      Id: this.archivedUserList.Id,
-      FirstName: this.archivedUserList.FirstName,
-      MiddleName: this.archivedUserList.MiddleName,
-      LastName: this.archivedUserList.LastName,
-      EmailAddress: this.archivedUserList.EmailAddress,
-      PrimaryPhone: this.archivedUserList.PrimaryPhone,
-      UserName: this.archivedUserList.userName,
-      Password: this.archivedUserList.Password,
-      IsActive: this.archivedUserList.IsActive,
-      Position: this.archivedUserList.Position,
-      TenantId: this.archivedUserList.TenantId,
-      CurrentUser: this.currentUserId,
-      StatusId: this.status.archive.id,
-      Roles: [
+      id: this.archivedUserList.id,
+      firstName: this.archivedUserList.firstName,
+      middleName: this.archivedUserList.middleName,
+      lastName: this.archivedUserList.lastName,
+      emailAddress: this.archivedUserList.emailAddress,
+      phone: this.archivedUserList.phone,
+      userName: this.archivedUserList.userName,
+      password: this.archivedUserList.password,
+      isActive: this.archivedUserList.isActive,
+      position: this.archivedUserList.position,
+      tenantId: this.archivedUserList.tenantId,
+      currentUser: this.currentUserId,
+      statusId: this.status.archive.id,
+      roles: [
         {
-          Id: this.archivedUserList.Roles[0].Id,
-          Name: this.archivedUserList.Roles[0].Name,
+          id: this.archivedUserList.roles[0].id,
+          name: this.archivedUserList.roles[0].name,
         },
       ],
     };
-    if (this.archivedUserList.Roles[0].Id !== 'e306b412-cf09-486f-b336-21dadaddaeed') {
+    if (this.archivedUserList.roles[0].id !== 'e306b412-cf09-486f-b336-21dadaddaeed') {
       this.editArchivedUser(params);
     } else {
       this.toastrService.danger('Cannot Archive Organization Super User');

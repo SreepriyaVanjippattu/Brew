@@ -30,7 +30,7 @@
             <div class="d-flex user-search-wrap">
                 <div class="d-flex l-search">
                     <i class="material-icons search-ico"> search </i>
-                    <input (keyup.enter)="searchUser($event)" class='l-searchbox' placeholder="Search Users"
+                    <input (keyup.enter)="searchUser()" [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Users"
                         type="text">
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
@@ -80,26 +80,26 @@
 
                     <tbody>
                         <tr *ngFor="let item of userContent | paginate : config">
-                            <th scope="row" (click)="goToView(item.Id)" class="cursor-click">{{item.FirstName}}
-                                {{item.LastName}}</th>
-                            <td>{{item.Roles[0].Name}}</td>
-                            <td>{{item.PrimaryPhone | phoneFormat }}</td>
-                            <td>{{item.EmailAddress}}</td>
+                            <th scope="row" (click)="goToView(item.id)" class="cursor-click">{{item.firstName}}
+                                {{item.lastName}}</th>
+                            <td>{{item.roles}}</td>
+                            <td>{{item.phone | phoneFormat }}</td>
+                            <td>{{item.emailAddress}}</td>
                             <td>
-                                <span class="edit-ico ml-2 cursor-click" (click)="goToUsersEdit(item.Id)">
+                                <span class="edit-ico ml-2 cursor-click" (click)="goToUsersEdit(item.id)">
                                     <img src="assets/images/edit.svg">
                                 </span>
 
                                 <span class="download-ico ml-2 cursor-click">
-                                    <img (click)="getArchiveId(item.Id)" src="assets/images/down.svg"
+                                    <img (click)="getArchiveId(item.id)" src="assets/images/down.svg"
                                         data-target="#archiveModalCenter" data-toggle="modal">
                                 </span>
 
                                 <span class="del-ico ml-2 cursor-click">
 
-                                    <img *ngIf="!checkPermission" (click)="deleteSingleUser(item.Id, item)"
+                                    <img *ngIf="!checkPermission" (click)="deleteSingleUser(item.id, item)"
                                         src="assets/images/delete.svg" data-toggle="modal">
-                                    <img *ngIf="checkPermission" (click)="deleteSingleUser(item.Id, item)"
+                                    <img *ngIf="checkPermission" (click)="deleteSingleUser(item.id, item)"
                                         src="assets/images/delete.svg" data-toggle="modal"
                                         data-target="#exampleModalCenter">
 

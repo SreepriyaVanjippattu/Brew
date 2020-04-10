@@ -9,6 +9,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { StatusUse } from '../../../../models/status-id-name';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
+import { String } from 'typescript-string-operations';
 
 
 @Component({
@@ -37,6 +38,8 @@ export class EditUserComponent implements OnInit {
   permission = permission;
   checkPermission: boolean = false;
   envURL: string;
+  userDetails: any;
+  currentUserId: any;
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -59,8 +62,10 @@ export class EditUserComponent implements OnInit {
   ngOnInit() {
     this.envURL = environment.API.emailUrl;
     this.roleChangeAccess();
-    this.userProfile = JSON.parse(sessionStorage.getItem('user')).UserProfile;
-    this.tenantId = this.userProfile.TenantId;
+    this.userDetails = sessionStorage.user;
+    const user = JSON.parse(this.userDetails);
+    this.tenantId = user['userDetails'].tenantId;
+    this.currentUserId = user['userDetails'].userId;
     this.page = this.activatedRoute.snapshot.url[0].path;
     this.id = this.activatedRoute.snapshot.url[1].path;
     if (this.page === 'edit') {
@@ -73,6 +78,7 @@ export class EditUserComponent implements OnInit {
       this.isButtonVisible = false;
       this.page = 'View';
       this.usersForm.disable();
+      this.getUserDetails(this.tenantId, this.id);
     }
   }
 
@@ -106,28 +112,29 @@ export class EditUserComponent implements OnInit {
   getActiveRoles() {
     this.apiService.getData(this.apiService.getAllActiveRoles).subscribe(response => {
       if (response) {
-        this.roles = response['body'];
+        this.roles = response['body']['roles'];
         this.roles = this.roles.filter(element => {
-          return (element.Id !== '81db4ad1-863b-4310-a0be-04042d2b30e0' && element.Id !== '2e4606ca-7700-4578-94bd-cda3728d22ac');
+          return (element.id !== '81db4ad1-863b-4310-a0be-04042d2b30e0' && element.id !== '2e4606ca-7700-4578-94bd-cda3728d22ac');
         });
       }
     });
   }
 
   getUserDetails(tenantId, id) {
-    this.apiService.getData(this.apiService.getAllActiveUsers, '', '', tenantId).subscribe((response: any) => {
-      this.usersData = response['body'];
+    const getUserByIdApi = String.Format(this.apiService.getAllActiveUsers,tenantId);
+    this.apiService.getDataList(getUserByIdApi).subscribe((response: any) => {
+      this.usersData = response['body']['users'];
       this.usersData.forEach(element => {
-        if (element.Id === id) {
+        if (element.id === id) {
           this.usersData = element;
-          this.tenantId = element.TenantId;
+          this.tenantId = element.tenantId;
           if (this.page === 'View') {
-            this.headerTitle = element.FirstName + ' ' + element.LastName;
+            this.headerTitle = element.firstName + ' ' + element.lastName;
           }
-          element.Roles.forEach(elementId => {
-            this.currentUser = element;
-            this.roleId = elementId.Id;
-          });
+          // element.roles.forEach(elementId => {
+          //   this.currentUser = element;
+          //   this.roleId = elementId.id;
+          // });
           this.setDataToEdit();
         }
       });
@@ -141,11 +148,11 @@ export class EditUserComponent implements OnInit {
     } else {
       this.usersForm.get('roles').setValue(this.roleId);
     }
-    this.usersForm.get('firstName').setValue(this.usersData.FirstName);
-    this.usersForm.get('lastName').setValue(this.usersData.LastName);
-    this.usersForm.get('userEmail').setValue(this.usersData.EmailAddress);
-    this.usersForm.get('userPhone').setValue(this.usersData.PrimaryPhone);
-    this.usersForm.get('position').setValue(this.usersData.Position);
+    this.usersForm.get('firstName').setValue(this.usersData.firstName);
+    this.usersForm.get('lastName').setValue(this.usersData.lastName);
+    this.usersForm.get('userEmail').setValue(this.usersData.emailAddress);
+    this.usersForm.get('userPhone').setValue(this.usersData.phone);
+    this.usersForm.get('position').setValue(this.usersData.position);
   }
 
   saveUser() {
@@ -158,29 +165,34 @@ export class EditUserComponent implements OnInit {
 
     }
     const params = {
-      Id: this.id,
-      FirstName: this.usersForm.get('firstName').value,
-      MiddleName: '',
-      LastName: this.usersForm.get('lastName').value,
-      EmailAddress: this.usersForm.get('userEmail').value,
-      PrimaryPhone: this.usersForm.get('userPhone').value,
-      UserName: '',
-      Password: this.md5Password,
-      IsActive: true,
-      Position: this.usersForm.get('position').value,
-      CreatedDate: null,
-      ModifiedDate: null,
-      StatusId: this.Userstatus.active.id,
-      TenantId: this.userProfile.TenantId,
-      CurrentUser: this.userProfile.Id,
-      Roles: [
+      id: this.id,
+      firstName: this.usersForm.get('firstName').value,
+      middleName: '',
+      lastName: this.usersForm.get('lastName').value,
+      emailAddress: this.usersForm.get('userEmail').value,
+      phone: this.usersForm.get('userPhone').value,
+      userName: '',
+      password: this.md5Password,
+      isActive: true,
+      position: this.usersForm.get('position').value,
+      createdDate: null,
+      modifiedDate: new Date(),
+      statusId: this.Userstatus.active.id,
+      tenantId: this.tenantId,
+      currentUser: this.currentUserId,
+      roles: [
         {
-          Id: this.usersForm.get('roles').value,
+          id: this.usersForm.get('roles').value,
+          tenantId: "8ef705b9-6ecd-4edf-83d8-0c16f72009cf",
+			    roleId: "B25107AF-B2C7-4319-9D6D-6355C658EC0C",
+			    createdDate: null,
+			    modifiedDate: new Date()
         }],
     };
     if (this.usersForm.valid) {
 
-      this.apiService.putData(this.apiService.editUser, params).subscribe((response: any) => {
+      const addUserApi = String.Format(this.apiService.addUser, this.tenantId);
+      this.apiService.postData(addUserApi, params).subscribe((response: any) => {
         if (response.status === 200) {
           this.toastr.show('Success');
           this.router.navigate(['app/user-directory']);

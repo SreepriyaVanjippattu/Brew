@@ -54,33 +54,33 @@ export class ApiProviderService {
 
 
   // User Api/
-  getAllActiveUsers = 'GetAllActiveUsers';
-  editUser = 'EditUser';
-  addUser = 'AddUser';
-  deleteUsers = 'DeleteUser';
+  getAllActiveUsers = 'user/v1/brewers/{0}/users';
+  editUser = 'user/v1/brewers/{0}/user';
+  addUser = 'user/v1/brewers/{0}/user';
+  deleteUsers = 'user/v1/brewers/user/delete';
   resetUserPassword = 'ResetUserPassword';
   // Profile
   changeProfilePassword = 'EditUserPassword';
 
   // Role Permissions
-  getAllActiveRoles = 'GetAllActiveRole';
-  getAllPermissions = 'GetAllActivePermission';
-
+  getAllActiveRoles = 'user/v1/brewers/{0}/roles';
+  getAllPermissions = 'user/v1/brewers/role/permission';
+  addRole ='user/v1/brewers/{0}/role'
+  editRoles = 'user/v1/brewers/{0}/role';
   // get all Tenants/
   getAllTenantContent = 'GetAllTenentStatus';
   editClientSettings = 'EditClientSettings';
   editGeneralSettings = 'EditGeneralSettings';
 
   editSubcriptions = 'EditSubscription';
-  editRoles = 'EditRoles';
-  getAllActiveRole = 'GetAllActiveRole';
+ 
   // Units
 
 
   // preference
-  getPreferenceSettings = 'brewrun/v1/brewers/settings/{0}/preference';
+  getPreferenceSettings = 'user/v1/brewers/settings/{0}/preference';
   getAllPreferenceMasterDetails = 'brewrun/v1/brewers/settings/{0}/preferenceSettings';
-  addPreference = 'brewrun/v1/brewers/{0}/preference/';
+  addPreference = 'user/v1/brewers/{0}/preference/';
   addYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains';
   addTankConfiguration = 'brewrun/v1/brewers/{0}/tank/';
   getAllTankConfigurationList = 'brewrun/v1/brewers/{0}/tanksDetails';
@@ -111,7 +111,7 @@ export class ApiProviderService {
 
 
   changeBrewRunStatus = 'ChangeBrewRunStatus';
-  getAllArchivedUsers = 'GetAllArchievedUsers';
+  getAllArchivedUsers = 'user/v1/brewers/user/{0}/archived';
   getBrewRunById = 'GetBrewRunById';
   GetAllAvailableTankList = 'GetAllAvailableTankList';
   getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';

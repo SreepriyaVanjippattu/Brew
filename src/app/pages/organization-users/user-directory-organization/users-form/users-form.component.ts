@@ -8,7 +8,7 @@ import { Md5 } from 'ts-md5';
 import { UploadConfig, UploadParams, BlobService } from 'angular-azure-blob-service';
 import { environment } from '../../../../../environments/environment';
 import { StatusUse } from '../../../../models/status-id-name';
-
+import { String } from 'typescript-string-operations';
 @Component({
   selector: 'app-users-form',
   templateUrl: './users-form.component.html',
@@ -20,7 +20,7 @@ export class UsersFormComponent implements OnInit {
   formSubmitted = false;
   id;
   md5Password: any;
-  Tenant: any;
+  tenantId: any;
   roleId: string;
   roles;
   validPhone = true;
@@ -37,12 +37,14 @@ export class UsersFormComponent implements OnInit {
   imageUrlCreated = false;
   imageLink = '';
   status = StatusUse;
+  userDetails: any;
+  currentUserId: any;
 
   constructor(private fb: FormBuilder,
     private router: Router,
     private apiService: ApiProviderService,
     private activatedRoute: ActivatedRoute,
-    private toastr: NbToastrService,
+    private toast: NbToastrService,
     private blob: BlobService) { }
 
   usersForm = this.fb.group({
@@ -61,6 +63,10 @@ export class UsersFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userDetails = sessionStorage.user;
+    const user = JSON.parse(this.userDetails);
+    this.tenantId = user['userDetails'].tenantId;
+    this.currentUserId = user['userDetails'].userId;
     this.page = this.activatedRoute.snapshot.url[0].path;
     this.getActiveRoles();
   }
@@ -81,12 +87,12 @@ export class UsersFormComponent implements OnInit {
     }
   }
   getActiveRoles() {
-    this.apiService.getData(this.apiService.getAllActiveRoles).subscribe(response => {
+    this.apiService.getDataList(this.apiService.getAllActiveRoles).subscribe(response => {
       if (response) {
-        this.roles = response['body'];
+        this.roles = response['body']['roles'];
         this.roles = this.roles.filter(element => {
-          return (element.Id !== '81db4ad1-863b-4310-a0be-04042d2b30e0' && element.Id !== '2e4606ca-7700-4578-94bd-cda3728d22ac' &&
-            element.Id !== 'e306b412-cf09-486f-b336-21dadaddaeed');
+          return (element.id !== '81db4ad1-863b-4310-a0be-04042d2b30e0' && element.id !== '2e4606ca-7700-4578-94bd-cda3728d22ac' &&
+            element.id !== 'e306b412-cf09-486f-b336-21dadaddaeed');
         });
       }
     });
@@ -109,37 +115,41 @@ export class UsersFormComponent implements OnInit {
       const md5 = new Md5();
       this.md5Password = md5.appendStr('password@' + this.usersForm.get('firstName').value).end();
     }
-    this.Tenant = JSON.parse(sessionStorage.getItem('user')).UserProfile;
     const params = {
-      Id: this.id,
-      FirstName: this.usersForm.get('firstName').value,
-      MiddleName: '',
-      LastName: this.usersForm.get('lastName').value,
-      EmailAddress: this.usersForm.get('userEmail').value,
-      PrimaryPhone: this.usersForm.get('userPhone').value,
-      UserName: 'nyc',
-      Password: this.md5Password,
-      IsActive: true,
-      ImageUrl: this.imageLink,
-      Position: this.usersForm.get('position').value,
-      CreatedDate: null,
-      ModifiedDate: null,
-      TenantId: this.Tenant.TenantId,
+      id: this.id,
+      firstName: this.usersForm.get('firstName').value,
+      middleName: '',
+      lastName: this.usersForm.get('lastName').value,
+      emailAddress: this.usersForm.get('userEmail').value,
+      phone: this.usersForm.get('userPhone').value,
+      userName: 'nyc',
+      password: this.md5Password,
+      isActive: true,
+      imageUrl: this.imageLink,
+      position: this.usersForm.get('position').value,
+      createdDate: new Date(),
+      modifiedDate: '',
+      tenantId: this.tenantId,
       statusId: this.status.active.id,
-      CurrentUser: this.Tenant.Id,
-      Roles: [
+      currentUserId: this.currentUserId,
+      roles: [
         {
-          Id: this.usersForm.get('role').value,
+          id: this.usersForm.get('role').value,
+          tenantId: "8ef705b9-6ecd-4edf-83d8-0c16f72009cf",
+			    roleId: "B25107AF-B2C7-4319-9D6D-6355C658EC0C",
+			    createdDate: new Date(),
+			    modifiedDate: new Date()
         }],
     };
     if (this.usersForm.valid) {
-      this.apiService.postData(this.apiService.addUser, params).subscribe((response: any) => {
+      const addUserApi = String.Format(this.apiService.addUser, this.tenantId);
+      this.apiService.postData(addUserApi, params).subscribe((response: any) => {
         if (response.status === 200) {
-          this.toastr.show('Success');
+          this.toast.show('Success');
           this.router.navigate(['app/user-directory']);
         }
         error => {
-          this.toastr.danger(error.error.message);
+          this.toast.danger(error.error.message);
         };
       });
     }
@@ -157,7 +167,7 @@ export class UsersFormComponent implements OnInit {
         complete: () => {
           const timeStamp = new Date().getTime();
           this.imageLink = environment.storageUrlUser + this.id + `?${timeStamp}`;
-          this.toastr.show('Image', 'Uploaded');
+          this.toast.show('Image', 'Uploaded');
         },
         error: (err) => {
         },

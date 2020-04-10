@@ -97,7 +97,7 @@
                         </i>
                         <select class="form-control input-dropdown" id="role" formControlName="role">
                             <option value="" disabled>Select</option>
-                            <option *ngFor="let role of roles" [value]="role.Id">{{role.Name}}</option>
+                            <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
                         </select>
                         <div *ngIf="formSubmitted && form.role.errors?.required" class="valid-error">Role is required.
                         </div>
