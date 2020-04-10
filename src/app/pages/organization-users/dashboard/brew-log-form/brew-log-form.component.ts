@@ -19,6 +19,8 @@ import { FormBuilder } from '@angular/forms';
 import { Guid } from 'guid-typescript';
 import { DatePipe } from '@angular/common';
 import { String } from 'typescript-string-operations';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { Observable,of as observableOf } from 'rxjs';
 
 @Component({
   selector: 'brew-log-form',
@@ -126,6 +128,7 @@ export class BrewLogFormComponent implements OnInit {
   currentUser: any;
   maltNames: any;
   brewerName : string;
+  brewLogAvailable:boolean;
 
   constructor(
     private dataService: DashboardService,
@@ -181,8 +184,7 @@ export class BrewLogFormComponent implements OnInit {
     this.apiService.getDataByQueryParams(getBrewLogDetailsAPI, null, this.tenantId, this.brewId).subscribe(response => {
       if (response.status === 200) {
         this.brewRunLog = response['body']['brewRunLog'];
-       
-
+        this.brewLogAvailable = response['body']['brewLogAvailable']
         this.recipeContent = response['body']['recipe'];
         this.getVorlaufTargets(this.recipeContent);
         this.getSpargeTargets(this.recipeContent);
@@ -351,27 +353,11 @@ export class BrewLogFormComponent implements OnInit {
   }
 
   saveGo(url: string) {
-    this.brewRunLog.vorlauf.forEach((vorlauf: Vorlauf) => {
-      vorlauf.tenantId = this.tenantId;
-    });
-    this.brewRunLog.spargeDetails.forEach((sparge: SpargeDetail) => {
-      sparge.tenantId = this.tenantId;
-    });
-    this.brewRunLog.firstRunnings.forEach((firstrun: FirstRunning) => {
-      firstrun.tenantId = this.tenantId;
-    });
-    this.brewRunLog.lastRunnings.forEach((lastrun: LastRunning) => {
-      lastrun.tenantId = this.tenantId;
-    });
-    this.brewRunLog.kettleDataEntryDetails.forEach((kettle: KettleDataEntryDetail) => {
-      kettle.tenantId = this.tenantId;
-    });
+
     this.brewRunLog.hopesDetails.forEach((hop: HopesDetail) => {
-      hop.tenantId = this.tenantId;
       if (hop.addInId !== this.addInConstants.Fermentation.Id) {
         const dateTime2 = hop.startTime.toString().split(' ').slice(0, 5).join(' ');
-        const timeZone = JSON.parse(sessionStorage.preferenceUsed);
-        const preferedZone = timeZone.BaseUtcOffset;
+        const preferedZone = this.preference.baseUtcOffset;
         let zone = preferedZone.replace(/:/gi, '');
         zone = zone.slice(0, -2);
         const newDateTime = dateTime2 + ' GMT' + `${zone}`;
@@ -379,45 +365,22 @@ export class BrewLogFormComponent implements OnInit {
       }
     });
     this.brewRunLog.adjunctsDetails.forEach((adjunct: AdjunctsDetail) => {
-      adjunct.tenantId = this.tenantId;
       if (adjunct.addInId !== this.addInConstants.Fermentation.Id) {
         const dateTime2 = adjunct.startTime.toString().split(' ').slice(0, 5).join(' ');
-        const timeZone = JSON.parse(sessionStorage.preferenceUsed);
-        const preferedZone = timeZone.BaseUtcOffset;
+        const preferedZone = this.preference.baseUtcOffset;
         let zone = preferedZone.replace(/:/gi, '');
         zone = zone.slice(0, -2);
         const newDateTime = dateTime2 + ' GMT' + `${zone}`;
         adjunct.startTime = new Date(newDateTime).toLocaleString();
       }
     });
-    this.brewRunLog.postBoilData.forEach((postboil: PostBoilData) => {
-      postboil.tenantId = this.tenantId;
-    });
-    this.brewRunLog.whirlPoolDataEntry.forEach((whirlpool: WhirlPoolDataEntry) => {
-      whirlpool.tenantId = this.tenantId;
-
-    });
-    this.brewRunLog.postWhirlpoolDetails.forEach((postwhirlpool: PostWhirlpoolDetail) => {
-      postwhirlpool.tenantId = this.tenantId;
-    });
-    this.brewRunLog.brewLogDetailsNotes.forEach((note: BrewLogDetailsNote) => {
-      note.tenantId = this.tenantId;
-    });
-    this.brewRunLog.coolingKnockouDetails.forEach((cool: CoolingKnockouDetail) => {
-      cool.tenantId = this.tenantId;
-
-    });
-
-
-
-    this.apiService.postData(this.apiService.addBrewRun, this.brewRunLog).subscribe(response => {
-      if (response) {
-
-        this.router.navigate([url]);
-      }
+   
+    this.saveData().subscribe(response => {
+      this.router.navigate([url])
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
+    
   }
 
   addNewStyle() {
@@ -693,37 +656,68 @@ export class BrewLogFormComponent implements OnInit {
 
   onVorlauf(i, editedSectionName) {
     this.isCollapsedVorlauf = !this.isCollapsedVorlauf;
-    this.brewRunLog.vorlauf[i].isCompleted = true;
-    this.setClass = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.vorlauf.map(element => {
+       element.isCompleted = true;
+     });
+    this.saveData().subscribe(response => {
+      this.setClass = true;
+      }, error => {
+        this.setClass = false;
+        this.toast.danger(error.error.message);
+    });
   }
 
   onSpargeComplete(i, editedSectionName) {
     this.isCollapsedSparge = !this.isCollapsedSparge;
-    this.brewRunLog.spargeDetails[0].isCompleted = true;
-    this.setClassSparge = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.spargeDetails.map(element => {
+      element.isCompleted = true;
+    });
+    this.saveData().subscribe(response => {
+        this.setClassSparge = true;
+      }, error => {
+        this.setClassSparge = false;
+        this.toast.danger(error.error.message);
+    });
   }
 
   onFirstRunComplete(i, editedSectionName) {
     this.isCollapsedFirstRun = !this.isCollapsedFirstRun;
-    this.brewRunLog.firstRunnings[i].isCompleted = true;
-    this.setClassFirst = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.firstRunnings.map(element => {
+      element.isCompleted = true;
+    });
+   
+    this.saveData().subscribe(response => {
+      this.setClassFirst = true;
+    }, error => {
+      this.setClassFirst = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onLastRunComplete(i, editedSectionName) {
     this.isCollapsedLastRun = !this.isCollapsedLastRun;
-    this.brewRunLog.lastRunnings[i].isCompleted = true;
-    this.setClassLast = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.lastRunnings.map(element => {
+      element.isCompleted = true;
+    });
+    this.saveData().subscribe(response => {
+      this.setClassLast = true;
+    }, error => {
+      this.setClassLast = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onKettleComplete(i, editedSectionName) {
     this.isCollapsedKettle = !this.isCollapsedKettle;
-    this.brewRunLog.kettleDataEntryDetails[i].isCompleted = true;
-    this.setClassKettle = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.kettleDataEntryDetails.map(element => {
+      element.isCompleted = true;
+    });
+    this.saveData().subscribe(response => {
+      this.setClassKettle = true;
+    }, error => {
+      this.setClassKettle = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onHopsCompleteKettle(editedSectionName) {
@@ -733,8 +727,13 @@ export class BrewLogFormComponent implements OnInit {
         element.isCompleted = true;
       }
     });
-    this.setClassHops = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+   
+    this.saveData().subscribe(response => {
+      this.setClassHops = true;
+    }, error => {
+      this.setClassHops = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onHopsCompleteWhirl(editedSectionName) {
@@ -744,8 +743,13 @@ export class BrewLogFormComponent implements OnInit {
         element.isCompleted = true;
       }
     });
-    this.setClassHopsWhirl = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    
+    this.saveData().subscribe(response => {
+      this.setClassHopsWhirl = true;
+    }, error => {
+      this.setClassHopsWhirl = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onAdjunctsCompleteKettle(editedSectionName) {
@@ -755,8 +759,12 @@ export class BrewLogFormComponent implements OnInit {
         element.isCompleted = true;
       }
     });
-    this.setClassAdjuncts = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.saveData().subscribe(response => {
+      this.setClassAdjuncts = true;
+    }, error => {
+      this.setClassAdjuncts = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onAdjunctsCompleteWhirl(editedSectionName) {
@@ -766,36 +774,67 @@ export class BrewLogFormComponent implements OnInit {
         element.isCompleted = true;
       }
     });
-    this.setClassAdjunctsWhirl = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.saveData().subscribe(response => {
+      this.setClassAdjunctsWhirl = true;
+    }, error => {
+      this.setClassAdjunctsWhirl = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onPostBoilComplete(i, editedSectionName) {
     this.isCollapsedPostBoil = !this.isCollapsedPostBoil;
-    this.brewRunLog.postBoilData[i].isCompleted = true;
-    this.setClassPostBoil = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.postBoilData.map(element => {
+      element.isCompleted = true;
+    });
+    
+    this.saveData().subscribe(response => {
+      this.setClassPostBoil = true;
+    }, error => {
+      this.setClassPostBoil = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onWhirlpoolComplete(i, editedSectionName) {
     this.isCollapsedWhirlpool = !this.isCollapsedWhirlpool;
-    this.brewRunLog.whirlPoolDataEntry[i].isCompleted = true;
-    this.setClassWhirl = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.whirlPoolDataEntry.map(element => {
+      element.isCompleted = true;
+    });
+    
+    this.saveData().subscribe(response => {
+      this.setClassWhirl = true;
+    }, error => {
+      this.setClassWhirl = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onPostWhirlComplete(i, editedSectionName) {
     this.isCollapsedPostWhirlpool = !this.isCollapsedPostWhirlpool;
-    this.brewRunLog.postWhirlpoolDetails[i].isCompleted = true;
-    this.setClassPostWhirl = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.postWhirlpoolDetails.map(element => {
+      element.isCompleted = true;
+    });
+    
+    this.saveData().subscribe(response => {
+      this.setClassPostWhirl = true;
+    }, error => {
+      this.setClassPostWhirl = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   onCoolingComplete(i, editedSectionName) {
     this.isCollapsedCoolingKnockout = !this.isCollapsedCoolingKnockout;
-    this.brewRunLog.coolingKnockouDetails[i].isCompleted = true;
-    this.setClassCool = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunLog.coolingKnockouDetails.map(element => {
+      element.isCompleted = true;
+    });
+    this.saveData().subscribe(response => {
+      this.setClassCool = true;
+    }, error => {
+      this.setClassCool = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   checkIfComplete(brewRunLog: BrewRunLog) {
@@ -908,18 +947,25 @@ export class BrewLogFormComponent implements OnInit {
     }
   }
 
-  addbrewUserAuditTrail(editedSectionName) {
-    const params = {
-      Id: this.brewRunLog.id,
-      BrewRunId: this.brewRunLog.brewRunId,
-      CreatedByUserId: this.currentUser,
-      tenantId: this.brewRunLog.tenantId,
-      CurrentEditedSectionName: editedSectionName,
-    };
-    this.apiService.postData(this.apiService.addBrewUserAuditTrail, params).subscribe((response: any) => {
-    }, error => {
-      console.log(error);
-    });
+  saveData(): Observable<boolean>{
+    const brewLogAPI = String.Format(this.apiService.getBrewLogDetails, this.tenantId,this.brewId);
+    if (!this.brewLogAvailable) {
+        this.apiService.postData(brewLogAPI, this.brewRunLog).subscribe(response => {
+          this.brewLogAvailable = response['body']['brewLogAvailable'];
+          return observableOf(true);
+        }, error => {
+        return throwError(error);
+      });
+    }
+    else {
+       this.apiService.putData(brewLogAPI, this.brewRunLog).subscribe(response => {
+        this.brewLogAvailable =  response['body']['brewLogAvailable'];
+        return observableOf(true);
+        }, error => {
+          return throwError(error);
+      });
+    }
+    return observableOf(false);
   }
 
 }
