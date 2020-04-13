@@ -849,7 +849,7 @@ export class EnterFermentationData {
     id: string;
     brewId: string;
     recipeId: string;
-    DateAndTime: any;
+    dateAndTime: any;
     plato: number;
     temperature: number;
     temperatureUnitId: string;
@@ -862,7 +862,7 @@ export class EnterFermentationData {
 
     constructor() {
         this.id = Guid.raw();
-        this.DateAndTime = new Date();
+        this.dateAndTime = new Date();
         this.plato = null;
         this.temperature = null;
         this.temperatureUnitId = "";

@@ -346,9 +346,9 @@ export class ViewReportsComponent implements OnInit {
         }
 
         this.brew.enterFermentationData.map((enter: EnterFermentationData, i) => {
-          let dateTime = this.timezone(new Date(enter.DateAndTime).toUTCString());
+          let dateTime = this.timezone(new Date(enter.dateAndTime).toUTCString());
           dateTime = dateTime.split(' ').slice(0, 5).join(' ');
-          enter.DateAndTime = new Date(dateTime);
+          enter.dateAndTime = new Date(dateTime);
         });
 
         if (this.brew.fermentationDetailsNotes.length === 0) {

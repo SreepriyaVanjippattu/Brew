@@ -18,7 +18,7 @@
                             </i>Dashboard
                         </a>
                     </li>
-                    <li (click)="activeBrewClick()" class="breadcrumb-item"><a>Active Brew</a></li>
+                    <li  class="breadcrumb-item"><a>Active Brew</a></li>
                     <li class="breadcrumb-item"><a>Enter Data</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Fermentation</li>
                 </ol>
@@ -86,7 +86,7 @@
                                     <select class="form-control input-dropdown" [(ngModel)]="brewRunFermentation.tankId"
                                         (change)="currentValue($event)">
                                         <option disabled value="brewRunFermentation.tankName">Select</option>
-                                        <option *ngFor="let tank of tankList" [value]="tank.Id">{{tank.Name}}</option>
+                                        <option *ngFor="let tank of tankList" [value]="tank.id">{{tank.name}}</option>
                                     </select>
 
                                 </div>
@@ -141,8 +141,8 @@
                                             <select class="form-control input-dropdown"
                                                 [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].volumeInUnitId">
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
-                                                        {{unit.Symbol}}</option>
+                                                    <option *ngIf="unit.category === 'Size'" [value]="unit.id">
+                                                        {{unit.symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -172,8 +172,8 @@
                                                 [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPressureUnitId">
                                                 <option disabled value="">Select</option>
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.Category === 'Pressure'" [value]="unit.Id">
-                                                        {{unit.Symbol}}</option>
+                                                    <option *ngIf="unit.category === 'Pressure'" [value]="unit.id">
+                                                        {{unit.symbol}}</option>
                                                 </ng-container>
                                             </select>
                                         </div>
@@ -243,8 +243,8 @@
                                         <select class="form-control input-style input-dropdown" id=""
                                             [(ngModel)]="brewRunFermentation.yeastDataDetails[i].yeastStrainId">
                                             <option disabled value="">Select</option>
-                                            <option *ngFor="let yeastStrain of yeastStrain" [value]="yeastStrain.Id">
-                                                {{yeastStrain.Name}}</option>
+                                            <option *ngFor="let yeastStrain of yeastStrain" [value]="yeastStrain.id">
+                                                {{yeastStrain.name}}</option>
                                         </select>
                                     </div>
 
@@ -380,8 +380,8 @@
                                                     [(ngModel)]="brewRunFermentation.hopesDetails[i].quantityUnitTypeId">
                                                     <option disabled value="">Select</option>
                                                     <ng-container *ngFor="let unit of units">
-                                                        <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
-                                                            {{unit.Symbol}}</option>
+                                                        <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
+                                                            {{unit.symbol}}</option>
                                                     </ng-container>
                                                 </select>
                                             </div>
@@ -492,8 +492,8 @@
                                                     [(ngModel)]="brewRunFermentation.adjunctsDetails[i].quantityUnitTypeId">
                                                     <option disabled value="">Select</option>
                                                     <ng-container *ngFor="let unit of units">
-                                                        <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">
-                                                            {{unit.Symbol}}</option>
+                                                        <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
+                                                            {{unit.symbol}}</option>
                                                     </ng-container>
                                                 </select>
                                             </div>
@@ -653,7 +653,7 @@
                                         <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="brewrun-id"
                                             placeholder="Actual Temperature"
-                                            [(ngModel)]="brewRunFermentation.agingDetails[i].ActualTemperature">
+                                            [(ngModel)]="brewRunFermentation.agingDetails[i].actualTemperature">
                                     </div>
 
                                     <div class="form-group col-md-6">
@@ -666,8 +666,8 @@
                                                 [(ngModel)]="brewRunFermentation.agingDetails[i].timeDurationUnitId">
                                                 <option disabled value="">Select</option>
                                                 <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">
-                                                        {{unit.Symbol}}</option>
+                                                    <option *ngIf="unit.category === 'Days'" [value]="unit.id">
+                                                        {{unit.symbol}}</option>
                                                 </ng-container>
                                             </select>
 
@@ -761,10 +761,10 @@
                                 <tbody>
                                     <tr
                                         *ngFor="let enterFermentationData of brewRunFermentation.enterFermentationData; let i = index;">
-                                        <th>{{enterFermentationData.DateAndTime | date: 'MM/dd/yyyy  HH:mm:ss' }}</th>
-                                        <td>{{enterFermentationData.Plato}}</td>
-                                        <td>{{enterFermentationData.Temperature}}</td>
-                                        <td>{{enterFermentationData.Ph}}</td>
+                                        <th>{{enterFermentationData.dateAndTime | date: 'MM/dd/yyyy  HH:mm:ss' }}</th>
+                                        <td>{{enterFermentationData.plato}}</td>
+                                        <td>{{enterFermentationData.temperature}}</td>
+                                        <td>{{enterFermentationData.ph}}</td>
                                         <td>
                                             <span class="edit-ico ml-2 cursor-click">
                                                 <img (click)="editClientDirectory(i)"
@@ -840,7 +840,7 @@
                                         <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="ferment-acttemp"
                                             placeholder="Temperature"
-                                            [(ngModel)]="brewRunFermentation.EnterFermentationData[selectedPos].Temperature">
+                                            [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].temperature">
                                     </div>
 
                                     <div class="form-group col-md-6">
@@ -853,7 +853,7 @@
                                 <div class="form-row">
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <button type="button" class="btn btn-outline-light l-btn"
-                                            (click)="addClientDirectory();">
+                                            (click)="addFermentationData();">
                                             Add
                                         </button>
                                     </div>
@@ -880,7 +880,7 @@
                                 <div class="form-group col-md-12">
                                     <textarea type="text" class="form-control" id="meshin-notes"
                                         placeholder="Type Text Here..."
-                                        [(ngModel)]="brewRunFermentation.fermentationDetailsNotes[i].Notes"></textarea>
+                                        [(ngModel)]="brewRunFermentation.fermentationDetailsNotes[i].notes"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -934,12 +934,12 @@
                                 <label for="ferment-volume">Volume In</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="ferment-volume"
-                                        [value]="ferment.VolumeIn" disabled>
-                                    <select class="form-control input-dropdown" [value]="ferment.VolumeInUnitId"
+                                        [value]="ferment.volumeIn" disabled>
+                                    <select class="form-control input-dropdown" [value]="ferment.volumeInUnitId"
                                         disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -949,7 +949,7 @@
                             <div class="form-group col-md-6">
                                 <label for="ferment-acttemp">Actual Temperature (in {{preferedUnit}})</label>
                                 <input type="text" class="form-control" id="ferment-acttemp"
-                                    [value]="ferment.Temperature" disabled>
+                                    [value]="ferment.temperature" disabled>
                             </div>
 
 
@@ -961,13 +961,13 @@
                                 <label for="ferment-pressure">Actual Pressure </label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="ferment-pressure"
-                                        [value]="ferment.Pressure" disabled>
+                                        [value]="ferment.pressure" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="ferment-ph">Actual pH</label>
-                                <input type="text" class="form-control" id="ferment-ph" [value]="ferment.Ph" disabled>
+                                <input type="text" class="form-control" id="ferment-ph" [value]="ferment.ph" disabled>
                             </div>
 
                         </div>
@@ -975,7 +975,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="ferment-plato">Actual {{preferedPlato}}</label>
-                                <input type="text" class="form-control" id="ferment-plato" [value]="ferment.Plato"
+                                <input type="text" class="form-control" id="ferment-plato" [value]="ferment.plato"
                                     disabled>
                             </div>
                         </div>
@@ -1014,10 +1014,10 @@
                             <div class="form-group col-md-6">
                                 <label for="strain">Strain</label>
                                 <select class="form-control input-style input-dropdown" id=""
-                                    [value]="yeast.YeastStrainId" disabled>
+                                    [value]="yeast.yeastStrainId" disabled>
                                     <option disabled value="">Select</option>
-                                    <option *ngFor="let yeastStrain of yeastStrain" [value]="yeastStrain.Id">
-                                        {{yeastStrain.Name}}</option>
+                                    <option *ngFor="let yeastStrain of yeastStrain" [value]="yeastStrain.id">
+                                        {{yeastStrain.name}}</option>
                                 </select>
                             </div>
 
@@ -1052,21 +1052,21 @@
                     </button>
                 </div>
                 <div class="modal-body" *ngFor="let hops of hopsTarget;let i=index">
-                    <div *ngIf="hops.AddInId == addInConstants.Fermentation.Id">
+                    <div *ngIf="hops.addInId == addInConstants.Fermentation.Id">
                         <div class="col-md-12 pl-0">
-                            <b>Hops. {{getHopsCountFermTargets(hops.Id)}}</b></div>
+                            <b>Hops. {{getHopsCountFermTargets(hops.id)}}</b></div>
 
                         <div class="form-row mt-3">
                             <div class="form-group col-md-3">
                                 <label for="brewrun-name">Name</label>
                                 <input type="text" class="form-control" id="brewrun-name" placeholder=""
-                                    [value]="hops.Name" disabled>
+                                    [value]="hops.name" disabled>
                             </div>
 
                             <div for="status" class="form-group col-md-3">
                                 <label for="postal">Type</label>
                                 <select class="form-control input-style input-dropdown" id=""
-                                    [value]="hops.MaltGrainTypeId" disabled>
+                                    [value]="hops.maltGrainTypeId" disabled>
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
                                         {{maltTypes.name}}</option>
@@ -1075,7 +1075,7 @@
 
                             <div for="status" class="form-group col-md-3">
                                 <label for="postal">Origin</label>
-                                <select class="form-control input-style input-dropdown" id="" [value]="hops.CountryId"
+                                <select class="form-control input-style input-dropdown" id="" [value]="hops.countryId"
                                     disabled>
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let countries of countries" [value]="countries.id">
@@ -1085,7 +1085,7 @@
 
                             <div class="form-group col-md-3">
                                 <label for="brewrun-id">Supplier</label>
-                                <select class="form-control input-style input-dropdown" id="" [value]="hops.SupplierId"
+                                <select class="form-control input-style input-dropdown" id="" [value]="hops.supplierId"
                                     disabled>
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
@@ -1099,20 +1099,20 @@
                             <div class="form-group col-md-3">
                                 <label for="brewrun-alpha">Alpha (%)</label>
                                 <input type="text" class="form-control" id="brewrun-alpha" placeholder="Alpha (%)"
-                                    [value]="hops.Alpha" disabled>
+                                    [value]="hops.alpha" disabled>
                             </div>
 
                             <div class="form-group col-md-3">
                                 <label for="brewrrun-quantity">Quantity</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewrrun-quantity"
-                                        placeholder="Quantity" [value]="hops.Quantity" disabled>
+                                        placeholder="Quantity" [value]="hops.quantity" disabled>
 
-                                    <select class="form-control input-dropdown" [value]="hops.QuantityUnitTypeId"
+                                    <select class="form-control input-dropdown" [value]="hops.quantityUnitTypeId"
                                         disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngIf="unit.category === 'Mass'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -1122,10 +1122,10 @@
                             <div for="status" class="form-group col-md-3">
                                 <label for="add-in">Add In</label>
                                 <select class="form-control input-style input-dropdown" id="add-in"
-                                    [value]="hops.AddInId" disabled>
+                                    [value]="hops.addInId" disabled>
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let addins of addins" [value]="addins.Id">
-                                        {{addins.Name}}</option>
+                                        {{addins.name}}</option>
 
                                 </select>
                             </div>
@@ -1134,11 +1134,11 @@
                                 <label for="brewrrun-Quantity">Time In</label>
                                 <div class='multiple-input'>
                                     <input type="number" disabled class="form-control" id="brewrrun-Quantity"
-                                        placeholder="Time In" [value]="hops.TimeIn">
+                                        placeholder="Time In" [value]="hops.timeIn">
 
-                                    <select disabled [value]="hops.TimeInUnitId" class="form-control input-dropdown">
+                                    <select disabled [value]="hops.timeInUnitId" class="form-control input-dropdown">
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngIf="unit.category === 'Days'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -1175,19 +1175,19 @@
                 </div>
                 <div class="modal-body" *ngFor="let adjuncts of adjunctsTarget;let i=index">
                     <div class="container-fluid" *ngIf="adjuncts.AddInId == addInConstants.Fermentation.Id">
-                        <div class="col-md-12 pl-0"><b>Adjuncts. {{getAdjCountFermTargets(adjuncts.Id)}}</b></div>
+                        <div class="col-md-12 pl-0"><b>Adjuncts. {{getAdjCountFermTargets(adjuncts.id)}}</b></div>
 
                         <div class="form-row mt-3">
                             <div class="form-group col-md-4">
                                 <label for="brewrun-alpha">Name</label>
                                 <input type="text" class="form-control" id="brewrun-alpha" placeholder="Name"
-                                    [value]="adjuncts.Name" disabled>
+                                    [value]="adjuncts.name" disabled>
                             </div>
 
                             <div for="status" class="form-group col-md-4">
                                 <label for="postal">Origin</label>
                                 <select class="form-control input-style input-dropdown" id=""
-                                    [value]="adjuncts.CountryId" disabled>
+                                    [value]="adjuncts.countryId" disabled>
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let countries of countries" [value]="countries.id">
                                         {{countries.countryName}}</option>
@@ -1198,7 +1198,7 @@
                                 <label for="postal">Supplier</label>
 
                                 <select class="form-control input-style input-dropdown" id=""
-                                    [value]="adjuncts.SupplierId" disabled>
+                                    [value]="adjuncts.supplierId" disabled>
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
                                         {{suppliers.name}}</option>
@@ -1213,12 +1213,12 @@
                                 <label for="brewrrun-quantity">Quantity</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewrrun-quantity"
-                                        [value]="adjuncts.Quantity" disabled>
-                                    <select class="form-control input-dropdown" [value]="adjuncts.QuantityUnitId"
+                                        [value]="adjuncts.quantity" disabled>
+                                    <select class="form-control input-dropdown" [value]="adjuncts.quantityUnitId"
                                         disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.Category === 'Mass'" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngIf="unit.category === 'Mass'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -1228,10 +1228,10 @@
                             <div for="status" class="form-group col-md-4">
                                 <label for="add-in">Add In</label>
                                 <select class="form-control input-style input-dropdown" id="add-in"
-                                    [value]="adjuncts.AddInId" disabled>
+                                    [value]="adjuncts.addInId" disabled>
                                     <option disabled value="">Select</option>
-                                    <option *ngFor="let addins of addins" [value]="addins.Id">
-                                        {{addins.Name}}</option>
+                                    <option *ngFor="let addins of addins" [value]="addins.id">
+                                        {{addins.name}}</option>
                                 </select>
                             </div>
 
@@ -1239,12 +1239,12 @@
                                 <label for="brewrrun-Quantity">Time In</label>
                                 <div class='multiple-input'>
                                     <input type="number" disabled class="form-control" id="brewrrun-Quantity"
-                                        placeholder="Time In" [value]="adjuncts.TimeIn">
+                                        placeholder="Time In" [value]="adjuncts.timeIn">
 
-                                    <select disabled [value]="adjuncts.TimeInUnitId"
+                                    <select disabled [value]="adjuncts.timeInUnitId"
                                         class="form-control input-dropdown">
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngIf="unit.category === 'Days'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -1279,7 +1279,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="brewrun-id">{{preferedPlato}}</label>
-                                <input type="number" class="form-control" id="brewrun-id" [value]="ferm.Plato" disabled>
+                                <input type="number" class="form-control" id="brewrun-id" [value]="ferm.plato" disabled>
                             </div>
                         </div>
 
@@ -1287,12 +1287,12 @@
                             <div class="form-group col-md-6">
                                 <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
                                 <input type="number" class="form-control" id="ferment-acttemp"
-                                    [value]="ferm.Temperature" disabled>
+                                    [value]="ferm.temperature" disabled>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="ferment-ph">pH</label>
-                                <input type="number" class="form-control" id="ferment-ph" [value]="ferm.Ph" disabled>
+                                <input type="number" class="form-control" id="ferment-ph" [value]="ferm.ph" disabled>
                             </div>
 
                             <div class="form-row">
@@ -1333,13 +1333,13 @@
 
                             <div class="form-group col-md-6">
                                 <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
-                                <input type="text" class="form-control" id="brewrun-id" [value]="diac.Temperature"
+                                <input type="text" class="form-control" id="brewrun-id" [value]="diac.temperature"
                                     disabled>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="brewrun-id">{{preferedPlato}}</label>
-                                <input type="text" class="form-control" id="brewrun-id" [value]="diac.Plato" disabled>
+                                <input type="text" class="form-control" id="brewrun-id" [value]="diac.plato" disabled>
                             </div>
 
 
@@ -1380,20 +1380,20 @@
 
                             <div class="form-group col-md-6">
                                 <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
-                                <input type="text" class="form-control" id="brewrun-id" [value]="cool.Temperature"
+                                <input type="text" class="form-control" id="brewrun-id" [value]="cool.temperature"
                                     disabled>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="vol-out">Time Duration</label>
                                 <div class='multiple-input'>
-                                    <input type="number" class="form-control" id="vol-out" [value]="cool.TimeDuration"
+                                    <input type="number" class="form-control" id="vol-out" [value]="cool.timeDuration"
                                         disabled>
-                                    <select class="form-control input-dropdown" [value]="cool.TimeDurationUnitId"
+                                    <select class="form-control input-dropdown" [value]="cool.timeDurationUnitId"
                                         disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.Category === 'Days'" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngIf="unit.category === 'Days'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -1442,10 +1442,10 @@
                             </thead>
                             <tbody *ngFor="let ferment of fermentTarget">
                                 <tr>
-                                    <th>{{ferment.CreatedDate | date}}</th>
-                                    <td>{{ferment.Plato}}</td>
-                                    <td>{{ferment.Temperature}}</td>
-                                    <td>{{ferment.Ph}}</td>
+                                    <th>{{ferment.createdDate | date}}</th>
+                                    <td>{{ferment.plato}}</td>
+                                    <td>{{ferment.temperature}}</td>
+                                    <td>{{ferment.ph}}</td>
                                 </tr>
                             </tbody>
                         </table>

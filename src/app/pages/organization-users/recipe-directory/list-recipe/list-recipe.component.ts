@@ -164,7 +164,7 @@ export class ListRecipeComponent implements OnInit {
       this.apiService.patchData(archivedRecipeAPI).subscribe((response: any) => {
         if (response.status === 200) {
           this.changeData = response['body'];
-          this.toast.success('Recipe Archived');
+          this.toast.success('', 'Recipe Archived');
         } error => {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message);
@@ -190,7 +190,7 @@ export class ListRecipeComponent implements OnInit {
       this.apiService.deleteData(deleteRecipeAPI).subscribe((response: any) => {
         if (response.status === "SUCCESS") {
           this.recipeContent = response['body'];
-          this.toast.success('Recipe Deleted');
+          this.toast.success('', 'Recipe Deleted');
           this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         } error => {
           if (error instanceof HttpErrorResponse) {
@@ -202,7 +202,7 @@ export class ListRecipeComponent implements OnInit {
         }
       });
     } else {
-      this.toast.danger('Committed Recipe Cannot Delete');
+      this.toast.danger('', 'Committed Recipe Cannot Delete');
     }
   }
 
@@ -220,8 +220,8 @@ export class ListRecipeComponent implements OnInit {
     }
   }
 
-  searchRecipe(){
-    
+  searchRecipe() {
+
     const getAllRecipeByTenantAPI = String.Format(this.apiService.getAllRecipeByTenant, this.tenantId);
     this.apiService.getDataList(getAllRecipeByTenantAPI, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {
@@ -231,6 +231,8 @@ export class ListRecipeComponent implements OnInit {
           this.config.totalItems = this.headerValue.totalCount;
           if (this.config.totalItems === 0) {
             this.pageControl = true;
+          } else {
+            this.pageControl = false;
           }
         }
         if (response && response['body']) {

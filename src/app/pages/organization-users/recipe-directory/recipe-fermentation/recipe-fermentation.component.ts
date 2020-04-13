@@ -144,6 +144,10 @@ export class RecipeFermentationComponent implements OnInit {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.Id;
         }
+        if (this.platoUnitIdFromDb == Guid.EMPTY && element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
+        }
         if (!this.platoUnitIdFromDb && element.id === this.preference.gravityMeasurementId) {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
@@ -218,24 +222,24 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.fermentationTargets != null) {
         this.fermentationTargetsArray.controls.forEach(fields => {
-          if (data.fermentationTargets.id !== Guid.EMPTY) {
+          if (data.fermentationTargets.id !== Guid.EMPTY && data.fermentationTargets.id !== null) {
             fields.get('id').setValue(data.fermentationTargets.id);
           }
           fields.get('volumeIn').setValue(data.fermentationTargets.volumeIn);
-          if (data.fermentationTargets.volumeInUnitId) {
+          if (data.fermentationTargets.volumeInUnitId !== Guid.EMPTY && data.fermentationTargets.volumeInUnitId !== null) {
             fields.get('volumeInUnitId').setValue(data.fermentationTargets.volumeInUnitId);
           }
           fields.get('temperature').setValue(data.fermentationTargets.temperature);
-          if (data.fermentationTargets.temperatureUnitId) {
+          if (data.fermentationTargets.temperatureUnitId !== Guid.EMPTY && data.fermentationTargets.temperatureUnitId !== null) {
             fields.get('temperatureUnitId').setValue(data.fermentationTargets.temperatureUnitId);
           }
           fields.get('pressure').setValue(data.fermentationTargets.pressure);
-          if (data.fermentationTargets.pressureUnitId) {
+          if (data.fermentationTargets.pressureUnitId !== Guid.EMPTY && data.fermentationTargets.pressureUnitId !== null) {
             fields.get('pressureUnitId').setValue(data.fermentationTargets.pressureUnitId);
           }
           fields.get('ph').setValue(data.fermentationTargets.ph);
           fields.get('plato').setValue(data.fermentationTargets.plato);
-          if (data.fermentationTargets.platoUnitId) {
+          if (data.fermentationTargets.platoUnitId !== Guid.EMPTY && data.fermentationTargets.platoUnitId !== null) {
             fields.get('platoUnitId').setValue(data.fermentationTargets.platoUnitId);
           }
         });
@@ -244,15 +248,15 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.diacetylRest != null) {
         this.diacetylRestArray.controls.forEach(fields => {
-          if (data.diacetylRest.id !== Guid.EMPTY) {
+          if (data.diacetylRest.id !== Guid.EMPTY && data.diacetylRest.id !== null) {
             fields.get('id').setValue(data.diacetylRest.id);
           }
           fields.get('temperature').setValue(data.diacetylRest.temperature);
-          if (data.diacetylRest.temperatureUnitId) {
+          if (data.diacetylRest.temperatureUnitId !== Guid.EMPTY && data.diacetylRest.temperatureUnitId !== null) {
             fields.get('temperatureUnitId').setValue(data.diacetylRest.temperatureUnitId);
           }
           fields.get('plato').setValue(data.diacetylRest.plato);
-          if (data.diacetylRest.platoUnitId) {
+          if (data.diacetylRest.platoUnitId !== Guid.EMPTY && data.diacetylRest.platoUnitId !== null) {
             fields.get('platoUnitId').setValue(data.diacetylRest.platoUnitId);
           }
         });
@@ -261,15 +265,15 @@ export class RecipeFermentationComponent implements OnInit {
 
       if (data.aging != null) {
         this.agingArray.controls.forEach(fields => {
-          if (data.aging.id !== Guid.EMPTY) {
+          if (data.aging.id !== Guid.EMPTY && data.aging.id !== null) {
             fields.get('id').setValue(data.aging.id);
           }
           fields.get('timeDuration').setValue(data.aging.timeDuration);
-          if (data.aging.timeDurationUnitId) {
+          if (data.aging.timeDurationUnitId !== Guid.EMPTY && data.aging.timeDurationUnitId !== null) {
             fields.get('timeDurationUnitId').setValue(data.aging.timeDurationUnitId);
           }
           fields.get('temperature').setValue(data.aging.temperature);
-          if (data.aging.temperatureUnitId) {
+          if (data.aging.temperatureUnitId !== Guid.EMPTY && data.aging.temperatureUnitId !== null) {
             fields.get('temperatureUnitId').setValue(data.aging.temperatureUnitId);
           }
         });
@@ -280,17 +284,17 @@ export class RecipeFermentationComponent implements OnInit {
       if (data.yeast != null) {
 
         this.yeastArray.controls.forEach(fields => {
-          if (data.yeast.id !== Guid.EMPTY) {
+          if (data.yeast.id !== Guid.EMPTY && data.yeast.id !== null) {
             fields.get('id').setValue(data.yeast.id);
           }
           fields.get('name').setValue(data.yeast.name);
-          if (data.yeast.yeastStrainId) {
+          if (data.yeast.yeastStrainId !== Guid.EMPTY && data.yeast.yeastStrainId !== null) {
             fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
           }
-          if (data.yeast.countryId) {
+          if (data.yeast.countryId !== Guid.EMPTY && data.yeast.countryId !== null) {
             fields.get('countryId').setValue(data.yeast.countryId);
           }
-          if (data.yeast.supplierId) {
+          if (data.yeast.supplierId !== Guid.EMPTY && data.yeast.supplierId !== null) {
             fields.get('supplierId').setValue(data.yeast.supplierId);
           }
         });
@@ -476,7 +480,7 @@ export class RecipeFermentationComponent implements OnInit {
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
-          this.toast.danger(error.error.message);
+          this.toast.danger('', error.error.message);
         }
         else {
           this.toast.danger(error);

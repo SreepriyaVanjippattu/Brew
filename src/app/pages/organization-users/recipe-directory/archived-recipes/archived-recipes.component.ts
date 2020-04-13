@@ -53,7 +53,7 @@ export class ArchivedRecipesComponent implements OnInit {
     this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
-  getArchieveDetails(pageNumber, pageSize, tenantId,searchText) {
+  getArchieveDetails(pageNumber, pageSize, tenantId, searchText) {
     this.router.navigate(['app/recipes/archives'], {
       queryParams: {
         page: this.config.currentPage,
@@ -97,7 +97,7 @@ export class ArchivedRecipesComponent implements OnInit {
       this.apiService.deleteData(deleteRecipeAPI).subscribe((response: any) => {
         if (response.status === "SUCCESS") {
           this.archieveContent = response['body'];
-          this.toast.success('Recipe Deleted');
+          this.toast.success('', 'Recipe Deleted');
           this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         } error => {
           if (error instanceof HttpErrorResponse) {
@@ -109,7 +109,7 @@ export class ArchivedRecipesComponent implements OnInit {
         }
       });
     } else {
-      this.toast.danger('Committed Recipe Cannot Delete');
+      this.toast.danger('', 'Committed Recipe Cannot Delete');
     }
   }
 
@@ -119,7 +119,7 @@ export class ArchivedRecipesComponent implements OnInit {
       this.apiService.patchData(archivedRecipeAPI).subscribe((response: any) => {
         if (response.status === 200) {
           this.archieveContent = response['body'];
-          this.toast.success('Recipe Restored');
+          this.toast.success('', 'Recipe Restored');
         } error => {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message, 'Failed');
@@ -147,15 +147,17 @@ export class ArchivedRecipesComponent implements OnInit {
           this.config.totalItems = this.headerValue.totalCount;
           if (this.config.totalItems === 0) {
             this.pageControl = true;
+          } else {
+            this.pageControl = false;
           }
         }
         if (response && response['body']) {
           this.archieveContent = response['body'].recipes;
           this.archieveContent.map((recipe, idx) => {
             if (recipe !== null) {
-              recipe.ReceipeName = recipe.name !== null ? recipe.name : '';
-              recipe.StyleName = recipe.styleName;
-              recipe.YeastStrainName = recipe.yeastStrainName;
+              recipe.name = recipe.name !== null ? recipe.name : '';
+              recipe.styleName = recipe.styleName;
+              recipe.yeast.name = recipe.yeast.name;
             }
           });
         }

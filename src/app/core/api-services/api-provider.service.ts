@@ -36,7 +36,8 @@ export class ApiProviderService {
   mashin = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/'
   getBrewLogMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/brewlog/masterdetails'
   getBrewLogDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewlog/'
-
+  getFermentationMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/fermentation/masterdetails'
+  getFermentationDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/fermentation/'
 
 
   getSubscriptions = 'GetAllActiveSubscription';

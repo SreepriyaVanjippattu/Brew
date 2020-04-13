@@ -144,6 +144,10 @@ export class RecipeBrewlogComponent implements OnInit {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.id;
         }
+        if (this.platoUnitIdFromDb == Guid.EMPTY && element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
+        }
         if (!this.platoUnitIdFromDb && element.id === this.preference.gravityMeasurementId) {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
@@ -226,21 +230,21 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.kettleTargets != null) {
         this.kettleTargetsArray.controls.forEach(fields => {
-          if (data.kettleTargets.id !== Guid.EMPTY) {
+          if (data.kettleTargets.id !== Guid.EMPTY && data.kettleTargets.id !== null) {
             fields.get('id').setValue(data.kettleTargets.id);
           }
           fields.get('boilLength').setValue(data.kettleTargets.boilLength);
           fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
           fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
-          if (data.kettleTargets.volumePreBoilUnitId) {
+          if (data.kettleTargets.volumePreBoilUnitId !== Guid.EMPTY && data.kettleTargets.volumePreBoilUnitId !== null) {
             fields.get('volumePreBoilUnitId').setValue(data.kettleTargets.volumePreBoilUnitId);
           }
           fields.get('volumePostBoil').setValue(data.kettleTargets.volumePostBoil);
-          if (data.kettleTargets.volumePostBoilUnitId) {
+          if (data.kettleTargets.volumePostBoilUnitId !== Guid.EMPTY && data.kettleTargets.volumePostBoilUnitId !== null) {
             fields.get('volumePostBoilUnitId').setValue(data.kettleTargets.volumePostBoilUnitId);
           }
           fields.get('plato').setValue(data.kettleTargets.plato);
-          if (data.kettleTargets.platoUnitId) {
+          if (data.kettleTargets.platoUnitId !== Guid.EMPTY && data.kettleTargets.platoUnitId !== null) {
             fields.get('platoUnitId').setValue(data.kettleTargets.platoUnitId);
           }
           fields.get('ph').setValue(data.kettleTargets.ph);
@@ -252,11 +256,11 @@ export class RecipeBrewlogComponent implements OnInit {
 
       if (data.whirlpoolTarget != null) {
         this.whirlpoolTargetArray.controls.forEach(fields => {
-          if (data.whirlpoolTarget.id !== Guid.EMPTY) {
+          if (data.whirlpoolTarget.id !== Guid.EMPTY && data.whirlpoolTarget.id !== null) {
             fields.get('id').setValue(data.whirlpoolTarget.id);
           }
           fields.get('postBoilVolume').setValue(data.whirlpoolTarget.postBoilVolume);
-          if (data.whirlpoolTarget.postBoilVolumeUnitId !== Guid.EMPTY) {
+          if (data.whirlpoolTarget.postBoilVolumeUnitId !== Guid.EMPTY && data.whirlpoolTarget.postBoilVolumeUnitId !== null) {
             fields.get('postBoilVolumeUnitId').setValue(data.whirlpoolTarget.postBoilVolumeUnitId);
           }
           fields.get('notes').setValue(data.whirlpoolTarget.notes);
@@ -268,7 +272,7 @@ export class RecipeBrewlogComponent implements OnInit {
       if (data.coolingKnockoutTarget != null) {
         this.coolingKnockoutTargetsArray.controls.forEach(fields => {
           fields.get('volumeInFermentation').setValue(data.coolingKnockoutTarget.volumeInFermentation);
-          if (data.coolingKnockoutTarget.volumeInFermentationOptionId !== Guid.EMPTY) {
+          if (data.coolingKnockoutTarget.volumeInFermentationOptionId !== Guid.EMPTY && data.coolingKnockoutTarget.volumeInFermentationOptionId !== null) {
             fields.get('volumeInFermentationOptionId').setValue(data.coolingKnockoutTarget.volumeInFermentationOptionId);
           }
           fields.get('notes').setValue(data.coolingKnockoutTarget.notes);

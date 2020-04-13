@@ -127,6 +127,10 @@ export class RecipeConditioningComponent implements OnInit {
           this.preferedUnit = element.symbol;
           this.preferedTempUnit = element.id;
         }
+        if (this.platoUnitIdFromDb == Guid.EMPTY && element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
+        }
         if (!this.platoUnitIdFromDb && element.id === this.preference.gravityMeasurementId) {
           this.preferedPlato = element.name;
           this.platoUnitId = element.id;
@@ -191,25 +195,25 @@ export class RecipeConditioningComponent implements OnInit {
 
       if (data.conditioningTargets != null) {
         this.conditioningTargetsArray.controls.forEach(fields => {
-          if (data.conditioningTargets.id !== Guid.EMPTY) {
+          if (data.conditioningTargets.id !== Guid.EMPTY && data.conditioningTargets.id !== null) {
             fields.get('id').setValue(data.conditioningTargets.id);
           }
           fields.get('volumeIn').setValue(data.conditioningTargets.volumeIn);
-          if (data.conditioningTargets.volumeInUnitId) {
+          if (data.conditioningTargets.volumeInUnitId !== Guid.EMPTY && data.conditioningTargets.volumeInUnitId !== null) {
             fields.get('volumeInUnitId').setValue(data.conditioningTargets.volumeInUnitId);
           }
           fields.get('temperature').setValue(data.conditioningTargets.temperature);
-          if (data.conditioningTargets.temperatureUnitId) {
+          if (data.conditioningTargets.temperatureUnitId !== Guid.EMPTY && data.conditioningTargets.temperatureUnitId !== null) {
             fields.get('temperatureUnitId').setValue(data.conditioningTargets.temperatureUnitId);
           }
           fields.get('pressure').setValue(data.conditioningTargets.pressure);
-          if (data.conditioningTargets.pressureUnitId) {
+          if (data.conditioningTargets.pressureUnitId !== Guid.EMPTY && data.conditioningTargets.pressureUnitId !== null) {
             fields.get('pressureUnitId').setValue(data.conditioningTargets.pressureUnitId);
           }
           fields.get('ph').setValue(data.conditioningTargets.ph);
           fields.get('plato').setValue(data.conditioningTargets.plato);
           fields.get('co2').setValue(data.conditioningTargets.co2);
-          if (data.conditioningTargets.co2UnitId) {
+          if (data.conditioningTargets.co2UnitId !== Guid.EMPTY && data.conditioningTargets.co2UnitId !== null) {
             fields.get('co2UnitId').setValue(data.conditioningTargets.co2UnitId);
           }
           fields.get('notes').setValue(data.conditioningTargets.notes);
@@ -219,11 +223,11 @@ export class RecipeConditioningComponent implements OnInit {
 
       if (data.filterationTargets != null) {
         this.filterationTargetsArray.controls.forEach(fields => {
-          if (data.filterationTargets.id !== Guid.EMPTY) {
+          if (data.filterationTargets.id !== Guid.EMPTY && data.filterationTargets.id !== null) {
             fields.get('id').setValue(data.filterationTargets.id);
           }
           fields.get('temperature').setValue(data.filterationTargets.temperature);
-          if (data.filterationTargets.temperatureUnitId) {
+          if (data.filterationTargets.temperatureUnitId !== Guid.EMPTY && data.filterationTargets.temperatureUnitId !== null) {
             fields.get('temperatureUnitId').setValue(data.filterationTargets.temperatureUnitId);
           }
           fields.get('notes').setValue(data.filterationTargets.notes);
@@ -232,12 +236,12 @@ export class RecipeConditioningComponent implements OnInit {
 
       if (data.carbonationTargets != null) {
         this.carbonationTargetsArray.controls.forEach(fields => {
-          if (data.carbonationTargets.id !== Guid.EMPTY) {
+          if (data.carbonationTargets.id !== Guid.EMPTY && data.carbonationTargets.id !== null) {
             fields.get('id').setValue(data.carbonationTargets.id);
           }
           fields.get('ph').setValue(data.carbonationTargets.ph);
           fields.get('pressure').setValue(data.carbonationTargets.pressure);
-          if (data.carbonationTargets.pressureUnitId) {
+          if (data.carbonationTargets.pressureUnitId !== Guid.EMPTY && data.carbonationTargets.pressureUnitId !== null) {
             fields.get('pressureUnitId').setValue(data.carbonationTargets.pressureUnitId);
           }
           fields.get('notes').setValue(data.carbonationTargets.notes);

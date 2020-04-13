@@ -71,7 +71,7 @@ export class RecipeMashformComponent implements OnInit {
   indexHops = [];
   indexAdjuncts = [];
   page: any;
-  singleRecipeDetails: any;
+  recipeDetails: any;
   mashinClicked = false;
   brewlogClicked = false;
   fermentationClicked = false;
@@ -179,18 +179,18 @@ export class RecipeMashformComponent implements OnInit {
   getRecipeDetailsById(recipeId) {
     const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, recipeId);
     this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
-      this.singleRecipeDetails = response['body'].recipe;
-      if (this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
-        this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId
+      this.recipeDetails = response['body'].recipe;
+      if (this.recipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
+        this.recipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId
       ) {
-        this.tempUnitIdFromDb = this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
-          this.singleRecipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
+        this.tempUnitIdFromDb = this.recipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
+          this.recipeDetails.mashingTargets.mashingTargetTemperatures[0].temperatureUnitTypeId;
       }
 
-      this.setValueToEdit(this.singleRecipeDetails);
-      this.styleName = this.singleRecipeDetails.styleName;
-      this.statusId = this.singleRecipeDetails.statusId;
-      if (this.singleRecipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+      this.setValueToEdit(this.recipeDetails);
+      this.styleName = this.recipeDetails.styleName;
+      this.statusId = this.recipeDetails.statusId;
+      if (this.recipeDetails.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
         // commit status
         // disable save and commit
         this.disableSave = true;
@@ -585,20 +585,6 @@ export class RecipeMashformComponent implements OnInit {
       }
       this.recipeMashForm.get('id').setValue(this.recipeId);
 
-      if (this.recipeId && this.singleRecipeDetails) {
-        // set data from get-api to formData
-        formData.kettleTargets = this.singleRecipeDetails.kettleTargets;
-        formData.sparges = this.singleRecipeDetails.sparges;
-        formData.whirlpoolTarget = this.singleRecipeDetails.whirlpoolTarget;
-        formData.coolingKnockoutTarget = this.singleRecipeDetails.coolingKnockoutTarget;
-        formData.fermentationTargets = this.singleRecipeDetails.fermentationTargets;
-        formData.diacetylRest = this.singleRecipeDetails.diacetylRest;
-        formData.aging = this.singleRecipeDetails.aging;
-        formData.yeast = this.singleRecipeDetails.yeast;
-        formData.conditioningTargets = this.singleRecipeDetails.conditioningTargets;
-        formData.filterationTargets = this.singleRecipeDetails.filterationTargets;
-        formData.carbonationTargets = this.singleRecipeDetails.carbonationTargets;
-      }
       // Recipe Details
       formData.id = this.recipeId;
       formData.name = this.recipeMashForm.value.name;
@@ -613,6 +599,34 @@ export class RecipeMashformComponent implements OnInit {
       formData.tenantId = this.tenantId;
       formData.yeastStrainId = this.recipeMashForm.value.yeastStrainId;
       formData.statusId = this.statusId;
+      
+      if (this.recipeId && this.recipeDetails != undefined) {
+        // set data from get-api to formData
+        formData.kettleTargets = this.recipeDetails.kettleTargets;
+        formData.sparges = this.recipeDetails.sparges;
+        formData.whirlpoolTarget = this.recipeDetails.whirlpoolTarget;
+        formData.coolingKnockoutTarget = this.recipeDetails.coolingKnockoutTarget;
+        formData.fermentationTargets = this.recipeDetails.fermentationTargets;
+        formData.diacetylRest = this.recipeDetails.diacetylRest;
+        formData.aging = this.recipeDetails.aging;
+        formData.yeast = this.recipeDetails.yeast;
+        formData.conditioningTargets = this.recipeDetails.conditioningTargets;
+        formData.filterationTargets = this.recipeDetails.filterationTargets;
+        formData.carbonationTargets = this.recipeDetails.carbonationTargets;
+      }
+      else {
+        formData.kettleTargets = {};
+        formData.sparges = [];
+        formData.whirlpoolTarget = {};
+        formData.coolingKnockoutTarget = {};
+        formData.fermentationTargets = {};
+        formData.diacetylRest = {};
+        formData.aging = {};
+        formData.yeast = {};
+        formData.conditioningTargets = {};
+        formData.filterationTargets = {};
+        formData.carbonationTargets = {};
+      }
 
       // Malt/Grain Bill
       this.newMaltArray = [];
@@ -645,8 +659,8 @@ export class RecipeMashformComponent implements OnInit {
         formData.hops = hops;
       } else {
         formData.hops = hops;
-        if (this.singleRecipeDetails != null) {
-          this.singleRecipeDetails.hops.forEach((element) => {
+        if (this.recipeDetails != null) {
+          this.recipeDetails.hops.forEach((element) => {
             if (element.additionalHopesStatus === true) {
               formData.hops.push(element);
             }
@@ -665,8 +679,8 @@ export class RecipeMashformComponent implements OnInit {
         formData.adjuncts = adjuncts;
       } else {
         formData.adjuncts = adjuncts;
-        if (this.singleRecipeDetails != null) {
-          this.singleRecipeDetails.adjuncts.forEach((element) => {
+        if (this.recipeDetails != null) {
+          this.recipeDetails.adjuncts.forEach((element) => {
             if (element.additionalAdjunctsStatus === true) {
               formData.adjuncts.push(element);
             }
@@ -704,7 +718,7 @@ export class RecipeMashformComponent implements OnInit {
           }
         }, error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger(error.error.message);
+            this.toast.danger('', error.error.message);
           }
           else {
             this.toast.danger(error);
@@ -734,7 +748,7 @@ export class RecipeMashformComponent implements OnInit {
           }
         }, error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger(error.error.message);
+            this.toast.danger('', error.error.message);
           } else {
             this.toast.danger(error);
           }

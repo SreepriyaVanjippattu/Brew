@@ -218,7 +218,7 @@ export class PreferencesComponent implements OnInit {
           this.toast.show('General Settings Added', 'Success');
         }
       }, error => {
-        this.toast.danger('Something went wrong, Try Again');
+        this.toast.danger('', 'Something went wrong, Try Again');
       });
     }
 
@@ -365,14 +365,14 @@ export class PreferencesComponent implements OnInit {
 
     const search = event.target.value;
 
-      const getAllTankTypesListApi = String.Format(this.apiService.getAllTankConfigurationList, this.tenantId);
-      this.apiService.getDataList(getAllTankTypesListApi, null, null, null, null, search).subscribe(response => {
+    const getAllTankTypesListApi = String.Format(this.apiService.getAllTankConfigurationList, this.tenantId);
+    this.apiService.getDataList(getAllTankTypesListApi, null, null, null, null, search).subscribe(response => {
 
-        if (response.status === 200) {
-          this.tankConfiguration = response['body'].tankDetails;
-          this.listTankItems(this.tankConfiguration);
-        }
-      });
+      if (response.status === 200) {
+        this.tankConfiguration = response['body'].tankDetails;
+        this.listTankItems(this.tankConfiguration);
+      }
+    });
   }
 
   savenewTank(e, i) {
