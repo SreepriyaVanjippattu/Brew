@@ -9,6 +9,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { DataService } from '../../../../data.service';
 import { permission } from '../../../../models/rolePermission';
+import { String } from 'typescript-string-operations';
 
 @Component({
   selector: 'app-archived-users',
@@ -43,6 +44,9 @@ export class ArchivedUsersComponent implements OnInit {
   checkPermission: boolean = false;
   currentUserId: any;
   headerValue: any;
+  userDetails: any;
+  tenantId: any;
+  searchText: any;
 
   constructor(
     private apiService: ApiProviderService,
@@ -55,27 +59,30 @@ export class ArchivedUsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.currentUser = this.userProfile.TenantId;
-    this.currentUserId = this.userProfile.Id;
-    this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+    this.userDetails = sessionStorage.user;
+    const user = JSON.parse(this.userDetails);
+    this.tenantId = user['userDetails'].tenantId;
+    this.currentUserId = user['userDetails'].userId;
+    this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId,'');
   }
 
-  getArchivedUserDetails(pageNumber, pageSize, currentUser) {
+  getArchivedUserDetails(pageNumber, pageSize, tenantId, searchText) {
     this.router.navigate(['app/user-directory/archives'], {
       queryParams: {
         page: this.config.currentPage,
       },
     });
-    this.apiService.getData(this.apiService.getAllArchivedUsers, pageNumber, pageSize, currentUser).subscribe(response => {
-      this.archieveContent = response['body'];
+    const getAllArchivedUsersApi = String.Format(this.apiService.getAllArchivedUsers,tenantId)
+    this.apiService.getDataList(getAllArchivedUsersApi, pageNumber, pageSize,null,null,searchText).subscribe(response => {
+      this.archieveContent = response['body']['users'];
       this.archieveContent.forEach(element => {
-        if (element.StatusId === StatusUse.archive.id) {
+        if (element.statusId === StatusUse.archive.id) {
           this.statusName = StatusUse.archive.name;
         }
       });
-      this.jsonValue = JSON.parse(response.headers.get('paging-headers'));
-      if (this.jsonValue) {
-        this.config.totalItems = this.jsonValue.TotalCount;
+      this.headerValue = response['body']['pagingDetails'];
+      if (this.headerValue) {
+        this.config.totalItems = this.headerValue.totalCount;
         if (this.config.totalItems === 0) {
           this.pageControl = true;
         }
@@ -91,37 +98,39 @@ export class ArchivedUsersComponent implements OnInit {
     } else {
 
       this.archieveContent.forEach(element => {
-        if (id === element.Id) {
+        if (id === element.id) {
           this.userToRestore = element;
         }
       });
-      const params = {
-        Id: id,
-        FirstName: this.userToRestore.FirstName,
-        MiddleName: this.userToRestore.MiddleName,
-        LastName: this.userToRestore.LastName,
-        EmailAddress: this.userToRestore.EmailAddress,
-        PrimaryPhone: this.userToRestore.PrimaryPhone,
-        UserName: this.userToRestore.userName,
-        Password: this.userToRestore.Password,
-        IsActive: this.userToRestore.IsActive,
-        Position: this.userToRestore.Position,
-        TenantId: this.userToRestore.TenantId,
-        CurrentUser: this.currentUserId,
-        StatusId: this.status.active.id,
-        Roles: [
+      if(this.userToRestore.roles[0].id){
+      var params = {
+        id: this.userToRestore.id,
+        firstName: this.userToRestore.firstName,
+        middleName: this.userToRestore.middleName,
+        lastName: this.userToRestore.lastName,
+        emailAddress: this.userToRestore.emailAddress,
+        phone: this.userToRestore.phone,
+        userName: this.userToRestore.userName,
+        password: this.userToRestore.password,
+        isActive: this.userToRestore.isActive,
+        imageUrl:'',
+        position: this.userToRestore.position,
+        tenantId: this.userToRestore.tenantId,
+        statusId: this.status.active.id,
+        roles: [
           {
-            Id: this.userToRestore.Roles[0].Id,
-            Name: this.userToRestore.Roles[0].Name,
+            id: this.userToRestore.roles[0].id,
           },
         ],
       };
+    }
 
       this.restoreClient(params);
     }
   }
 
   restoreClient(params) {
+    const restoreUserApi = String.Format(this.apiService.editUser, this.tenantId)
     this.apiService.putData(this.apiService.editUser, params).subscribe((response: any) => {
       if (response.status === 200) {
         this.toastrService.show('User Restored', 'Success');
@@ -129,34 +138,36 @@ export class ArchivedUsersComponent implements OnInit {
       }
     },
       error => {
-        this.toastrService.danger(error.error.Message, 'Error');
+        this.toastrService.danger(error.error.message, 'Error');
       });
   }
 
-  searchClient(event) {
-    const search = event.target.value;
-    this.apiService.getData(this.apiService.getAllArchivedUsers + `&startwith=${search}`, this.config.currentPage, this.config.itemsPerPage,
-      this.currentUser).subscribe((response) => {
-        const myHeaders = response.headers;
-        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
+  searchClient() {
+    const getAllusersListApi = String.Format(this.apiService.getAllArchivedUsers, this.tenantId);
+    this.apiService.getDataList(getAllusersListApi, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
+      .subscribe((response) => {
+        this.headerValue = response['body']['pagingDetails'];
         if (this.headerValue) {
-          this.config.totalItems = this.headerValue.TotalCount;
+          this.config.totalItems = this.headerValue.totalCount;
+          if (this.config.totalItems === 0) {
+            this.pageControl = true;
+          }
         }
         if (response && response['body']) {
-          this.archieveContent = response['body'];
+          this.archieveContent = response['body']['users'];
         }
       });
   }
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+    this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
     this.router.navigate(['app/user-directory/archives'], { queryParams: { page: nextPage } });
   }
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+    this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, '');
   }
 
   deleteSingleUser(id, item) {
@@ -165,40 +176,14 @@ export class ArchivedUsersComponent implements OnInit {
   }
 
   deleteUser() {
-    const anyObject = {
-      Id: this.deleteId,
-      FirstName: this.deleteUserDetails.FirstName,
-      LastName: this.deleteUserDetails.LastName,
-      EmailAddress: this.deleteUserDetails.EmailAddress,
-      PrimaryPhone: this.deleteUserDetails.PrimaryPhone,
-      Password: this.deleteUserDetails.Password,
-      ImageUrl: '',
-      Position: this.deleteUserDetails.Position,
-      IsActive: true,
-      TenantId: this.deleteUserDetails.TenantId,
-      CurrentUser: this.deleteUserDetails.CurrentUser,
-      StatusId: this.status.deleted.id,
-      Roles: [
-        {
-          Id: this.deleteUserDetails.Roles[0].Id,
-          Name: this.deleteUserDetails.Roles[0].Name,
-        },
-      ],
-
-    };
-    const endpoint = this.apiService.deleteUsers;
-    const url = new URL(`${environment.API.URL}/${endpoint}`);
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: anyObject,
-    };
-    this.httpClient.delete(url.toString(), httpOptions)
-      .subscribe(response => {
+   
+    this.apiService.deleteData(this.apiService.deleteUser, this.deleteId)
+      .subscribe(response =>{
         this.toastrService.show('User Deleted', 'Success');
-        this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.currentUser);
+        this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId,'');
       },
         (error) => {
-          this.toastrService.danger(error.error.Message);
+          this.toastrService.danger(error.error.message);
         },
       );
   }

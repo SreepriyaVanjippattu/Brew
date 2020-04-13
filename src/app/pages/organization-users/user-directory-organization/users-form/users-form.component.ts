@@ -44,7 +44,7 @@ export class UsersFormComponent implements OnInit {
     private router: Router,
     private apiService: ApiProviderService,
     private activatedRoute: ActivatedRoute,
-    private toast: NbToastrService,
+    private toastr: NbToastrService,
     private blob: BlobService) { }
 
   usersForm = this.fb.group({
@@ -122,7 +122,7 @@ export class UsersFormComponent implements OnInit {
       lastName: this.usersForm.get('lastName').value,
       emailAddress: this.usersForm.get('userEmail').value,
       phone: this.usersForm.get('userPhone').value,
-      userName: 'nyc',
+      userName: this.usersForm.get('firstName').value,
       password: this.md5Password,
       isActive: true,
       imageUrl: this.imageLink,
@@ -131,25 +131,20 @@ export class UsersFormComponent implements OnInit {
       modifiedDate: '',
       tenantId: this.tenantId,
       statusId: this.status.active.id,
-      currentUserId: this.currentUserId,
       roles: [
         {
           id: this.usersForm.get('role').value,
-          tenantId: "8ef705b9-6ecd-4edf-83d8-0c16f72009cf",
-			    roleId: "B25107AF-B2C7-4319-9D6D-6355C658EC0C",
-			    createdDate: new Date(),
-			    modifiedDate: new Date()
         }],
     };
     if (this.usersForm.valid) {
       const addUserApi = String.Format(this.apiService.addUser, this.tenantId);
       this.apiService.postData(addUserApi, params).subscribe((response: any) => {
         if (response.status === 200) {
-          this.toast.show('Success');
+          this.toastr.show('Success');
           this.router.navigate(['app/user-directory']);
         }
         error => {
-          this.toast.danger(error.error.message);
+          this.toastr.danger(error.error.message);
         };
       });
     }
@@ -167,7 +162,7 @@ export class UsersFormComponent implements OnInit {
         complete: () => {
           const timeStamp = new Date().getTime();
           this.imageLink = environment.storageUrlUser + this.id + `?${timeStamp}`;
-          this.toast.show('Image', 'Uploaded');
+          this.toastr.show('Image', 'Uploaded');
         },
         error: (err) => {
         },

@@ -81,7 +81,7 @@ export class ListUsersComponent implements OnInit {
         page: this.config.currentPage,
       },
     });
-    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers,tenantId)
+    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers,tenantId);
     this.apiService.getDataList(getAllActiveUsersApi, pageNumber, pageSize, null,null, searchText).subscribe(response => {
       this.userContent = response['body']['users'];
       this.headerValue = response['body']['pagingDetails'];
@@ -129,45 +129,24 @@ export class ListUsersComponent implements OnInit {
     this.router.navigate([`/app/user-directory/edit/` + id]);
   }
 
-  deleteSingleUser(id, item) {
+  deleteSingleUser(id) {
     const data = this.data_service.checkPermission(this.permission.Delete_User.Id);
     if (!data) {
       this.toastrService.danger('You don\'t have access', 'Error');
     } else {
       this.checkPermission = true;
       this.deleteId = id;
-      this.deleteUserDetails = item;
     }
   }
 
   deleteUser() {
-    const anyObject = {
-      id: this.deleteId,
-      firstName: this.deleteUserDetails.firstName,
-      lastName: this.deleteUserDetails.lastName,
-      emailAddress: this.deleteUserDetails.emailAddress,
-      phone: this.deleteUserDetails.phone,
-      companyName: this.deleteUserDetails.companyName,
-      password: this.deleteUserDetails.password,
-      imageUrl: '',
-      position: this.deleteUserDetails.position,
-      isActive: true,
-      tenantId: this.deleteUserDetails.tenantId,
-
-    };
-    const endpoint = this.apiService.deleteUsers;
-    const url = new URL(`${environment.API.URL}/${endpoint}`);
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: anyObject,
-    };
-    this.httpClient.delete(url.toString(), httpOptions)
+    this.apiService.deleteData(this.apiService.deleteUser, this.deleteId)
       .subscribe(response => {
         this.toastrService.show('User Deleted', 'Success');
         this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       },
         (error) => {
-          this.toastrService.danger(error.error.Message);
+          this.toastrService.danger(error.error.message);
         },
       );
   }
@@ -232,7 +211,7 @@ export class ListUsersComponent implements OnInit {
 
   archivedClick() {
     this.userContent.forEach(element => {
-      if (element.Id === this.archiveId) {
+      if (element.id === this.archiveId) {
         this.archivedUserList = element;
       }
     });
@@ -253,7 +232,6 @@ export class ListUsersComponent implements OnInit {
       roles: [
         {
           id: this.archivedUserList.roles[0].id,
-          name: this.archivedUserList.roles[0].name,
         },
       ],
     };
@@ -265,14 +243,15 @@ export class ListUsersComponent implements OnInit {
   }
 
   editArchivedUser(params) {
-    this.apiService.putData(this.apiService.editUser, params).subscribe((response: any) => {
+    const editArchivedUser = String.Format(this.apiService.editUser, this.tenantId)
+    this.apiService.putData(editArchivedUser, params).subscribe((response: any) => {
       if (response.status === 200) {
         this.toastrService.show('User Archived', 'Success');
         this.goToArchive();
       }
     },
       error => {
-        this.toastrService.danger(error.error.Message, 'Error');
+        this.toastrService.danger(error.error.message, 'Error');
       });
   }
   ExportTOExcel() {

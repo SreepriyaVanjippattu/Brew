@@ -3,6 +3,7 @@ import { ApiProviderService } from '../../../../core/api-services/api-provider.s
 import { Role, Permission } from '../../../../models/permission';
 import { NbToastrService } from '@nebular/theme';
 import { Router } from '@angular/router';
+import { String } from 'typescript-string-operations';
 
 @Component({
   selector: 'organization-previleges',
@@ -25,6 +26,9 @@ export class OrganizationPrevilegesComponent implements OnInit {
   isChecked: boolean;
   params: string;
   allAvailableRolesSorted: any = [];
+  editedRoles: any;
+  userDetails: any;
+  tenantId: any;
   constructor(
     private apiService: ApiProviderService,
     private toastrService: NbToastrService,
@@ -35,17 +39,21 @@ export class OrganizationPrevilegesComponent implements OnInit {
 
   ngOnInit() {
     this.isChecked = false;
+    this.userDetails = sessionStorage.user;
+    const user = JSON.parse(this.userDetails);
+    this.tenantId = user['userDetails'].tenantId;
     this.getAllRolePrevileges();
     this.getRolePrevilegesDetails();
   }
 
   getAllRolePrevileges() {
-    const output = [];
-    this.apiService.getData(this.apiService.getAllActiveRoles).subscribe(response => {
-      this.allAvailableRoles = response['body'];
+    const getAllActiveRolesApi = String.Format(this.apiService.getAllActiveRoles, this.tenantId);
+    this.apiService.getData(getAllActiveRolesApi).subscribe(response => {
+      this.allAvailableRoles = response['body']['roles'];
       this.allAvailableRoles.forEach(element => {
-        if (element.Id != '81db4ad1-863b-4310-a0be-04042d2b30e0' && element.Id != '2e4606ca-7700-4578-94bd-cda3728d22ac')
+        if (element.id != '81db4ad1-863b-4310-a0be-04042d2b30e0' && element.id != '2e4606ca-7700-4578-94bd-cda3728d22ac') {
           this.allAvailableRolesSorted.push(element)
+        }
       });
     }, error => {
       console.error(error);
@@ -55,8 +63,8 @@ export class OrganizationPrevilegesComponent implements OnInit {
   getRolePrevilegesDetails() {
     const output = [];
     this.apiService.getData(this.apiService.getAllPermissions).subscribe(response => {
-      this.allPermissions = response['body'];
-      this.allCategories = this.allPermissions.map(item => item.Category)
+      this.allPermissions = response['body']['permissions'];
+      this.allCategories = this.allPermissions.map(item => item.category)
         .filter((value, index, self) => self.indexOf(value) === index && value != null);
     }, error => {
       console.error(error);
@@ -66,17 +74,19 @@ export class OrganizationPrevilegesComponent implements OnInit {
   shouldCheckThisItem(sRole: Role, aPerm: Permission): boolean {
 
     let retVal = false;
-    if (sRole.Permissions.length > 0) {
-      const theActualPermissions = sRole.Permissions.filter(x => x.Id == aPerm.Id);
+    if(sRole.permissions){
+    if (sRole.permissions.length > 0) {
+      const theActualPermissions = sRole.permissions.filter(x => x.id == aPerm.id);
       if (theActualPermissions.length > 0) {
         retVal = true;
       }
     }
+  }
     return retVal;
   }
 
   getPermissionsInCategory(category: string): Permission[] {
-    return this.allPermissions.filter(x => x.Category === category);
+    return this.allPermissions.filter(x => x.category === category);
   }
 
 
@@ -87,17 +97,17 @@ export class OrganizationPrevilegesComponent implements OnInit {
       this.uncheckedsRole.push(sRole);
     }
     let posToRemove = -1;
-    sRole.Permissions.forEach((permission: Permission, index: number) => {
+    sRole.permissions.forEach((permission: Permission, index: number) => {
 
-      if (permission.Id == aPerm.Id) {
+      if (permission.id == aPerm.id) {
         posToRemove = index;
       }
     });
 
     if (posToRemove >= 0) {
-      sRole.Permissions.splice(posToRemove, 1);
+      sRole.permissions.splice(posToRemove, 1);
     } else {
-      sRole.Permissions.push(aPerm);
+      sRole.permissions.push(aPerm);
       this.rolePermisson.push(sRole);
     }
 
@@ -139,8 +149,9 @@ export class OrganizationPrevilegesComponent implements OnInit {
 
 
     final.forEach(element => {
-      this.apiService.putData(this.apiService.editRoles, JSON.stringify(element)).subscribe((response: any) => {
+      this.apiService.putData(this.apiService.editRole, JSON.stringify(element)).subscribe((response: any) => {
         if (response.status === 200) {
+          this.editedRoles = response['body'];
 
 
         }

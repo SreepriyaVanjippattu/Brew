@@ -13,7 +13,7 @@
           <thead>
             <tr>
               <th scope="col" colspan="6"></th>
-              <th class="text-center" *ngFor="let singleRole of allAvailableRolesSorted" scope="col">{{singleRole.Name}}
+              <th class="text-center" *ngFor="let singleRole of allAvailableRolesSorted" scope="col">{{singleRole.name}}
               </th>
             </tr>
           </thead>
@@ -23,15 +23,15 @@
                 <th class="tab-bg" colspan="12">{{category}}</th>
               </tr>
               <tr *ngFor="let aPerm of getPermissionsInCategory(category);">
-                <th scope="row" class="font-weight-normal" colspan="6">{{aPerm.Name}}</th>
+                <th scope="row" class="font-weight-normal" colspan="6">{{aPerm.name}}</th>
                 <td *ngFor="let sRole of allAvailableRolesSorted">
                   <form>
                     <div class="custom-control custom-checkbox">
                       <input disabled type="checkbox" class="custom-control-input"
-                        id="customCheckone_{{sRole.Id}}_{{aPerm.Id}}" name="example1"
+                        id="customCheckone_{{sRole.id}}_{{aPerm.id}}" name="example1"
                         (click)="addRemovePermission(sRole, aPerm,$event)"
                         [checked]="shouldCheckThisItem(sRole, aPerm)">
-                      <label class="custom-control-label" for="customCheckone_{{sRole.Id}}_{{aPerm.Id}}"></label>
+                      <label class="custom-control-label" for="customCheckone_{{sRole.id}}_{{aPerm.id}}"></label>
                     </div>
                   </form>
                 </td>

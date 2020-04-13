@@ -30,7 +30,7 @@
             <div class="d-flex header-search-wrapper">
                 <div class="d-flex l-search">
                     <i class="material-icons search-ico"> search </i>
-                    <input (keyup.enter)="searchClient($event)" type="text" class="l-searchbox" id=""
+                    <input (keyup.enter)="searchClient()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
                         placeholder="Search Archived Users"> </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
@@ -68,17 +68,17 @@
 
                     <tbody>
                         <tr *ngFor="let content of archieveContent | paginate : config">
-                            <th scope="row">{{content.FirstName}} {{content.LastName}}</th>
+                            <th scope="row">{{content.firstName}} {{content.lastName}}</th>
                             <td>{{statusName}}</td>
-                            <td>{{content.PrimaryPhone | phoneFormat}}</td>
-                            <td>{{content.EmailAddress}}</td>
+                            <td>{{content.phone | phoneFormat}}</td>
+                            <td>{{content.emailAddress}}</td>
                             <td>
 
-                                <span (click)="restoreArchive(content.Id)" class="restore-ico ml-2 cursor-click">
+                                <span (click)="restoreArchive(content.id)" class="restore-ico ml-2 cursor-click">
                                     <img src="assets/images/restore.png">
                                 </span>
 
-                                <span class="del-ico ml-2 cursor-click" (click)="deleteSingleUser(content.Id,content)"
+                                <span class="del-ico ml-2 cursor-click" (click)="deleteSingleUser(content.id,content)"
                                     data-toggle="modal" data-target="#exampleModalCenter">
                                     <img src="assets/images/delete.svg">
                                 </span>

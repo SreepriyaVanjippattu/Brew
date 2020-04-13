@@ -40,6 +40,7 @@ export class EditUserComponent implements OnInit {
   envURL: string;
   userDetails: any;
   currentUserId: any;
+  imageLink: any ='';
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -120,9 +121,9 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  getUserDetails(tenantId, id) {
-    const getUserByIdApi = String.Format(this.apiService.getAllActiveUsers,tenantId);
-    this.apiService.getDataList(getUserByIdApi).subscribe((response: any) => {
+  getUserDetails(tenantId , id) {
+    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers,tenantId);
+    this.apiService.getDataList(getAllActiveUsersApi, 1, 1, null,null, null).subscribe(response => {
       this.usersData = response['body']['users'];
       this.usersData.forEach(element => {
         if (element.id === id) {
@@ -131,10 +132,12 @@ export class EditUserComponent implements OnInit {
           if (this.page === 'View') {
             this.headerTitle = element.firstName + ' ' + element.lastName;
           }
-          // element.roles.forEach(elementId => {
-          //   this.currentUser = element;
-          //   this.roleId = elementId.id;
-          // });
+          if(element.roles){
+          element.roles.forEach(elementId => {
+            this.currentUser = element;
+            this.roleId = elementId.id;
+          });
+          }
           this.setDataToEdit();
         }
       });
@@ -158,7 +161,7 @@ export class EditUserComponent implements OnInit {
   saveUser() {
     this.formSubmitted = true;
     if (this.page === 'edit') {
-      this.md5Password = this.usersData.Password;
+      this.md5Password = this.usersData.password;
     } else {
       const md5 = new Md5();
       this.md5Password = md5.appendStr('password@' + this.usersForm.get('firstName').value).end();
@@ -171,28 +174,26 @@ export class EditUserComponent implements OnInit {
       lastName: this.usersForm.get('lastName').value,
       emailAddress: this.usersForm.get('userEmail').value,
       phone: this.usersForm.get('userPhone').value,
-      userName: '',
+      userName: this.usersData.userName,
       password: this.md5Password,
       isActive: true,
+      imageUrl: this.imageLink,
       position: this.usersForm.get('position').value,
-      createdDate: null,
-      modifiedDate: new Date(),
+      createdDate: new Date(),
+      modifiedDate: null,
       statusId: this.Userstatus.active.id,
       tenantId: this.tenantId,
-      currentUser: this.currentUserId,
       roles: [
         {
           id: this.usersForm.get('roles').value,
-          tenantId: "8ef705b9-6ecd-4edf-83d8-0c16f72009cf",
-			    roleId: "B25107AF-B2C7-4319-9D6D-6355C658EC0C",
-			    createdDate: null,
-			    modifiedDate: new Date()
+         
         }],
     };
+    
     if (this.usersForm.valid) {
 
-      const addUserApi = String.Format(this.apiService.addUser, this.tenantId);
-      this.apiService.postData(addUserApi, params).subscribe((response: any) => {
+      const edituserApi = String.Format(this.apiService.editUser, this.tenantId);
+      this.apiService.postData(edituserApi, params).subscribe((response: any) => {
         if (response.status === 200) {
           this.toastr.show('Success');
           this.router.navigate(['app/user-directory']);
@@ -218,37 +219,13 @@ export class EditUserComponent implements OnInit {
         this.router.navigate(['/app/user-directory']);
       }
     }, error => {
-      this.toastr.danger(error.error.Message);
+      this.toastr.danger(error.error.message);
     });
   }
 
   deleteUser() {
-    const anyObject = {
-      Id: this.id,
-      FirstName: this.usersData.FirstName,
-      MiddleName: '',
-      LastName: this.usersData.LastName,
-      EmailAddress: this.usersData.EmailAddress,
-      PrimaryPhone: this.usersData.PrimaryPhone,
-      UserName: '',
-      Password: this.usersData.Password,
-      ImageUrl: '',
-      Position: this.usersData.Position,
-      IsActive: true,
-      TenantId: this.usersData.TenantId,
-      Roles: [
-        {
-          Id: this.usersForm.get('roles').value,
-        }],
 
-    };
-    const endpoint = this.apiService.deleteUsers;
-    const url = new URL(`${environment.API.URL}/${endpoint}`);
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      body: anyObject,
-    };
-    this.httpClient.delete(url.toString(), httpOptions)
+    this.apiService.deleteData(this.apiService.deleteUser, this.deleteId)
       .subscribe(response => {
         this.toastr.show('User Deleted', 'Success');
         this.router.navigate(['app/user-directory']);
@@ -257,6 +234,9 @@ export class EditUserComponent implements OnInit {
           this.toastr.show('Delete User Failed');
         },
       );
+  }
+  deleteId(deleteUser: string, deleteId: any) {
+    throw new Error("Method not implemented.");
   }
 
   cancelDelete() {

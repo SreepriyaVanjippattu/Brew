@@ -1,34 +1,33 @@
 export class Permission {
-    Id: string;
-    Name: string;
-    PermissionValue: number;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    Category: string;
+    id: string;
+    name: string;
+    permissionValue: number;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    category: string;
 
     constructor() {
-        this.Id = "";
-        this.Name = "";
-        this.PermissionValue = 0;
-        this.IsActive = false;
+        this.id = "";
+        this.name = "";
+        this.permissionValue = 0;
+        this.isActive = false;
     }
 }
 
 export class Role {
-    Id: string;
-    Name: string;
-    IsActive: boolean;
-    CreatedDate: Date;
-    ModifiedDate: Date;
-    Category: string;
-    Permissions: Permission[];
+    id: string;
+    name: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    category: string;
+    permissions: Permission[];
 
     constructor() {
-        this.Id = "";
-        this.Name = "";
-        this.IsActive = false;
-
-        this.Permissions = [];
+        this.id = "";
+        this.name = "";
+        this.isActive = false;
+        this.permissions = [];
     }
 }

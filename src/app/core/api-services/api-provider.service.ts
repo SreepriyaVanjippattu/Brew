@@ -58,7 +58,7 @@ export class ApiProviderService {
   getAllActiveUsers = 'user/v1/brewers/{0}/users';
   editUser = 'user/v1/brewers/{0}/user';
   addUser = 'user/v1/brewers/{0}/user';
-  deleteUsers = 'user/v1/brewers/user/delete';
+  deleteUser = 'user/v1/brewers/user/delete';
   resetUserPassword = 'ResetUserPassword';
   // Profile
   changeProfilePassword = 'EditUserPassword';
@@ -67,7 +67,7 @@ export class ApiProviderService {
   getAllActiveRoles = 'user/v1/brewers/{0}/roles';
   getAllPermissions = 'user/v1/brewers/role/permission';
   addRole ='user/v1/brewers/{0}/role'
-  editRoles = 'user/v1/brewers/{0}/role';
+  editRole = 'user/v1/brewers/{0}/role';
   // get all Tenants/
   getAllTenantContent = 'GetAllTenentStatus';
   editClientSettings = 'EditClientSettings';
