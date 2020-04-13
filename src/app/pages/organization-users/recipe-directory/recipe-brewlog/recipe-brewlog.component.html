@@ -103,10 +103,10 @@
                                             <div class='multiple-input'>
                                                 <input type="number" class="form-control" id="pre-boil"
                                                     placeholder="Volume Pre Boil" formControlName="volumePreBoil">
-                                                <select class="form-control input-dropdown"
-                                                    formControlName="volumePreBoilUnitId">
+                                                <select class="form-control input-dropdown" formControlName="volumePreBoilUnitId">
+                                                
                                                     <ng-container *ngFor="let unit of units">
-                                                        <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
+                                                        <option *ngIf="unit.category === 'Size'" [value]="unit.id">
                                                             {{unit.symbol}}</option>
                                                     </ng-container>
                                                 </select>
@@ -128,10 +128,9 @@
                                             <div class='multiple-input'>
                                                 <input type="number" class="form-control" id="post-boil"
                                                     placeholder="Volume Post Boil" formControlName="volumePostBoil">
-                                                <select class="form-control input-dropdown"
-                                                    formControlName="volumePostBoilUnitId">
+                                                <select class="form-control input-dropdown" formControlName="volumePostBoilUnitId">
                                                     <ng-container *ngFor="let unit of units">
-                                                        <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
+                                                        <option *ngIf="unit.category === 'Size'" [value]="unit.id">
                                                             {{unit.symbol}}</option>
                                                     </ng-container>
                                                 </select>
@@ -421,10 +420,11 @@
                                                 <select class="form-control input-dropdown"
                                                     formControlName="volumeInFermentationOptionId">
 
-                                                    <ng-container *ngFor="let unit of units">
-                                                        <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
-                                                            {{unit.symbol}}</option>
-                                                    </ng-container>
+                                                   
+                                                <ng-container *ngFor="let unit of units">
+                                                    <option *ngIf="unit.category === 'Size'" [value]="unit.id">
+                                                        {{unit.symbol}}</option>
+                                                </ng-container>
 
                                                 </select>
                                             </div>

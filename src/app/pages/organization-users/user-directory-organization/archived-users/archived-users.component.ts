@@ -72,8 +72,8 @@ export class ArchivedUsersComponent implements OnInit {
         page: this.config.currentPage,
       },
     });
-    const getAllArchivedUsersApi = String.Format(this.apiService.getAllArchivedUsers,tenantId)
-    this.apiService.getDataList(getAllArchivedUsersApi, pageNumber, pageSize,null,null,searchText).subscribe(response => {
+    const getAllArchivedUsersApi = String.Format(this.apiService.getAllArchivedUsers, tenantId)
+    this.apiService.getDataList(getAllArchivedUsersApi, pageNumber, pageSize, null, null, searchText).subscribe(response => {
       this.archieveContent = response['body']['users'];
       this.archieveContent.forEach(element => {
         if (element.statusId === StatusUse.archive.id) {
@@ -102,28 +102,28 @@ export class ArchivedUsersComponent implements OnInit {
           this.userToRestore = element;
         }
       });
-      if(this.userToRestore.roles[0].id){
-      var params = {
-        id: this.userToRestore.id,
-        firstName: this.userToRestore.firstName,
-        middleName: this.userToRestore.middleName,
-        lastName: this.userToRestore.lastName,
-        emailAddress: this.userToRestore.emailAddress,
-        phone: this.userToRestore.phone,
-        userName: this.userToRestore.userName,
-        password: this.userToRestore.password,
-        isActive: this.userToRestore.isActive,
-        imageUrl:'',
-        position: this.userToRestore.position,
-        tenantId: this.userToRestore.tenantId,
-        statusId: this.status.active.id,
-        roles: [
-          {
-            id: this.userToRestore.roles[0].id,
-          },
-        ],
-      };
-    }
+      if (this.userToRestore.roles[0].id) {
+        var params = {
+          id: this.userToRestore.id,
+          firstName: this.userToRestore.firstName,
+          middleName: this.userToRestore.middleName,
+          lastName: this.userToRestore.lastName,
+          emailAddress: this.userToRestore.emailAddress,
+          phone: this.userToRestore.phone,
+          userName: this.userToRestore.userName,
+          password: this.userToRestore.password,
+          isActive: this.userToRestore.isActive,
+          imageUrl: '',
+          position: this.userToRestore.position,
+          tenantId: this.userToRestore.tenantId,
+          statusId: this.status.active.id,
+          roles: [
+            {
+              id: this.userToRestore.roles[0].id,
+            },
+          ],
+        };
+      }
 
       this.restoreClient(params);
     }
@@ -131,7 +131,7 @@ export class ArchivedUsersComponent implements OnInit {
 
   restoreClient(params) {
     const restoreUserApi = String.Format(this.apiService.editUser, this.tenantId)
-    this.apiService.putData(this.apiService.editUser, params).subscribe((response: any) => {
+    this.apiService.putData(restoreUserApi, params).subscribe((response: any) => {
       if (response.status === 200) {
         this.toastrService.show('User Restored', 'Success');
         this.router.navigate(['app/user-directory']);
@@ -176,11 +176,11 @@ export class ArchivedUsersComponent implements OnInit {
   }
 
   deleteUser() {
-   
-    this.apiService.deleteData(this.apiService.deleteUser, this.deleteId)
-      .subscribe(response =>{
+    const deleteUserApi = String.Format(this.apiService.deleteUser, this.tenantId, this.deleteId)
+    this.apiService.deleteData(this.apiService.deleteUser)
+      .subscribe(response => {
         this.toastrService.show('User Deleted', 'Success');
-        this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId,'');
+        this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, '');
       },
         (error) => {
           this.toastrService.danger(error.error.message);

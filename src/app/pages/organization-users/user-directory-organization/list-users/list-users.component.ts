@@ -81,8 +81,8 @@ export class ListUsersComponent implements OnInit {
         page: this.config.currentPage,
       },
     });
-    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers,tenantId);
-    this.apiService.getDataList(getAllActiveUsersApi, pageNumber, pageSize, null,null, searchText).subscribe(response => {
+    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers, tenantId);
+    this.apiService.getDataList(getAllActiveUsersApi, pageNumber, pageSize, null, null, searchText).subscribe(response => {
       this.userContent = response['body']['users'];
       this.headerValue = response['body']['pagingDetails'];
       if (this.headerValue) {
@@ -140,7 +140,8 @@ export class ListUsersComponent implements OnInit {
   }
 
   deleteUser() {
-    this.apiService.deleteData(this.apiService.deleteUser, this.deleteId)
+    const deleteUserApi = String.Format(this.apiService.deleteUser, this.tenantId, this.deleteId);
+    this.apiService.deleteData(deleteUserApi)
       .subscribe(response => {
         this.toastrService.show('User Deleted', 'Success');
         this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
@@ -158,14 +159,14 @@ export class ListUsersComponent implements OnInit {
   searchUser() {
     const getAllusersListApi = String.Format(this.apiService.getAllActiveUsers, this.tenantId);
     this.apiService.getDataList(getAllusersListApi, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
-    .subscribe((response) => {
+      .subscribe((response) => {
         this.headerValue = response['body']['pagingDetails'];
-      if (this.headerValue) {
-        this.config.totalItems = this.headerValue.totalCount;
-        if (this.config.totalItems === 0) {
-          this.pageControl = true;
+        if (this.headerValue) {
+          this.config.totalItems = this.headerValue.totalCount;
+          if (this.config.totalItems === 0) {
+            this.pageControl = true;
+          }
         }
-      }
         if (response && response['body']) {
           this.userContent = response['body']['users'];
           this.userContent.map((user, idx) => {

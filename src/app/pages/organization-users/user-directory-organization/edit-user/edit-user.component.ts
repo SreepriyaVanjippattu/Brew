@@ -34,7 +34,6 @@ export class EditUserComponent implements OnInit {
   Userstatus = StatusUse;
   headerTitle: string;
   currentUserFirstname: any;
-
   permission = permission;
   checkPermission: boolean = false;
   envURL: string;
@@ -121,9 +120,9 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  getUserDetails(tenantId , id) {
-    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers,tenantId);
-    this.apiService.getDataList(getAllActiveUsersApi, 1, 1, null,null, null).subscribe(response => {
+  getUserDetails(tenantId, id) {
+    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers, tenantId);
+    this.apiService.getDataList(getAllActiveUsersApi, 1, 1, null, null, null).subscribe(response => {
       this.usersData = response['body']['users'];
       this.usersData.forEach(element => {
         if (element.id === id) {
@@ -132,11 +131,11 @@ export class EditUserComponent implements OnInit {
           if (this.page === 'View') {
             this.headerTitle = element.firstName + ' ' + element.lastName;
           }
-          if(element.roles){
-          element.roles.forEach(elementId => {
-            this.currentUser = element;
-            this.roleId = elementId.id;
-          });
+          if (element.roles) {
+            element.roles.forEach(elementId => {
+              this.currentUser = element;
+              this.roleId = elementId.id;
+            });
           }
           this.setDataToEdit();
         }
@@ -186,14 +185,14 @@ export class EditUserComponent implements OnInit {
       roles: [
         {
           id: this.usersForm.get('roles').value,
-         
+
         }],
     };
-    
+
     if (this.usersForm.valid) {
 
       const edituserApi = String.Format(this.apiService.editUser, this.tenantId);
-      this.apiService.postData(edituserApi, params).subscribe((response: any) => {
+      this.apiService.putData(edituserApi, params).subscribe((response: any) => {
         if (response.status === 200) {
           this.toastr.show('Success');
           this.router.navigate(['app/user-directory']);
@@ -224,8 +223,8 @@ export class EditUserComponent implements OnInit {
   }
 
   deleteUser() {
-
-    this.apiService.deleteData(this.apiService.deleteUser, this.deleteId)
+    const deleteUserApi = String.Format(this.apiService.deleteUser, this.tenantId, this.id)
+    this.apiService.deleteData(this.apiService.deleteUser)
       .subscribe(response => {
         this.toastr.show('User Deleted', 'Success');
         this.router.navigate(['app/user-directory']);
@@ -234,9 +233,6 @@ export class EditUserComponent implements OnInit {
           this.toastr.show('Delete User Failed');
         },
       );
-  }
-  deleteId(deleteUser: string, deleteId: any) {
-    throw new Error("Method not implemented.");
   }
 
   cancelDelete() {

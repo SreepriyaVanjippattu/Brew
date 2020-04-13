@@ -74,14 +74,14 @@ export class OrganizationPrevilegesComponent implements OnInit {
   shouldCheckThisItem(sRole: Role, aPerm: Permission): boolean {
 
     let retVal = false;
-    if(sRole.permissions){
-    if (sRole.permissions.length > 0) {
-      const theActualPermissions = sRole.permissions.filter(x => x.id == aPerm.id);
-      if (theActualPermissions.length > 0) {
-        retVal = true;
+    if (sRole.permissions) {
+      if (sRole.permissions.length > 0) {
+        const theActualPermissions = sRole.permissions.filter(x => x.id == aPerm.id);
+        if (theActualPermissions.length > 0) {
+          retVal = true;
+        }
       }
     }
-  }
     return retVal;
   }
 
@@ -151,9 +151,6 @@ export class OrganizationPrevilegesComponent implements OnInit {
     final.forEach(element => {
       this.apiService.putData(this.apiService.editRole, JSON.stringify(element)).subscribe((response: any) => {
         if (response.status === 200) {
-          this.editedRoles = response['body'];
-
-
         }
       });
     });

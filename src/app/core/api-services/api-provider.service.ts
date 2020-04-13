@@ -58,7 +58,7 @@ export class ApiProviderService {
   getAllActiveUsers = 'user/v1/brewers/{0}/users';
   editUser = 'user/v1/brewers/{0}/user';
   addUser = 'user/v1/brewers/{0}/user';
-  deleteUser = 'user/v1/brewers/user/delete';
+  deleteUser = 'user/v1/brewers/{0}/user/{1}';
   resetUserPassword = 'ResetUserPassword';
   // Profile
   changeProfilePassword = 'EditUserPassword';
