@@ -33,26 +33,13 @@ export class ApiProviderService {
   getAllArchievedBrewRun = 'brewrun/v1/brewers/{0}/brewrun/archived';
   getBrewRunMashinMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/mashin/masterdetails'
   getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
-  mashin = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/'
-  getBrewLogMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/brewlog/masterdetails'
-  getBrewLogDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewlog/'
-  getFermentationMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/fermentation/masterdetails'
-  getFermentationDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/fermentation/'
-
-
-  getSubscriptions = 'GetAllActiveSubscription';
-
-  // Signup Api/
-  isCompanyNameAvailable = 'IsCompanyNameAvailable';
-  initilizeClient = 'InitilizeClient';
-  // Clients Api/
-  getAllActiveClients = 'GetAllActiveClients';
-  addClient = 'AddClient';
-  editClient = 'EditClient';
-  getAllArchivedClients = 'GetAllArchivedClients';
-
-  editClientStatus = 'EditClientStaus';
-
+  mashin = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
+  getBrewLogMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/brewlog/masterdetails';
+  getBrewLogDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewlog/';
+  getFermentationMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/fermentation/masterdetails';
+  getFermentationDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/fermentation/';
+  getConditioningMasterDetails =  'brewrun/v1/brewers/{0}/brewrun/conditioning/masterdetails';
+  getConditioningDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/conditioning'
 
   // User Api/
   getAllActiveUsers = 'user/v1/brewers/{0}/users';
@@ -110,42 +97,26 @@ export class ApiProviderService {
   getAllActiveUnitType = 'brewrun/v1/brewers/settings/unittype';
   getAllActiveStyle = 'brewrun/v1/brewers/settings/{0}/styles';
 
-
-  changeBrewRunStatus = 'ChangeBrewRunStatus';
   getAllArchivedUsers = 'user/v1/brewers/user/{0}/archived';
-  getBrewRunById = 'GetBrewRunById';
-  GetAllAvailableTankList = 'GetAllAvailableTankList';
-  getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
-  GetAllAvailableTankListInFermentation = 'GetAllAvailableTankListInFermentation';
-
-  // Forgot Password
-  editForgotPassword = 'ResetForgotPassword';
-  postEmail = 'ForgotPasswordLink';
-
-
   addStyle = 'brewrun/v1/brewers/{0}/style/';
   addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
   addSupplier = 'brewrun/v1/brewers/{0}/supplier/';
 
   logoutApi = 'Logout';
 
-  // Report login logout
-  getAllLoginLogoutReport = 'GetAllLoginLogoutReport';
-  // copy
-  recipeCopy = 'RecipeCopyRecipeById';
-  // audit trail report
-  getAllAuditTrailReport = 'GetUserAuditTrail';
-  addBrewUserAuditTrail = 'AddBrewUserAuditTrail';
-  // active client report
-  getAllActiveClientsReport = 'GetAllActiveClientsReport';
-  // subscription report
-  getAllTenantSubscriptionReport = 'GetAllTenantSubscriptionReport'
-  // GetAllActiveBrewUsers in new bew add
-
-
+  changeBrewRunStatus = 'ChangeBrewRunStatus';
   getAllBrewReportsList = 'GetAllBrewRunByTenantIdForRepor';
-  getAllLastRunReportList = 'GetAllLastRunReportList';
+  getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
+  getBrewRunById = 'GetBrewRunById';
+  postEmail = 'ForgotPasswordLink';
+  editClient = 'EditClient';
+  getSubscriptions = 'GetAllActiveSubscription';
+  editForgotPassword ='';
+  isCompanyNameAvailable ='';
+  initilizeClient ='';
+  addBrewUserAuditTrail ='';
 
+  
   constructor(public http: HttpClient) { }
 
   add(formData, endpoint: string) {

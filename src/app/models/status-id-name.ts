@@ -23,11 +23,11 @@ export const StatusUse = {
     id: '4267AE2F-4B7F-4A70-A592-878744A13900',
     name: 'Committed',
   },
-  Compleated: {
+  completed: {
     id: '9231c5f1-2235-4f7b-b5e6-80694333dd72',
     name: 'Completed',
   },
-  Cancelled: {
+  cancelled: {
     id: 'C2B1D8A5-7ED2-4C45-AFFD-80D043F0321A',
     name: 'Cancelled',
   },

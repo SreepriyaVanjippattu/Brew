@@ -147,7 +147,7 @@ export class ViewBrewRunComponent implements OnInit {
   endBrewRun () {
     const params = {
       id: this.id,
-      Status: this.status.Cancelled.id,
+      Status: this.status.cancelled.id,
       tenantId: this.tenantId,
     };
     this.apiService.putData(this.apiService.ChangeBrewRunStatus, params).subscribe((response: any) => {

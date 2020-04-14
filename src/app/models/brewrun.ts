@@ -74,6 +74,7 @@ export class BrewRunConditioning{
     tankId:string;
     tankName:string;
     status: string;
+
     
     conditioningDetails: ConditioningDetail[];
     filterationDetails: FilterationDetail[];

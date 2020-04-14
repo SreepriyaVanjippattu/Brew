@@ -174,6 +174,10 @@ export class MashInFormComponent implements OnInit {
   }
 
   findUnits() {
+    if (!this.preference)
+    {
+      this.getPreferenceUsed();
+    }
     this.units.forEach(element => {
       if (element.id === this.preference.temperatureId) {
         this.preferedUnit = element.symbol;

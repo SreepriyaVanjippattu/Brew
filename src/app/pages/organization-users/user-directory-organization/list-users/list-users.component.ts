@@ -147,7 +147,7 @@ export class ListUsersComponent implements OnInit {
         this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       },
         (error) => {
-          this.toastrService.danger(error.error.message);
+          this.toastrService.danger('', error.error.message);
         },
       );
   }
@@ -165,6 +165,9 @@ export class ListUsersComponent implements OnInit {
           this.config.totalItems = this.headerValue.totalCount;
           if (this.config.totalItems === 0) {
             this.pageControl = true;
+          }
+          else {
+            this.pageControl = false;
           }
         }
         if (response && response['body']) {
@@ -239,7 +242,7 @@ export class ListUsersComponent implements OnInit {
     if (this.archivedUserList.roles[0].id !== 'e306b412-cf09-486f-b336-21dadaddaeed') {
       this.editArchivedUser(params);
     } else {
-      this.toastrService.danger('Cannot Archive Organization Super User');
+      this.toastrService.danger('', 'Cannot Archive Organization Super User');
     }
   }
 

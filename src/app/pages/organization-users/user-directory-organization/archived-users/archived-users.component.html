@@ -30,7 +30,7 @@
             <div class="d-flex header-search-wrapper">
                 <div class="d-flex l-search">
                     <i class="material-icons search-ico"> search </i>
-                    <input (keyup.enter)="searchClient()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
+                    <input (keyup)="searchClient()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
                         placeholder="Search Archived Users"> </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"

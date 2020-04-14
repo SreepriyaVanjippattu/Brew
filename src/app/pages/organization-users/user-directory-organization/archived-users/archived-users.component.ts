@@ -152,6 +152,9 @@ export class ArchivedUsersComponent implements OnInit {
           if (this.config.totalItems === 0) {
             this.pageControl = true;
           }
+          else {
+            this.pageControl = false;
+          }
         }
         if (response && response['body']) {
           this.archieveContent = response['body']['users'];

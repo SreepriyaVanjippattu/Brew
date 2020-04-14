@@ -9,6 +9,7 @@ import { DataService } from '../../../../data.service';
 import { StatusUse } from '../../../../models/status-id-name';
 import { DatePipe } from '@angular/common';
 import { String } from 'typescript-string-operations';
+import { Observable,of as observableOf, throwError } from 'rxjs';
 
 @Component({
   selector: 'condition-form',
@@ -51,6 +52,8 @@ export class ConditionFormComponent implements OnInit {
   setClassCarb = false;
   setClassCond = false;
   committed = false;
+  conditioningAvailable:boolean;
+  brewerName:string;
 
   constructor(
     private dataService: DashboardService,
@@ -65,28 +68,46 @@ export class ConditionFormComponent implements OnInit {
   ngOnInit() {
    this.brewRunConditioning = new BrewRunConditioning();
 
-    this.brewId = this.route.snapshot.paramMap.get('id');
-    const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    this.tenantId = userDetails['CompanyDetails'].id;
-    this.currentUser = userDetails['UserProfile'].id;
-    this.units = JSON.parse(sessionStorage.getItem('units'));
+   this.brewId = this.route.snapshot.paramMap.get('id');
+   const userDetails = JSON.parse(sessionStorage.getItem('user'));
+   
+   this.tenantId = userDetails["userDetails"]["tenantId"];
+   this.currentUser = userDetails["userDetails"]["userId"];
+   this.brewerName = userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"];
     this.getPreferenceUsed();
-
-    this.getSingleBrewDetails(this.tenantId, this.brewId);
+    this.getConditioningMasterDetails();
+    this.getConditioningDetails();
+    
   }
+
+  getConditioningMasterDetails()
+  {
+    const getConditioningMasterDetailsAPI = String.Format(this.apiService.getConditioningMasterDetails, this.tenantId);
+    this.apiService.getDataList(getConditioningMasterDetailsAPI).subscribe(response => {
+      if (response) {
+        this.units = response['body']['conditioningMasterDetails']['units']
+        this.findUnits();
+      }
+    });
+  }
+
+
 
   /**
    * Function to get single brew
    * @param tenantId
    * @param brewId
    */
-  getSingleBrewDetails(tenantId, brewId) {
-    this.apiService.getDataByQueryParams(this.apiService.getBrewRunById, null, tenantId, brewId).subscribe(response => {
+  getConditioningDetails() {
+    const getConditioningDetailsAPI = String.Format(this.apiService.getConditioningDetails, this.tenantId,this.brewId);
+    this.apiService.getDataByQueryParams(getConditioningDetailsAPI, null, this.tenantId,this.brewId).subscribe(response => {
       if (response.status === 200) {
-        console.log('MashEdit', response['body']);
-       this.brewRunConditioning = response['body'];
-        this.recipeId = response['body'].RecipeId;
-        this.getRecipeDetailsEdit();
+        this.brewRunConditioning = response['body']['brewRunConditioning'];
+        this.conditioningAvailable =response['body']['conditioningAvailable']
+        this.recipeContent = response['body']['recipe'];
+        this.getConditionTargets(this.recipeContent);
+        this.getFilterTargets(this.recipeContent);
+        this.getCarbonTargets(this.recipeContent);
         if (this.brewRunConditioning.conditioningDetails.length == 0) {
          this.brewRunConditioning.conditioningDetails.push(new ConditioningDetail());
          this.brewRunConditioning.conditioningDetails[this.brewRunConditioning.conditioningDetails.length - 1].tenantId = this.tenantId;
@@ -126,12 +147,17 @@ export class ConditionFormComponent implements OnInit {
   }
 
   findUnits() {
+    if (!this.preference)
+    {
+      this.getPreferenceUsed();
+    }
+   
     this.units.forEach(element => {
-      if (element.id === this.preference.TemperatureId) {
-        this.preferedUnit = element.Symbol;
+      if (element.id === this.preference.temperatureId) {
+        this.preferedUnit = element.symbol;
       }
-      if (element.id === this.preference.GravityMeasurementId) {
-        this.preferedPlato = element.Name;
+      if (element.id === this.preference.gravityMeasurementId) {
+        this.preferedPlato = element.name;
         this.platoUnitId = element.id;
       }
     });
@@ -140,13 +166,12 @@ export class ConditionFormComponent implements OnInit {
   getPreferenceUsed() {
     const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
+     
       if (response.status === 200) {
-        this.preference = response['body'];
-        sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
-        this.findUnits();
+        this.preference = response['body']['preferenceSettings'];
       }
     }, error => {
-      console.error(error);
+
     });
   }
 
@@ -175,33 +200,24 @@ export class ConditionFormComponent implements OnInit {
       this.toast.danger('You don\'t have access', 'Error');
     } else {
      this.brewRunConditioning.status = this.status.commited.id;
-      this.committed = true;
-      this.saveGo('app/dashboard');
+     this.committed = true;
+     this.saveGo('app/dashboard');
     }
   }
 
   completeBrewRun() {
-   this.brewRunConditioning.status = this.status.Compleated.id;
-    this.saveGo('app/dashboard/view-brew-run/' + this.brewId);
+   this.brewRunConditioning.status = this.status.completed.id;
+   this.saveGo('app/dashboard/view-brew-run/' + this.brewId);
   }
   saveGo(url: string) {
 
-   this.brewRunConditioning.conditioningDetails.forEach((con: ConditioningDetail) => {
-      con.tenantId = this.tenantId;
-    });
-   this.brewRunConditioning.carbonationDetails.forEach((car: CarbonationDetail) => {
-      car.tenantId = this.tenantId;
-    });
-
-    this.apiService.postData(this.apiService.addBrewRun,this.brewRunConditioning).subscribe(response => {
-      if (response) {
-        if (this.committed) {
-          this.toast.success('The Brew Run' + '' +this.brewRunConditioning.brewRunId + ' ' + 'Successfully Committed');
-        }
-        this.router.navigate([url]);
+    this.saveData().subscribe(response => {
+      if (this.committed) {
+        this.toast.success('The Brew Run' + '' +this.brewRunConditioning.brewRunId + ' ' + 'Successfully Committed');
       }
+      this.router.navigate([url]);
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
     });
   }
 
@@ -231,8 +247,7 @@ export class ConditionFormComponent implements OnInit {
 
   timezone(dateTime) {
     // Timezone convertion
-    const timeZone = JSON.parse(sessionStorage.preferenceUsed);
-    const preferedZone = timeZone.BaseUtcOffset;
+    const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
       let zone = preferedZone.replace(/:/gi, '');
       zone = zone.slice(0, -2);
@@ -246,53 +261,63 @@ export class ConditionFormComponent implements OnInit {
     }
   }
 
-  getRecipeDetailsEdit() {
-    const getRecipebyIdAPI = String.Format(this.apiService.getRecipebyId, this.tenantId, this.recipeId);
-    this.apiService.getDataList(getRecipebyIdAPI).subscribe(response => {
-      if (response && response['body']) {
-        this.recipeContent = response['body'];
-        this.getConditionTargets(this.recipeContent);
-        this.getFilterTargets(this.recipeContent);
-        this.getCarbonTargets(this.recipeContent);
-      }
-    });
-  }
+ 
 
   getConditionTargets(recipeContent: any) {
     if (recipeContent.ConditioningTargets !== null) {
-      this.conditionTarget.push(recipeContent.ConditioningTargets);
+      this.conditionTarget.push(recipeContent.conditioningTargets);
     }
   }
   getFilterTargets(recipeContent: any) {
     if (recipeContent.FilterationTargets !== null) {
-      this.filterTarget.push(recipeContent.FilterationTargets);
+      this.filterTarget.push(recipeContent.filterationTargets);
     }
   }
   getCarbonTargets(recipeContent: any) {
     if (recipeContent.CarbonationTargets !== null) {
-      this.carbonTarget.push(recipeContent.CarbonationTargets);
+      this.carbonTarget.push(recipeContent.carbonationTargets);
     }
   }
 
   onFiltrationComplete(i, editedSectionName) {
     this.isCollapsedFiltration = !this.isCollapsedFiltration;
-   this.brewRunConditioning.filterationDetails[i].isCompleted = true;
-    this.setClass = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunConditioning.filterationDetails.map(element => {
+      element.isCompleted = true;
+    });
+    this.saveData().subscribe(response => {
+      this.setClass = true;
+    }, error => {
+      this.setClass = false;
+      this.toast.danger(error.error.message);
+    });
+
   }
 
   onCarbonationComplete(i, editedSectionName) {
     this.isCollapsedCarbonation = !this.isCollapsedCarbonation;
-   this.brewRunConditioning.carbonationDetails[i].isCompleted = true;
-    this.setClassCarb = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunConditioning.carbonationDetails.map(element => {
+      element.isCompleted = true;
+    });
+    this.saveData().subscribe(response => {
+      this.setClassCarb = true;
+    }, error => {
+      this.setClassCarb = false;
+      this.toast.danger(error.error.message);
+    });
+
   }
 
   onConditioningComplete(i, editedSectionName) {
     this.isCollapsedConditioning = !this.isCollapsedConditioning;
-   this.brewRunConditioning.conditioningDetails[i].isCompleted = true;
-    this.setClassCond = true;
-    this.addbrewUserAuditTrail(editedSectionName);
+    this.brewRunConditioning.conditioningDetails.map(element => {
+      element.isCompleted = true;
+    });
+    this.saveData().subscribe(response => {
+      this.setClassCond = true;
+    }, error => {
+      this.setClassCond = false;
+      this.toast.danger(error.error.message);
+    });
   }
 
   checkIfComplete(brew: BrewRunConditioning) {
@@ -324,17 +349,25 @@ export class ConditionFormComponent implements OnInit {
     }
   }
 
-  addbrewUserAuditTrail(editedSectionName) {
-    const params = {
-      Id:this.brewRunConditioning.id,
-      brewRunId:this.brewRunConditioning.brewRunId,
-       CreatedByUserId: this.currentUser,
-      tenantId:this.brewRunConditioning.tenantId,
-      CurrentEditedSectionName: editedSectionName,
-    };
-    this.apiService.postData(this.apiService.addBrewUserAuditTrail, params).subscribe((response: any) => {
-    }, error => {
-      console.log(error);
-    });
+  saveData(): Observable<boolean>{
+    const conditioningDetailsAPI = String.Format(this.apiService.getConditioningDetails, this.tenantId,this.brewId);
+    if (!this.conditioningAvailable) {
+        this.apiService.postData(conditioningDetailsAPI, this.brewRunConditioning).subscribe(response => {
+          this.conditioningAvailable = response['body']['conditioningAvailable'];
+          return observableOf(true);
+        }, error => {
+        return throwError(error);
+      });
+    }
+    else {
+       this.apiService.putData(conditioningDetailsAPI, this.brewRunConditioning).subscribe(response => {
+        this.conditioningAvailable =  response['body']['conditioningAvailable'];
+        return observableOf(true);
+        }, error => {
+          return throwError(error);
+      });
+    }
+    return observableOf(false);
   }
+
 }

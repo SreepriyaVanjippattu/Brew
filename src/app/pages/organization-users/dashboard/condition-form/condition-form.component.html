@@ -139,8 +139,8 @@
                                                         [(ngModel)]="brewRunConditioning.conditioningDetails[i].volumeInOptionId">
 
                                                         <ng-container *ngFor="let unit of units">
-                                                            <option *ngIf="unit.Category === 'Size'" [value]="unit.Id">
-                                                                {{unit.Symbol}}</option>
+                                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">
+                                                                {{unit.symbol}}</option>
                                                         </ng-container>
                                                     </select>
                                                 </div>
@@ -150,7 +150,7 @@
                                                 <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
                                                 <input type="text" class="form-control" id="ferment-acttemp"
                                                     placeholder="Temperature (In Celcius)"
-                                                    [(ngModel)]="brewRunConditioning.conditioningDetails[i].TemperatureIn">
+                                                    [(ngModel)]="brewRunConditioning.conditioningDetails[i].temperatureIn">
                                             </div>
 
                                         </div>
@@ -438,11 +438,11 @@
                                 <label for="ferment-volume">Volume In</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="ferment-volume"
-                                        [value]="cond.VolumeIn" disabled>
-                                    <select class="form-control input-dropdown" [value]="cond.VolumeInUnitId" disabled>
+                                        [value]="cond.volumeIn" disabled>
+                                    <select class="form-control input-dropdown" [value]="cond.volumeInUnitId" disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}
+                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -451,7 +451,7 @@
 
                             <div class="form-group col-md-6">
                                 <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
-                                <input type="text" class="form-control" id="ferment-acttemp" [value]="cond.Temperature"
+                                <input type="text" class="form-control" id="ferment-acttemp" [value]="cond.temperature"
                                     disabled>
                             </div>
 
@@ -460,25 +460,25 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="ferment-ph">Actual Pressure</label>
-                                <input type="text" class="form-control" id="ferment-ph" [value]="cond.Pressure"
+                                <input type="text" class="form-control" id="ferment-ph" [value]="cond.pressure"
                                     disabled>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="ferment-ph">pH</label>
-                                <input type="text" class="form-control" id="ferment-ph" [value]="cond.Ph" disabled>
+                                <input type="text" class="form-control" id="ferment-ph" [value]="cond.ph" disabled>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="ferment-plato">Actual {{preferedPlato}}</label>
-                                <input type="text" class="form-control" id="ferment-plato" [value]="cond.Plato"
+                                <input type="text" class="form-control" id="ferment-plato" [value]="cond.plato"
                                     disabled>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="ferment-plato">CO2</label>
-                                <input type="text" class="form-control" id="ferment-plato" [value]="cond.Co2" disabled>
+                                <input type="text" class="form-control" id="ferment-plato" [value]="cond.co2" disabled>
                             </div>
                         </div>
 
@@ -516,7 +516,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
-                                <input type="text" class="form-control" id="ferment-plato" [value]="filt.Temperature"
+                                <input type="text" class="form-control" id="ferment-plato" [value]="filt.temperature"
                                     disabled>
                             </div>
                         </div>
@@ -552,7 +552,7 @@
 
                             <div class="form-group col-md-12">
                                 <label for="ferment-plato">Pressure (in PSI)</label>
-                                <input type="text" class="form-control" id="ferment-plato" [value]="carb.Pressure"
+                                <input type="text" class="form-control" id="ferment-plato" [value]="carb.pressure"
                                     disabled>
                             </div>
                         </div>

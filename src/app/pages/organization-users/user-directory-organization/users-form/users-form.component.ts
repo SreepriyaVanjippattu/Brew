@@ -140,11 +140,11 @@ export class UsersFormComponent implements OnInit {
       const addUserApi = String.Format(this.apiService.addUser, this.tenantId);
       this.apiService.postData(addUserApi, params).subscribe((response: any) => {
         if (response.status === 200) {
-          this.toastr.show('Success');
+          this.toastr.show('', 'Success');
           this.router.navigate(['app/user-directory']);
         }
         error => {
-          this.toastr.danger(error.error.message);
+          this.toastr.danger('', error.error.message);
         };
       });
     }
