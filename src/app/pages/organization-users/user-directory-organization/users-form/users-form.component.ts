@@ -9,6 +9,7 @@ import { UploadConfig, UploadParams, BlobService } from 'angular-azure-blob-serv
 import { environment } from '../../../../../environments/environment';
 import { StatusUse } from '../../../../models/status-id-name';
 import { String } from 'typescript-string-operations';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-users-form',
   templateUrl: './users-form.component.html',
@@ -122,7 +123,7 @@ export class UsersFormComponent implements OnInit {
       lastName: this.usersForm.get('lastName').value,
       emailAddress: this.usersForm.get('userEmail').value,
       phone: this.usersForm.get('userPhone').value,
-      userName: this.usersForm.get('firstName').value,
+      userName: this.usersForm.get('userEmail').value,
       password: this.md5Password,
       isActive: true,
       imageUrl: this.imageLink,
@@ -143,10 +144,16 @@ export class UsersFormComponent implements OnInit {
           this.toastr.show('', 'Success');
           this.router.navigate(['app/user-directory']);
         }
-        error => {
-          this.toastr.danger('', error.error.message);
-        };
-      });
+      },
+        (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.toastr.danger('',error.error.message);
+          }
+          else {
+            this.toastr.danger('',error);
+          }
+        }
+      );
     }
   }
 

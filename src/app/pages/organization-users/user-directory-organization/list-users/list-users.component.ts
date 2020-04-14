@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { ModalService } from '../../../modal/modal.service';
 import { environment } from '../../../../../environments/environment';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NbToastrService } from '@nebular/theme';
 import { apiConfig } from '../../../../../environments/api-config';
 import { StatusUse } from '../../../../models/status-id-name';
@@ -146,9 +146,14 @@ export class ListUsersComponent implements OnInit {
         this.toastrService.show('User Deleted', 'Success');
         this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       },
-        (error) => {
+      error => {
+        if (error instanceof HttpErrorResponse) {
           this.toastrService.danger('', error.error.message);
-        },
+        }
+        else {
+          this.toastrService.danger('', error);
+        }
+      },
       );
   }
 
@@ -226,7 +231,7 @@ export class ListUsersComponent implements OnInit {
       lastName: this.archivedUserList.lastName,
       emailAddress: this.archivedUserList.emailAddress,
       phone: this.archivedUserList.phone,
-      userName: this.archivedUserList.userName,
+      userName: this.archivedUserList.emailAddress,
       password: this.archivedUserList.password,
       isActive: this.archivedUserList.isActive,
       position: this.archivedUserList.position,

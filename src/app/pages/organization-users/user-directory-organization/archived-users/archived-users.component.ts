@@ -5,7 +5,7 @@ import { StatusUse } from '../../../../models/status-id-name';
 import { NbToastrService } from '@nebular/theme';
 import { ModalService } from '../../../modal';
 import { environment } from '../../../../../environments/environment';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import { DataService } from '../../../../data.service';
 import { permission } from '../../../../models/rolePermission';
@@ -110,7 +110,7 @@ export class ArchivedUsersComponent implements OnInit {
           lastName: this.userToRestore.lastName,
           emailAddress: this.userToRestore.emailAddress,
           phone: this.userToRestore.phone,
-          userName: this.userToRestore.userName,
+          userName: this.userToRestore.emailAddress,
           password: this.userToRestore.password,
           isActive: this.userToRestore.isActive,
           imageUrl: '',
@@ -138,7 +138,12 @@ export class ArchivedUsersComponent implements OnInit {
       }
     },
       error => {
-        this.toastrService.danger(error.error.message, 'Error');
+        if (error instanceof HttpErrorResponse) {
+          this.toastrService.danger('', error.error.message);
+        }
+        else {
+          this.toastrService.danger('', error);
+        }
       });
   }
 
@@ -185,8 +190,13 @@ export class ArchivedUsersComponent implements OnInit {
         this.toastrService.show('User Deleted', 'Success');
         this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, '');
       },
-        (error) => {
-          this.toastrService.danger(error.error.message);
+        error => {
+          if (error instanceof HttpErrorResponse) {
+            this.toastrService.danger('', error.error.message);
+          }
+          else {
+            this.toastrService.danger('', error);
+          }
         },
       );
   }

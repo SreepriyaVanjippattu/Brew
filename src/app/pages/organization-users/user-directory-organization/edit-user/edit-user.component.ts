@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Md5 } from 'ts-md5';
 import { NbToastrService } from '@nebular/theme';
 import { environment } from '../../../../../environments/environment';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { StatusUse } from '../../../../models/status-id-name';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
@@ -173,7 +173,7 @@ export class EditUserComponent implements OnInit {
       lastName: this.usersForm.get('lastName').value,
       emailAddress: this.usersForm.get('userEmail').value,
       phone: this.usersForm.get('userPhone').value,
-      userName: this.usersData.userName,
+      userName: this.usersForm.get('userEmail').value,
       password: this.md5Password,
       isActive: true,
       imageUrl: this.imageLink,
@@ -196,10 +196,16 @@ export class EditUserComponent implements OnInit {
         if (response.status === 200) {
           this.toastr.show('Success');
           this.router.navigate(['app/user-directory']);
-        } error => {
-          this.toastr.danger(error.error.message, 'Error!');
-        };
-      });
+        }
+       }, error => {
+        if (error instanceof HttpErrorResponse) {
+          this.toastr.danger('', error.error.message);
+        }
+        else {
+          this.toastr.danger('', error);
+        }
+      }
+      );
     }
   }
 
