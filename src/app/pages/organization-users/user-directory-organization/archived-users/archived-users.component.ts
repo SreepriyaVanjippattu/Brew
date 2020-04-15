@@ -156,8 +156,7 @@ export class ArchivedUsersComponent implements OnInit {
       });
   }
 
-  searchClient(searchText) {
-    this.searchText = searchText;
+  searchClient() {
     const getAllusersListApi = String.Format(this.apiService.getAllArchivedUsers, this.tenantId);
     this.apiService.getDataList(getAllusersListApi, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {

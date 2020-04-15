@@ -28,9 +28,9 @@
         <div class="col-12">
             <div class="d-flex user-search-wrap">
                 <div class="d-flex l-search">
-                    <input [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Recipe" type="text">
+                    <input (keyup)="searchRecipe()" [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Recipe" type="text">
                     <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
-                        (click)="searchRecipe(searchText)"> search </i>
+                        (click)="searchRecipe()"> search </i>
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons cursor-click"

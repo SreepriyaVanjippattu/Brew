@@ -137,8 +137,7 @@ export class ArchivedRecipesComponent implements OnInit {
     this.config.currentPage = event;
   }
 
-  searchRecipe(searchText) {
-    this.searchText = searchText;
+  searchRecipe() {
     const getAllArchivedRecipesAPI = String.Format(this.apiService.getAllArchivedRecipes, this.tenantId);
     this.apiService.getDataList(getAllArchivedRecipesAPI, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {

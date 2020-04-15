@@ -127,8 +127,8 @@ export class EditUserComponent implements OnInit {
 
   getUserDetails(tenantId, id) {
 
-    const getAllActiveUsersApi = String.Format(this.apiService.getUserById, tenantId, id);
-    this.apiService.getDataList(getAllActiveUsersApi, 1, 1, null, null, null).subscribe(response => {
+    const getUserbyIdApi = String.Format(this.apiService.getUserById, tenantId, id);
+    this.apiService.getDataList(getUserbyIdApi, 1, 1, null, null, null).subscribe(response => {
 
       this.usersData = response['body']['users'];
       if (this.usersData.roles) {
@@ -220,17 +220,17 @@ export class EditUserComponent implements OnInit {
   resetpasswordClick() {
 
     const params = {
-      EmailAddress: this.usersForm.get('userEmail').value,
-      Url: this.envURL + '/login/forgot-changepassword',
+      emailAddress: this.usersForm.get('userEmail').value,
+      url: this.envURL + '/login/forgot-changepassword',
     };
-
-    this.apiService.putData(this.apiService.postEmail, params).subscribe(response => {
+    const postEmailApi = String.Format(this.apiService.postEmail, this.tenantId)
+    this.apiService.postData(postEmailApi, params).subscribe(response => {
       if (response) {
         this.toastr.show('Check your Inbox', 'Mail Sent');
         this.router.navigate(['/app/user-directory']);
       }
     }, error => {
-      this.toastr.danger(error.error.message);
+      this.toastr.danger('', error.error.message);
     });
   }
 

@@ -27,9 +27,9 @@
         <div class="header-right">
             <div class='d-flex header-search-wrapper'>
                 <div class="d-flex l-search">
-                    <input [(ngModel)]="searchText" class='l-searchbox' placeholder="Search" type="text">
+                    <input (keyup)="searchBrew()" [(ngModel)]="search" class='l-searchbox' placeholder="Search" type="text">
                     <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
-                        (click)="searchBrew(searchText)"> search </i>
+                        (click)="searchBrew()"> search </i>
                 </div>
 
                 <i class="material-icons filter-ico cursor-click">

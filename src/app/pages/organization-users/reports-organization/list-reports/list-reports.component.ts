@@ -32,6 +32,7 @@ export class ListReportsComponent implements OnInit {
   day: any;
   checkPermission: boolean = false;
   pageControl;
+  search;
 
   constructor(
     private apiService: ApiProviderService,
@@ -195,9 +196,8 @@ export class ListReportsComponent implements OnInit {
     return this.month + '/' + this.day + '/' + year;
   }
 
-  searchBrew(searchText) {
-    const search = searchText;
-    this.apiService.getDataByQueryParams(this.apiService.getAllBrewReportsList + `&startwith=${search}`, null,
+  searchBrew() {
+    this.apiService.getDataByQueryParams(this.apiService.getAllBrewReportsList + `&startwith=${this.search}`, null,
       this.tenantId, null, this.config.currentPage, this.config.itemsPerPage).
       subscribe((response) => {
         const myHeaders = response.headers;

@@ -109,7 +109,7 @@ export class ApiProviderService {
   getAllBrewReportsList = 'GetAllBrewRunByTenantIdForRepor';
   getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
   getBrewRunById = 'GetBrewRunById';
-  postEmail = 'ForgotPasswordLink';
+  postEmail = 'user/v1/brewers/{0}/forgotPasswordLink';
   editClient = 'EditClient';
   getSubscriptions = 'GetAllActiveSubscription';
   editForgotPassword ='';

@@ -44,6 +44,7 @@ export class PreferencesComponent implements OnInit {
   tankConfiguration: any;
   isactive: boolean;
   toggleOn: boolean;
+  search: any;
 
   constructor(
     private apiService: ApiProviderService,
@@ -247,12 +248,9 @@ export class PreferencesComponent implements OnInit {
     this.newYeast.push(this.newYeastForm());
   }
 
-  searchYeast(searchText) {
-
-    const search = searchText;
-
+  searchYeast() {
     const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastList, this.tenantId);
-    this.apiService.getDataList(getAllYeastStrainsAPI, null, null, null, null, search).subscribe(response => {
+    this.apiService.getDataList(getAllYeastStrainsAPI, null, null, null, null, this.search).subscribe(response => {
 
       if (response.status === 200) {
         this.yeastStrain = response['body'].yeastStrainDetails;
@@ -361,12 +359,9 @@ export class PreferencesComponent implements OnInit {
     });
   }
 
-  searchTank(searchText) {
-
-    const search = searchText;
-
+  searchTank() {
     const getAllTankTypesListApi = String.Format(this.apiService.getAllTankConfigurationList, this.tenantId);
-    this.apiService.getDataList(getAllTankTypesListApi, null, null, null, null, search).subscribe(response => {
+    this.apiService.getDataList(getAllTankTypesListApi, null, null, null, null, this.search).subscribe(response => {
 
       if (response.status === 200) {
         this.tankConfiguration = response['body'].tankDetails;

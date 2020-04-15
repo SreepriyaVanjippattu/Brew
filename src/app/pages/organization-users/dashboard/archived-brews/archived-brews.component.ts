@@ -149,8 +149,7 @@ export class ArchivedBrewsComponent implements OnInit {
     this.deleteBrewRunId = brewRunId;
   }
 
-  searchBrew(searchText) {
-    this.searchText = searchText;
+  searchBrew() {
     this.getDashBoardDetails();
   
   }

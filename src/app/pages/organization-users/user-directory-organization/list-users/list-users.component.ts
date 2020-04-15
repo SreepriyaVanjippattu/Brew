@@ -165,8 +165,7 @@ export class ListUsersComponent implements OnInit {
     this.router.navigate([`/app/user-directory`]);
   }
 
-  searchUser(searchText) {
-    this.searchText= searchText;
+  searchUser() {
     const getAllusersListApi = String.Format(this.apiService.getAllActiveUsers, this.tenantId);
     this.apiService.getDataList(getAllusersListApi, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {
