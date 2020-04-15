@@ -127,26 +127,20 @@ export class EditUserComponent implements OnInit {
 
   getUserDetails(tenantId, id) {
 
-    const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers, tenantId);
+    const getAllActiveUsersApi = String.Format(this.apiService.getUserById, tenantId, id);
     this.apiService.getDataList(getAllActiveUsersApi, 1, 1, null, null, null).subscribe(response => {
 
       this.usersData = response['body']['users'];
-      this.usersData.forEach(element => {
-        if (element.id === id) {
-          this.usersData = element;
-          this.tenantId = element.tenantId;
-          if (this.page === 'View') {
-            this.headerTitle = element.firstName + ' ' + element.lastName;
-          }
-          if (element.roles) {
-            element.roles.forEach(elementId => {
-              this.currentUser = element;
-              this.roleId = elementId.id;
-            });
-          }
-          this.setDataToEdit();
-        }
-      });
+      if (this.usersData.roles) {
+        this.usersData.roles.forEach(elementId => {
+                this.currentUser = this.usersData;
+                this.roleId = elementId.id;
+              });
+            }
+      if (this.page === 'View') {
+        this.headerTitle = this.usersData.firstName + ' ' + this.usersData.lastName;
+      }
+      this.setDataToEdit();
     });
   }
 

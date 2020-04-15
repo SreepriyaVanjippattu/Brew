@@ -247,9 +247,9 @@ export class PreferencesComponent implements OnInit {
     this.newYeast.push(this.newYeastForm());
   }
 
-  searchYeast(event) {
+  searchYeast(searchText) {
 
-    const search = event.target.value;
+    const search = searchText;
 
     const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastList, this.tenantId);
     this.apiService.getDataList(getAllYeastStrainsAPI, null, null, null, null, search).subscribe(response => {
@@ -361,9 +361,9 @@ export class PreferencesComponent implements OnInit {
     });
   }
 
-  searchTank(event) {
+  searchTank(searchText) {
 
-    const search = event.target.value;
+    const search = searchText;
 
     const getAllTankTypesListApi = String.Format(this.apiService.getAllTankConfigurationList, this.tenantId);
     this.apiService.getDataList(getAllTankTypesListApi, null, null, null, null, search).subscribe(response => {

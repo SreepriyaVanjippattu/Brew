@@ -209,8 +209,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  searchBrew(event) {
-    this.searchText = event.target.value;
+  searchBrew(searchText) {
+    this.searchText = searchText;
     this.config.currentPage = 1;
     this.getDashBoardDetails();
   

@@ -34,9 +34,9 @@
         <div class="col-12">
             <div class="d-flex header-search-wrapper">
                 <div class="d-flex l-search">
-                    <i class="material-icons search-ico"> search </i>
-                    <input (keyup)="searchRecipe()" [(ngModel)]= "searchText" class='l-searchbox' placeholder="Search Archived Recipes"
-                        type="text">
+                    <input [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Archived Recipes" type="text">
+                    <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
+                        (click)="searchRecipe(searchText)"> search </i>
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
@@ -44,8 +44,8 @@
                     local_printshop
                 </button>
             </div>
-
-
+    
+    
         </div>
 
 

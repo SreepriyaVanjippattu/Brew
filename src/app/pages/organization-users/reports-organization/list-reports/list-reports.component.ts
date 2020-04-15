@@ -195,8 +195,8 @@ export class ListReportsComponent implements OnInit {
     return this.month + '/' + this.day + '/' + year;
   }
 
-  searchBrew(event) {
-    const search = event.target.value;
+  searchBrew(searchText) {
+    const search = searchText;
     this.apiService.getDataByQueryParams(this.apiService.getAllBrewReportsList + `&startwith=${search}`, null,
       this.tenantId, null, this.config.currentPage, this.config.itemsPerPage).
       subscribe((response) => {
