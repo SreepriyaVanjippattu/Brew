@@ -10,7 +10,9 @@ import { String } from 'typescript-string-operations';
   templateUrl: './organization-previleges.component.html',
   styleUrls: ['./organization-previleges.component.scss']
 })
+
 export class OrganizationPrevilegesComponent implements OnInit {
+
   labelHeading: any = [];
   rolePermisson: any = [];
   rolePrevilegeContent;
@@ -29,11 +31,11 @@ export class OrganizationPrevilegesComponent implements OnInit {
   editedRoles: any;
   userDetails: any;
   tenantId: any;
+
   constructor(
     private apiService: ApiProviderService,
     private toastrService: NbToastrService,
-    private router: Router,
-
+    private router: Router
 
   ) { }
 
@@ -47,8 +49,10 @@ export class OrganizationPrevilegesComponent implements OnInit {
   }
 
   getAllRolePrevileges() {
+
     const getAllActiveRolesApi = String.Format(this.apiService.getAllActiveRoles, this.tenantId);
     this.apiService.getData(getAllActiveRolesApi).subscribe(response => {
+
       this.allAvailableRoles = response['body']['roles'];
       this.allAvailableRoles.forEach(element => {
         if (element.id != '81db4ad1-863b-4310-a0be-04042d2b30e0' && element.id != '2e4606ca-7700-4578-94bd-cda3728d22ac') {
@@ -61,8 +65,9 @@ export class OrganizationPrevilegesComponent implements OnInit {
   }
 
   getRolePrevilegesDetails() {
-    const output = [];
+
     this.apiService.getData(this.apiService.getAllPermissions).subscribe(response => {
+
       this.allPermissions = response['body']['permissions'];
       this.allCategories = this.allPermissions.map(item => item.category)
         .filter((value, index, self) => self.indexOf(value) === index && value != null);
@@ -89,9 +94,7 @@ export class OrganizationPrevilegesComponent implements OnInit {
     return this.allPermissions.filter(x => x.category === category);
   }
 
-
   addRemovePermission(sRole: Role, aPerm: Permission, e): void {
-
 
     if (e.target.checked == false) {
       this.uncheckedsRole.push(sRole);
@@ -111,10 +114,8 @@ export class OrganizationPrevilegesComponent implements OnInit {
       this.rolePermisson.push(sRole);
     }
 
-
     this.saveeditRolePermission = this.rolePermisson;
     this.editRolePermissionStatus = true;
-
 
   }
 
@@ -155,7 +156,6 @@ export class OrganizationPrevilegesComponent implements OnInit {
       });
     });
 
-
     this.toastrService.show('Role Previlege Saved', 'Success');
     this.router.navigate(['app/role-privileges']);
 
@@ -165,6 +165,7 @@ export class OrganizationPrevilegesComponent implements OnInit {
     this.toastrService.show('Role Previlege Saved', 'Success');
     this.router.navigate(['app/role-privileges']);
   }
+
   cancelRolePriviledge() {
     this.ngOnInit();
   }

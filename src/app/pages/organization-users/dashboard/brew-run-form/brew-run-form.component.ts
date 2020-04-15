@@ -151,7 +151,7 @@ export class BrewRunFormComponent implements OnInit {
           this.toast.show('Brew successfully added');
         }
       }, error => {
-        this.toast.danger(error.error.Message);
+           this.toast.danger(error.error.message);
       });
     }
   }

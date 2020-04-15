@@ -189,7 +189,7 @@ export class ProfileOrganizationComponent implements OnInit, OnDestroy {
         this.updateSession();
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
       this.responseCompany = false;
     });
   }
@@ -230,7 +230,7 @@ export class ProfileOrganizationComponent implements OnInit, OnDestroy {
         this.updateSession();
       }
     }, error => {
-      this.toast.danger(error.error.Message);
+      this.toast.danger(error.error.message);
       this.responseUser = false;
     });
   }

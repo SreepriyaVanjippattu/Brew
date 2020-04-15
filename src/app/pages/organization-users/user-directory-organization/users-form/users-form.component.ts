@@ -10,11 +10,13 @@ import { environment } from '../../../../../environments/environment';
 import { StatusUse } from '../../../../models/status-id-name';
 import { String } from 'typescript-string-operations';
 import { HttpErrorResponse } from '@angular/common/http';
+
 @Component({
   selector: 'app-users-form',
   templateUrl: './users-form.component.html',
   styleUrls: ['./users-form.component.scss'],
 })
+
 export class UsersFormComponent implements OnInit {
   usersData;
   page: string;
@@ -59,6 +61,7 @@ export class UsersFormComponent implements OnInit {
     fileUpload: [''],
     superadmin: [''],
   });
+
   get form() {
     return this.usersForm.controls;
   }
@@ -79,6 +82,7 @@ export class UsersFormComponent implements OnInit {
       this.validPhone = true;
     }
   }
+
   emailvalidation(email) {
     const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     if (!emailReg.test(email)) {
@@ -87,8 +91,11 @@ export class UsersFormComponent implements OnInit {
       this.validEmail = true;
     }
   }
+
   getActiveRoles() {
+
     this.apiService.getDataList(this.apiService.getAllActiveRoles).subscribe(response => {
+
       if (response) {
         this.roles = response['body']['roles'];
         this.roles = this.roles.filter(element => {
@@ -106,7 +113,9 @@ export class UsersFormComponent implements OnInit {
   resetPasswordClick() {
     this.router.navigate(['app/profile-organization/change-password']);
   }
+
   userFormSubmit() {
+
     if (this.usersForm.get('image').value) {
       this.postImage();
     }
@@ -116,6 +125,7 @@ export class UsersFormComponent implements OnInit {
       const md5 = new Md5();
       this.md5Password = md5.appendStr('password@' + this.usersForm.get('firstName').value).end();
     }
+
     const params = {
       id: this.id,
       firstName: this.usersForm.get('firstName').value,
@@ -137,6 +147,7 @@ export class UsersFormComponent implements OnInit {
           id: this.usersForm.get('role').value,
         }],
     };
+
     if (this.usersForm.valid) {
       const addUserApi = String.Format(this.apiService.addUser, this.tenantId);
       this.apiService.postData(addUserApi, params).subscribe((response: any) => {
@@ -147,10 +158,10 @@ export class UsersFormComponent implements OnInit {
       },
         (error) => {
           if (error instanceof HttpErrorResponse) {
-            this.toastr.danger('',error.error.message);
+            this.toastr.danger('', error.error.message);
           }
           else {
-            this.toastr.danger('',error);
+            this.toastr.danger('', error);
           }
         }
       );
@@ -158,6 +169,7 @@ export class UsersFormComponent implements OnInit {
   }
 
   postImage() {
+
     if (this.currentFile !== null && !this.imageError) {
       this.imageUrlCreated = true;
       const baseUrl = this.blob.generateBlobUrl(this.Config, this.id);
@@ -182,6 +194,7 @@ export class UsersFormComponent implements OnInit {
   }
 
   imageUploadChange(event) {
+
     this.currentFile = event.target.files[0];
     if (this.currentFile.type === 'image/jpg' ||
       this.currentFile.type === 'image/png' ||

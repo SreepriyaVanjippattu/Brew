@@ -16,10 +16,12 @@ import { String } from 'typescript-string-operations';
   templateUrl: './archived-users.component.html',
   styleUrls: ['./archived-users.component.scss'],
 })
+
 export class ArchivedUsersComponent implements OnInit {
+
   @ViewChild('TABLE', { static: false }) TABLE: ElementRef;
+
   title = 'Excel';
-  userProfile = JSON.parse(sessionStorage.getItem('user')).UserProfile;
   config = {
     itemsPerPage: 5,
     currentPage: 1,
@@ -67,13 +69,16 @@ export class ArchivedUsersComponent implements OnInit {
   }
 
   getArchivedUserDetails(pageNumber, pageSize, tenantId, searchText) {
+
     this.router.navigate(['app/user-directory/archives'], {
       queryParams: {
         page: this.config.currentPage,
       },
     });
+
     const getAllArchivedUsersApi = String.Format(this.apiService.getAllArchivedUsers, tenantId)
     this.apiService.getDataList(getAllArchivedUsersApi, pageNumber, pageSize, null, null, searchText).subscribe(response => {
+
       this.archieveContent = response['body']['users'];
       this.archieveContent.forEach(element => {
         if (element.statusId === StatusUse.archive.id) {
@@ -92,7 +97,9 @@ export class ArchivedUsersComponent implements OnInit {
   }
 
   restoreArchive(id) {
+
     const data = this.data.checkPermission(this.permission.Reinstate_User.Id);
+
     if (!data) {
       this.toastrService.danger('You don\'t have access', 'Error');
     } else {
@@ -102,6 +109,7 @@ export class ArchivedUsersComponent implements OnInit {
           this.userToRestore = element;
         }
       });
+
       if (this.userToRestore.roles[0].id) {
         var params = {
           id: this.userToRestore.id,
@@ -124,14 +132,15 @@ export class ArchivedUsersComponent implements OnInit {
           ],
         };
       }
-
       this.restoreClient(params);
     }
   }
 
   restoreClient(params) {
+
     const restoreUserApi = String.Format(this.apiService.editUser, this.tenantId)
     this.apiService.putData(restoreUserApi, params).subscribe((response: any) => {
+
       if (response.status === 200) {
         this.toastrService.show('User Restored', 'Success');
         this.router.navigate(['app/user-directory']);
@@ -148,10 +157,13 @@ export class ArchivedUsersComponent implements OnInit {
   }
 
   searchClient() {
+    
     const getAllusersListApi = String.Format(this.apiService.getAllArchivedUsers, this.tenantId);
     this.apiService.getDataList(getAllusersListApi, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {
+
         this.headerValue = response['body']['pagingDetails'];
+
         if (this.headerValue) {
           this.config.totalItems = this.headerValue.totalCount;
           if (this.config.totalItems === 0) {
@@ -184,8 +196,9 @@ export class ArchivedUsersComponent implements OnInit {
   }
 
   deleteUser() {
+
     const deleteUserApi = String.Format(this.apiService.deleteUser, this.tenantId, this.deleteId)
-    this.apiService.deleteData(this.apiService.deleteUser)
+    this.apiService.deleteData(deleteUserApi)
       .subscribe(response => {
         this.toastrService.show('User Deleted', 'Success');
         this.getArchivedUserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, '');
@@ -200,6 +213,7 @@ export class ArchivedUsersComponent implements OnInit {
         },
       );
   }
+  
   ExportTOExcel() {
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
     ws['!cols'] = [];

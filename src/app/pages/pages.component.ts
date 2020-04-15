@@ -77,7 +77,7 @@ export class PagesComponent {
       }
     },
       error => {
-        console.log(error.error.Message);
+        console.log(error.error.message);
       });
   }
 

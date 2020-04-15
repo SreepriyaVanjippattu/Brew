@@ -63,7 +63,7 @@ export class SignupPlanComponent implements OnInit {
           this.router.navigate(['signup/signup-success']);
         }
       }, error => {
-        this.toastr.error(error.error.Message);
+        this.toastr.error(error.error.message);
       });
     }
   }

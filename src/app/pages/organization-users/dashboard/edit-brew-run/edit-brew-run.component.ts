@@ -150,7 +150,7 @@ export class EditBrewRunComponent implements OnInit {
           this.router.navigate(['app/dashboard']);
         }
       }, error => {
-        this.toast.danger(error.error.Message);
+        this.toast.danger(error.error.message);
       });
     }
   }

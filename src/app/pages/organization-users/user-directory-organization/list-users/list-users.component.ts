@@ -17,10 +17,12 @@ import { String } from 'typescript-string-operations';
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.scss'],
 })
+
 export class ListUsersComponent implements OnInit {
+
   @ViewChild('TABLE', { static: false }) TABLE: ElementRef;
+
   title = 'Excel';
-  userProfile = JSON.parse(sessionStorage.getItem('user')).UserProfile;
   toggleStatus = false;
   id: string;
   userContent;
@@ -76,13 +78,16 @@ export class ListUsersComponent implements OnInit {
   }
 
   getuserDetails(pageNumber, pageSize, tenantId, searchText) {
+
     this.router.navigate(['app/user-directory'], {
       queryParams: {
         page: this.config.currentPage,
       },
     });
+
     const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers, tenantId);
     this.apiService.getDataList(getAllActiveUsersApi, pageNumber, pageSize, null, null, searchText).subscribe(response => {
+
       this.userContent = response['body']['users'];
       this.headerValue = response['body']['pagingDetails'];
       if (this.headerValue) {
@@ -109,14 +114,12 @@ export class ListUsersComponent implements OnInit {
   }
 
   newUserClick() {
-
     const data = this.data_service.checkPermission(this.permission.Add_New_User.Id);
     if (!data) {
       this.toastrService.danger('You don\'t have access', 'Error');
     } else {
       this.router.navigate(['/app/user-directory/add']);
     }
-
   }
 
   goToView(id) {
@@ -140,9 +143,11 @@ export class ListUsersComponent implements OnInit {
   }
 
   deleteUser() {
+
     const deleteUserApi = String.Format(this.apiService.deleteUser, this.tenantId, this.deleteId);
     this.apiService.deleteData(deleteUserApi)
       .subscribe(response => {
+
         this.toastrService.show('User Deleted', 'Success');
         this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       },
@@ -153,8 +158,7 @@ export class ListUsersComponent implements OnInit {
         else {
           this.toastrService.danger('', error);
         }
-      },
-      );
+      });
   }
 
   cancelDelete() {
@@ -162,9 +166,11 @@ export class ListUsersComponent implements OnInit {
   }
 
   searchUser() {
+
     const getAllusersListApi = String.Format(this.apiService.getAllActiveUsers, this.tenantId);
     this.apiService.getDataList(getAllusersListApi, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {
+
         this.headerValue = response['body']['pagingDetails'];
         if (this.headerValue) {
           this.config.totalItems = this.headerValue.totalCount;
@@ -191,24 +197,24 @@ export class ListUsersComponent implements OnInit {
   filter(label) {
     if (this.userContent) {
       if (this.toggleStatus === true && label === 'name') {
-        this.userContent.sort((a, b) => a.FirstName.toUpperCase() > b.FirstName.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.firstName.toUpperCase() > b.firstName.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'name') {
-        this.userContent.sort((a, b) => a.FirstName.toUpperCase() < b.FirstName.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.firstName.toUpperCase() < b.firstName.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'role') {
-        this.userContent.sort((a, b) => a.Roles[0].Name.toUpperCase() > b.Roles[0].Name.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.roles[0].name.toUpperCase() > b.roles[0].name.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'role') {
-        this.userContent.sort((a, b) => a.Roles[0].Name.toUpperCase() < b.Roles[0].Name.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.roles[0].name.toUpperCase() < b.roles[0].name.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'phone') {
-        this.userContent.sort((a, b) => a.PrimaryPhone.toUpperCase() > b.PrimaryPhone.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.phone.toUpperCase() > b.phone.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'phone') {
-        this.userContent.sort((a, b) => a.PrimaryPhone.toUpperCase() < b.PrimaryPhone.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.phone.toUpperCase() < b.phone.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'email') {
-        this.userContent.sort((a, b) => a.EmailAddress.toUpperCase() > b.EmailAddress.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.emailAddress.toUpperCase() > b.emailAddress.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'email') {
-        this.userContent.sort((a, b) => a.EmailAddress.toUpperCase() < b.EmailAddress.toUpperCase() ? 1 : -1);
+        this.userContent.sort((a, b) => a.emailAddress.toUpperCase() < b.emailAddress.toUpperCase() ? 1 : -1);
       }
     }
     this.toggleStatus = !this.toggleStatus;
@@ -219,11 +225,13 @@ export class ListUsersComponent implements OnInit {
   }
 
   archivedClick() {
+
     this.userContent.forEach(element => {
       if (element.id === this.archiveId) {
         this.archivedUserList = element;
       }
     });
+
     const params = {
       id: this.archivedUserList.id,
       firstName: this.archivedUserList.firstName,
@@ -252,8 +260,10 @@ export class ListUsersComponent implements OnInit {
   }
 
   editArchivedUser(params) {
+
     const editArchivedUser = String.Format(this.apiService.editUser, this.tenantId)
     this.apiService.putData(editArchivedUser, params).subscribe((response: any) => {
+
       if (response.status === 200) {
         this.toastrService.show('User Archived', 'Success');
         this.goToArchive();
@@ -263,6 +273,7 @@ export class ListUsersComponent implements OnInit {
         this.toastrService.danger(error.error.message, 'Error');
       });
   }
+  
   ExportTOExcel() {
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
     ws['!cols'] = [];

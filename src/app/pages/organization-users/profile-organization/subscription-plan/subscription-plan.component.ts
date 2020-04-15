@@ -88,7 +88,7 @@ export class SubscriptionPlanComponent implements OnInit {
         this.router.navigate(['app/profile-organization']);
       }
     }, error => {
-      this.toast.danger('', error.error.Message);
+      this.toast.danger('', error.error.message);
     });
   }
 

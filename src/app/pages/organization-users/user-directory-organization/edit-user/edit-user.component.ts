@@ -11,13 +11,14 @@ import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
 import { String } from 'typescript-string-operations';
 
-
 @Component({
   selector: 'app-users-form',
   templateUrl: './edit-user.component.html',
   styleUrls: ['./edit-user.component.scss'],
 })
+
 export class EditUserComponent implements OnInit {
+
   usersData;
   page: string;
   id: any;
@@ -39,7 +40,7 @@ export class EditUserComponent implements OnInit {
   envURL: string;
   userDetails: any;
   currentUserId: any;
-  imageLink: any ='';
+  imageLink: any = '';
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -60,6 +61,7 @@ export class EditUserComponent implements OnInit {
   });
 
   ngOnInit() {
+
     this.envURL = environment.API.emailUrl;
     this.roleChangeAccess();
     this.userDetails = sessionStorage.user;
@@ -68,6 +70,7 @@ export class EditUserComponent implements OnInit {
     this.currentUserId = user['userDetails'].userId;
     this.page = this.activatedRoute.snapshot.url[0].path;
     this.id = this.activatedRoute.snapshot.url[1].path;
+
     if (this.page === 'edit') {
       this.isButtonVisible = true;
       this.getUserDetails(this.tenantId, this.id);
@@ -92,6 +95,7 @@ export class EditUserComponent implements OnInit {
     this.page = 'edit';
     this.ngOnInit();
   }
+
   emailvalidation(email) {
     const emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     if (!emailReg.test(email)) {
@@ -110,6 +114,7 @@ export class EditUserComponent implements OnInit {
   }
 
   getActiveRoles() {
+
     this.apiService.getData(this.apiService.getAllActiveRoles).subscribe(response => {
       if (response) {
         this.roles = response['body']['roles'];
@@ -121,8 +126,10 @@ export class EditUserComponent implements OnInit {
   }
 
   getUserDetails(tenantId, id) {
+
     const getAllActiveUsersApi = String.Format(this.apiService.getAllActiveUsers, tenantId);
     this.apiService.getDataList(getAllActiveUsersApi, 1, 1, null, null, null).subscribe(response => {
+
       this.usersData = response['body']['users'];
       this.usersData.forEach(element => {
         if (element.id === id) {
@@ -144,6 +151,7 @@ export class EditUserComponent implements OnInit {
   }
 
   setDataToEdit() {
+
     if (this.roleId === '81db4ad1-863b-4310-a0be-04042d2b30e0' || this.roleId === 'e306b412-cf09-486f-b336-21dadaddaeed') {
       this.usersForm.get('roles').setValue(this.roleId);
       this.usersForm.get('roles').disable();
@@ -158,14 +166,15 @@ export class EditUserComponent implements OnInit {
   }
 
   saveUser() {
+
     this.formSubmitted = true;
     if (this.page === 'edit') {
       this.md5Password = this.usersData.password;
     } else {
       const md5 = new Md5();
       this.md5Password = md5.appendStr('password@' + this.usersForm.get('firstName').value).end();
-
     }
+
     const params = {
       id: this.id,
       firstName: this.usersForm.get('firstName').value,
@@ -193,11 +202,12 @@ export class EditUserComponent implements OnInit {
 
       const edituserApi = String.Format(this.apiService.editUser, this.tenantId);
       this.apiService.putData(edituserApi, params).subscribe((response: any) => {
+
         if (response.status === 200) {
           this.toastr.show('Success');
           this.router.navigate(['app/user-directory']);
         }
-       }, error => {
+      }, error => {
         if (error instanceof HttpErrorResponse) {
           this.toastr.danger('', error.error.message);
         }
@@ -214,10 +224,12 @@ export class EditUserComponent implements OnInit {
   }
 
   resetpasswordClick() {
+
     const params = {
       EmailAddress: this.usersForm.get('userEmail').value,
       Url: this.envURL + '/login/forgot-changepassword',
     };
+
     this.apiService.putData(this.apiService.postEmail, params).subscribe(response => {
       if (response) {
         this.toastr.show('Check your Inbox', 'Mail Sent');
@@ -229,14 +241,16 @@ export class EditUserComponent implements OnInit {
   }
 
   deleteUser() {
+
     const deleteUserApi = String.Format(this.apiService.deleteUser, this.tenantId, this.id)
-    this.apiService.deleteData(this.apiService.deleteUser)
+    this.apiService.deleteData(deleteUserApi)
       .subscribe(response => {
+
         this.toastr.show('User Deleted', 'Success');
         this.router.navigate(['app/user-directory']);
       },
         (error) => {
-          this.toastr.show('Delete User Failed');
+          this.toastr.show('', 'Delete User Failed');
         },
       );
   }
