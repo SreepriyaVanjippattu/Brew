@@ -95,9 +95,7 @@ export class ListRecipeComponent implements OnInit {
       this.headerValue = response['body']['pagingDetails'];
       if (this.headerValue) {
         this.config.totalItems = this.headerValue.totalCount;
-        if (this.config.totalItems === 0) {
-          this.pageControl = true;
-        }
+        this.pageControl = (this.config.totalItems === 0) ? true : false;
       }
     });
   }
@@ -221,6 +219,7 @@ export class ListRecipeComponent implements OnInit {
   }
 
   searchRecipe() {
+
     const getAllRecipeByTenantAPI = String.Format(this.apiService.getAllRecipeByTenant, this.tenantId);
     this.apiService.getDataList(getAllRecipeByTenantAPI, this.config.currentPage, this.config.itemsPerPage, null, null, this.searchText)
       .subscribe((response) => {
@@ -228,11 +227,7 @@ export class ListRecipeComponent implements OnInit {
         this.headerValue = response['body']['pagingDetails'];
         if (this.headerValue) {
           this.config.totalItems = this.headerValue.totalCount;
-          if (this.config.totalItems === 0) {
-            this.pageControl = true;
-          } else {
-            this.pageControl = false;
-          }
+          this.pageControl = (this.config.totalItems === 0) ? true : false;
         }
         if (response && response['body']) {
           this.recipeContent = response['body'].recipes;

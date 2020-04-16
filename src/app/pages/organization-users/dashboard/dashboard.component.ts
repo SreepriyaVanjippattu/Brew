@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
 import { ApiProviderService } from '../../../core/api-services/api-provider.service';
 import { DashboardService } from './dashboard.service';
 import { ModalService } from '../../modal/modal.service';
@@ -9,16 +8,16 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import { DataService } from '../../../data.service';
 import { permission } from '../../../models/rolePermission';
-import { format } from 'ssf/types';
-import { String, StringBuilder } from 'typescript-string-operations';
-
+import { String } from 'typescript-string-operations';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
+
 export class DashboardComponent implements OnInit {
+
   day;
   month;
   hours;
@@ -39,26 +38,24 @@ export class DashboardComponent implements OnInit {
     totalItems: 20,
   };
   page: any;
-
   headerValue: any;
   singleDeletedBrew: any;
   timeZones: any;
   zone: any;
   startTime: string;
   endTime: string;
-  showProgress:  boolean;
-  hideProgress:  boolean;
-  disableDelete:  boolean;
+  showProgress: boolean;
+  hideProgress: boolean;
+  disableDelete: boolean;
   progressId: any;
   pageControl;
   searchText: string;
-
 
   permission = permission;
   singleArchieveBrew: any;
   currentUser: any;
   toggleStatus: boolean = false;
- 
+
   constructor(
     private apiService: ApiProviderService,
     private router: Router,
@@ -66,59 +63,59 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private modalService: ModalService,
     private toastrService: NbToastrService,
-    private data:DataService
+    private data: DataService
   ) {
-      this.searchText = "";
-
-   }
+    this.searchText = "";
+  }
 
   ngOnInit() {
+
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
     this.page = this.route.snapshot.queryParamMap.get('page');
     if (this.page) {
-      this.config.currentPage = this.page 
+      this.config.currentPage = this.page
     }
-    this.searchText =  this.route.snapshot.queryParamMap.get('searchText');
+    this.searchText = this.route.snapshot.queryParamMap.get('searchText');
 
     this.getDashBoardDetails();
-   }
+  }
 
   getDashBoardDetails() {
+
     this.router.navigate(['app/dashboard'], {
       queryParams: {
         page: this.config.currentPage,
-        searchText : this.searchText
+        searchText: this.searchText
       },
     });
 
+    const getAllBrewRunAPI = String.Format(this.apiService.getAllBrewRun, this.tenantId);
+    this.apiService.getDataByQueryParams(getAllBrewRunAPI, null, null, null, this.config.currentPage, this.config.itemsPerPage, this.searchText).subscribe(response => {
 
-    const getAllBrewRunAPI= String.Format(this.apiService.getAllBrewRun, this.tenantId);
-    this.apiService.getDataByQueryParams(getAllBrewRunAPI, null, null, null, this.config.currentPage, this.config.itemsPerPage,this.searchText).subscribe(response => {
       this.brewRuns = response['body']['brewRuns'];
       const archivePermission = this.data.checkPermission(this.permission.Archive_Brew_Run.Id);
+
       if (this.brewRuns) {
         this.brewRuns.map((brewRun, idx) => {
           brewRun.archivePermission = archivePermission;
           this.brewProgressCalculation(brewRun);
         });
       }
-     
       this.headerValue = response['body']['pagingDetails'];
       if (this.headerValue) {
-      this.config.totalItems = this.headerValue.totalCount;
-      if (this.config.totalItems === 0) {
-        this.pageControl = true;
-      }
+        this.config.totalItems = this.headerValue.totalCount;
+        this.pageControl = (this.config.totalItems === 0) ? true : false;
       }
     }, error => {
       console.error(error);
     });
+
     this.route.queryParamMap.map(params => params.get('page')).subscribe((page: any) => {
       return this.config.currentPage = page;
     });
+
   }
 
   pageSize(newSize) {
@@ -130,10 +127,10 @@ export class DashboardComponent implements OnInit {
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
     this.getDashBoardDetails();
- 
   }
 
   singleFermentationClick(value, fermentationId) {
+
     const params = {
       percentage: value.percentage,
       daysCompleted: value.daysCompleted,
@@ -143,12 +140,14 @@ export class DashboardComponent implements OnInit {
 
     sessionStorage.progressData = JSON.stringify(params);
     const data = this.data.checkPermission(this.permission.View_Brew_Run.Id);
+
     if (!data) {
       this.toastrService.danger('You don\'t have access', 'Error');
     } else {
-    this.data.changeMessage(value);
-    this.router.navigate(['app/dashboard/view-brew-run/' + fermentationId]);
+      this.data.changeMessage(value);
+      this.router.navigate(['app/dashboard/view-brew-run/' + fermentationId]);
     }
+
   }
 
   archiveSingleBrew(fermentation) {
@@ -157,20 +156,20 @@ export class DashboardComponent implements OnInit {
 
   archiveBrew() {
 
-      const changeBrewRunStatusAPI= String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId,this.singleArchieveBrew.id);
-      const params = {
-        statusId: 'fc7178dd-c5c1-4776-944a-b50fe2c37f06'
-      };
-      this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
-        if (response) {
+    const params = {
+      statusId: 'fc7178dd-c5c1-4776-944a-b50fe2c37f06'
+    };
 
-          this.toastrService.success('Brew successfully archived')
-          this.router.navigate(['app/dashboard/archives']);
+    const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.singleArchieveBrew.id);
+    this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
-        }
-      }, error => {
-        this.toastrService.danger('Something went wrong, Try Again');
-      });
+      if (response) {
+        this.toastrService.success('', 'Brew successfully archived')
+        this.router.navigate(['app/dashboard/archives']);
+      }
+    }, error => {
+      this.toastrService.danger('', 'Something went wrong, Try Again');
+    });
 
 
   }
@@ -192,6 +191,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteBrew() {
+
     const params = {
       id: this.singleDeletedBrew.Id,
       BrewRunId: this.singleDeletedBrew.brewRunId,
@@ -199,27 +199,26 @@ export class DashboardComponent implements OnInit {
       tenantId: this.tenantId,
       CreatedByUserId: this.currentUser,
     };
+
     this.apiService.putData(this.apiService.changeBrewRunStatus, params).subscribe((response) => {
       if (response) {
         this.getDashBoardDetails();
-        this.toastrService.success('Brew successfully deleted');
+        this.toastrService.success('', 'Brew successfully deleted');
       }
     }, error => {
-      this.toastrService.danger('Something went wrong, Try Again');
+      this.toastrService.danger('', 'Something went wrong, Try Again');
     });
+
   }
 
   searchBrew() {
     this.config.currentPage = 1;
     this.getDashBoardDetails();
-  
-  
   }
 
-
-
   brewProgressCalculation(brewRun) {
-   let sDate: any;
+
+    let sDate: any;
     let startDate: any;
     let eDate: any;
     let endDate: any;
@@ -233,7 +232,7 @@ export class DashboardComponent implements OnInit {
       brewRun.statusField = 'notstarted';
       brewRun.disableDelete = true;
       brewRun.disableEdit = false;
-    }else if (brewRun.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+    } else if (brewRun.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
       // commited
       brewRun.statusField = 'committed';
       brewRun.disableDelete = false;
@@ -248,7 +247,7 @@ export class DashboardComponent implements OnInit {
       brewRun.statusField = 'cancel';
       brewRun.disableDelete = false;
       brewRun.disableRestore = true;
-    }  else {
+    } else {
       brewRun.statusField = 'progress';
       brewRun.disableDelete = false;
       brewRun.disableEdit = false;
@@ -267,11 +266,11 @@ export class DashboardComponent implements OnInit {
 
       // Total days completed calculation
       if (endDate <= currentDate) {
-        let diffTime =  Math.abs(endDate - startDate);
-        brewRun.daysCompleted =  Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        let diffTime = Math.abs(endDate - startDate);
+        brewRun.daysCompleted = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       } else {
-        let diffTime =  Math.abs(currentDate - startDate);
-        brewRun.daysCompleted =  Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        let diffTime = Math.abs(currentDate - startDate);
+        brewRun.daysCompleted = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       }
 
       // Total days left calculation
@@ -308,23 +307,22 @@ export class DashboardComponent implements OnInit {
     this.month = date.getMonth() + 1;
     this.day = date.getDate();
     const year = date.getFullYear();
-    return this.month  + '/' + this.day + '/' +  year ;
+    return this.month + '/' + this.day + '/' + year;
   }
 
   deleteToast() {
-    this.toastrService.warning('Unable to delete, Brew already started');
+    this.toastrService.warning('', 'Unable to delete, Brew already started');
   }
 
   archiveToast() {
-    this.toastrService.danger('You don\'t have access');
+    this.toastrService.danger('', 'You don\'t have access');
   }
 
   editToast() {
-    this.toastrService.warning('Unable to edit, Brew already committed');
+    this.toastrService.warning('', 'Unable to edit, Brew already committed');
   }
-  filter(label) {
-    
 
+  filter(label) {
     if (this.brewRuns) {
       if (this.toggleStatus === true && label === 'brewId') {
         this.brewRuns.sort((a, b) => a.brewRunId.toUpperCase() > b.brewRunId.toUpperCase() ? 1 : -1);

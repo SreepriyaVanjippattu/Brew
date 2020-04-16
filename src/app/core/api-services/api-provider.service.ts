@@ -47,6 +47,8 @@ export class ApiProviderService {
   addUser = 'user/v1/brewers/{0}/user';
   deleteUser = 'user/v1/brewers/{0}/user/{1}';
   getUserById = 'user/v1/brewers/{0}/user/{1}';
+  getAllArchivedUsers = 'user/v1/brewers/user/{0}/archived';
+  postEmail = 'user/v1/brewers/{0}/forgotPasswordLink';
   resetUserPassword = 'ResetUserPassword';
   // Profile
   changeProfilePassword = 'EditUserPassword';
@@ -63,8 +65,6 @@ export class ApiProviderService {
 
   editSubcriptions = 'EditSubscription';
  
-  // Units
-
 
   // preference
   getPreferenceSettings = 'user/v1/brewers/settings/{0}/preference';
@@ -78,6 +78,7 @@ export class ApiProviderService {
   editYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains/{1}';
 
   // recipe
+  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails'
   getAllRecipeByTenant = 'brewrun/v1/brewers/recipe/{0}';
   getRecipebyId = 'brewrun/v1/brewers/recipe/{0}/{1}';
   addRecipe = 'brewrun/v1/brewers/{0}/recipe/';
@@ -88,9 +89,12 @@ export class ApiProviderService {
   deleteRecipe = 'brewrun/v1/brewers/{0}/recipe/{1}';
   getAllArchivedRecipes = 'brewrun/v1/brewers/recipe/{0}/archived';
   archivedRecipe = 'brewrun/v1/brewers/{0}/recipe/{1}/archive';
-  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeastStrains';
-  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails'
 
+  addStyle = 'brewrun/v1/brewers/{0}/style/';
+  addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
+  addSupplier = 'brewrun/v1/brewers/{0}/supplier/';
+
+  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeastStrains';
   getAllActiveCountry = 'brewrun/v1/brewers/settings/country';
   getAllActiveAddIn = 'brewrun/v1/brewers/recipe/{0}/addin';
   getAllActiveSupplier = 'brewrun/v1/brewers/{0}/suppliers';
@@ -98,10 +102,6 @@ export class ApiProviderService {
   getAllActiveUnitType = 'brewrun/v1/brewers/settings/unittype';
   getAllActiveStyle = 'brewrun/v1/brewers/settings/{0}/styles';
 
-  getAllArchivedUsers = 'user/v1/brewers/user/{0}/archived';
-  addStyle = 'brewrun/v1/brewers/{0}/style/';
-  addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
-  addSupplier = 'brewrun/v1/brewers/{0}/supplier/';
 
   logoutApi = 'Logout';
 
@@ -109,7 +109,6 @@ export class ApiProviderService {
   getAllBrewReportsList = 'GetAllBrewRunByTenantIdForRepor';
   getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
   getBrewRunById = 'GetBrewRunById';
-  postEmail = 'user/v1/brewers/{0}/forgotPasswordLink';
   editClient = 'EditClient';
   getSubscriptions = 'GetAllActiveSubscription';
   editForgotPassword ='';

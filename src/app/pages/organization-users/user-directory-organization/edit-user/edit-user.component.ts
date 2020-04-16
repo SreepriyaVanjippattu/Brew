@@ -133,10 +133,10 @@ export class EditUserComponent implements OnInit {
       this.usersData = response['body']['users'];
       if (this.usersData.roles) {
         this.usersData.roles.forEach(elementId => {
-                this.currentUser = this.usersData;
-                this.roleId = elementId.id;
-              });
-            }
+          this.currentUser = this.usersData;
+          this.roleId = elementId.id;
+        });
+      }
       if (this.page === 'View') {
         this.headerTitle = this.usersData.firstName + ' ' + this.usersData.lastName;
       }
@@ -223,8 +223,10 @@ export class EditUserComponent implements OnInit {
       emailAddress: this.usersForm.get('userEmail').value,
       url: this.envURL + '/login/forgot-changepassword',
     };
+
     const postEmailApi = String.Format(this.apiService.postEmail, this.tenantId)
     this.apiService.postData(postEmailApi, params).subscribe(response => {
+      
       if (response) {
         this.toastr.show('Check your Inbox', 'Mail Sent');
         this.router.navigate(['/app/user-directory']);

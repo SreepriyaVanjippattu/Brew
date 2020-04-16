@@ -31,10 +31,10 @@
         <div class="col-12">
             <div class="d-flex header-search-wrapper">
                 <div class="d-flex l-search">
-                    <i class="material-icons search-ico"> search </i>
-                    <input [(ngModel)]="searchText" type="text" class="l-searchbox" id="" placeholder="Search Brew Run">
-                    <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
-                        (click)="searchBrew()"> search </i></div>
+                    <input (keyup.enter)="searchBrew()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
+                        placeholder="Search Brew Run">
+                    <i class="material-icons search-ico" (click)="searchBrew()"> search </i>
+                </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
                     [elementToPrint]="printThis" ngPrint>
@@ -75,7 +75,7 @@
                                 <div>{{archive.startTime | date:'dd-MM-yyyy'}}</div>
                                 <div class="mt-3">{{archive.endTime | date:'dd-MM-yyyy'}}</div>
                             </td>
-                                                 <td>
+                            <td>
                                 <div *ngIf="archive.statusField === 'progress'">
                                     <div class="days-status">
                                         <p class="mb-0 pt-1"> <span>Progress</span>({{archive.daysCompleted}} days
@@ -98,7 +98,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div *ngIf="archive.statusField === 'notstarted'">Not Started</div>
                                 <div *ngIf="archive.statusField === 'committed'">Committed</div>
                                 <div *ngIf="archive.statusField === 'completed'">Completed</div>

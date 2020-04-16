@@ -457,7 +457,7 @@ export class ViewReportsComponent implements OnInit {
         zone = zone.replace(/\+/gi, '-');
       }
       const newDateTime = dateTime + ' ' + `${zone}`;
-      return new Date(newDateTime).toUTCString();
+      return newDateTime;
     }
   }
 

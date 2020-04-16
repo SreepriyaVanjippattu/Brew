@@ -22,29 +22,28 @@
         </div>
 
     </div>
-<div class="row mt-3">
-    <div class="col-lg-9 col-md-12">
-        <div class="header-right">
-            <div class='d-flex header-search-wrapper'>
-                <div class="d-flex l-search">
-                    <input (keyup)="searchBrew()" [(ngModel)]="search" class='l-searchbox' placeholder="Search" type="text">
-                    <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
-                        (click)="searchBrew()"> search </i>
+
+    <div class="row mt-3">
+        <div class="col-lg-9 col-md-12">
+            <div class="header-right">
+                <div class='d-flex header-search-wrapper'>
+                    <div class="d-flex l-search">
+                        <input (keyup.enter)="searchBrew()" [(ngModel)]="searchText" class='l-searchbox' placeholder="Search" type="text">
+                        <i class="material-icons search-ico" (click)="searchBrew()"> search </i>
+                    </div>
+                    <i class="material-icons filter-ico cursor-click">
+                        filter_list
+                    </i>
+
+                    <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
+                        [elementToPrint]="printThis" ngPrint>
+                        local_printshop
+                    </button>
+                    <img class="ml-3 cursor-click" src="assets/images/pdf.svg" width="18" (click)="downloadAsPDF()">
                 </div>
-
-                <i class="material-icons filter-ico cursor-click">
-                    filter_list
-                </i>
-
-                <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
-                    [elementToPrint]="printThis" ngPrint>
-                    local_printshop
-                </button>
-                <img class="ml-3 cursor-click" src="assets/images/pdf.svg" width="18" (click)="downloadAsPDF()">
             </div>
         </div>
     </div>
-</div>
 
     <div class="row" #printThis>
         <div class="col-md-12 mt-4">

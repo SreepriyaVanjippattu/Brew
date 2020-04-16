@@ -13,6 +13,7 @@ import { String, StringBuilder } from 'typescript-string-operations';
   templateUrl: './edit-brew-run.component.html',
   styleUrls: ['./edit-brew-run.component.scss'],
 })
+
 export class EditBrewRunComponent implements OnInit {
 
   tenantId: any;
@@ -24,7 +25,7 @@ export class EditBrewRunComponent implements OnInit {
   startTime: any;
   endTime: any;
   formSubmitted = false;
-  error: any= {isError: false, errorMessage: ''};
+  error: any = { isError: false, errorMessage: '' };
   status = StatusUse;
   message: string;
   permission = permission;
@@ -42,6 +43,7 @@ export class EditBrewRunComponent implements OnInit {
     private toast: NbToastrService,
     private dataService: DataService,
   ) { }
+
   editBrewForm = this.formbuilder.group({
     brewRunId: ['', Validators.required],
     startTime: [''],
@@ -50,19 +52,19 @@ export class EditBrewRunComponent implements OnInit {
     tank: ['', Validators.required],
     brewer: ['', Validators.required],
   });
+
   get form() {
     return this.editBrewForm.controls;
-   }
+  }
 
   ngOnInit() {
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    
     this.brewId = this.route.snapshot.url[1].path;
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
     this.getBrewRunMasterDetails(this.tenantId);
     this.getAllActiveUsers(this.tenantId);
-    this.getSingleBrewDetails(this.tenantId,this.currentUser);
+    this.getSingleBrewDetails(this.tenantId, this.brewId);
   }
 
   /**
@@ -73,29 +75,30 @@ export class EditBrewRunComponent implements OnInit {
 
   compareTwoDates() {
     if (new Date(this.editBrewForm.get('endTime').value) < new Date(this.editBrewForm.get('startTime').value)) {
-       this.error = {isError: true};
+      this.error = { isError: true };
     } else {
-      this.error = {isError: false};
+      this.error = { isError: false };
     }
   }
+
   getSingleBrewDetails(tenantId, brewId) {
-    const  getBrewDetailsById= String.Format(this.apiService.getBrewDetailsById, this.tenantId, this.brewId);
-    console.log(getBrewDetailsById);
+
+    const getBrewDetailsById = String.Format(this.apiService.getBrewDetailsById, tenantId, brewId);
     this.apiService.getDataByQueryParams(getBrewDetailsById, null, null, null).subscribe(response => {
+
       if (response) {
         this.singleBrew = response['body']['brewRun'];
-        this.dataService.changeMessage(this.singleBrew );
+        this.dataService.changeMessage(this.singleBrew);
         this.setDataToEdit();
       }
     });
   }
 
-  getBrewRunMasterDetails(tenantId)
-  {
-    const  getBrewRunMasterDetailsAPI= String.Format(this.apiService.getBrewRunMasterDetails, this.tenantId);
-    console.log(getBrewRunMasterDetailsAPI);
+  getBrewRunMasterDetails(tenantId) {
+
+    const getBrewRunMasterDetailsAPI = String.Format(this.apiService.getBrewRunMasterDetails, tenantId);
     this.apiService.getData(getBrewRunMasterDetailsAPI).subscribe(response => {
-      console.log(response)
+
       if (response.status === 200) {
         this.recipeList = response['body']['recipeDetails'];
         this.tankList = response['body']['tankDetails'];
@@ -108,17 +111,19 @@ export class EditBrewRunComponent implements OnInit {
    * Function to get all active users
    * @param tenantId
    */
+
   getAllActiveUsers(tenantId) {
-    const getAllBrewRunAPI= String.Format(this.apiService.getAllActiveBrewUsers, this.tenantId);
+
+    const getAllBrewRunAPI = String.Format(this.apiService.getAllActiveBrewUsers, tenantId);
     this.apiService.getData(getAllBrewRunAPI).subscribe(response => {
-  
+
       if (response.status === 200) {
         this.brewerList = response['body']['brewers'];
 
       }
     });
   }
-  
+
 
   setDataToEdit() {
     if (this.singleBrew) {
@@ -128,29 +133,31 @@ export class EditBrewRunComponent implements OnInit {
       this.editBrewForm.get('recipe').setValue(this.singleBrew.recipeId);
       this.editBrewForm.get('tank').setValue(this.singleBrew.tankId);
       this.editBrewForm.get('brewer').setValue(this.singleBrew.userId);
-     }
     }
+  }
 
   saveBrew() {
+
     this.formSubmitted = true;
-    if (this.editBrewForm.valid) {
+    if (this.editBrewForm.valid && this.error.isError === false) {
       const userDetails = JSON.parse(sessionStorage.getItem('user'));
 
       const params = {
         startTime: this.editBrewForm.get('startTime').value,
         endTime: this.editBrewForm.get('endTime').value,
         userId: this.editBrewForm.get('brewer').value,
-        userName :userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"]
+        userName: userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"]
       };
-      const editBrewRunAPI= String.Format(this.apiService.editBrewRun, this.tenantId,this.brewId);
-      
+
+      const editBrewRunAPI = String.Format(this.apiService.editBrewRun, this.tenantId, this.brewId);
       this.apiService.putData(editBrewRunAPI, params).subscribe(response => {
+
         if (response) {
-          this.toast.show('Brew successfully updated');
+          this.toast.show('', 'Brew successfully updated');
           this.router.navigate(['app/dashboard']);
         }
       }, error => {
-        this.toast.danger(error.error.message);
+        this.toast.danger('', error.error.message);
       });
     }
   }
@@ -161,24 +168,27 @@ export class EditBrewRunComponent implements OnInit {
 
     if (!data) {
       this.toast.danger('You don\'t have access', 'Error');
-    } else{
-    if (this.singleBrew.statusId.toLowerCase() === this.status.inProgress.id.toLowerCase()) {
-      this.toast.danger('Already Started the Brew');
-
     } else {
-      const changeBrewRunStatusAPI= String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId,this.brewId);
-      const params = {
-        statusId: this.status.inProgress.id
-      };
-      this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
-        if (response.status === 200) {
-          this.toast.success('Brew successfully started');
-          this.router.navigate(['app/dashboard']);
-        }
-      });
+      if (this.singleBrew.statusId.toLowerCase() === this.status.inProgress.id.toLowerCase()) {
+        this.toast.danger('', 'Already started the Brew');
+      } else {
+
+        const params = {
+          statusId: this.status.inProgress.id
+        };
+
+        const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.brewId);
+        this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
+
+          if (response.status === 200) {
+            this.toast.success('', 'Brew successfully started');
+            this.router.navigate(['app/dashboard']);
+          }
+        });
+      }
+    }
   }
-}
-  }
+
   startTimeChange() {
     this.startTime = this.editBrewForm.get('startTime').value;
   }

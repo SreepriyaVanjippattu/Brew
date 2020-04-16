@@ -8,7 +8,6 @@ import { NbToastrService } from '@nebular/theme';
 import { FormBuilder } from '@angular/forms';
 import { Guid } from 'guid-typescript';
 import { DatePipe } from '@angular/common';
-import * as moment from 'moment';
 import { String } from 'typescript-string-operations';
 import { Observable,of as observableOf } from 'rxjs';
 
@@ -259,18 +258,16 @@ export class MashInFormComponent implements OnInit {
 
 
 
-  setStartTime(): any {
-    var startTime = this.timezone(new Date().toUTCString());
-    this.mashinStartTime = moment(startTime).toDate();
-    this.mashinStartTime = moment(this.mashinStartTime).format('MMMM Do YYYY, h:mm:ss a');
+  setStartTime():any {
+    this.mashinStartTime = this.timezone(new Date().toUTCString());
+    this.mashinStartTime = this.mashinStartTime.split(' ').slice(0, 5).join(' ');
     document.getElementById('mashinStart').setAttribute('value', this.mashinStartTime);
     document.getElementById('mashinStartTime').setAttribute('value', this.mashinStartTime);
   }
 
-  setEndTime(): any {
-    var endTime = this.timezone(new Date().toUTCString());
-    this.mashinEndTime = moment(endTime).toDate();
-    this.mashinEndTime = moment(this.mashinEndTime).format('MMMM Do YYYY, h:mm:ss a');
+  setEndTime():any {
+    this.mashinEndTime = this.timezone(new Date().toUTCString());
+    this.mashinEndTime = this.mashinEndTime.split(' ').slice(0, 5).join(' ');
     document.getElementById('mashinEnd').setAttribute('value', this.mashinEndTime);
     document.getElementById('mashinEndTime').setAttribute('value', this.mashinEndTime);
   }
@@ -289,14 +286,13 @@ export class MashInFormComponent implements OnInit {
         zone = zone.replace(/\+/gi, '-');
       }
       const newDateTime = dateTime + ' ' + `${zone}`;
-      return new Date(newDateTime).toISOString();
+      return newDateTime;
     }
   }
 
   setTempStartTime(i, start) {
     this.tempStartTime = this.timezone(new Date().toUTCString());
-    this.tempStartTime = moment(this.tempStartTime).toDate();
-    this.tempStartTime = moment(this.tempStartTime).format('MMMM Do YYYY, h:mm:ss a');
+    this.tempStartTime = this.tempStartTime.split(' ').slice(0, 5).join(' ');
     let elementId = 'tempStart'+i;
     document.getElementById(elementId).setAttribute('value', this.tempStartTime);
     start.startTime = this.tempStartTime;

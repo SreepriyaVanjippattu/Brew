@@ -57,7 +57,7 @@
                         <label for="brewrun">End Time</label>
                         <input (blur)="compareTwoDates()" nbInput type="text" class="form-control input-style"
                             formControlName="endTime" id="end" placeholder="" [owlDateTime]="endTime"
-                            [owlDateTimeTrigger]="endTime" (dateTimeChange)="endTimeChange()" [min]="minEndTime"
+                            [owlDateTimeTrigger]="endTime" (dateTimeChange)="endTimeChange();compareTwoDates();" [min]="minEndTime"
                             [max]="maxEndTime" readonly>
                         <owl-date-time #endTime></owl-date-time>
                         <div *ngIf="formSubmitted">

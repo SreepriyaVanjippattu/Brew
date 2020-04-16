@@ -36,14 +36,14 @@
             <div class="header-right">
                 <div class='d-flex header-search-wrapper'>
                     <div class="d-flex l-search">
-                        <input [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Brew Run" type="text">
-                        <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
+                        <input (keyup.enter)="searchBrew()" [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Brew Run" type="text">
+                        <i class="material-icons search-ico cursor-click"
                         (click)="searchBrew()"> search </i>
                     </div>
                     <i class="material-icons filter-ico cursor-click">
                         filter_list
                     </i>
-        
+
                     <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
                         [elementToPrint]="printThis" ngPrint>
                         local_printshop
@@ -55,7 +55,7 @@
                             archive
                         </i>Archived
                     </button>
-        
+
                     <button (click)="newBrewClick()" type="button" class="btn  l-btn">
                         <i class="material-icons">
                             add_circle
@@ -157,18 +157,19 @@
                                             </span>
                                         </ng-template>
                                     </span>
-                                    <div *ngIf="brewRun.disableDelete; else disableDelete">
-                                        <span class="ml-2 cursor-click" data-target="#exampleModalCenter"
-                                            data-toggle="modal">
-                                            <img (click)="deleteUser(brewRun)" src="assets/images/delete.svg">
-                                        </span>
-                                    </div>
-                                    <ng-template #disableDelete>
-                                        <span class="ml-2">
-                                            <img (click)="deleteToast()" src="assets/images/delete.svg">
-                                        </span>
-                                    </ng-template>
-
+                                    <span class="ml-2 cursor-click">
+                                        <div *ngIf="brewRun.disableDelete; else disableDelete">
+                                            <span class="ml-2 cursor-click" data-target="#exampleModalCenter"
+                                                data-toggle="modal">
+                                                <img (click)="deleteUser(brewRun)" src="assets/images/delete.svg">
+                                            </span>
+                                        </div>
+                                        <ng-template #disableDelete>
+                                            <span class="ml-2">
+                                                <img (click)="deleteToast()" src="assets/images/delete.svg">
+                                            </span>
+                                        </ng-template>
+                                    </span>
 
                                 </div>
                             </td>

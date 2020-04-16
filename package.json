@@ -61,7 +61,6 @@
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.3.1",
     "jw-react-modal": "^1.0.3",
-    "moment": "^2.24.0",
     "nebular-icons": "1.1.0",
     "ng-pick-datetime": "^7.0.0",
     "ng-print": "^1.0.1",

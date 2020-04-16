@@ -91,8 +91,7 @@
         <h6>Yeast Strains</h6>
         <div class="preference-header-right">
           <div class="d-flex l-search">
-            
-            <input  (keyup)="searchYeast()" class='l-searchbox' [(ngModel)]="search" value="" placeholder="Search" type="text">
+            <input class='l-searchbox' (keyup.enter)="searchYeast()" [(ngModel)]="searchText" value="" placeholder="Search" type="text">
             <i class="material-icons search-ico" (click)="searchYeast()"> search </i>
           </div>
           <button [disabled]="savenewYeastEnabled" class="btn l-btn-white" type="button" (click)="newYeastItem()">New
@@ -179,10 +178,9 @@
         <h6>Tank Configuration</h6>
         <div class="preference-header-right">
           <div class="d-flex l-search">
-            <input (keyup)="searchTank()" class='l-searchbox' [(ngModel)]="search" placeholder="Search" type="text">
+            <input class='l-searchbox' (keyup.enter)="searchTank()" [(ngModel)]="searchText" placeholder="Search" type="text">
             <i class="material-icons search-ico" (click)="searchTank()"> search </i>
           </div>
-          
           <button [disabled]="savenewTankEnabled" class="btn l-btn-white" type="button" (click)="newTankItem()">New
             Tank</button>
         </div>

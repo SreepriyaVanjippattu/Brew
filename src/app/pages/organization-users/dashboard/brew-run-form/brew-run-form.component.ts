@@ -2,22 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
-import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { NbToastrService } from '@nebular/theme';
 import { StatusUse } from '../../../../models/status-id-name';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
-import { String, StringBuilder } from 'typescript-string-operations';
+import { String } from 'typescript-string-operations';
 
 @Component({
   selector: 'app-brew-run-form',
   templateUrl: './brew-run-form.component.html',
   styleUrls: ['./brew-run-form.component.scss'],
 })
+
 export class BrewRunFormComponent implements OnInit {
 
   formSubmitted = false;
-
   getAllRecipe;
   recipeListComplete: any;
   recipeList: any;
@@ -43,6 +42,7 @@ export class BrewRunFormComponent implements OnInit {
     private data: DataService
 
   ) { }
+
   newBrewForm = this.formbuilder.group({
     brewRunId: ['', Validators.required],
     startTime: ['', Validators.required],
@@ -51,6 +51,7 @@ export class BrewRunFormComponent implements OnInit {
     tank: ['', Validators.required],
     brewer: ['', Validators.required],
   });
+
   get form() {
     return this.newBrewForm.controls;
   }
@@ -76,11 +77,12 @@ export class BrewRunFormComponent implements OnInit {
     }
   }
 
-  getBrewRunMasterDetails(tenantId)
-  {
-    const  getBrewRunMasterDetailsAPI= String.Format(this.apiService.getBrewRunMasterDetails, this.tenantId);
+  getBrewRunMasterDetails(tenantId) {
+
+    const getBrewRunMasterDetailsAPI = String.Format(this.apiService.getBrewRunMasterDetails, tenantId);
     this.apiService.getData(getBrewRunMasterDetailsAPI).subscribe(response => {
-       if (response.status === 200) {
+
+      if (response.status === 200) {
         this.recipeList = response['body']['recipeDetails'];
         this.tankList = response['body']['tankDetails'];
       }
@@ -92,10 +94,12 @@ export class BrewRunFormComponent implements OnInit {
    * Function to get all active users
    * @param tenantId
    */
+
   getAllActiveUsers(tenantId) {
-    const getAllBrewRunAPI= String.Format(this.apiService.getAllActiveBrewUsers, this.tenantId);
+
+    const getAllBrewRunAPI = String.Format(this.apiService.getAllActiveBrewUsers, tenantId);
     this.apiService.getData(getAllBrewRunAPI).subscribe(response => {
-  
+
       if (response.status === 200) {
         this.brewerList = response['body']['brewers'];
 
@@ -103,35 +107,35 @@ export class BrewRunFormComponent implements OnInit {
     });
   }
 
-  getRecipeName(selectedRecipeId){
-    let recipeName ='';
+  getRecipeName(selectedRecipeId) {
+    let recipeName = '';
     for (var recipe of this.recipeList) {
-      if (recipe["id"] === selectedRecipeId)
-      {
-          recipeName = recipe["name"]
-          break;
+      if (recipe["id"] === selectedRecipeId) {
+        recipeName = recipe["name"]
+        break;
       }
     }
-    console.log(recipeName);
     return recipeName;
   }
 
-  getTankName(selectedTankId){
-    let tankName ='';
+  getTankName(selectedTankId) {
+    let tankName = '';
     for (var tank of this.tankList) {
-      if (tank["id"] === selectedTankId)
-      {
-         tankName = tank["name"]
-         break;
+      if (tank["id"] === selectedTankId) {
+        tankName = tank["name"]
+        break;
       }
     }
     return tankName;
   }
 
   saveBrew() {
+
     this.formSubmitted = true;
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
+
     if (this.newBrewForm.valid && this.error.isError === false) {
+
       const params = {
         brewRunId: this.newBrewForm.get('brewRunId').value,
         startTime: this.newBrewForm.get('startTime').value,
@@ -144,14 +148,16 @@ export class BrewRunFormComponent implements OnInit {
         userName: userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"],
         tenantId: this.tenantId
       };
-      const addBrewRunAPI= String.Format(this.apiService.addBrewRun, this.tenantId);
+
+      const addBrewRunAPI = String.Format(this.apiService.addBrewRun, this.tenantId);
       this.apiService.postData(addBrewRunAPI, params).subscribe(response => {
+
         if (response) {
           this.brewBody = response['body']['brewRun'];
-          this.toast.show('Brew successfully added');
+          this.toast.show('', 'Brew successfully added');
         }
       }, error => {
-           this.toast.danger(error.error.message);
+        this.toast.danger('', error.error.message);
       });
     }
   }
@@ -164,17 +170,19 @@ export class BrewRunFormComponent implements OnInit {
       this.toast.danger('You don\'t have access', 'Error');
     } else {
       if (this.brewBody == null) {
-        this.toast.danger('save the brew to start', 'Error');
+        this.toast.danger('Save the brew to start', 'Error');
         return false;
       }
+
       const params = {
         statusId: this.status.inProgress.id
       };
-      const changeBrewRunStatusAPI= String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId,this.brewBody.id);
-      
+
+      const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.brewBody.id);
       this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
+
         if (response.status === 200) {
-          this.toast.success('Brew successfully started');
+          this.toast.success('', 'Brew successfully started');
           this.router.navigate(['app/dashboard']);
         }
       });

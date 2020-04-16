@@ -142,6 +142,7 @@ export class UsersFormComponent implements OnInit {
       modifiedDate: '',
       tenantId: this.tenantId,
       statusId: this.status.active.id,
+      currentUser: this.currentUserId,
       roles: [
         {
           id: this.usersForm.get('role').value,

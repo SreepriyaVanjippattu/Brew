@@ -28,9 +28,9 @@
         <div class="col-12">
             <div class="d-flex user-search-wrap">
                 <div class="d-flex l-search">
-                    <input (keyup)="searchRecipe()" [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Recipe" type="text">
-                    <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
-                        (click)="searchRecipe()"> search </i>
+                    <input (keyup.enter)="searchRecipe()" [(ngModel)]="searchText" class='l-searchbox'
+                        placeholder="Search Recipe" type="text">
+                    <i class="material-icons search-ico search-icon" (click)="searchRecipe()"> search </i>
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons cursor-click"
@@ -38,17 +38,17 @@
                     local_printshop
                 </button>
             </div>
-    
+
             <div class="user-actions d-flex">
-    
+
                 <button (click)="recipeArchivedClick()" type="button" class="btn l-btn mr-2">
                     <i class="material-icons archive-ico">archive</i>Archived
                 </button>
-    
+
                 <button (click)="newRecipeClick()" type="button" class="btn l-btn">
                     <i class="material-icons"> add_circle</i>New Recipe
                 </button>
-    
+
             </div>
         </div>
     </div>
@@ -99,7 +99,7 @@
 
                                 </span>
 
-                                <span *ngIf =" recipelist.statusName !== 'Committed'" class="edit-ico ml-2 cursor-click"
+                                <span *ngIf=" recipelist.statusName !== 'Committed'" class="edit-ico ml-2 cursor-click"
                                     (click)="editRecipe(recipelist.id, recipelist)">
                                     <img src="assets/images/edit.svg">
                                 </span>

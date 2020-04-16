@@ -32,7 +32,7 @@ export class ListReportsComponent implements OnInit {
   day: any;
   checkPermission: boolean = false;
   pageControl;
-  search;
+  searchText: any;
 
   constructor(
     private apiService: ApiProviderService,
@@ -74,9 +74,7 @@ export class ListReportsComponent implements OnInit {
         this.headerValue = JSON.parse(response.headers.get('paging-headers'));
         if (this.headerValue) {
           this.config.totalItems = this.headerValue.TotalCount;
-          if (this.config.totalItems === 0) {
-            this.pageControl = true;
-          }
+          this.pageControl = (this.config.totalItems === 0) ? true : false;
         }
       }, error => {
         console.error(error);
@@ -197,7 +195,8 @@ export class ListReportsComponent implements OnInit {
   }
 
   searchBrew() {
-    this.apiService.getDataByQueryParams(this.apiService.getAllBrewReportsList + `&startwith=${this.search}`, null,
+
+    this.apiService.getDataByQueryParams(this.apiService.getAllBrewReportsList + `&startwith=${this.searchText}`, null,
       this.tenantId, null, this.config.currentPage, this.config.itemsPerPage).
       subscribe((response) => {
         const myHeaders = response.headers;

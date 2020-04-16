@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
-
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { DataService } from '../../../../data.service';
 import { StatusUse } from '../../../../models/status-id-name';
@@ -16,7 +14,9 @@ import { String, StringBuilder } from 'typescript-string-operations';
   templateUrl: './view-brew-run.component.html',
   styleUrls: ['./view-brew-run.component.scss'],
 })
+
 export class ViewBrewRunComponent implements OnInit {
+
   percent: number;
   generalContent;
   singleFerment;
@@ -39,11 +39,12 @@ export class ViewBrewRunComponent implements OnInit {
   status = StatusUse;
   buttonDisable = false;
   permission = permission;
-  archivePermission :any;
+  archivePermission: any;
 
   colorScheme = {
     domain: ['#FFA500', '#0b20441a'],
   };
+  readonly progress: Observable<number>;
   autoScale = true;
   message: string;
   progressData: any;
@@ -53,12 +54,9 @@ export class ViewBrewRunComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private toast: NbToastrService,
-
-) {
-  this.progress = this.emulateProgress();
-     }
-
-  readonly progress: Observable<number>;
+  ) {
+    this.progress = this.emulateProgress();
+  }
 
   emulateProgress() {
     return new Observable<number>(observer => {
@@ -83,7 +81,7 @@ export class ViewBrewRunComponent implements OnInit {
     this.dataService.currentMessage.subscribe(message => this.message = message);
     this.brewContent = this.message;
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    
+
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.id = this.route.snapshot.paramMap.get('id');
     this.viewBrewDetails();
@@ -95,10 +93,11 @@ export class ViewBrewRunComponent implements OnInit {
   }
 
   addNewErrorMsg() {
-    this.toast.warning('Unable to enter data, Brew not yet started');
+    this.toast.warning('', 'Unable to enter data, Brew not yet started');
   }
 
   viewBrewDetails() {
+
     this.brewContent = this.message;
     if (this.brewContent.statusId === '7cd88ffb-cf41-4efc-9a17-d75bcb5b3770') {
       // not started
@@ -108,61 +107,65 @@ export class ViewBrewRunComponent implements OnInit {
       //Committed
       this.endBrewRunStatus = false;
       this.enterData = false;
-    }else {
+    } else {
       this.enterData = true;
       this.endBrewRunStatus = true;
     }
     const totalPercent = ((this.brewContent.totalDays - this.brewContent.daysCompleted) / 100) * 100;
 
     this.progressData = JSON.parse(sessionStorage.getItem('progressData'));
-       let single = [
-        {
-          'name': 'Days Compleated',
-          'value': this.progressData.daysCompleted,
-        },
-        {
-          'name': 'Days Left',
-          'value': this.progressData.daysLeft,
-        },
-      ];
-      Object.assign(this, { single });
+    let single = [
+      {
+        'name': 'Days Compleated',
+        'value': this.progressData.daysCompleted,
+      },
+      {
+        'name': 'Days Left',
+        'value': this.progressData.daysLeft,
+      },
+    ];
+    Object.assign(this, { single });
   }
 
   archiveClick() {
 
-    const changeBrewRunStatusAPI= String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId,this.brewContent.id);
     const params = {
       statusId: 'fc7178dd-c5c1-4776-944a-b50fe2c37f06'
     };
-    this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
-        if (response) {
-          this.toast.success('Brew successfully archived');
-          this.router.navigate(['app/dashboard/archives']);
 
-        }
-      }, error => {
-        this.toast.danger('Something went wrong, Try Again');
+    const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.brewContent.id);
+    this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
+
+      if (response) {
+        this.toast.success('', 'Brew successfully archived');
+        this.router.navigate(['app/dashboard/archives']);
+      }
+    }, error => {
+      this.toast.danger('', 'Something went wrong, Try Again');
     });
   }
-  endBrewRun () {
+
+  endBrewRun() {
+
     const params = {
-      id: this.id,
-      Status: this.status.cancelled.id,
-      tenantId: this.tenantId,
+      statusId: this.status.cancelled.id
     };
-    this.apiService.putData(this.apiService.ChangeBrewRunStatus, params).subscribe((response: any) => {
+
+    const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.brewContent.id);
+    this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
+
       if (response.status === 200) {
-        this.toast.success('Brew successfully ended');
+        this.toast.success('', 'Brew successfully ended');
       }
     });
   }
 
-  archiveToast(){
-    this.toast.danger('You don\'t have access');
+  archiveToast() {
+    this.toast.danger('', 'You don\'t have access');
   }
 
-  endBrewRunToast(){
-    this.toast.warning('Unable to end brew, Brew already committed');
+  endBrewRunToast() {
+    this.toast.warning('', 'Unable to end brew, Brew already committed');
   }
 
 }

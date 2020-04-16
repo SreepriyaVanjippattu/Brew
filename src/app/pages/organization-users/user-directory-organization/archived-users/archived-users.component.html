@@ -25,20 +25,21 @@
                 </ol>
             </nav>
         </div>
-<div class="col-12">
-    <div class="d-flex header-search-wrapper">
-        <div class="d-flex l-search">
-            <input (keyup)="searchClient()" [(ngModel)]="searchText" type="text" class="l-searchbox" id="" placeholder="Search Archived Users">
-            <i style="margin-left: 40px" class="material-icons search-ico cursor-click"
-                (click)="searchClient()"> search </i>
+
+        <div class="col-12">
+            <div class="d-flex header-search-wrapper">
+                <div class="d-flex l-search">
+                    <input (keyup.enter)="searchClient()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
+                        placeholder="Search Archived Users">
+                    <i class="material-icons search-ico" (click)="searchClient()"> search </i>
+                </div>
+                <i class="material-icons filter-ico cursor-click">filter_list</i>
+                <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
+                    [elementToPrint]="TABLE" ngPrint>
+                    local_printshop
+                </button>
+            </div>
         </div>
-        <i class="material-icons filter-ico cursor-click">filter_list</i>
-        <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"
-            [elementToPrint]="TABLE" ngPrint>
-            local_printshop
-        </button>
-    </div>
-</div>
 
     </div>
 
