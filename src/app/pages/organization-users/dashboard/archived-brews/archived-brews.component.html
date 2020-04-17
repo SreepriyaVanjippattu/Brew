@@ -72,8 +72,18 @@
                             <td>{{archive.recipeName}}</td>
                             <td>{{archive.tankName}}</td>
                             <td>
-                                <div>{{archive.startTime | date:'dd-MM-yyyy'}}</div>
-                                <div class="mt-3">{{archive.endTime | date:'dd-MM-yyyy'}}</div>
+                                <div>
+                                    <span class="cal-img mr-2">
+                                        <img src="assets/images/calendar-active.svg">
+                                
+                                    </span>
+                                    {{archive.startTime | date:'dd-MM-yyyy'}}
+                                </div>
+                                <div class="mt-3">
+                                    <span class="cal-img mr-2">
+                                        <img src="assets/images/calendar.svg">
+                                    </span>
+                                    {{archive.endTime | date:'dd-MM-yyyy'}}</div>
                             </td>
                             <td>
                                 <div *ngIf="archive.statusField === 'progress'">

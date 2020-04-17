@@ -119,12 +119,12 @@ export class MashInFormComponent implements OnInit {
     const getBrewRunMashinDetailsAPI = String.Format(this.apiService.getBrewRunMashinDetails, tenantId, brewId);
     this.apiService.getDataByQueryParams(getBrewRunMashinDetailsAPI, null, tenantId, brewId).subscribe(response => {
       if (response.status === 200) {
-        this.brewRunMashin = response['body']['brewRunMashin'];
-        this.maltTarget = response['body']['recipe']['maltGrainBills'];
-        this.waterTarget = response['body']['recipe']['waterAdditions'];
-        this.mashinTarget.push(response['body']['recipe']['mashingTargets']);
-        this.starchTarget = response['body']['recipe'];
-        this.mashinAvailable = response['body']['mashinAvailable'];
+        this.brewRunMashin = response['body']['brew'];
+        this.maltTarget = response['body']['brew']['maltGrainBillDetails'];
+        this.waterTarget = response['body']['brew']['waterAdditionDetails'];
+        this.mashinTarget.push(response['body']['brew']['mashingTargetDetails']);
+        this.starchTarget = response['body']['brew']['startchTest'];
+        this.mashinAvailable = response['body']['brew']['mashinDetailsNotes'];
 
         if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
           this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
@@ -259,14 +259,14 @@ export class MashInFormComponent implements OnInit {
 
 
   setStartTime():any {
-    this.mashinStartTime = this.timezone(new Date().toUTCString());
+    this.mashinStartTime = this.timezone();
     this.mashinStartTime = this.mashinStartTime.split(' ').slice(0, 5).join(' ');
     document.getElementById('mashinStart').setAttribute('value', this.mashinStartTime);
     document.getElementById('mashinStartTime').setAttribute('value', this.mashinStartTime);
-  }
+    }
 
   setEndTime():any {
-    this.mashinEndTime = this.timezone(new Date().toUTCString());
+    this.mashinEndTime = this.timezone();
     this.mashinEndTime = this.mashinEndTime.split(' ').slice(0, 5).join(' ');
     document.getElementById('mashinEnd').setAttribute('value', this.mashinEndTime);
     document.getElementById('mashinEndTime').setAttribute('value', this.mashinEndTime);
@@ -274,24 +274,26 @@ export class MashInFormComponent implements OnInit {
 
 
 
-  timezone(dateTime) {
+  timezone() {
     // Timezone convertion
     const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
-      let zone = preferedZone.replace(/:/gi, '');
-      zone = zone.slice(0, -2);
-      if (zone.includes('-')) {
-        zone = zone.replace(/-/gi, '+');
-      } else if (zone.includes('+')) {
-        zone = zone.replace(/\+/gi, '-');
-      }
-      const newDateTime = dateTime + ' ' + `${zone}`;
-      return newDateTime;
+    let zone = preferedZone.split(':');
+    const now = new Date();
+    var utc = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+    
+    var hours = utc.getHours() + Number(zone[0]);
+    var minutes = utc.getMinutes() + Number(zone[1]);
+    var seconds = utc.getSeconds() + Number(zone[2]);
+    var date = new Date(utc.setHours(hours,minutes,seconds));
+    var startDate = date.toString().split('GMT');
+    return startDate;
     }
-  }
+    }
+
 
   setTempStartTime(i, start) {
-    this.tempStartTime = this.timezone(new Date().toUTCString());
+    this.tempStartTime = this.timezone();
     this.tempStartTime = this.tempStartTime.split(' ').slice(0, 5).join(' ');
     let elementId = 'tempStart'+i;
     document.getElementById(elementId).setAttribute('value', this.tempStartTime);
