@@ -134,21 +134,23 @@ export class MashInFormComponent implements OnInit {
         if (this.brewRunMashin.mashingTargetDetails && this.brewRunMashin.mashingTargetDetails.length == 0) {
             this.brewRunMashin.mashingTargetDetails.push(new MashingTargetDetail());
         }
-        this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
-          if (!mash.mashingTargetDetailsTemperature) {
-            mash.mashingTargetDetailsTemperature = [];
-            mash.mashingTargetDetailsTemperature.push(new MashingTargetDetailsTemperature());
-          } else {
-            mash.mashingTargetDetailsTemperature.map((tempStartTimes: any) => {
-              tempStartTimes.startTime = this.datePipe.transform(tempStartTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
+        if (this.brewRunMashin.mashingTargetDetails) {
+          this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
+            if (!mash.mashingTargetDetailsTemperature) {
+              mash.mashingTargetDetailsTemperature = [];
+              mash.mashingTargetDetailsTemperature.push(new MashingTargetDetailsTemperature());
+            } else {
+              mash.mashingTargetDetailsTemperature.map((tempStartTimes: any) => {
+                tempStartTimes.startTime = this.datePipe.transform(tempStartTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
+              }
+
+              )
             }
-
-            )
-          }
-        });
+          });
+        }
 
 
-        if (this.brewRunMashin.startchTest.length == 0) {
+        if (this.brewRunMashin.startchTest && this.brewRunMashin.startchTest.length == 0) {
           this.brewRunMashin.startchTest.push(new StartchTest());
         } else {
           for(let startchTest of this.brewRunMashin.startchTest[0].starchTestResultList)
@@ -160,7 +162,7 @@ export class MashInFormComponent implements OnInit {
           
         }
 
-        if (this.brewRunMashin.mashinDetailsNotes.length == 0) {
+        if (this.brewRunMashin.mashinDetailsNotes && this.brewRunMashin.mashinDetailsNotes.length == 0) {
           this.brewRunMashin.mashinDetailsNotes.push(new MashinDetailsNote());
         }
         this.checkIfComplete(this.brewRunMashin);
@@ -564,7 +566,6 @@ export class MashInFormComponent implements OnInit {
   saveData(): Observable<boolean>{
     const mashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
     if (!this.mashinAvailable) {
-      this.brewRunMashin.id = Guid.raw();
        this.apiService.postData(mashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         return observableOf(true);
