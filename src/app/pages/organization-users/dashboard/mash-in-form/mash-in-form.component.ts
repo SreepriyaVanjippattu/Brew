@@ -125,20 +125,14 @@ export class MashInFormComponent implements OnInit {
         this.mashinTarget.push(response['body']['brew']['mashingTargetDetails']);
         this.starchTarget = response['body']['brew']['startchTest'];
         this.mashinAvailable = response['body']['brew']['mashinAvailable'];
-        if (this.brewRunMashin.maltGrainBillDetails !== null) {
-          if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
+        if (this.brewRunMashin.maltGrainBillDetails && this.brewRunMashin.maltGrainBillDetails.length == 0) {
             this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
-          }
         }
-        if (this.brewRunMashin.waterAdditionDetails !== null) {
-          if (this.brewRunMashin.waterAdditionDetails.length == 0) {
+        if (this.brewRunMashin.waterAdditionDetails && this.brewRunMashin.waterAdditionDetails.length == 0) {
             this.brewRunMashin.waterAdditionDetails.push(new WaterAdditionDetail());
-          }
         }
-        if (this.brewRunMashin.mashingTargetDetails !== null) {
-          if (this.brewRunMashin.mashingTargetDetails.length == 0) {
+        if (this.brewRunMashin.mashingTargetDetails && this.brewRunMashin.mashingTargetDetails.length == 0) {
             this.brewRunMashin.mashingTargetDetails.push(new MashingTargetDetail());
-          }
         }
         this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
           if (!mash.mashingTargetDetailsTemperature) {
