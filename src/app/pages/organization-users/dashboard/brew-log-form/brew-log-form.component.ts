@@ -252,7 +252,7 @@ export class BrewLogFormComponent implements OnInit {
             if (hops.startTime === null) {
               hops.startTime = new Date();
             }
-            let dateTime = this.timezone(new Date(hops.startTime).toUTCString());
+            let dateTime = this.timezone(hops.startTime).toString();
             dateTime = dateTime.split(' ').slice(0, 5).join(' ');
             hops.startTime = new Date(dateTime);
           }
@@ -266,7 +266,7 @@ export class BrewLogFormComponent implements OnInit {
             if (adjuncts.startTime === null) {
               adjuncts.startTime = new Date();
             }
-            let dateTime = this.timezone(new Date(adjuncts.startTime).toUTCString());
+            let dateTime = this.timezone(adjuncts.startTime).toString();
             dateTime = dateTime.split(' ').slice(0, 5).join(' ');
             adjuncts.startTime = new Date(dateTime);
           }
@@ -491,75 +491,76 @@ export class BrewLogFormComponent implements OnInit {
   }
 
   setVStart(i, start): any {
-    this.vorlaufstartTime = this.timezone(new Date().toUTCString());
-    this.vorlaufstartTime = this.vorlaufstartTime.split(' ').slice(0, 5).join(' ');
+    this.vorlaufstartTime = this.timezone();
+    this.vorlaufstartTime = this.vorlaufstartTime.toString().split(' ').slice(0, 5).join(' ');
     start.startTime = this.vorlaufstartTime;
 
   }
 
   setVEnd(i, end): any {
-    this.vorlaufEndTime = this.timezone(new Date().toUTCString());
-    this.vorlaufEndTime = this.vorlaufEndTime.split(' ').slice(0, 5).join(' ');
+    this.vorlaufEndTime = this.timezone();
+    this.vorlaufEndTime = this.vorlaufEndTime.toString().split(' ').slice(0, 5).join(' ');
     end.endTime = this.vorlaufEndTime;
   }
 
   setSpargeStart(i, start) {
-    this.spargestartTime = this.timezone(new Date().toUTCString());
-    this.spargestartTime = this.spargestartTime.split(' ').slice(0, 5).join(' ');
+    this.spargestartTime = this.timezone();
+    this.spargestartTime = this.spargestartTime.toString().split(' ').slice(0, 5).join(' ');
     start.startTime = this.spargestartTime;
   }
 
   setSpargeEnd(i, end) {
-    this.spargeEndTime = this.timezone(new Date().toUTCString());
-    this.spargeEndTime = this.spargeEndTime.split(' ').slice(0, 5).join(' ');
+    this.spargeEndTime = this.timezone();
+    this.spargeEndTime = this.spargeEndTime.toString().split(' ').slice(0, 5).join(' ');
     end.endTime = this.spargeEndTime;
   }
 
   setKettleStart(i, start) {
-    this.kettlestartTime = this.timezone(new Date().toUTCString());
-    this.kettlestartTime = this.kettlestartTime.split(' ').slice(0, 5).join(' ');
+    this.kettlestartTime = this.timezone();
+    this.kettlestartTime = this.kettlestartTime.toString().split(' ').slice(0, 5).join(' ');
     start.startTime = this.kettlestartTime;
   }
 
   setKettleEnd(i, end) {
 
-    this.kettleEndTime = this.timezone(new Date().toUTCString());
-    this.kettleEndTime = this.kettleEndTime.split(' ').slice(0, 5).join(' ');
+    this.kettleEndTime = this.timezone();
+    this.kettleEndTime = this.kettleEndTime.toString().split(' ').slice(0, 5).join(' ');
     end.endTime = this.kettleEndTime;
   }
 
   setWhirlStart(i, start) {
-    this.whirlstartTime = this.timezone(new Date().toUTCString());
-    this.whirlstartTime = this.whirlstartTime.split(' ').slice(0, 5).join(' ');
+    this.whirlstartTime = this.timezone();
+    this.whirlstartTime = this.whirlstartTime.toString().split(' ').slice(0, 5).join(' ');
     start.startTime = this.whirlstartTime;
   }
 
   setCoolStart(i, start) {
 
-    this.coolstartTime = this.timezone(new Date().toUTCString());
-    this.coolstartTime = this.coolstartTime.split(' ').slice(0, 5).join(' ');
+    this.coolstartTime = this.timezone();
+    this.coolstartTime = this.coolstartTime.toString().split(' ').slice(0, 5).join(' ');
     start.startTime = this.coolstartTime;
   }
 
   setCoolEnd(i, end) {
-    this.coolEndTime = this.timezone(new Date().toUTCString());
-    this.coolEndTime = this.coolEndTime.split(' ').slice(0, 5).join(' ');
+    this.coolEndTime = this.timezone();
+    this.coolEndTime = this.coolEndTime.toString().split(' ').slice(0, 5).join(' ');
     end.endTime = this.coolEndTime;
   }
 
-  timezone(dateTime) {
-
+  timezone(datetime?) {
+    // Timezone convertion
     const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
-      let zone = preferedZone.replace(/:/gi, '');
-      zone = zone.slice(0, -2);
-      if (zone.includes('-')) {
-        zone = zone.replace(/-/gi, '+');
-      } else if (zone.includes('+')) {
-        zone = zone.replace(/\+/gi, '-');
-      }
-      const newDateTime = dateTime + ' ' + `${zone}`;
-      return newDateTime;
+      let zone = preferedZone.split(':');
+
+      var date = (datetime != undefined) ? new Date(datetime) : new Date();
+      var utc = new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+
+      var hours = utc.getHours() + Number(zone[0]);
+      var minutes = utc.getMinutes() + Number(zone[1]);
+      var seconds = utc.getSeconds() + Number(zone[2]);
+
+      return new Date(utc.setHours(hours,minutes,seconds));
     }
   }
 

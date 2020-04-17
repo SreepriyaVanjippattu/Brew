@@ -124,16 +124,21 @@ export class MashInFormComponent implements OnInit {
         this.waterTarget = response['body']['brew']['waterAdditionDetails'];
         this.mashinTarget.push(response['body']['brew']['mashingTargetDetails']);
         this.starchTarget = response['body']['brew']['startchTest'];
-        this.mashinAvailable = response['body']['brew']['mashinDetailsNotes'];
-
-        if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
-          this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
+        this.mashinAvailable = response['body']['brew']['mashinAvailable'];
+        if (this.brewRunMashin.maltGrainBillDetails !== null) {
+          if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
+            this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
+          }
         }
-        if (this.brewRunMashin.waterAdditionDetails.length == 0) {
-          this.brewRunMashin.waterAdditionDetails.push(new WaterAdditionDetail());
+        if (this.brewRunMashin.waterAdditionDetails !== null) {
+          if (this.brewRunMashin.waterAdditionDetails.length == 0) {
+            this.brewRunMashin.waterAdditionDetails.push(new WaterAdditionDetail());
+          }
         }
-        if (this.brewRunMashin.mashingTargetDetails.length == 0) {
-          this.brewRunMashin.mashingTargetDetails.push(new MashingTargetDetail());
+        if (this.brewRunMashin.mashingTargetDetails !== null) {
+          if (this.brewRunMashin.mashingTargetDetails.length == 0) {
+            this.brewRunMashin.mashingTargetDetails.push(new MashingTargetDetail());
+          }
         }
         this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
           if (!mash.mashingTargetDetailsTemperature) {
@@ -260,41 +265,40 @@ export class MashInFormComponent implements OnInit {
 
   setStartTime():any {
     this.mashinStartTime = this.timezone();
-    this.mashinStartTime = this.mashinStartTime.split(' ').slice(0, 5).join(' ');
+    this.mashinStartTime = this.mashinStartTime.toString().split(' ').slice(0, 5).join(' ');
     document.getElementById('mashinStart').setAttribute('value', this.mashinStartTime);
     document.getElementById('mashinStartTime').setAttribute('value', this.mashinStartTime);
-    }
+  }
 
   setEndTime():any {
     this.mashinEndTime = this.timezone();
-    this.mashinEndTime = this.mashinEndTime.split(' ').slice(0, 5).join(' ');
+    this.mashinEndTime = this.mashinEndTime.toString().split(' ').slice(0, 5).join(' ');
     document.getElementById('mashinEnd').setAttribute('value', this.mashinEndTime);
     document.getElementById('mashinEndTime').setAttribute('value', this.mashinEndTime);
   }
 
 
 
-  timezone() {
+  timezone(datetime?) {
     // Timezone convertion
     const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
-    let zone = preferedZone.split(':');
-    const now = new Date();
-    var utc = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
-    
-    var hours = utc.getHours() + Number(zone[0]);
-    var minutes = utc.getMinutes() + Number(zone[1]);
-    var seconds = utc.getSeconds() + Number(zone[2]);
-    var date = new Date(utc.setHours(hours,minutes,seconds));
-    var startDate = date.toString().split('GMT');
-    return startDate;
-    }
-    }
+      let zone = preferedZone.split(':');
 
+      var date = (datetime != undefined) ? new Date(datetime) : new Date();
+      var utc = new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+
+      var hours = utc.getHours() + Number(zone[0]);
+      var minutes = utc.getMinutes() + Number(zone[1]);
+      var seconds = utc.getSeconds() + Number(zone[2]);
+
+      return new Date(utc.setHours(hours,minutes,seconds));
+    }
+  }
 
   setTempStartTime(i, start) {
     this.tempStartTime = this.timezone();
-    this.tempStartTime = this.tempStartTime.split(' ').slice(0, 5).join(' ');
+    this.tempStartTime = this.tempStartTime.toString().split(' ').slice(0, 5).join(' ');
     let elementId = 'tempStart'+i;
     document.getElementById(elementId).setAttribute('value', this.tempStartTime);
     start.startTime = this.tempStartTime;
@@ -465,6 +469,12 @@ export class MashInFormComponent implements OnInit {
           temperature.temperatureUnitType = this.getUnitName(temperature.temperatureUnitTypeId)
         });
       }
+      mashingTargetDetail.mashingTargetDetailsTemperature.forEach(
+        (mashingTemperatureDetail) => {
+          mashingTemperatureDetail.startTime = this.mashinStartTime;
+          mashingTemperatureDetail.endTime = this.mashinEndTime;
+        }
+      );
     });
     this.saveData().subscribe(response => {
       this.setClassMashin = true;
@@ -537,7 +547,7 @@ export class MashInFormComponent implements OnInit {
     } else {
       this.status = 'Fail';
     }
-    let dateTime = this.timezone(new Date(this.statusDate).toUTCString());
+    let dateTime = this.timezone(this.statusDate).toString();
     dateTime = dateTime.split(' ').slice(0, 5).join(' ');
     this.statusDate = new Date(dateTime).toLocaleString();
     this.statusDate = new Date();
@@ -560,6 +570,7 @@ export class MashInFormComponent implements OnInit {
   saveData(): Observable<boolean>{
     const mashinAPI = String.Format(this.apiService.mashin, this.tenantId, this.brewId);
     if (!this.mashinAvailable) {
+      this.brewRunMashin.id = Guid.raw();
        this.apiService.postData(mashinAPI, this.brewRunMashin).subscribe(response => {
         this.mashinAvailable = response['body']['mashinAvailable'];
         return observableOf(true);

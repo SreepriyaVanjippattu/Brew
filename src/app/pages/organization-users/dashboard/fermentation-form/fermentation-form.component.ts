@@ -175,7 +175,7 @@ export class FermentationFormComponent implements OnInit {
             if (element.startTime === null) {
               element.startTime = new Date();
             }
-            let dateTime = this.timezone(new Date(element.startTime).toUTCString());
+            let dateTime = this.timezone(element.startTime).toString();
             dateTime = dateTime.split(' ').slice(0, 5).join(' ');
             element.startTime = new Date(dateTime);
             this.addInHopsFermentation.push(element);
@@ -189,7 +189,7 @@ export class FermentationFormComponent implements OnInit {
               element.startTime = new Date();
             }
 
-            let dateTime = this.timezone(new Date(element.startTime).toUTCString());
+            let dateTime = this.timezone(element.startTime).toString();
             dateTime = dateTime.split(' ').slice(0, 5).join(' ');
             element.startTime = new Date(dateTime);
             this.addInAdjunctsFermentation.push(element);
@@ -229,7 +229,7 @@ export class FermentationFormComponent implements OnInit {
         this.selectedPos = this.brewRunFermentation.enterFermentationData.length - 1;
         this.brewRunFermentation.enterFermentationData.map((enter: EnterFermentationData, i) => {
 
-          let dateTime = this.timezone(new Date(enter.dateAndTime).toUTCString());
+          let dateTime = this.timezone(enter.dateAndTime).toString();
           dateTime = dateTime.split(' ').slice(0, 5).join(' ');
           enter.dateAndTime = new Date(dateTime);
         });
@@ -295,7 +295,7 @@ export class FermentationFormComponent implements OnInit {
     this.brewRunFermentation.enterFermentationData.push(new EnterFermentationData());
     this.brewRunFermentation.enterFermentationData[this.brewRunFermentation.enterFermentationData.length - 1].tenantId = this.tenantId;
     this.selectedPos = this.brewRunFermentation.enterFermentationData.length - 1;
-    let dateTime = this.timezone(new Date(this.brewRunFermentation.enterFermentationData[this.selectedPos].dateAndTime).toUTCString());
+    let dateTime = this.timezone(this.brewRunFermentation.enterFermentationData[this.selectedPos].dateAndTime).toString();
     dateTime = dateTime.split(' ').slice(0, 5).join(' ');
     this.brewRunFermentation.enterFermentationData[this.selectedPos].dateAndTime = new Date(dateTime);
   }
@@ -404,42 +404,43 @@ export class FermentationFormComponent implements OnInit {
     }
   }
   setStartTemp(i, start) {
-    this.coolStartTime = this.timezone(new Date().toUTCString());
-    this.coolStartTime = this.coolStartTime.split(' ').slice(0, 5).join(' ');
+    this.coolStartTime = this.timezone();
+    this.coolStartTime = this.coolStartTime.toString().split(' ').slice(0, 5).join(' ');
     start.startTime = this.coolStartTime;
   }
 
   endTemp(i, end) {
-    this.coolEndTime = this.timezone(new Date().toUTCString());
-    this.coolEndTime = this.coolEndTime.split(' ').slice(0, 5).join(' ');
+    this.coolEndTime = this.timezone();
+    this.coolEndTime = this.coolEndTime.toString().split(' ').slice(0, 5).join(' ');
     end.endTime = this.coolEndTime;
   }
 
   setStartDia(i, start) {
-    this.diaStartTime = this.timezone(new Date().toUTCString());
-    this.diaStartTime = this.diaStartTime.split(' ').slice(0, 5).join(' ');
+    this.diaStartTime = this.timezone();
+    this.diaStartTime = this.diaStartTime.toString().split(' ').slice(0, 5).join(' ');
     start.startTime = this.diaStartTime;
   }
 
   setEndDia(i, end) {
-    this.diaEndTime = this.timezone(new Date().toUTCString());
-    this.diaEndTime = this.diaEndTime.split(' ').slice(0, 5).join(' ');
+    this.diaEndTime = this.timezone();
+    this.diaEndTime = this.diaEndTime.toString().split(' ').slice(0, 5).join(' ');
     end.endTime = this.diaEndTime;
   }
 
-  timezone(dateTime) {
+  timezone(datetime?) {
     // Timezone convertion
     const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
-      let zone = preferedZone.replace(/:/gi, '');
-      zone = zone.slice(0, -2);
-      if (zone.includes('-')) {
-        zone = zone.replace(/-/gi, '+');
-      } else if (zone.includes('+')) {
-        zone = zone.replace(/\+/gi, '-');
-      }
-      const newDateTime = dateTime + ' ' + `${zone}`;
-      return newDateTime;
+      let zone = preferedZone.split(':');
+
+      var date = (datetime != undefined) ? new Date(datetime) : new Date();
+      var utc = new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+
+      var hours = utc.getHours() + Number(zone[0]);
+      var minutes = utc.getMinutes() + Number(zone[1]);
+      var seconds = utc.getSeconds() + Number(zone[2]);
+
+      return new Date(utc.setHours(hours,minutes,seconds));
     }
   }
 

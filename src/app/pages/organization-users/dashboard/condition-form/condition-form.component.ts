@@ -222,42 +222,42 @@ export class ConditionFormComponent implements OnInit {
   }
 
   setConStart(i, start) {
-    this.conStartTime = this.timezone(new Date().toUTCString());
+    this.conStartTime = this.timezone().toString();
     this.conStartTime = this.conStartTime.split(' ').slice(0, 5).join(' ');
     start.startTime = this.conStartTime;
   }
 
   setConEnd(i, end) {
-    this.conEndTime = this.timezone(new Date().toUTCString());
+    this.conEndTime = this.timezone().toString();
     this.conEndTime = this.conEndTime.split(' ').slice(0, 5).join(' ');
     end.endTime = this.conEndTime;
   }
 
   setCarbStart(i, start) {
-    this.carStartTime = this.timezone(new Date().toUTCString());
+    this.carStartTime = this.timezone().toString();
     this.carStartTime = this.carStartTime.split(' ').slice(0, 5).join(' ');
     start.startTime = this.carStartTime;
   }
 
   setCarbEnd(i, end) {
-    this.carEndTime = this.timezone(new Date().toUTCString());
+    this.carEndTime = this.timezone().toString();
     this.carEndTime = this.carEndTime.split(' ').slice(0, 5).join(' ');
     end.endTime = this.carEndTime;
   }
 
-  timezone(dateTime) {
+  timezone() {
     // Timezone convertion
     const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
-      let zone = preferedZone.replace(/:/gi, '');
-      zone = zone.slice(0, -2);
-      if (zone.includes('-')) {
-        zone = zone.replace(/-/gi, '+');
-      } else if (zone.includes('+')) {
-        zone = zone.replace(/\+/gi, '-');
-      }
-      const newDateTime = dateTime + ' ' + `${zone}`;
-      return newDateTime;
+      let zone = preferedZone.split(':');
+      const now = new Date();
+      var utc = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+
+      var hours = utc.getHours() + Number(zone[0]);
+      var minutes = utc.getMinutes() + Number(zone[1]);
+      var seconds = utc.getSeconds() + Number(zone[2]);
+
+      return new Date(utc.setHours(hours,minutes,seconds));
     }
   }
 

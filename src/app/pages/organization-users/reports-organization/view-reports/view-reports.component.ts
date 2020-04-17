@@ -346,7 +346,7 @@ export class ViewReportsComponent implements OnInit {
         }
 
         this.brew.enterFermentationData.map((enter: EnterFermentationData, i) => {
-          let dateTime = this.timezone(new Date(enter.dateAndTime).toUTCString());
+          let dateTime = this.timezone(enter.dateAndTime).toString();
           dateTime = dateTime.split(' ').slice(0, 5).join(' ');
           enter.dateAndTime = new Date(dateTime);
         });
@@ -390,7 +390,7 @@ export class ViewReportsComponent implements OnInit {
   findByAddins() {
 
     this.brew.adjunctsDetails.forEach(element => {
-      let dateTime = this.timezone(new Date(element.startTime).toUTCString());
+      let dateTime = this.timezone(element.startTime).toString();
       dateTime = dateTime.split(' ').slice(0, 5).join(' ');
       element.startTime = new Date(dateTime).toLocaleString();
       if (element.addInId === '255ce5b1-4b1a-4da8-b269-5a0b81d9db23') { // kettle
@@ -417,7 +417,7 @@ export class ViewReportsComponent implements OnInit {
     }
 
     this.brew.hopesDetails.forEach(element => {
-      let dateTime = this.timezone(new Date(element.startTime).toUTCString());
+      let dateTime = this.timezone(element.startTime).toString();
       dateTime = dateTime.split(' ').slice(0, 5).join(' ');
       element.startTime = new Date(dateTime).toLocaleString();
       if (element.addInId === '255ce5b1-4b1a-4da8-b269-5a0b81d9db23') { // kettle
@@ -444,20 +444,20 @@ export class ViewReportsComponent implements OnInit {
     }
   }
 
-  timezone(dateTime) {
+  timezone(datetime?) {
     // Timezone convertion
-    const timeZone = JSON.parse(sessionStorage.preferenceUsed);
-    const preferedZone = timeZone.BaseUtcOffset;
+    const preferedZone = this.preference.baseUtcOffset;
     if (preferedZone !== undefined && preferedZone !== null) {
-      let zone = preferedZone.replace(/:/gi, '');
-      zone = zone.slice(0, -2);
-      if (zone.includes('-')) {
-        zone = zone.replace(/-/gi, '+');
-      } else if (zone.includes('+')) {
-        zone = zone.replace(/\+/gi, '-');
-      }
-      const newDateTime = dateTime + ' ' + `${zone}`;
-      return newDateTime;
+      let zone = preferedZone.split(':');
+
+      var date = (datetime != undefined) ? new Date(datetime) : new Date();
+      var utc = new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+
+      var hours = utc.getHours() + Number(zone[0]);
+      var minutes = utc.getMinutes() + Number(zone[1]);
+      var seconds = utc.getSeconds() + Number(zone[2]);
+
+      return new Date(utc.setHours(hours,minutes,seconds));
     }
   }
 
@@ -467,7 +467,7 @@ export class ViewReportsComponent implements OnInit {
       for (let brewRunCompletionDetail of this.brew.brewRunCompletionDetails) {
         if (brewRunCompletionDetail.section === sectionName) {
           returnValue = brewRunCompletionDetail;
-          returnValue.createdDateTimeString = this.timezone(new Date(returnValue.CompletedDateTime).toUTCString());
+          returnValue.createdDateTimeString = this.timezone(returnValue.CompletedDateTime).toString();
           break;
         }
       }
