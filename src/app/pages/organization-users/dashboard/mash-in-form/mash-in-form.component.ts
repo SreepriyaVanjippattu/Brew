@@ -459,12 +459,9 @@ export class MashInFormComponent implements OnInit {
       mashingTargetDetail.strikeWaterUnitType = this.getUnitName(mashingTargetDetail.strikeWaterTemperatureUnitTypeId);
       mashingTargetDetail.strikeWaterTemperatureUnitType = this.getUnitName(mashingTargetDetail.strikeWaterTemperatureUnitTypeId);
       if (mashingTargetDetail.mashingTargetDetailsTemperature !== null) {
-        mashingTargetDetail.mashingTargetDetailsTemperature.forEach(
-          (mashingTemperatureDetail) => {
-          mashingTemperatureDetail.startTime = this.mashinStartTime;
-          mashingTemperatureDetail.endTime = this.mashinEndTime;
-          }
-          );
+        mashingTargetDetail.mashingTargetDetailsTemperature.forEach(temperature => {
+          temperature.temperatureUnitType = this.getUnitName(temperature.temperatureUnitTypeId)
+        });
       }
     });
     this.saveData().subscribe(response => {
