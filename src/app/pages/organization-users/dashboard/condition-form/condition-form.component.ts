@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BrewRunConditioning, ConditioningDetail, FilterationDetail, CarbonationDetail, ConditioningDetailsNote } from '../../../../models/brewrun';
 import { DashboardService } from '../dashboard.service';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
 import { StatusUse } from '../../../../models/status-id-name';
@@ -63,6 +63,7 @@ export class ConditionFormComponent implements OnInit {
     private toast: NbToastrService,
     private data: DataService,
     private datePipe: DatePipe,
+    private scrolltop: NbLayoutScrollService,
   ) { }
 
   ngOnInit() {
@@ -368,6 +369,9 @@ export class ConditionFormComponent implements OnInit {
       });
     }
     return observableOf(false);
+  }
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 
 }

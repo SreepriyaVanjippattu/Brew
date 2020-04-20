@@ -6,7 +6,7 @@ import {
 } from '../../../../models/brewrun';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { DashboardService } from '../dashboard.service';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { addIn } from '../../../../models/addInConstants';
 import { Guid } from 'guid-typescript';
 import { FormBuilder } from '@angular/forms';
@@ -108,6 +108,7 @@ export class FermentationFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: ModalService,
     private datePipe: DatePipe,
+    private scrolltop: NbLayoutScrollService,
 
   ) { }
 
@@ -701,5 +702,8 @@ export class FermentationFormComponent implements OnInit {
       });
     }
     return observableOf(false);
+  }
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 }

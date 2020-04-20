@@ -1,4 +1,4 @@
-
+@import "assets/styles/styles.scss";
 .ferment-text
 {
     textarea{
@@ -31,4 +31,21 @@
     {
         font-size: 10px;
     }
+}
+.recipe-scrolltop {
+    background: #FFA11B;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: -47px;
+    right: 1px;
+    cursor: pointer;
+}
+.scroll-arrow
+{
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    color: $BgWhite;
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiProviderService } from '../../../core/api-services/api-provider.service';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { String } from 'typescript-string-operations';
@@ -53,6 +53,7 @@ export class PreferencesComponent implements OnInit {
     private toast: NbToastrService,
     private router: Router,
     private datePipe: DatePipe,
+    private scrolltop: NbLayoutScrollService,
 
   ) { }
 
@@ -245,7 +246,7 @@ export class PreferencesComponent implements OnInit {
   newYeastItem(): void {
     this.savenewYeastEnabled = true;
     this.newYeast= this.tankyeastForm.get('newYeast') as FormArray;
-    this.newYeast.push(this.newYeastForm());
+    this.newYeast.controls.push(this.newYeastForm());
   }
 
   searchYeast() {
@@ -453,5 +454,8 @@ export class PreferencesComponent implements OnInit {
 
   statusClick(status, i) {
     this.isactive = !this.isactive;
+  }
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 }

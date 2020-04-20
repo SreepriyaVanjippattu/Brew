@@ -13,7 +13,7 @@ import {
 } from '../../../../models/brewrun';
 import { DashboardService } from '../dashboard.service';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { addIn } from '../../../../models/addInConstants';
 import { FormBuilder } from '@angular/forms';
 import { Guid } from 'guid-typescript';
@@ -138,6 +138,7 @@ export class BrewLogFormComponent implements OnInit {
     private toast: NbToastrService,
     private formBuilder: FormBuilder,
     private datePipe: DatePipe,
+    private scrolltop: NbLayoutScrollService,
 
   ) { }
 
@@ -967,6 +968,9 @@ export class BrewLogFormComponent implements OnInit {
       });
     }
     return observableOf(false);
+  }
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 
 }

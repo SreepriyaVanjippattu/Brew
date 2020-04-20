@@ -4,7 +4,7 @@ import { DashboardService } from '../dashboard.service';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BrewRunMashin, BrewRun, MaltGrainBillDetail, WaterAdditionDetail, MashingTargetDetail, StartchTest, MashinDetailsNote, MashingTargetDetailsTemperature, StarchTestResultList } from '../../../../models/brewrun';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { FormBuilder } from '@angular/forms';
 import { Guid } from 'guid-typescript';
 import { DatePipe } from '@angular/common';
@@ -74,6 +74,7 @@ export class MashInFormComponent implements OnInit {
     private toast: NbToastrService,
     private formBuilder: FormBuilder,
     private datePipe: DatePipe,
+    private scrolltop: NbLayoutScrollService,
   ) { }
 
   ngOnInit() {
@@ -581,6 +582,10 @@ export class MashInFormComponent implements OnInit {
       });
       return observableOf(false);
     }
+  }
+
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 
 }

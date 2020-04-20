@@ -91,7 +91,8 @@
         <h6>Yeast Strains</h6>
         <div class="preference-header-right">
           <div class="d-flex l-search">
-            <input class='l-searchbox' (keyup.enter)="searchYeast()" [(ngModel)]="searchText" value="" placeholder="Search" type="text">
+            <input class='l-searchbox' (keyup.enter)="searchYeast()" [(ngModel)]="searchText"
+              [ngModelOptions]="{standalone: true}" value="" placeholder="Search" type="text">
             <i class="material-icons search-ico" (click)="searchYeast()"> search </i>
           </div>
           <button [disabled]="savenewYeastEnabled" class="btn l-btn-white" type="button" (click)="newYeastItem()">New
@@ -109,7 +110,30 @@
             </tr>
           </thead>
 
-
+          <!-- Add New Yeast -->
+          <tbody formArrayName="newYeast" *ngFor="let yeastItems of newYeastForms.controls; let i = index;">
+            <tr [formGroupName]="i" class="w-100">
+              <td> <input formControlName="yeastStrain" class='form-control' placeholder="Yeast Strain">
+                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
+                  <div *ngIf="yeastItems.get('yeastStrain').invalid" class="valid-error">
+                    Yeast Strain is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input disabled type="date" formControlName="yeastDate" class='form-control' placeholder="Yeast Date">
+                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
+                </div>
+              </td>
+              <td>In Progress</td>
+              <td>
+                <div class="actions">
+                  <span (click)="savenewYeast(newYeastArray.controls[i].controls,i)"
+                    class="del-ico ml-2 cursor-click"><i class="material-icons save-ico">save</i></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
           <tbody formArrayName="listYeast" *ngFor="let lists of yeastForms.controls  ; let i = index;">
 
             <tr [formGroupName]="i" class="w-100">
@@ -145,30 +169,7 @@
               </td>
             </tr>
           </tbody>
-          <!-- Add New Yeast -->
-          <tbody formArrayName="newYeast" *ngFor="let yeastItems of newYeastForms.controls; let i = index;">
-            <tr [formGroupName]="i" class="w-100">
-              <td> <input formControlName="yeastStrain" class='form-control' placeholder="Yeast Strain">
-                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
-                  <div *ngIf="yeastItems.get('yeastStrain').invalid" class="valid-error">
-                    Yeast Strain is required
-                  </div>
-                </div>
-              </td>
-              <td>
-                <input disabled type="date" formControlName="yeastDate" class='form-control' placeholder="Yeast Date">
-                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
-                </div>
-              </td>
-              <td>In Progress</td>
-              <td>
-                <div class="actions">
-                  <span (click)="savenewYeast(newYeastArray.controls[i].controls,i)"
-                    class="del-ico ml-2 cursor-click"><i class="material-icons save-ico">save</i></span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+
         </table>
       </div>
     </form>
@@ -178,7 +179,8 @@
         <h6>Tank Configuration</h6>
         <div class="preference-header-right">
           <div class="d-flex l-search">
-            <input class='l-searchbox' (keyup.enter)="searchTank()" [(ngModel)]="searchText" placeholder="Search" type="text">
+            <input class='l-searchbox' (keyup.enter)="searchTank()" [(ngModel)]="searchText"
+              [ngModelOptions]="{standalone: true}" placeholder="Search" type="text">
             <i class="material-icons search-ico" (click)="searchTank()"> search </i>
           </div>
           <button [disabled]="savenewTankEnabled" class="btn l-btn-white" type="button" (click)="newTankItem()">New
@@ -319,15 +321,32 @@
               </td>
               <td>
                 <div class="actions">
+
                   <span (click)="savenewTank(newTankArray.controls[i].controls,i)" class="del-ico ml-2 cursor-click"><i
-                      class="material-icons save-ico">save</i></span>
+                      class="material-icons save-ico">save</i>
+
+                  </span>
                 </div>
+
               </td>
 
             </tr>
           </tbody>
+
         </table>
+
+
       </div>
+
     </form>
+   
+
+
   </div>
-</div>
+  <div class="col-md-12 row">
+    <div (click)="gotoTop()" class="recipe-scrolltop">
+      <div class="material-icons scroll-arrow">
+        expand_less
+      </div>
+    </div>
+  </div>

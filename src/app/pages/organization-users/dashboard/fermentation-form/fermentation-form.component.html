@@ -894,6 +894,11 @@
 
     <div class="row mt-3">
         <div class="col-md-12 d-flex justify-content-end">
+            <div (click)="gotoTop()" class="recipe-scrolltop">
+                <div class="material-icons scroll-arrow">
+                    expand_less
+                </div>
+            </div>
             <button type="button" class="btn btn-outline-light l-btn-cancel mr-2" (click)="onPreviousClick()">
                 Previous Step
             </button>

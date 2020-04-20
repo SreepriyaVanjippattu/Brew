@@ -1,3 +1,4 @@
+@import "assets/styles/styles.scss";
 .preference{
     .sub-header{
         display: flex;
@@ -68,4 +69,21 @@
     background-repeat: no-repeat !important;
     background-position: 95% !important;
     background-size: 10px !important;
+}
+.recipe-scrolltop {
+    background: #FFA11B;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: -18px;
+    right: 10px;
+    cursor: pointer;
+}
+.scroll-arrow
+{
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    color: $BgWhite;
 }

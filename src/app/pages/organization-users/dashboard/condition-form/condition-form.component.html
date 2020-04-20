@@ -157,7 +157,7 @@
 
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="ferment-ph">Actual Pressure ( PSI)</label>
+                                                <label for="ferment-ph">Actual Pressure (PSI)</label>
                                                 <input type="text" class="form-control" id="ferment-ph"
                                                     placeholder="Pressure"
                                                     [(ngModel)]="brewRunConditioning.conditioningDetails[i].actualPressure">
@@ -399,6 +399,11 @@
 
     <div class="row">
         <div class="col-md-12 d-flex justify-content-end mt-2">
+            <div (click)="gotoTop()" class="recipe-scrolltop">
+                <div class="material-icons scroll-arrow">
+                    expand_less
+                </div>
+            </div>
             <button type="button" class="btn btn-outline-light l-btn mr-2" data-target="#completeModal"
                 data-toggle="modal">
                 Complete
@@ -635,6 +640,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 d-flex justify-content-center mt-2">
+                           
                             <button type="button" data-dismiss="modal" class="btn  l-btn-cancel mr-2">
                                 No
                             </button>
