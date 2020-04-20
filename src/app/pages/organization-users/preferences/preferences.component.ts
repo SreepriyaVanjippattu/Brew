@@ -244,7 +244,7 @@ export class PreferencesComponent implements OnInit {
 
   newYeastItem(): void {
     this.savenewYeastEnabled = true;
-    this.newYeast = this.tankyeastForm.get('newYeast') as FormArray;
+    this.newYeast= this.tankyeastForm.get('newYeast') as FormArray;
     this.newYeast.push(this.newYeastForm());
   }
 

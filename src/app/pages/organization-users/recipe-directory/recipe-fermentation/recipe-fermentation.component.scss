@@ -1,4 +1,4 @@
-
+@import "assets/styles/styles.scss";
 // Medium devices (tablets, less than 992px)
 @media (max-width: 992px) { 
     .progressbar
@@ -25,4 +25,21 @@
     img{
         width: 20px;
     }
+}
+.recipe-scrolltop {
+    background: #FFA11B;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: -55px;
+    right: -15px;
+    cursor: pointer;
+}
+.scroll-arrow
+{
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    color: $BgWhite;
 }

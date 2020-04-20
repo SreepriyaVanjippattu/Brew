@@ -285,10 +285,10 @@
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label for="brewerrun-temperature">Strike Water Temperature (in Celsius)</label>
+            <label for="brewerrun-temperature">Strike Water Temperature (Celsius)</label>
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-temperature"
-                placeholder="Strike Water Temperature (in Celsius)"
+                placeholder="Strike Water Temperature (Celsius)"
                 [(ngModel)]="mashingTargetDetail.strikeWaterTemperature" disabled>
               <select class="form-control input-dropdown"
                 [(ngModel)]="mashingTargetDetail.strikeWaterTemperatureUnitTypeId">
@@ -834,7 +834,7 @@
             </div>
 
             <div class="form-group col-md-6">
-              <label for="ferment-acttemp">Actual Temperature (in {{preferedUnit}})</label>
+              <label for="ferment-acttemp">Actual Temperature ({{preferedUnit}})</label>
               <input type="text" disabled class="form-control" id="ferment-acttemp" placeholder="Actual Temperature"
                 [(ngModel)]="brew.fermentationDataEntry[i].actualTemperature">
 
@@ -847,10 +847,10 @@
           <div class="form-row">
 
             <div class="form-group col-md-6">
-              <label for="ferment-pressure">Actual Pressure (in PSI)</label>
+              <label for="ferment-pressure">Actual Pressure (PSI)</label>
               <div class='multiple-input'>
                 <input type="number" disabled class="form-control" id="ferment-pressure"
-                  placeholder="Actual Pressure (in PSI)" [(ngModel)]="brew.fermentationDataEntry[i].actualPressure">
+                  placeholder="Actual Pressure (PSI)" [(ngModel)]="brew.fermentationDataEntry[i].actualPressure">
                 <select class="form-control input-dropdown" disabled
                   [(ngModel)]="brew.fermentationDataEntry[i].actualPressureUnitId">
                   <option disabled value="">Select</option>
@@ -1132,9 +1132,9 @@
             </div>
 
             <div class="form-group col-md-6">
-              <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
+              <label for="ferment-acttemp">Temperature ({{preferedUnit}})</label>
               <input type="text" class="form-control" disabled id="ferment-acttemp"
-                placeholder="Temperature (In Celcius)" [(ngModel)]="brew.conditioningDetails[i].temperatureIn">
+                placeholder="Temperature (Celcius)" [(ngModel)]="brew.conditioningDetails[i].temperatureIn">
             </div>
 
           </div>
@@ -1205,7 +1205,7 @@
       <div class="report-details">
         <div class="form-row" *ngFor="let filterationDetail of brew.filterationDetails; let i = index;">
           <div class="form-group col-md-12">
-            <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+            <label for="ferment-plato">Temperature ({{preferedUnit}})</label>
             <input type="text" disabled class="form-control" id="ferment-plato" placeholder="Temperature"
               [(ngModel)]="brew.filterationDetails[i].temperatureIn">
           </div>
@@ -1229,13 +1229,13 @@
         <div *ngFor="let carbonationDetail of brew.carbonationDetails; let i = index;">
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+              <label for="ferment-plato">Temperature ({{preferedUnit}})</label>
               <input type="text" disabled class="form-control" id="ferment-plato" placeholder="Temperature"
                 [(ngModel)]="brew.carbonationDetails[i].temperature">
             </div>
 
             <div class="form-group col-md-6">
-              <label for="ferment-plato">Pressure (in PSI)</label>
+              <label for="ferment-plato">Pressure (PSI)</label>
               <input type="text" disabled class="form-control" id="ferment-plato" placeholder="Pressure"
                 [(ngModel)]="brew.carbonationDetails[i].pressure">
             </div>

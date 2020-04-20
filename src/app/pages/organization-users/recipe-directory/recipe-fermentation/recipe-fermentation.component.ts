@@ -3,7 +3,7 @@ import { ApiProviderService } from '../../../../core/api-services/api-provider.s
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { formData } from '../../../../models/formData';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { Guid } from 'guid-typescript';
 import { String } from 'typescript-string-operations';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -50,6 +50,7 @@ export class RecipeFermentationComponent implements OnInit {
   id: string;
 
   constructor(private apiService: ApiProviderService,
+    private scrolltop: NbLayoutScrollService,
     private formBuilder: FormBuilder,
     private router: Router,
     private toast: NbToastrService,
@@ -511,6 +512,10 @@ export class RecipeFermentationComponent implements OnInit {
         }
       });
     }
+  }
+
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 
 }

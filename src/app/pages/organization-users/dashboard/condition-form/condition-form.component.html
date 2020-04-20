@@ -147,9 +147,9 @@
                                             </div>
 
                                             <div class="form-group col-md-6">
-                                                <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
+                                                <label for="ferment-acttemp">Temperature ({{preferedUnit}})</label>
                                                 <input type="text" class="form-control" id="ferment-acttemp"
-                                                    placeholder="Temperature (In Celcius)"
+                                                    placeholder="Temperature (Celcius)"
                                                     [(ngModel)]="brewRunConditioning.conditioningDetails[i].temperatureIn">
                                             </div>
 
@@ -157,7 +157,7 @@
 
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="ferment-ph">Actual Pressure ( in PSI)</label>
+                                                <label for="ferment-ph">Actual Pressure ( PSI)</label>
                                                 <input type="text" class="form-control" id="ferment-ph"
                                                     placeholder="Pressure"
                                                     [(ngModel)]="brewRunConditioning.conditioningDetails[i].actualPressure">
@@ -256,7 +256,7 @@
                                     <div class="form-row"
                                         *ngFor="let filterationDetail of brewRunConditioning.filterationDetails; let i = index;">
                                         <div class="form-group col-md-12">
-                                            <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+                                            <label for="ferment-plato">Temperature ({{preferedUnit}})</label>
                                             <input type="text" class="form-control" id="ferment-plato"
                                                 placeholder="Temperature"
                                                 [(ngModel)]="brewRunConditioning.filterationDetails[i].temperatureIn">
@@ -308,14 +308,14 @@
                                     <div *ngFor="let carbonationDetail of brewRunConditioning.carbonationDetails; let i = index;">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+                                                <label for="ferment-plato">Temperature ({{preferedUnit}})</label>
                                                 <input type="text" class="form-control" id="ferment-plato"
                                                     placeholder="Temperature"
                                                     [(ngModel)]="brewRunConditioning.carbonationDetails[i].temperature">
                                             </div>
 
                                             <div class="form-group col-md-6">
-                                                <label for="ferment-plato">Pressure (in PSI)</label>
+                                                <label for="ferment-plato">Pressure (PSI)</label>
                                                 <input type="text" class="form-control" id="ferment-plato"
                                                     placeholder="Pressure"
                                                     [(ngModel)]="brewRunConditioning.carbonationDetails[i].pressure">
@@ -450,7 +450,7 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
+                                <label for="ferment-acttemp">Temperature ({{preferedUnit}})</label>
                                 <input type="text" class="form-control" id="ferment-acttemp" [value]="cond.temperature"
                                     disabled>
                             </div>
@@ -515,7 +515,7 @@
                     <div class="container-fluid">
                         <div class="form-row">
                             <div class="form-group col-md-12">
-                                <label for="ferment-plato">Temperature (in {{preferedUnit}})</label>
+                                <label for="ferment-plato">Temperature ({{preferedUnit}})</label>
                                 <input type="text" class="form-control" id="ferment-plato" [value]="filt.temperature"
                                     disabled>
                             </div>
@@ -551,7 +551,7 @@
                         <div class="form-row">
 
                             <div class="form-group col-md-12">
-                                <label for="ferment-plato">Pressure (in PSI)</label>
+                                <label for="ferment-plato">Pressure (PSI)</label>
                                 <input type="text" class="form-control" id="ferment-plato" [value]="carb.pressure"
                                     disabled>
                             </div>

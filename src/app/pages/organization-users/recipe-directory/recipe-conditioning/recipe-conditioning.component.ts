@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { Guid } from 'guid-typescript';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
@@ -47,6 +47,7 @@ export class RecipeConditioningComponent implements OnInit {
 
   constructor(private apiService: ApiProviderService,
     private router: Router,
+    private scrolltop: NbLayoutScrollService,
     private formBuilder: FormBuilder,
     private toast: NbToastrService,
     private data: DataService,
@@ -430,5 +431,9 @@ export class RecipeConditioningComponent implements OnInit {
 
   previewClick() {
     this.router.navigate(['/app/recipes/view/' + this.recipeId]);
+  }
+
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 }

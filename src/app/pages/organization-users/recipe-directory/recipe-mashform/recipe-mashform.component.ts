@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { formData } from '../../../../models/formData';
 import { Guid } from 'guid-typescript';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { String } from 'typescript-string-operations';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -95,7 +95,8 @@ export class RecipeMashformComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toast: NbToastrService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private scrolltop: NbLayoutScrollService,) { }
 
   ngOnInit() {
     this.page = this.route.snapshot.url[0].path;
@@ -846,5 +847,9 @@ export class RecipeMashformComponent implements OnInit {
         }
       });
     }
+  }
+
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 }

@@ -100,7 +100,7 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-6">
-                      <label for="brewrun-Pressure">Pressure (in PSI)</label>
+                      <label for="brewrun-Pressure">Pressure (PSI)</label>
                       <input type="number" class="form-control" id="brewrun-Pressure" placeholder=""
                         formControlName="pressure">
                     </div>
@@ -220,7 +220,7 @@
                 <div [formGroupName]="i">
                   <div class="form-row">
                     <div class="form-group col-md-6">
-                      <label for="recipe-Pressure2">Pressure (in PSI)</label>
+                      <label for="recipe-Pressure2">Pressure (PSI)</label>
                       <input type="number" class="form-control" id="recipe-Pressure2" placeholder="Pressure"
                         formControlName="pressure">
                     </div>
@@ -248,7 +248,11 @@
 
   <div class="row">
     <div class="col-md-12 d-flex justify-content-end mt-3 recipe-footer">
-
+      <div (click)="gotoTop()" class="recipe-scrolltop">
+        <div class="material-icons scroll-arrow">
+          expand_less
+        </div>
+      </div>
       <button class="btn l-btn-cancel mr-2" type="button" (click)="fermentationClick()">
         Previous Step</button>
 

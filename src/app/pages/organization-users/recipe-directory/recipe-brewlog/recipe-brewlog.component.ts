@@ -3,7 +3,7 @@ import { ApiProviderService } from '../../../../core/api-services/api-provider.s
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Guid } from 'guid-typescript';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { String } from 'typescript-string-operations';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -52,6 +52,7 @@ export class RecipeBrewlogComponent implements OnInit {
   constructor(private apiService: ApiProviderService,
     private formBuilder: FormBuilder,
     private router: Router,
+    private scrolltop: NbLayoutScrollService,
     private toast: NbToastrService,
     private route: ActivatedRoute) { }
 
@@ -533,6 +534,9 @@ export class RecipeBrewlogComponent implements OnInit {
         }
       });
     }
+  }
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 
 }

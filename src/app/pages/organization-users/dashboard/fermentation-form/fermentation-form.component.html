@@ -149,7 +149,7 @@
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label for="ferment-acttemp">Actual Temperature (in {{preferedUnit}})</label>
+                                        <label for="ferment-acttemp">Actual Temperature ({{preferedUnit}})</label>
                                         <input type="text" class="form-control" id="ferment-acttemp"
                                             placeholder="Actual Temperature"
                                             [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualTemperature">
@@ -163,10 +163,10 @@
                                 <div class="form-row">
 
                                     <div class="form-group col-md-6">
-                                        <label for="ferment-pressure">Actual Pressure (in PSI)</label>
+                                        <label for="ferment-pressure">Actual Pressure (PSI)</label>
                                         <div class='multiple-input'>
                                             <input type="number" class="form-control" id="ferment-pressure"
-                                                placeholder="Actual Pressure (in PSI)"
+                                                placeholder="Actual Pressure (PSI)"
                                                 [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPressure">
                                             <select class="form-control input-dropdown"
                                                 [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPressureUnitId">
@@ -563,7 +563,7 @@
                                 <div class="form-row">
 
                                     <div class="form-group col-md-6">
-                                        <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
+                                        <label for="brewrun-id">Actual Temperature ({{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="brewrun-id"
                                             placeholder="Actual Temperature"
                                             [(ngModel)]=" brewRunFermentation.diacetylRestDataDetails[i].actualTemperatureIn">
@@ -650,7 +650,7 @@
                                 <div class="form-row">
 
                                     <div class="form-group col-md-6">
-                                        <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
+                                        <label for="brewrun-id">Actual Temperature ({{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="brewrun-id"
                                             placeholder="Actual Temperature"
                                             [(ngModel)]="brewRunFermentation.agingDetails[i].actualTemperature">
@@ -837,7 +837,7 @@
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
+                                        <label for="ferment-acttemp">Temperature ({{preferedUnit}})</label>
                                         <input type="number" class="form-control" id="ferment-acttemp"
                                             placeholder="Temperature"
                                             [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].temperature">
@@ -947,7 +947,7 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="ferment-acttemp">Actual Temperature (in {{preferedUnit}})</label>
+                                <label for="ferment-acttemp">Actual Temperature ({{preferedUnit}})</label>
                                 <input type="text" class="form-control" id="ferment-acttemp"
                                     [value]="ferment.temperature" disabled>
                             </div>
@@ -1285,7 +1285,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="ferment-acttemp">Temperature (in {{preferedUnit}})</label>
+                                <label for="ferment-acttemp">Temperature ({{preferedUnit}})</label>
                                 <input type="number" class="form-control" id="ferment-acttemp"
                                     [value]="ferm.temperature" disabled>
                             </div>
@@ -1332,7 +1332,7 @@
                         <div class="form-row">
 
                             <div class="form-group col-md-6">
-                                <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
+                                <label for="brewrun-id">Actual Temperature ({{preferedUnit}})</label>
                                 <input type="text" class="form-control" id="brewrun-id" [value]="diac.temperature"
                                     disabled>
                             </div>
@@ -1379,7 +1379,7 @@
                         <div class="form-row">
 
                             <div class="form-group col-md-6">
-                                <label for="brewrun-id">Actual Temperature (in {{preferedUnit}})</label>
+                                <label for="brewrun-id">Actual Temperature ({{preferedUnit}})</label>
                                 <input type="text" class="form-control" id="brewrun-id" [value]="cool.temperature"
                                     disabled>
                             </div>

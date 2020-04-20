@@ -120,7 +120,7 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-6">
-                      <label for="brewrun-Pressure">Pressure (in PSI)</label>
+                      <label for="brewrun-Pressure">Pressure (PSI)</label>
                       <i class="material-icons star-ico">
                         star_rate
                       </i>
@@ -373,12 +373,16 @@
 
   <div class="row">
     <div class="col-md-12 d-flex justify-content-end mt-3">
-
+      <div (click)="gotoTop()" class="recipe-scrolltop">
+        <div class="material-icons scroll-arrow">
+          expand_less
+        </div>
+      </div>
       <button class="btn l-btn-cancel mr-2" type="button" (click)="brewLogClick()">
         Previous Step</button>
-
+  
       <button (click)="nextStepClick()" class="btn l-btn " type="button">Next Step</button>
-
+  
     </div>
   </div>
 
