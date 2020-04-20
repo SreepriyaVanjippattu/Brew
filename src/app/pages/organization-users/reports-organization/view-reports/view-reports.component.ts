@@ -86,6 +86,8 @@ export class ViewReportsComponent implements OnInit {
     this.brewContent = this.message;
     this.brew = new BrewRun();
     this.brewId = this.route.snapshot.paramMap.get('id');
+
+    
     this.statusCheck();
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
     this.tenantId = userDetails['CompanyDetails'].Id;

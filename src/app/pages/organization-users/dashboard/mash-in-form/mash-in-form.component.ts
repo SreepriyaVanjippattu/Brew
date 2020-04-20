@@ -119,38 +119,37 @@ export class MashInFormComponent implements OnInit {
     const getBrewRunMashinDetailsAPI = String.Format(this.apiService.getBrewRunMashinDetails, tenantId, brewId);
     this.apiService.getDataByQueryParams(getBrewRunMashinDetailsAPI, null, tenantId, brewId).subscribe(response => {
       if (response.status === 200) {
-        this.brewRunMashin = response['body']['brew'];
-        this.maltTarget = response['body']['brew']['maltGrainBillDetails'];
-        this.waterTarget = response['body']['brew']['waterAdditionDetails'];
-        this.mashinTarget.push(response['body']['brew']['mashingTargetDetails']);
-        this.starchTarget = response['body']['brew']['startchTest'];
-        this.mashinAvailable = response['body']['brew']['mashinAvailable'];
-        if (this.brewRunMashin.maltGrainBillDetails && this.brewRunMashin.maltGrainBillDetails.length == 0) {
-            this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
-        }
-        if (this.brewRunMashin.waterAdditionDetails && this.brewRunMashin.waterAdditionDetails.length == 0) {
-            this.brewRunMashin.waterAdditionDetails.push(new WaterAdditionDetail());
-        }
-        if (this.brewRunMashin.mashingTargetDetails && this.brewRunMashin.mashingTargetDetails.length == 0) {
-            this.brewRunMashin.mashingTargetDetails.push(new MashingTargetDetail());
-        }
-        if (this.brewRunMashin.mashingTargetDetails) {
-          this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
-            if (!mash.mashingTargetDetailsTemperature) {
-              mash.mashingTargetDetailsTemperature = [];
-              mash.mashingTargetDetailsTemperature.push(new MashingTargetDetailsTemperature());
-            } else {
-              mash.mashingTargetDetailsTemperature.map((tempStartTimes: any) => {
-                tempStartTimes.startTime = this.datePipe.transform(tempStartTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
-              }
+        this.brewRunMashin = response['body']['brewRunMashin'];
+        this.maltTarget = response['body']['recipe']['maltGrainBills'];
+        this.waterTarget = response['body']['recipe']['waterAdditions'];
+        this.mashinTarget.push(response['body']['recipe']['mashingTargets']);
+        this.starchTarget = response['body']['recipe'];
+        this.mashinAvailable = response['body']['mashinAvailable'];
 
-              )
+        if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
+          this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
+        }
+        if (this.brewRunMashin.waterAdditionDetails.length == 0) {
+          this.brewRunMashin.waterAdditionDetails.push(new WaterAdditionDetail());
+        }
+        if (this.brewRunMashin.mashingTargetDetails.length == 0) {
+          this.brewRunMashin.mashingTargetDetails.push(new MashingTargetDetail());
+        }
+        this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
+          if (!mash.mashingTargetDetailsTemperature) {
+            mash.mashingTargetDetailsTemperature = [];
+            mash.mashingTargetDetailsTemperature.push(new MashingTargetDetailsTemperature());
+          } else {
+            mash.mashingTargetDetailsTemperature.map((tempStartTimes: any) => {
+              tempStartTimes.startTime = this.datePipe.transform(tempStartTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
             }
-          });
-        }
+
+            )
+          }
+        });
 
 
-        if (this.brewRunMashin.startchTest && this.brewRunMashin.startchTest.length == 0) {
+        if (this.brewRunMashin.startchTest.length == 0) {
           this.brewRunMashin.startchTest.push(new StartchTest());
         } else {
           for(let startchTest of this.brewRunMashin.startchTest[0].starchTestResultList)
@@ -162,7 +161,7 @@ export class MashInFormComponent implements OnInit {
           
         }
 
-        if (this.brewRunMashin.mashinDetailsNotes && this.brewRunMashin.mashinDetailsNotes.length == 0) {
+        if (this.brewRunMashin.mashinDetailsNotes.length == 0) {
           this.brewRunMashin.mashinDetailsNotes.push(new MashinDetailsNote());
         }
         this.checkIfComplete(this.brewRunMashin);

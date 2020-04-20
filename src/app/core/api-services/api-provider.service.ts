@@ -32,7 +32,7 @@ export class ApiProviderService {
   editBrewRun = "brewrun/v1/brewers/{0}/brewrun/{1}"
   getAllArchievedBrewRun = 'brewrun/v1/brewers/{0}/brewrun/archived';
   getBrewRunMashinMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/mashin/masterdetails'
-  getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewdetails/';
+  getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
   mashin = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
   getBrewLogMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/brewlog/masterdetails';
   getBrewLogDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewlog/';
@@ -89,6 +89,7 @@ export class ApiProviderService {
   deleteRecipe = 'brewrun/v1/brewers/{0}/recipe/{1}';
   getAllArchivedRecipes = 'brewrun/v1/brewers/recipe/{0}/archived';
   archivedRecipe = 'brewrun/v1/brewers/{0}/recipe/{1}/archive';
+  getAllBrewReportsList = 'brewrun/v1/brewers/{0}/brewrun/reports';
 
   addStyle = 'brewrun/v1/brewers/{0}/style/';
   addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
@@ -106,7 +107,7 @@ export class ApiProviderService {
   logoutApi = 'Logout';
 
   changeBrewRunStatus = 'ChangeBrewRunStatus';
-  getAllBrewReportsList = 'GetAllBrewRunByTenantIdForRepor';
+ 
   getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
   getBrewRunById = 'GetBrewRunById';
   editClient = 'EditClient';

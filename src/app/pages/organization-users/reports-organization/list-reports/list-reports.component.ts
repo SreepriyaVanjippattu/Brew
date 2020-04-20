@@ -7,6 +7,7 @@ import * as jsPDF from 'jspdf';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
 import { NbToastrService } from '@nebular/theme';
+import { String } from 'typescript-string-operations';
 
 @Component({
   selector: 'app-list-reports',
@@ -14,7 +15,7 @@ import { NbToastrService } from '@nebular/theme';
   styleUrls: ['./list-reports.component.scss'],
 })
 export class ListReportsComponent implements OnInit {
-  fermentaionContent;
+  brewRuns;
   completionPercent: Number;
   maxSize: number = 5;
   next;
@@ -33,6 +34,7 @@ export class ListReportsComponent implements OnInit {
   checkPermission: boolean = false;
   pageControl;
   searchText: any;
+  currentUser: any;
 
   constructor(
     private apiService: ApiProviderService,
@@ -45,57 +47,57 @@ export class ListReportsComponent implements OnInit {
 
   ngOnInit() {
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    this.tenantId = userDetails['CompanyDetails'].Id;
+    this.tenantId = userDetails["userDetails"]["tenantId"];
+    this.currentUser = userDetails["userDetails"]["userId"];
     this.page = this.route.snapshot.queryParamMap.get('page');
     if (this.page) {
-      this.getDashBoardDetails(this.tenantId, this.page, this.config.itemsPerPage);
-    } else {
-      this.getDashBoardDetails(this.tenantId, this.config.currentPage, this.config.itemsPerPage);
+      this.config.currentPage = this.page
     }
+    this.searchText = this.route.snapshot.queryParamMap.get('searchText');
 
+    this.getDashBoardDetails();
   }
 
-  getDashBoardDetails(tenantId, pageNumber, pageSize) {
+  getDashBoardDetails() {
     this.router.navigate(['app/reports'], {
       queryParams: {
         page: this.config.currentPage,
+        searchText: this.searchText
       },
     });
-    this.apiService.getDataByQueryParams(this.apiService.getAllBrewReportsList, null, tenantId, null, pageNumber,
-      pageSize).subscribe(response => {
-        this.fermentaionContent = response['body'];
-        this.data.passData(this.fermentaionContent);
 
-        if (this.fermentaionContent) {
-          this.fermentaionContent.map((ferment, idx) => {
-            this.brewProgressCalculation(ferment);
-          });
-        }
-        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
-        if (this.headerValue) {
-          this.config.totalItems = this.headerValue.TotalCount;
-          this.pageControl = (this.config.totalItems === 0) ? true : false;
-        }
-      }, error => {
-        console.error(error);
-      });
+    const getAllBrewReportsListAPI = String.Format(this.apiService.getAllBrewReportsList, this.tenantId);
+    this.apiService.getDataByQueryParams(getAllBrewReportsListAPI, null, null, null, this.config.currentPage, this.config.itemsPerPage, this.searchText).subscribe(
+      response => {
+      this.brewRuns = response['body']['brewRuns'];
+      this.data.passData(this.brewRuns);
+
+      if (this.brewRuns) {
+        this.brewRuns.map((ferment, idx) => {
+          this.brewProgressCalculation(ferment);
+        });
+      }
+      this.headerValue = response['body']['pagingDetails'];
+      if (this.headerValue) {
+        this.config.totalItems = this.headerValue.totalCount;
+        this.pageControl = (this.config.totalItems === 0) ? true : false;
+      }
+    }, error => {
+      console.error(error);
+    });
 
   }
 
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getDashBoardDetails(this.tenantId, this.config.currentPage, this.config.itemsPerPage);
+    this.config.currentPage = 1;
+    this.getDashBoardDetails();
   }
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getDashBoardDetails(this.tenantId, this.config.currentPage, this.config.itemsPerPage);
-    this.router.navigate(['app/reports'], {
-      queryParams: {
-        page: nextPage,
-      },
-    });
+    this.getDashBoardDetails();
   }
 
   brewProgressCalculation(ferment) {
@@ -109,26 +111,26 @@ export class ListReportsComponent implements OnInit {
     cDate = this.getDate(date);
 
     // Condition to show the progress bar
-    if (ferment.Status === '7cd88ffb-cf41-4efc-9a17-d75bcb5b3770') {
+    if (ferment.statusId === '7cd88ffb-cf41-4efc-9a17-d75bcb5b3770') {
       ferment.statusField = 'notstarted';
       ferment.disableDelete = true;
       ferment.disableEdit = false;
-    } else if (ferment.Status === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+    } else if (ferment.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
       // commited
       ferment.statusField = 'committed';
       ferment.disableDelete = false;
       ferment.disableEdit = true;
-    } else if (ferment.Status === '9231c5f1-2235-4f7b-b5e6-80694333dd72') {
+    } else if (ferment.statusId === '9231c5f1-2235-4f7b-b5e6-80694333dd72') {
       // completed
       ferment.statusField = 'completed';
       ferment.disableDelete = false;
       ferment.disableEdit = false;
-    } else if (ferment.Status === 'c2b1d8a5-7ed2-4c45-affd-80d043f0321a') {
+    } else if (ferment.statusId === 'c2b1d8a5-7ed2-4c45-affd-80d043f0321a') {
       // cancelled
       ferment.statusField = 'cancelled';
       ferment.disableDelete = false;
       ferment.disableEdit = false;
-    } else if (ferment.Status === '1625a5c1-b41a-4f6e-91ad-e4aa0c61121c') {
+    } else if (ferment.statusId === '1625a5c1-b41a-4f6e-91ad-e4aa0c61121c') {
       // deleted
       ferment.statusField = 'deleted';
       ferment.disableDelete = false;
@@ -140,14 +142,14 @@ export class ListReportsComponent implements OnInit {
     }
 
     ferment.localTime = currentDate;
-    if (ferment.StartTime !== null) {
-      sDate = this.getDate(new Date(ferment.StartTime));
-      eDate = this.getDate(new Date(ferment.EndTime));
+    if (ferment.startTime !== null) {
+      sDate = this.getDate(new Date(ferment.startTime));
+      eDate = this.getDate(new Date(ferment.endTime));
       startDate = new Date(sDate);
       endDate = new Date(eDate);
       currentDate = new Date(cDate);
-      ferment.StartTime = new Date(ferment.StartTime);
-      ferment.EndTime = new Date(ferment.EndTime);
+      ferment.startTime = new Date(ferment.startTime);
+      ferment.endTime = new Date(ferment.endTime);
 
       // Total days completed calculation
       if (endDate <= currentDate) {
@@ -196,26 +198,8 @@ export class ListReportsComponent implements OnInit {
 
   searchBrew() {
 
-    this.apiService.getDataByQueryParams(this.apiService.getAllBrewReportsList + `&startwith=${this.searchText}`, null,
-      this.tenantId, null, this.config.currentPage, this.config.itemsPerPage).
-      subscribe((response) => {
-        const myHeaders = response.headers;
-        this.headerValue = JSON.parse(response.headers.get('paging-headers'));
-        if (this.headerValue) {
-          this.config.totalItems = this.headerValue.TotalCount;
-        }
-        if (response && response['body']) {
-          this.fermentaionContent = response['body'];
-          this.fermentaionContent.map((ferment, idx) => {
-            if (ferment.OrgSuperUser !== null) {
-              this.brewProgressCalculation(ferment);
-              ferment.RecipeName = ferment.RecipeName !== null ? ferment.RecipeName : '';
-              ferment.StartTime = ferment.StartTime;
-              ferment.BrewRunId = ferment.BrewRunId;
-            }
-          });
-        }
-      });
+    this.config.currentPage = 1;
+    this.getDashBoardDetails();
   }
 
   viewBrewReport(brewId) {
@@ -266,31 +250,31 @@ export class ListReportsComponent implements OnInit {
   }
 
   filter(filterParam) {
-    if (this.fermentaionContent) {
+    if (this.brewRuns) {
       if (this.toggleStatus === true && filterParam === 'brewId') {
-        this.fermentaionContent.sort((a, b) => a.BrewRunId.toUpperCase() > b.BrewRunId.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.brewRunId.toUpperCase() > b.brewRunId.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && filterParam === 'brewId') {
-        this.fermentaionContent.sort((a, b) => a.BrewRunId.toUpperCase() < b.BrewRunId.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.brewRunId.toUpperCase() < b.brewRunId.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && filterParam === 'recipeName') {
-        this.fermentaionContent.sort((a, b) => a.RecipeName.toUpperCase() > b.RecipeName.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.recipeName.toUpperCase() > b.recipeName.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && filterParam === 'recipeName') {
-        this.fermentaionContent.sort((a, b) => a.RecipeName.toUpperCase() < b.RecipeName.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.recipeName.toUpperCase() < b.recipeName.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && filterParam === 'tankName') {
-        this.fermentaionContent.sort((a, b) => a.TankName.toUpperCase() > b.TankName.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.tankName.toUpperCase() > b.tankName.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && filterParam === 'tankName') {
-        this.fermentaionContent.sort((a, b) => a.TankName.toUpperCase() < b.TankName.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.tankName.toUpperCase() < b.tankName.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && filterParam === 'starEndDate') {
-        this.fermentaionContent.sort((a, b) => a.StartTime > b.StartTime ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.startTime > b.startTime ? 1 : -1);
       } else if (this.toggleStatus === false && filterParam === 'starEndDate') {
-        this.fermentaionContent.sort((a, b) => a.StartTime < b.StartTime ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.startTime < b.startTime ? 1 : -1);
       }
       if (this.toggleStatus === true && filterParam === 'status') {
-        this.fermentaionContent.sort((a, b) => a.Status.toUpperCase() > b.Status.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.status.toUpperCase() > b.status.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && filterParam === 'status') {
-        this.fermentaionContent.sort((a, b) => a.Status.toUpperCase() < b.Status.toUpperCase() ? 1 : -1);
+        this.brewRuns.sort((a, b) => a.status.toUpperCase() < b.status.toUpperCase() ? 1 : -1);
       }
     }
     this.toggleStatus = !this.toggleStatus;
