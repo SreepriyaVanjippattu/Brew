@@ -148,6 +148,10 @@ export class ArchivedBrewsComponent implements OnInit {
   searchBrew() {
     this.getDashBoardDetails();
   }
+  clear() {
+    this.searchText = "";
+    this.searchBrew();
+    }
 
   restoreArchivedBrew(fermentationId) {
 

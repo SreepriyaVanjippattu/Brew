@@ -162,6 +162,10 @@ export class ListUsersComponent implements OnInit {
   cancelDelete() {
     this.router.navigate([`/app/user-directory`]);
   }
+  clear() {
+    this.searchText = "";
+    this.searchUser();
+    }
 
   searchUser() {
 

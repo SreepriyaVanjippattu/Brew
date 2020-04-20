@@ -32,6 +32,9 @@
                     <input (keyup.enter)="searchUser()" [(ngModel)]="searchText" class='l-searchbox'
                         placeholder="Search Users" type="text">
                     <i class="material-icons search-ico" (click)="searchUser()"> search </i>
+                    <i class="material-icons clear-ico cursor-click" (click)="clear()">
+                        close
+                    </i>
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"

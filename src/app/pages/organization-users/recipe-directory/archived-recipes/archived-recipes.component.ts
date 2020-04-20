@@ -157,7 +157,10 @@ export class ArchivedRecipesComponent implements OnInit {
         }
       });
   }
-
+  clear() {
+    this.searchText = "";
+    this.searchRecipe();
+  }
   filter(label) {
     if (this.archieveContent) {
       if (this.toggleStatus === true && label === 'recipe') {

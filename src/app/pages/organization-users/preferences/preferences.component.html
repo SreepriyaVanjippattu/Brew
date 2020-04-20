@@ -94,6 +94,9 @@
             <input class='l-searchbox' (keyup.enter)="searchYeast()" [(ngModel)]="searchText"
               [ngModelOptions]="{standalone: true}" value="" placeholder="Search" type="text">
             <i class="material-icons search-ico" (click)="searchYeast()"> search </i>
+            <i class="material-icons clear-ico cursor-click" (click)="clear('yeast')">
+              close
+              </i>
           </div>
           <button [disabled]="savenewYeastEnabled" class="btn l-btn-white" type="button" (click)="newYeastItem()">New
             Yeast</button>
@@ -182,6 +185,9 @@
             <input class='l-searchbox' (keyup.enter)="searchTank()" [(ngModel)]="searchText"
               [ngModelOptions]="{standalone: true}" placeholder="Search" type="text">
             <i class="material-icons search-ico" (click)="searchTank()"> search </i>
+            <i class="material-icons clear-ico cursor-click" (click)="clear('tank')">
+              close
+              </i>
           </div>
           <button [disabled]="savenewTankEnabled" class="btn l-btn-white" type="button" (click)="newTankItem()">New
             Tank</button>

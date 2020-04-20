@@ -31,6 +31,9 @@
                     <input (keyup.enter)="searchRecipe()" [(ngModel)]="searchText" class='l-searchbox'
                         placeholder="Search Recipe" type="text">
                     <i class="material-icons search-ico search-icon" (click)="searchRecipe()"> search </i>
+                    <i class="material-icons clear-ico cursor-click" (click)="clear()">
+                        close
+                    </i>
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons cursor-click"

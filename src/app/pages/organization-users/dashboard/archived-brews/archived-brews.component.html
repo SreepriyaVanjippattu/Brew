@@ -34,6 +34,9 @@
                     <input (keyup.enter)="searchBrew()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
                         placeholder="Search Brew Run">
                     <i class="material-icons search-ico" (click)="searchBrew()"> search </i>
+                    <i class="material-icons clear-ico cursor-click" (click)="clear()">
+                        close
+                    </i>
                 </div>
                 <i class="material-icons filter-ico cursor-click">filter_list</i>
                 <button style="border: none;background: transparent;" class="material-icons prin-ico cursor-click"

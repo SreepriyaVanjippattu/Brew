@@ -217,6 +217,10 @@ export class ListRecipeComponent implements OnInit {
       this.router.navigate(['app/recipes/recipe-mashin']);
     }
   }
+  clear() {
+    this.searchText = "";
+    this.searchRecipe();
+  }
 
   searchRecipe() {
 

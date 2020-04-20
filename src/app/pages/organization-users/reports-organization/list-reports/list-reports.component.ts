@@ -87,7 +87,10 @@ export class ListReportsComponent implements OnInit {
     });
 
   }
-
+  clear() {
+    this.searchText = "";
+    this.searchBrew();
+  }
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;

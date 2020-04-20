@@ -117,6 +117,10 @@ export class DashboardComponent implements OnInit {
     });
 
   }
+  clear() {
+    this.searchText = "";
+    this.searchBrew();
+    }
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;

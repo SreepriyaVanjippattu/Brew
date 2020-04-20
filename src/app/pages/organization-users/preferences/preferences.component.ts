@@ -447,6 +447,14 @@ export class PreferencesComponent implements OnInit {
 
     }
   }
+  clear(text: string) {
+    this.searchText = "";
+    if (text == "tank") {
+    this.searchTank();
+    } else {
+    this.searchYeast();
+    }
+    }
 
   statusClickEdit(status, i) {
     this.isactive = !this.isactive;

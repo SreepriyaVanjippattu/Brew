@@ -216,6 +216,10 @@ export class ArchivedUsersComponent implements OnInit {
     XLSX.writeFile(wb, 'Archived-User.xlsx');
 
   }
+  clear() {
+    this.searchText = "";
+    this.searchClient();
+  }
 
   filter(label) {
     if (this.archieveContent) {
