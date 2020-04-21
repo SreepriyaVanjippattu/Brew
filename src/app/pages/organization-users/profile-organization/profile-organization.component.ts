@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ApiProviderService } from '../../../core/api-services/api-provider.service';
 import { Router } from '@angular/router';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { PhoneFormatPipe } from '../../../core/utils/phone-format.pipe';
 import { UploadConfig, UploadParams, BlobService } from 'angular-azure-blob-service';
 import { environment } from '../../../../environments/environment';
@@ -54,6 +54,7 @@ export class ProfileOrganizationComponent implements OnInit, OnDestroy {
     private toast: NbToastrService,
     private phonePipe: PhoneFormatPipe,
     private blob: BlobService,
+    private scrolltop: NbLayoutScrollService,
   ) { }
 
 
@@ -144,6 +145,10 @@ export class ProfileOrganizationComponent implements OnInit, OnDestroy {
     } else {
       this.validUserPhone = true;
     }
+  }
+
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 
 

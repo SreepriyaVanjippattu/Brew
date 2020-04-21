@@ -54,7 +54,7 @@ const routes: Routes = [
     NgxPaginationModule,
     ReactiveFormsModule,
     NgxMaskModule.forRoot(),
-    SharedModule.forRoot(),
+    SharedModule,
     NgPrintModule,
     RouterModule.forChild(routes)
   ],
