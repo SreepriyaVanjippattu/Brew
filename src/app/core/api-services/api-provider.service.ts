@@ -49,6 +49,7 @@ export class ApiProviderService {
   getUserById = 'user/v1/brewers/{0}/user/{1}';
   getAllArchivedUsers = 'user/v1/brewers/user/{0}/archived';
   postEmail = 'user/v1/brewers/{0}/forgotPasswordLink';
+  editForgotPassword = "user/v1/brewers/resetForgotPassword";
   resetUserPassword = 'ResetUserPassword';
   // Profile
   changeProfilePassword = 'EditUserPassword';
@@ -112,7 +113,6 @@ export class ApiProviderService {
   getBrewRunById = 'GetBrewRunById';
   editClient = 'EditClient';
   getSubscriptions = 'GetAllActiveSubscription';
-  editForgotPassword ='';
   isCompanyNameAvailable ='';
   initilizeClient ='';
   addBrewUserAuditTrail ='';

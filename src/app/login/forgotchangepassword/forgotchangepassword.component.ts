@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiProviderService } from '../../core/api-services/api-provider.service';
 import { NbToastrService } from '@nebular/theme';
 import { Md5 } from 'ts-md5';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'forgotchangepassword',
@@ -88,7 +89,12 @@ export class ForgotchangepasswordComponent implements OnInit {
           this.router.navigate(['app/login']);
         }
       }, error => {
-
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message);
+        }
+        else {
+          this.toast.danger(error);
+        }
       });
     }
   }
