@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { Role, Permission } from '../../../../models/permission';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { Router } from '@angular/router';
 import { String } from 'typescript-string-operations';
 
@@ -35,7 +35,8 @@ export class OrganizationPrevilegesComponent implements OnInit {
   constructor(
     private apiService: ApiProviderService,
     private toastrService: NbToastrService,
-    private router: Router
+    private router: Router,
+    private scrolltop: NbLayoutScrollService
 
   ) { }
 
@@ -168,5 +169,9 @@ export class OrganizationPrevilegesComponent implements OnInit {
 
   cancelRolePriviledge() {
     this.ngOnInit();
+  }
+
+  gotoTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 }

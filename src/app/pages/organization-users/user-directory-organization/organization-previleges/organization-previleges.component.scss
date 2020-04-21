@@ -25,3 +25,20 @@ table
 {
     text-align: center;
 }
+.recipe-scrolltop {
+    background: #FFA11B;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: -18px;
+    right: 10px;
+    cursor: pointer;
+}
+.scroll-arrow
+{
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    color: $BgWhite;
+}
