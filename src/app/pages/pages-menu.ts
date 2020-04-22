@@ -35,7 +35,7 @@ export const MENU_ITEMS_SUPER_USER: NbMenuItem[] = [
     title: "Yeast Manager",
     icon: "yeast-ico",
     link: "/app/yeaststrains",
-    },
+  },
 ];
 
 export const MENU_ITEMS_ORGANIZATION: NbMenuItem[] = [

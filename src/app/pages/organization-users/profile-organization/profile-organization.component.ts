@@ -81,8 +81,8 @@ export class ProfileOrganizationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    this.userProfile = user['UserDetails'];
-    this.currentUser = this.userProfile.userId;
+    this.userProfile = user['UserProfile'];
+    this.currentUser = this.userProfile.Id;
     this.userCompany = user['CompanyDetails'];
     this.roleId = this.userProfile.Roles[0].Id;
     this.setUserEditDetails();
