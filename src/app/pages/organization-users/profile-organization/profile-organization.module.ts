@@ -38,7 +38,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ReactiveFormsModule,
     FormsModule,
-    SharedModule,
+    SharedModule.forRoot(),
     NgxMaskModule.forRoot(),
   ],
   exports: [RouterModule],

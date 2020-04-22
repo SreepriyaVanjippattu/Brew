@@ -66,8 +66,6 @@ export class BrewLogFormComponent implements OnInit {
   whirlstartTime: any = '';
   coolstartTime: any = '';
   coolEndTime: any = '';
-  max = new Date();
- 
 
   countries: any;
   addins: any;
@@ -200,7 +198,7 @@ export class BrewLogFormComponent implements OnInit {
         this.getPostWhirlpoolTargets(this.recipeContent);
         this.getCoolingTargets(this.recipeContent);
         this.getKettleTargets(this.recipeContent);
-
+             
         this.brewRunLog.hopesDetails.forEach(element => {
           if (element.addInId === '255ce5b1-4b1a-4da8-b269-5a0b81d9db23') {
             this.addInHopsKettle.push(element);
