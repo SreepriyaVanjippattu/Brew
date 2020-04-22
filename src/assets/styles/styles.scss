@@ -1124,47 +1124,58 @@ ngx-charts-advanced-pie-chart{
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
-        .menu-items li:nth-child(4) a.active,
-        .menu-items li:nth-child(4) a:hover {
+        .menu-items li:nth-child(5) a.active,
+        .menu-items li:nth-child(5) a:hover {
             background: url(assets/images/user-ico.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
-        .menu-items li:nth-child(4) a {
+        .menu-items li:nth-child(5) a {
             background: url(assets/images/dir-ico.svg) no-repeat;
-            background-size: 30px 50px;
-            background-position: 20px 5px;
-        }
-        .menu-items li:nth-child(6) a.active,
-        .menu-items li:nth-child(6) a:hover {
-            background: url(assets/images/settings-active.svg) no-repeat;
-            background-size: 30px 50px;
-            background-position: 20px 5px;
-        }
-        .menu-items li:nth-child(6) a {
-            background: url(assets/images/settings-ico.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
         .menu-items li:nth-child(7) a.active,
         .menu-items li:nth-child(7) a:hover {
-            background: url(assets/images/profile-active.svg) no-repeat;
+            background: url(assets/images/settings-active.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
         .menu-items li:nth-child(7) a {
+            background: url(assets/images/settings-ico.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(8) a.active,
+        .menu-items li:nth-child(8) a:hover {
+            background: url(assets/images/profile-active.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(8) a {
             background: url(assets/images/profile-ico.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
-        .menu-items li:nth-child(5) a.active,
-        .menu-items li:nth-child(5) a:hover {
+        .menu-items li:nth-child(6) a.active,
+        .menu-items li:nth-child(6) a:hover {
             background: url(assets/images/role-active.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
-        .menu-items li:nth-child(5) a {
+        .menu-items li:nth-child(6) a {
             background: url(assets/images/role-ico.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(4) a.active,
+        .menu-items li:nth-child(4) a:hover {
+            background: url(assets/images/yeast-active.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(4) a {
+            background: url(assets/images/yeast-ico.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
@@ -1203,36 +1214,47 @@ ngx-charts-advanced-pie-chart{
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
-        .menu-items li:nth-child(4) a.active,
-        .menu-items li:nth-child(4) a:hover {
+        .menu-items li:nth-child(5) a.active,
+        .menu-items li:nth-child(5) a:hover {
             background: url(assets/images/settings-active.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
-        .menu-items li:nth-child(4) a {
-            background: url(assets/images/settings-ico.svg) no-repeat;
-            background-size: 30px 50px;
-            background-position: 20px 5px;
-        }
-        .menu-items li:nth-child(5) a.active,
-        .menu-items li:nth-child(5) a:hover {
-            background: url(assets/images/profile-active.svg) no-repeat;
-            background-size: 30px 50px;
-            background-position: 20px 5px;
-        }
         .menu-items li:nth-child(5) a {
-            background: url(assets/images/profile-ico.svg) no-repeat;
+            background: url(assets/images/settings-ico.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
         .menu-items li:nth-child(6) a.active,
         .menu-items li:nth-child(6) a:hover {
-            background: url(assets/images/role-active.svg) no-repeat;
+            background: url(assets/images/profile-active.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }
         .menu-items li:nth-child(6) a {
+            background: url(assets/images/profile-ico.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(7) a.active,
+        .menu-items li:nth-child(7) a:hover {
+            background: url(assets/images/role-active.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(7) a {
             background: url(assets/images/role-ico.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(4) a.active,
+        .menu-items li:nth-child(4) a:hover {
+            background: url(assets/images/yeast-active.svg) no-repeat;
+            background-size: 30px 50px;
+            background-position: 20px 5px;
+        }
+        .menu-items li:nth-child(4) a {
+            background: url(assets/images/yeast-ico.svg) no-repeat;
             background-size: 30px 50px;
             background-position: 20px 5px;
         }

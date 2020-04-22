@@ -463,6 +463,7 @@ export class PreferencesComponent implements OnInit {
   statusClick(status, i) {
     this.isactive = !this.isactive;
   }
+
   gotoTop() {
     this.scrolltop.scrollTo(0, 0);
   }

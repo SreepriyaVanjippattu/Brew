@@ -541,7 +541,7 @@
                                         <div class="form-group col-md-3">
                                             <label for="brewrun-id">Start</label>
                                             <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
-                                                class="form-control" [(ngModel)]="brewRunLog.hopesDetails[i].startTime">
+                                                class="form-control" [max]="max" readonly [(ngModel)]="brewRunLog.hopesDetails[i].startTime">
                                             <owl-date-time #startTime></owl-date-time>
                                         </div>
 
@@ -653,7 +653,7 @@
 
                                         <div class="form-group col-md-4">
                                             <label for="brewrun-id">Start</label><br />
-                                            <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
+                                            <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime" [max]="max" readonly
                                                 class="form-control" [(ngModel)]="brewRunLog.adjunctsDetails[i].startTime">
                                             <owl-date-time #startTime></owl-date-time>
                                         </div>
@@ -903,7 +903,7 @@
                                     <div class="form-group col-md-3">
                                         <label for="brewrun-id">Start</label>
                                         <input class="form-control" [owlDateTime]="startTime"
-                                            [owlDateTimeTrigger]="startTime" [min]="minStarTime" [max]="maxStartTime"
+                                            [owlDateTimeTrigger]="startTime" [min]="minStarTime" [max]="max" readonly
                                             [(ngModel)]="brewRunLog.hopesDetails[i].startTime">
                                         <owl-date-time #startTime></owl-date-time>
                                     </div>
@@ -1019,7 +1019,7 @@
 
                                     <div class="form-group col-md-4">
                                         <label for="brewrun-id">Start</label><br />
-                                        <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
+                                        <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime" [max]="max" readonly
                                             class="form-control" [(ngModel)]="brewRunLog.adjunctsDetails[i].startTime">
                                         <owl-date-time #startTime></owl-date-time>
                                     </div>
@@ -1262,7 +1262,7 @@
                                     <label class="l-start-label">START</label>
                                     <div class="form-group w-100">
                                         <label for="brewrun-id">Start Time</label>
-                                        <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime"
+                                        <input [owlDateTimeTrigger]="startTime" [owlDateTime]="startTime" [max]="max" readonly
                                             class="form-control">
                                         <owl-date-time #startTime></owl-date-time>
                                     </div>
@@ -1274,7 +1274,7 @@
                                     <label class="l-start-label">END</label>
                                     <div class="form-group w-100">
                                         <label for="brewrun-id">End Time</label>
-                                        <input [owlDateTimeTrigger]="endTime" [owlDateTime]="endTime"
+                                        <input [owlDateTimeTrigger]="endTime" [owlDateTime]="endTime" [max]="max" readonly
                                             class="form-control">
                                         <owl-date-time #endTime></owl-date-time>
                                     </div>
