@@ -20,7 +20,6 @@ table
 {
     background: $BgWhite;
     border-radius: $tableBorder;
-    max-height: 100vh !important;
 }
 .custom-control
 {
@@ -32,7 +31,7 @@ table
     height: 30px;
     border-radius: 50%;
     position: absolute;
-    top: -35px;
+    top: -18px;
     right: 10px;
     cursor: pointer;
 }
