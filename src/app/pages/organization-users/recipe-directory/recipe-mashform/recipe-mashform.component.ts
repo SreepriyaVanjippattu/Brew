@@ -90,6 +90,7 @@ export class RecipeMashformComponent implements OnInit {
   styleName: any;
   userId: string;
   hasRecipeIdGenerated: boolean = false;
+  saveInProgress: boolean = false;
 
   constructor(private apiService: ApiProviderService,
     private formBuilder: FormBuilder,
@@ -560,6 +561,17 @@ export class RecipeMashformComponent implements OnInit {
     }
   }
 
+  saveFormInProgress() {
+    this.saveInProgress = true;
+    if (!this.disableSave) {
+      this.saveMashinForm();
+    }
+    if (this.form.batchSize.value == "" || this.form.abv.value == "" || this.form.ibus.value == "" || this.form.name.value == "" || this.form.brewHouseEfficiency.value == "") {
+      document.getElementById('openModalButton').click();
+      this.isCollapsedReceipe = false;
+    }
+  }
+
   findValidationErrors() {
     if (this.recipeMashForm.invalid) {
       this.isCollapsedReceipe = false;
@@ -580,7 +592,7 @@ export class RecipeMashformComponent implements OnInit {
 
   saveMashinForm() {
 
-    if (formData && this.recipeMashForm.valid || this.removeStatus && this.recipeMashForm.valid) {
+    if (formData && this.recipeMashForm.valid || this.removeStatus && this.recipeMashForm.valid || this.saveInProgress) {
       if (!this.recipeId) {
         this.recipeId = Guid.raw();
       }
@@ -701,7 +713,7 @@ export class RecipeMashformComponent implements OnInit {
         const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
         this.apiService.putData(saveEditedRecipeAPI, formData).subscribe((response: any) => {
           if (response) {
-            if (this.formSubmitted) {
+            if (this.formSubmitted || this.saveInProgress) {
               this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
             }
             if (this.mashinClicked) {
@@ -731,7 +743,7 @@ export class RecipeMashformComponent implements OnInit {
           if (response) {
             this.recipeId = response['body'].recipeId;
             this.hasRecipeIdGenerated = true;
-            if (this.formSubmitted) {
+            if (this.formSubmitted || this.saveInProgress) {
               this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
             }
             if (this.mashinClicked) {

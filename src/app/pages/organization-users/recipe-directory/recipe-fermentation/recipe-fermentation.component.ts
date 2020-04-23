@@ -48,6 +48,7 @@ export class RecipeFermentationComponent implements OnInit {
   preferedTempUnit: any;
   page: any;
   id: string;
+  saveInProgress: boolean = false;
 
   constructor(private apiService: ApiProviderService,
     private scrolltop: NbLayoutScrollService,
@@ -387,6 +388,14 @@ export class RecipeFermentationComponent implements OnInit {
     }
   }
 
+  saveFormInProgress() {
+    this.saveInProgress = true;
+    if (!this.disableSave) {
+      this.saveFermentation();
+    }
+    
+  }
+
   findValidationErrors() {
     if (this.fermentationTargetsArray.invalid) {
       this.isCollapsedFermentation = false;
@@ -443,11 +452,10 @@ export class RecipeFermentationComponent implements OnInit {
 
   saveFermentation() {
 
-    if (this.singleRecipeDetails && this.recipeFermentationForm.valid) {
-
-      this.yeastArray.controls.map(field => {
-        this.singleRecipeDetails.yeastStrainId = field.get('yeastStrainId').value;
-      });
+    if (this.singleRecipeDetails && this.recipeFermentationForm.valid || this.saveInProgress) {
+        this.yeastArray.controls.map(field => {
+          this.singleRecipeDetails.yeastStrainId = field.get('yeastStrainId').value;
+        });
       const fermentationTargets = JSON.stringify(this.recipeFermentationForm.get('fermentationTargets').value).replace(/^\[|]$/g, '');
       this.singleRecipeDetails.fermentationTargets = JSON.parse(fermentationTargets);
 
@@ -463,7 +471,7 @@ export class RecipeFermentationComponent implements OnInit {
       const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
       this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
         if (response) {
-          if (this.formSubmitted) {
+          if (this.formSubmitted || this.saveInProgress) {
             this.router.navigate(['/app/recipes/recipe-conditioning'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
           }
           if (this.mashinClicked) {
