@@ -563,12 +563,12 @@ export class RecipeMashformComponent implements OnInit {
 
   saveFormInProgress() {
     this.saveInProgress = true;
-    if (!this.disableSave) {
-      this.saveMashinForm();
-    }
     if (this.form.batchSize.value == "" || this.form.abv.value == "" || this.form.ibus.value == "" || this.form.name.value == "" || this.form.brewHouseEfficiency.value == "") {
       document.getElementById('openModalButton').click();
       this.isCollapsedReceipe = false;
+    }
+    else {
+      this.saveMashinForm();
     }
   }
 

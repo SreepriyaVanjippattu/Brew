@@ -47,7 +47,6 @@ export class RecipeBrewlogComponent implements OnInit {
   tempUnitIdFromDb: any;
   preferedTempUnit: any;
   pageHeader: string;
-  saveInProgress: boolean = false;
 
 
   constructor(private apiService: ApiProviderService,
@@ -212,6 +211,8 @@ export class RecipeBrewlogComponent implements OnInit {
 
   }
 
+
+
   setValueToEdit(data) {
 
     if (data) {
@@ -367,7 +368,7 @@ export class RecipeBrewlogComponent implements OnInit {
   saveBrewLog() {
 
     this.formSubmitted = true;
-    if (this.singleRecipeDetails && this.brewLogForm.valid || this.removeStatus && this.brewLogForm.valid || this.saveInProgress) {
+    if (this.singleRecipeDetails && this.brewLogForm.valid || this.removeStatus && this.brewLogForm.valid) {
 
       const kettletargets = JSON.stringify(this.brewLogForm.get('kettleTargets').value).replace(/^\[|]$/g, '');
       this.singleRecipeDetails.kettleTargets = JSON.parse(kettletargets);
@@ -390,7 +391,7 @@ export class RecipeBrewlogComponent implements OnInit {
       const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
       this.apiService.putData(saveEditedRecipeAPI, this.singleRecipeDetails).subscribe((response: any) => {
         if (response) {
-          if (this.formSubmitted || this.saveInProgress) {
+          if (this.formSubmitted) {
             this.router.navigate(['/app/recipes/recipe-fermentation'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
           }
           if (this.mashinClicked) {
@@ -473,13 +474,6 @@ export class RecipeBrewlogComponent implements OnInit {
     } if (this.brewLogForm.invalid) {
       document.getElementById('openModalButton').click();
       this.findValidationErrors();
-    }
-  }
-
-  saveFormInProgress() {
-    this.saveInProgress = true;
-    if (!this.disableSave) {
-      this.saveBrewLog();
     }
   }
 
