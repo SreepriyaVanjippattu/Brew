@@ -69,12 +69,12 @@ export class ApiProviderService {
 
   // preference
   getPreferenceSettings = 'user/v1/brewers/settings/{0}/preference';
-  getAllPreferenceMasterDetails = 'brewrun/v1/brewers/settings/{0}/preferenceSettings';
+  getAllPreferenceMasterDetails = 'brewrun/v1/brewers/settings/{0}/preferences';
   addPreference = 'user/v1/brewers/{0}/preference/';
-  addYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains';
+  addYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrain';
   addTankConfiguration = 'brewrun/v1/brewers/{0}/tank/';
-  getAllTankConfigurationList = 'brewrun/v1/brewers/{0}/tanksDetails';
-  getAllYeastList = 'brewrun/v1/brewers/{0}/yeastStrainsDetails';
+  getAllTankConfigurationList = 'brewrun/v1/brewers/{0}/tanks';
+  getAllYeastList = 'brewrun/v1/brewers/{0}/yeastStrains';
   editTankConfiguration = 'brewrun/v1/brewers/{0}/tank/{1}';
   editYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains/{1}';
 
@@ -96,12 +96,12 @@ export class ApiProviderService {
   addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
   addSupplier = 'brewrun/v1/brewers/{0}/supplier/';
 
-  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeastStrains';
-  getAllActiveCountry = 'brewrun/v1/brewers/settings/country';
+  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeastStrains/base';
+  getAllActiveCountry = 'brewrun/v1/brewers/settings/countries';
   getAllActiveAddIn = 'brewrun/v1/brewers/recipe/{0}/addin';
   getAllActiveSupplier = 'brewrun/v1/brewers/{0}/suppliers';
-  getAllActiveMaltGrainType = 'brewrun/v1/brewers/recipe/{0}/maltgraintype';
-  getAllActiveUnitType = 'brewrun/v1/brewers/settings/unittype';
+  getAllActiveMaltGrainType = 'brewrun/v1/brewers/recipe/{0}/maltgraintypes';
+  getAllActiveUnitType = 'brewrun/v1/brewers/settings/units';
   getAllActiveStyle = 'brewrun/v1/brewers/settings/{0}/styles';
 
 
