@@ -26,13 +26,8 @@
     <div class="col-12">
       <div class="d-flex user-search-wrap">
         <div class="d-flex l-search">
-          <input
-            (keyup.enter)="searchYeastStrain()"
-            [(ngModel)]="searchText"
-            class="l-searchbox"
-            placeholder="Search Yeast Strain"
-            type="text"
-          />
+          <input (keyup.enter)="searchYeastStrain()" [(ngModel)]="searchText" class="l-searchbox"
+            placeholder="Search Yeast Strain" type="text" />
           <i
             class="material-icons search-ico cursor-click"
             (click)="searchYeastStrain()"
@@ -44,12 +39,8 @@
           </i>
         </div>
         <i class="material-icons filter-ico cursor-click">filter_list</i>
-        <button
-          style="border: none; background: transparent;"
-          class="material-icons prin-ico cursor-click"
-          [elementToPrint]="TABLE"
-          ngPrint
-        >
+        <button style="border: none; background: transparent;" class="material-icons prin-ico cursor-click"
+          [elementToPrint]="TABLE" ngPrint>
           local_printshop
         </button>
       </div>

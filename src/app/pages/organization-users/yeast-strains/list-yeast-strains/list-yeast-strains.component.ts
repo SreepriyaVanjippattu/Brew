@@ -172,13 +172,18 @@ export class ListYeastStrainsComponent implements OnInit {
   }
 
   deleteYeastStrain() {
-    const deleteYeastStrainApi = String.Format(this.apiService.deleteYeastStrain,this.tenantId,this.deleteId);
-    this.apiService.deleteData(deleteYeastStrainApi).subscribe(
+    var yeastStrain = this.yeastContent.filter((x) => x.id == this.deleteId);
+    var statusId = yeastStrain[0].statusId;
+    const deleteYeastStrainApi = String.Format(this.apiService.deleteYeastStrain);
+    const params = {
+      id: this.deleteId,
+      tenantId: this.tenantId,
+      statusId: statusId,
+    };
+    this.apiService.deleteData(deleteYeastStrainApi, params).subscribe(
       (response) => {
-        if (response) {
-          this.toastrService.show("Yeast Strain Deleted", "Success");
-          this.getYeastDetails(this.config.currentPage,this.config.itemsPerPage,this.tenantId,null);
-        }
+        this.toastrService.show("Yeast Strain Deleted", "Success");
+        this.getYeastDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       },
       (error) => {
         if (error instanceof HttpErrorResponse) {

@@ -80,11 +80,11 @@ export class AddYeastStrainComponent implements OnInit {
   }
 
   goToEdit() {
-    this.yeastForm.enable();
+    this.yeastForm.get("yeastName").enable();
     sessionStorage.page = "Edit";
     this.page = "edit";
     this.ngOnInit();
-  }
+  } 
 
   setDataToEdit() {
     this.yeastForm.get("yeastName").setValue(this.yeastContent[0].name);
@@ -92,7 +92,7 @@ export class AddYeastStrainComponent implements OnInit {
   }
 
   yeastFormSubmit() {
-    this.id = Guid.raw();
+    this.page == "add" ? (this.id = Guid.raw()) : this.id;
     this.formSubmitted = true;
     const params = {
       id: this.id,
@@ -100,7 +100,10 @@ export class AddYeastStrainComponent implements OnInit {
       tenantId: this.tenantId,
       isActive: "true",
       createdDate: this.datePipe.transform(new Date(), "yyyy/MM/dd HH:mm:ss"),
-      statusId: "7cd88ffb-cf41-4efc-9a17-d75bcb5b3770",
+      statusId:
+        this.yeastContent != null
+          ? this.yeastContent[0].statusId
+          : "7cd88ffb-cf41-4efc-9a17-d75bcb5b3770",
     };
     if (this.yeastForm.valid) {
       if (this.page === "add") {

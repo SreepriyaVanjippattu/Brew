@@ -77,7 +77,7 @@ export class ApiProviderService {
   getAllYeastList = 'brewrun/v1/brewers/{0}/yeastStrains';
   editTankConfiguration = 'brewrun/v1/brewers/{0}/tank/{1}';
   editYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain/{1}';
-  deleteYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain';
+  deleteYeastStrain = "brewrun/v1/brewers/yeaststrain";
   getArchivedYeastStrains = 'brewrun/v1/brewers/{0}/yeaststrains/archived';
   archiveYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain/{1}/archive';
 

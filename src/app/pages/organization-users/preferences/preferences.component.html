@@ -94,7 +94,7 @@
           <div class="d-flex l-search">
             <input class='l-searchbox' (keyup.enter)="searchTank()" [(ngModel)]="searchText"
               [ngModelOptions]="{standalone: true}" placeholder="Search" type="text">
-            <i class="material-icons search-ico" (click)="searchTank()"> search </i>
+              <i class="material-icons search-ico cursor-click" (click)="searchTank()"> search </i>
             <i class="material-icons clear-ico cursor-click" (click)="clear('tank')">
               close
               </i>

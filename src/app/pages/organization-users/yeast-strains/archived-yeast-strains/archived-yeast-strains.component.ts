@@ -13,25 +13,24 @@ import { HttpErrorResponse } from "@angular/common/http";
   styleUrls: ["./archived-yeast-strains.component.scss"],
 })
 export class ArchivedYeastStrainsComponent implements OnInit {
-  @ViewChild("TABLE", { static: false }) TABLE: ElementRef;
-  archiveContent;
-  next;
-  previous;
-  config = {
-    itemsPerPage: 5,
-    currentPage: 1,
-    totalItems: 10,
-  };
-  status = StatusUse;
-  tenantId: any;
-  pageControl;
-  params: any;
-  toggleStatus: boolean;
-  statusName: any;
-  recipeStatusName: any;
-  headerValue: any;
-  searchText: any;
-  deleteId: any;
+@ViewChild("TABLE", { static: false }) TABLE: ElementRef;
+archiveContent;
+next;
+previous;
+config = {
+itemsPerPage: 5,
+currentPage: 1,
+totalItems: 10,
+};
+status = StatusUse;
+tenantId: any;
+pageControl;
+params: any;
+toggleStatus: boolean;
+headerValue: any;
+searchText: any;
+deleteId: any;
+
   constructor(
     private apiService: ApiProviderService,
     private router: Router,
@@ -82,8 +81,15 @@ export class ArchivedYeastStrainsComponent implements OnInit {
   }
 
   deleteArchivedYeast() {
-    const deleteArchivedYeastApi = String.Format(this.apiService.deleteYeastStrain, this.tenantId, this.deleteId);
-    this.apiService.deleteData(deleteArchivedYeastApi).subscribe(
+    var yeastStrain = this.archiveContent.filter((x) => x.id == this.deleteId);
+    var statusId = yeastStrain[0].statusId;
+    const deleteArchivedYeastApi = String.Format(this.apiService.deleteYeastStrain);
+    const params = {
+      id: this.deleteId,
+      tenantId: this.tenantId,
+      statusId: statusId,
+    };
+    this.apiService.deleteData(deleteArchivedYeastApi, params).subscribe(
       (response) => {
         this.toast.show("Yeast Strain Deleted", "Success");
         this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, "");
