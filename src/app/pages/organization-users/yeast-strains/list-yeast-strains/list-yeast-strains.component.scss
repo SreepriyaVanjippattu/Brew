@@ -1,0 +1,42 @@
+@import "assets/styles/styles.scss";
+.search-style {
+  border-radius: $borderRadius !important;
+  padding: 10px 10px 10px 40px !important;
+  box-shadow: 0px 3px 5px #00000012;
+}
+
+.l-search {
+  min-width: 400px;
+  @media (max-width: 767px) {
+    min-width: calc(100% - 95px);
+  }
+}
+.edit-ico {
+  img {
+    width: 15px;
+  }
+}
+.userdir-table {
+  table {
+    min-width: 1024px;
+  }
+}
+
+.user-search-wrap {
+  float: left;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  @media (max-width: 767px) {
+    width: 100%;
+  }
+  .filter-ico {
+    margin: 0 15px;
+  }
+}
+.user-actions {
+  float: right;
+  @media (max-width: 767px) {
+    float: left;
+  }
+}

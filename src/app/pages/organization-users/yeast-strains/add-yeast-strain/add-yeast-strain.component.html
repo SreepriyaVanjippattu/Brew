@@ -1,0 +1,109 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <div class="header-title">
+        <h6>{{ headerTitle }}</h6>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb d-flex justify-content-end">
+          <li
+            class="breadcrumb-item position-relative"
+            *ngIf="!isButtonVisible"
+          >
+            <a [routerLink]="['/app/yeast-strains']" class="home-font">
+              Yeast Strain
+              <i class="material-icons home-ico">
+                home
+              </i>
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item active"
+            aria-current="page"
+            *ngIf="!isButtonVisible"
+          >
+            <a
+              [routerLink]="['/app/yeast-strains/add']"
+              class="home-font"
+              *ngIf="page == 'add'"
+              >Add Yeast
+            </a>
+            <a
+              class="home-font"
+              *ngIf="page == 'edit'"
+              >Edit Yeast
+            </a>
+          </li>
+          <button
+            type="button"
+            (click)="goToEdit()"
+            class="btn l-btn"
+            *ngIf="isButtonVisible"
+          >
+            <i class="material-icons edit-ico">
+              edit
+            </i>
+            Edit
+          </button>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 mt-4">
+      <div class="sub-header">
+        <h6>
+          Yeast Strain Details
+        </h6>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <form [formGroup]="yeastForm">
+        <div class="form-row form-bg ml-0 mr-0">
+          <div class="form-group col-md-3">
+            <label>Yeast Name</label>
+            <i class="material-icons star-ico">
+              star
+            </i>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="yeastName"
+              placeholder="Yeast Name "
+            />
+            <div
+              *ngIf="formSubmitted && form.yeastName.errors?.required"
+              class="valid-error"
+            >
+              Yeast Name is required.
+            </div>
+          </div>
+          <div class="form-group col-md-3 margin-left-100">
+            <label>Created Date</label>
+            <input
+              type="text"
+              class="form-control"
+              disabled
+              formControlName="createdDate"
+              placeholder="Created Date"
+            />
+          </div>
+          <div class="form-group col-md-12 d-flex justify-content-end">
+            <button
+              type="submit"
+              class="btn l-btn mt-2"
+              (click)="yeastFormSubmit()"
+            >
+              <i class="material-icons save-ico"> save </i>Save
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
