@@ -39,10 +39,11 @@ deleteId: any;
   ngOnInit() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     this.tenantId = user["userDetails"].tenantId;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+    this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
-  getArchieveDetails(pageNumber, pageSize, tenantId, searchText) {
+  getArchiveDetails(pageNumber, pageSize, tenantId, searchText) {
+    debugger;
     this.router.navigate(["app/yeast-strains/archives"], {
       queryParams: {
         page: this.config.currentPage,
@@ -65,7 +66,7 @@ deleteId: any;
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getArchieveDetails(this.config.currentPage,this.config.itemsPerPage,this.tenantId,this.searchText);
+    this.getArchiveDetails(this.config.currentPage,this.config.itemsPerPage,this.tenantId,this.searchText);
     this.router.navigate(["app/yeast-strains/archives"], {
       queryParams: { page: nextPage },
     });
@@ -73,7 +74,7 @@ deleteId: any;
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+    this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
   deletePopup(id) {
@@ -92,7 +93,7 @@ deleteId: any;
     this.apiService.deleteData(deleteArchivedYeastApi, params).subscribe(
       (response) => {
         this.toast.show("Yeast Strain Deleted", "Success");
-        this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, "");
+        this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, "");
       },
       (error) => {
         if (error instanceof HttpErrorResponse) {

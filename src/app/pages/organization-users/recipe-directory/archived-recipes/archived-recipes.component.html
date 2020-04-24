@@ -81,7 +81,7 @@
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let content of archieveContent | paginate: config">
+                        <tr *ngFor="let content of archiveContent | paginate: config">
                             <th scope="row">{{content.name}}</th>
                             <td>{{content.styleName}}</td>
                             <td>{{content.yeast.name}}</td>
@@ -92,7 +92,7 @@
                                     <img src="../../../../../assets/images/copy.svg">
                                 </span>
 
-                                <span (click)="restoreArchieve(content)" class="restore-ico ml-2 cursor-click">
+                                <span (click)="restoreArchive(content)" class="restore-ico ml-2 cursor-click">
                                     <img src="assets/images/restore.png">
                                 </span>
 
@@ -154,7 +154,7 @@
                                 No
                             </button>
 
-                            <button (click)="deleteArchieve()" type="button" class="btn  l-btn-agree"
+                            <button (click)="deleteArchive()" type="button" class="btn  l-btn-agree"
                                 data-dismiss="modal">
                                 Yes
                             </button>
