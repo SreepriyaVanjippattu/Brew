@@ -85,7 +85,7 @@
                                         </i>
                                         <input type="text" class="form-control" id="recipt-Name"
                                             placeholder="Recipe Name" formControlName="name">
-                                        <div *ngIf="formSubmitted">
+                                        <div *ngIf="formSubmitted || saveInProgress">
                                             <div *ngIf="form.name.errors?.required" class="valid-error">
                                                 Recipe Name is required
                                             </div>
@@ -132,7 +132,7 @@
                                                 </ng-container>
                                             </select>
                                         </div>
-                                        <div *ngIf="formSubmitted">
+                                        <div *ngIf="formSubmitted || saveInProgress">
                                             <div *ngIf="form.batchSize.errors?.required || form.batchSizeUnitId.errors?.required"
                                                 class="valid-error">
                                                 Batch Size and Unit is required
@@ -148,7 +148,7 @@
                                         </i>
                                         <input type="number" class="form-control" id="recipt-efcncy"
                                             placeholder="Brew House Efficiency" formControlName="brewHouseEfficiency">
-                                        <div *ngIf="formSubmitted">
+                                        <div *ngIf="formSubmitted || saveInProgress">
                                             <div *ngIf="form.brewHouseEfficiency.errors?.required" class="valid-error">
                                                 Brew House Efficiency is required
                                             </div>
@@ -165,7 +165,7 @@
                                         </i>
                                         <input type="number" class="form-control" id="recipt-Abv" placeholder="ABV"
                                             formControlName="abv">
-                                        <div *ngIf="formSubmitted">
+                                        <div *ngIf="formSubmitted || saveInProgress">
                                             <div *ngIf="form.abv.errors?.required" class="valid-error">
                                                 ABV is required
                                             </div>
@@ -179,7 +179,7 @@
                                         </i>
                                         <input type="number" class="form-control" id="recipt-ibu" placeholder="IBUs"
                                             formControlName="ibus">
-                                        <div *ngIf="formSubmitted">
+                                        <div *ngIf="formSubmitted || saveInProgress">
                                             <div *ngIf="form.ibus.errors?.required" class="valid-error">
                                                 IBU is required
                                             </div>
@@ -1033,6 +1033,7 @@
                             cancel
                         </i>
                         Cancel</button>
+                    <button (click)="saveFormInProgress()" class="btn l-btn l-btn-save mr-2" type="button">Save</button>
                     <button (click)="nextStepClick()" class="btn l-btn" type="button">Next Step</button>
                 </div>
             </div>

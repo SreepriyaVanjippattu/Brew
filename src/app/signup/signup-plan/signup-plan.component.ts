@@ -36,7 +36,7 @@ export class SignupPlanComponent implements OnInit {
   }
 
   getSubscriptionDetails() {
-    this.apiService.getData(this.apiService.getSubscriptions).subscribe(response => {
+    this.apiService.getDataList(this.apiService.getSubscriptions).subscribe(response => {
       this.subscriptionPlan = response['body'];
     });
   }
@@ -63,7 +63,7 @@ export class SignupPlanComponent implements OnInit {
           this.router.navigate(['signup/signup-success']);
         }
       }, error => {
-        this.toastr.error(error.error.message);
+        this.toastr.error('', error.error.message);
       });
     }
   }
