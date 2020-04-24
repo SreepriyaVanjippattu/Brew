@@ -93,7 +93,7 @@
                 {{ content.name }}
               </th>
               <td>{{ content.createdDate | date: "dd-MM-yyyy" }}</td>
-              <td>{{ content.isActive }}</td>
+              <td>{{ statusName }}</td>
               <td>
                 <span
                   (click)="restoreArchive(content.id)"

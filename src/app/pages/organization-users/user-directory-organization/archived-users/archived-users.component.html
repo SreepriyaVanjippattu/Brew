@@ -71,7 +71,7 @@
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let content of archieveContent | paginate : config">
+                        <tr *ngFor="let content of archiveContent | paginate : config">
                             <th scope="row">{{content.firstName}} {{content.lastName}}</th>
                             <td>{{statusName}}</td>
                             <td>{{content.phone | phoneFormat}}</td>

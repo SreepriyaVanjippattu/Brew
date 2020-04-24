@@ -111,7 +111,7 @@ export class ArchivedRecipesComponent implements OnInit {
     }
   }
 
-  restoreArchieve(archiveRecipe) {
+  restoreArchive(archiveRecipe) {
     if (archiveRecipe) {
       const archivedRecipeAPI = String.Format(this.apiService.archivedRecipe, this.tenantId, archiveRecipe.id);
       this.apiService.patchData(archivedRecipeAPI).subscribe((response: any) => {

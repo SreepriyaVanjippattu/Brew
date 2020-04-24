@@ -9,7 +9,7 @@
         "StatusName":"Active"
       },{
         "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
-        "StatusName":"Archieve"
+        "StatusName":"Archive"
       },
       {
         "Id":"4d2ba3c3-132e-489f-9c43-47a3996f74fa",
@@ -30,7 +30,7 @@
         "StatusName":"Active"
       },{
         "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
-        "StatusName":"Archieve"
+        "StatusName":"Archive"
       },
       {
         "Id":"1625a5c1-b41a-4f6e-91ad-e4aa0c61121c",
@@ -55,7 +55,7 @@
         "StatusName":"Active"
       },{
         "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
-        "StatusName":"Archieve"
+        "StatusName":"Archive"
       }
       ,{
         "Id":"4d2ba3c3-132e-489f-9c43-47a3996f74fa",
@@ -77,7 +77,7 @@
         "StatusName":"Pending"
       },{
         "Id":"fc7178dd-c5c1-4776-944a-b50fe2c37f06",
-        "StatusName":"Archieve"
+        "StatusName":"Archive"
       },
       {
         "Id":"1625a5c1-b41a-4f6e-91ad-e4aa0c61121c",

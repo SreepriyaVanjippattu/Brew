@@ -30,6 +30,7 @@ toggleStatus: boolean;
 headerValue: any;
 searchText: any;
 deleteId: any;
+  statusName: string;
 
   constructor(
     private apiService: ApiProviderService,
@@ -43,7 +44,6 @@ deleteId: any;
   }
 
   getArchiveDetails(pageNumber, pageSize, tenantId, searchText) {
-    debugger;
     this.router.navigate(["app/yeast-strains/archives"], {
       queryParams: {
         page: this.config.currentPage,
@@ -55,6 +55,11 @@ deleteId: any;
       .subscribe((response) => {
         if (response) {
           this.archiveContent = response["body"].yeastStrainDetails;
+          this.archiveContent.forEach(element => {
+            if (element.statusId === StatusUse.archive.id) {
+              this.statusName = StatusUse.archive.name;
+            }
+          });
           this.headerValue = response["body"]["pagingDetails"];
           if (this.headerValue) {
             this.config.totalItems = this.headerValue.totalCount;
