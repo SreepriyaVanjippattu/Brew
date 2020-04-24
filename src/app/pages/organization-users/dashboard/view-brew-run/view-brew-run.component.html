@@ -53,15 +53,15 @@
                     </ng-template>
                 </div>
 
-                <div *ngIf="archivePermission; else archieveToast">
-                    <button data-target="#archieveModalCenter" type="button" class="btn l-btn" data-toggle="modal">
+                <div *ngIf="archivePermission; else archiveToast">
+                    <button data-target="#archiveModalCenter" type="button" class="btn l-btn" data-toggle="modal">
                         <i class="material-icons archive-ico">
                             archive
                         </i>
                         Archive
                     </button>
                 </div>
-                <ng-template #archieveToast>
+                <ng-template #archieeToast>
                     <button (click)="archiveToast()" type="button" class="btn l-btn">
                         <i class="material-icons archive-ico">
                             archive
@@ -175,12 +175,12 @@
 </div>
 
 <div class="del-modal">
-    <div class="modal fade" id="archieveModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="archieveModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="archiveModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="archiveModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="archieveModalLongTitle">Archive Brew</h5>
+                    <h5 class="modal-title" id="archiveModalLongTitle">Archive Brew</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><img src="assets/images/modal-close.svg"
                                 class="modal-close-ico"></span>
