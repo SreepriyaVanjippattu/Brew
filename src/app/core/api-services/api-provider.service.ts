@@ -99,7 +99,7 @@ export class ApiProviderService {
   addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
   addSupplier = 'brewrun/v1/brewers/{0}/supplier';
 
-  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeastStrains';
+  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeaststrains/base';
   getYeastStrainById = 'brewrun/v1/brewers/{0}/yeaststrain/{1}';
   getAllActiveCountry = 'brewrun/v1/brewers/settings/countries';
   getAllActiveAddIn = 'brewrun/v1/brewers/recipe/{0}/addin';
