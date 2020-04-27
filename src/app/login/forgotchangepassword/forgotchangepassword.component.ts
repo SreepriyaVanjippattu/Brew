@@ -20,6 +20,8 @@ export class ForgotchangepasswordComponent implements OnInit {
   formValid: boolean;
   validOldMatch = true;
   token;
+  recoveryEmailSent;
+  isGeneralUser;
 
   constructor(
     private formBuilder: FormBuilder,

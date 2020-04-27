@@ -24,7 +24,7 @@ export class SignupComponent implements OnInit {
   blur = false;
   buttonDisabled = true;
   @ViewChild('tooltip', { static: true }) toolTip: ElementRef;
-  CompanyName: any;
+  companyName: any;
   constructor(
     private router: Router,
     private apiService: ApiProviderService,
@@ -64,7 +64,7 @@ export class SignupComponent implements OnInit {
     }
   }
   selectPackage() {
-    this.CompanyName = this.signUpForm.get('companyName').value;
+    this.companyName = this.signUpForm.get('companyName').value;
     this.signupservice.signUpContent(this.signUpForm.value);
     this.formSubmitted = true;
     if (this.signUpForm.valid && this.blur === true) {

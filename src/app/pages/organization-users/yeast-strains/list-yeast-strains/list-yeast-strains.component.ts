@@ -21,6 +21,8 @@ export class ListYeastStrainsComponent implements OnInit {
     currentPage: 1,
     totalItems: 10,
   };
+  previous = 'Previous';
+  next = 'Next';
   toggleStatus = false;
   page: any;
   deleteId: Number;
