@@ -48,8 +48,7 @@ export class AppLayoutComponent implements OnInit {
       || currentUrl.includes('recipes')
       || currentUrl === '/app/user-directory' || currentUrl.includes('user-directory/')
       || currentUrl.includes('user-directory/org-previleges')
-      || currentUrl.includes('preferences') || currentUrl.includes('profile-organization')
-      || currentUrl.includes('yeast-strains')) {
+      || currentUrl.includes('preferences') || currentUrl.includes('profile-organization')) {
       this.isGeneralUser = true;
       this.generalUserIcon = true;
       this.superAdminIcon = false;

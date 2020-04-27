@@ -29,7 +29,7 @@ export class ArchivedUsersComponent implements OnInit {
   };
   previous = 'Previous';
   next = 'Next';
-  archiveContent;
+  archieveContent;
   statusId;
   currentUser: any;
   userToRestore: any;
@@ -79,8 +79,8 @@ export class ArchivedUsersComponent implements OnInit {
     const getAllArchivedUsersApi = String.Format(this.apiService.getAllArchivedUsers, tenantId)
     this.apiService.getDataList(getAllArchivedUsersApi, pageNumber, pageSize, null, null, searchText).subscribe(response => {
 
-      this.archiveContent = response['body']['users'];
-      this.archiveContent.forEach(element => {
+      this.archieveContent = response['body']['users'];
+      this.archieveContent.forEach(element => {
         if (element.statusId === StatusUse.archive.id) {
           this.statusName = StatusUse.archive.name;
         }
@@ -102,7 +102,7 @@ export class ArchivedUsersComponent implements OnInit {
       this.toastrService.danger('You don\'t have access', 'Error');
     } else {
 
-      this.archiveContent.forEach(element => {
+      this.archieveContent.forEach(element => {
         if (id === element.id) {
           this.userToRestore = element;
         }
@@ -167,7 +167,7 @@ export class ArchivedUsersComponent implements OnInit {
           this.pageControl = (this.config.totalItems === 0) ? true : false;
         }
         if (response && response['body']) {
-          this.archiveContent = response['body']['users'];
+          this.archieveContent = response['body']['users'];
         }
       });
   }
@@ -222,21 +222,21 @@ export class ArchivedUsersComponent implements OnInit {
   }
 
   filter(label) {
-    if (this.archiveContent) {
+    if (this.archieveContent) {
       if (this.toggleStatus === true && label === 'name') {
-        this.archiveContent.sort((a, b) => a.firstName.toUpperCase() > b.firstName.toUpperCase() ? 1 : -1);
+        this.archieveContent.sort((a, b) => a.firstName.toUpperCase() > b.firstName.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'name') {
-        this.archiveContent.sort((a, b) => a.firstName.toUpperCase() < b.firstName.toUpperCase() ? 1 : -1);
+        this.archieveContent.sort((a, b) => a.firstName.toUpperCase() < b.firstName.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'phone') {
-        this.archiveContent.sort((a, b) => a.phone.toUpperCase() > b.phone.toUpperCase() ? 1 : -1);
+        this.archieveContent.sort((a, b) => a.phone.toUpperCase() > b.phone.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'phone') {
-        this.archiveContent.sort((a, b) => a.phone.toUpperCase() < b.phone.toUpperCase() ? 1 : -1);
+        this.archieveContent.sort((a, b) => a.phone.toUpperCase() < b.phone.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'email') {
-        this.archiveContent.sort((a, b) => a.emailAddress.toUpperCase() > b.emailAddress.toUpperCase() ? 1 : -1);
+        this.archieveContent.sort((a, b) => a.emailAddress.toUpperCase() > b.emailAddress.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'email') {
-        this.archiveContent.sort((a, b) => a.emailAddress.toUpperCase() < b.emailAddress.toUpperCase() ? 1 : -1);
+        this.archieveContent.sort((a, b) => a.emailAddress.toUpperCase() < b.emailAddress.toUpperCase() ? 1 : -1);
       }
     }
     this.toggleStatus = !this.toggleStatus;

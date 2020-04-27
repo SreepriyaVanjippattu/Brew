@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   searchText: string;
 
   permission = permission;
-  singleArchiveBrew: any;
+  singleArchieveBrew: any;
   currentUser: any;
   toggleStatus: boolean = false;
 
@@ -155,7 +155,7 @@ export class DashboardComponent implements OnInit {
   }
 
   archiveSingleBrew(fermentation) {
-    this.singleArchiveBrew = fermentation;
+    this.singleArchieveBrew = fermentation;
   }
 
   archiveBrew() {
@@ -164,7 +164,7 @@ export class DashboardComponent implements OnInit {
       statusId: 'fc7178dd-c5c1-4776-944a-b50fe2c37f06'
     };
 
-    const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.singleArchiveBrew.id);
+    const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.singleArchieveBrew.id);
     this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
       if (response) {

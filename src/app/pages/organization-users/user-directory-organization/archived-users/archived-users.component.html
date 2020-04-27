@@ -31,7 +31,7 @@
                 <div class="d-flex l-search">
                     <input (keyup.enter)="searchClient()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
                         placeholder="Search Archived Users">
-                    <i class="material-icons search-ico cursor-click" (click)="searchClient()"> search </i>
+                    <i class="material-icons search-ico" (click)="searchClient()"> search </i>
                     <i class="material-icons clear-ico cursor-click" (click)="clear()">
                         close
                     </i>
@@ -71,7 +71,7 @@
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let content of archiveContent | paginate : config">
+                        <tr *ngFor="let content of archieveContent | paginate : config">
                             <th scope="row">{{content.firstName}} {{content.lastName}}</th>
                             <td>{{statusName}}</td>
                             <td>{{content.phone | phoneFormat}}</td>

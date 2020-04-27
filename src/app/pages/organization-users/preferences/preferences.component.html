@@ -86,6 +86,96 @@
         </div>
       </div>
     </form>
+    <form [formGroup]="tankyeastForm" class="mt-3">
+      <div class="sub-header">
+        <h6>Yeast Strains</h6>
+        <div class="preference-header-right">
+          <div class="d-flex l-search">
+            <input class='l-searchbox' (keyup.enter)="searchYeast()" [(ngModel)]="searchText"
+              [ngModelOptions]="{standalone: true}" value="" placeholder="Search" type="text">
+            <i class="material-icons search-ico" (click)="searchYeast()"> search </i>
+            <i class="material-icons clear-ico cursor-click" (click)="clear('yeast')">
+              close
+              </i>
+          </div>
+          <button [disabled]="savenewYeastEnabled" class="btn l-btn-white" type="button" (click)="newYeastItem()">New
+            Yeast</button>
+        </div>
+      </div>
+      <div class="preference-details table-responsive">
+        <table class="table yeast-table">
+          <thead>
+            <tr>
+              <th scope="col">Yeast Name</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+
+          <!-- Add New Yeast -->
+          <tbody formArrayName="newYeast" *ngFor="let yeastItems of newYeastForms.controls; let i = index;">
+            <tr [formGroupName]="i" class="w-100">
+              <td> <input formControlName="yeastStrain" class='form-control' placeholder="Yeast Strain">
+                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
+                  <div *ngIf="yeastItems.get('yeastStrain').invalid" class="valid-error">
+                    Yeast Strain is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <input disabled type="date" formControlName="yeastDate" class='form-control' placeholder="Yeast Date">
+                <div *ngIf="formSubmitted && enablenewYeastValidation == i">
+                </div>
+              </td>
+              <td>In Progress</td>
+              <td>
+                <div class="actions">
+                  <span (click)="savenewYeast(newYeastArray.controls[i].controls,i)"
+                    class="del-ico ml-2 cursor-click"><i class="material-icons save-ico">save</i></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody formArrayName="listYeast" *ngFor="let lists of yeastForms.controls  ; let i = index;">
+
+            <tr [formGroupName]="i" class="w-100">
+              <td>
+                <span> {{lists.value.name}}</span>
+                <input *ngIf="enableeditYeastIndex && enableYeastEdit == i" formControlName="name" class='form-control'
+                  placeholder="Yeast Strain">
+                <div *ngIf="formSubmitted && enableYeastEdit == i">
+                  <div *ngIf="yeastForms.controls[i].get('name').invalid" class="valid-error">
+                    Yeast Strain is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span> {{lists.value.createdDate}}</span>
+                <input disabled type="date" *ngIf="enableeditYeastIndex && enableYeastEdit == i"
+                  formControlName="createdDate" class='form-control' placeholder="Yeast Date">
+                <div *ngIf="formSubmitted && enableYeastEdit == i">
+                </div>
+              </td>
+              <td>
+                <span> Active </span>
+
+              </td>
+              <td>
+                <div class="actions d-flex">
+                  <span (click)="editYeast(yeastForms.controls[i].controls,i)" class="edit-ico ml-2 cursor-click"><img
+                      src="../../../../../assets/images/edit.svg"></span>
+                  <span *ngIf="enableeditYeastIndex && enableYeastEdit == i"
+                    (click)="saveEditYeast(yeastForms.controls[i].controls,i)" class="del-ico ml-2 cursor-click"><i
+                      class="material-icons save-ico">save</i></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </form>
     <!-- Tank Configuration -->
     <form [formGroup]="tankForm" class="mt-3">
       <div class="sub-header">
@@ -94,7 +184,7 @@
           <div class="d-flex l-search">
             <input class='l-searchbox' (keyup.enter)="searchTank()" [(ngModel)]="searchText"
               [ngModelOptions]="{standalone: true}" placeholder="Search" type="text">
-              <i class="material-icons search-ico cursor-click" (click)="searchTank()"> search </i>
+            <i class="material-icons search-ico" (click)="searchTank()"> search </i>
             <i class="material-icons clear-ico cursor-click" (click)="clear('tank')">
               close
               </i>

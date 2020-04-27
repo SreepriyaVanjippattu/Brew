@@ -24,6 +24,13 @@ export class PreferencesComponent implements OnInit {
   tenantId: any;
   formSubmittedGenSet: boolean;
 
+  newYeast: FormArray;
+  listYeast: FormArray;
+  enableeditYeastIndex: boolean;
+  enablenewYeastValidation: any;
+  savenewYeastEnabled: boolean;
+  yeastStrain: any;
+  enableYeastEdit: any;
 
   newTank: FormArray;
   savenewTankEnabled: boolean;
@@ -63,6 +70,10 @@ export class PreferencesComponent implements OnInit {
     listTank: this.form.array([]),
   });
 
+  tankyeastForm = this.form.group({
+    newYeast: this.form.array([]),
+    listYeast: this.form.array([])
+  });
 
   get forms() {
     return this.preferencesForm.controls;
@@ -75,9 +86,42 @@ export class PreferencesComponent implements OnInit {
   get newTankForms() {
     return this.tankForm.controls.newTank as FormGroup;
   }
+  get yeastForms() {
+    return this.tankyeastForm.controls.listYeast as FormGroup;
+  }
+
+  get newYeastForms() {
+    return this.tankyeastForm.controls.newYeast as FormGroup;
+  }
+
+  get listTankArray(): FormArray {
+    return <FormArray>this.tankyeastForm.get('listTank');
+  }
 
   get newTankArray(): FormArray {
     return <FormArray>this.tankForm.get('newTank');
+  }
+
+  get listYeastArray(): FormArray {
+    return <FormArray>this.tankyeastForm.get('listYeast');
+  }
+
+  get newYeastArray(): FormArray {
+    return <FormArray>this.tankyeastForm.get('newYeast');
+  }
+
+  newYeastForm(): FormGroup {
+    return this.form.group({
+      yeastStrain: ['', Validators.required],
+      yeastDate: ['']
+    });
+  }
+
+  editYeastForm(): FormGroup {
+    return this.form.group({
+      name: ['', Validators.required],
+      createdDate: ['']
+    });
   }
 
   newTankForm(): FormGroup {
@@ -142,6 +186,9 @@ export class PreferencesComponent implements OnInit {
 
       this.timeZoneList = response['body'].timeZone;
 
+      this.yeastStrain = response['body'].yeastStrain;
+      this.listYeastItems(this.yeastStrain);
+
       this.tankConfiguration = response['body'].tanks;
       this.listTankItems(this.tankConfiguration);
 
@@ -177,6 +224,113 @@ export class PreferencesComponent implements OnInit {
       });
     }
 
+  }
+
+  listYeastItems(yeastStrain) {
+
+    let controls = <FormArray>this.tankyeastForm.controls.listYeast;
+
+    controls.controls = [];
+
+    yeastStrain.forEach(element => {
+      let date = new Date(element.createdDate).toString();
+      date = this.datePipe.transform(date, 'yyyy-MM-dd');
+      controls.push(this.form.group({
+        id: [element.id],
+        name: [element.name, Validators.required],
+        createdDate: [date, Validators.required]
+      }));
+    });
+  }
+
+  newYeastItem(): void {
+    this.savenewYeastEnabled = true;
+    this.newYeast= this.tankyeastForm.get('newYeast') as FormArray;
+    this.newYeast.controls.push(this.newYeastForm());
+  }
+
+  searchYeast() {
+
+    const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastList, this.tenantId);
+    this.apiService.getDataList(getAllYeastStrainsAPI, null, null, null, null, this.searchText).subscribe(response => {
+
+      if (response.status === 200) {
+        this.yeastStrain = response['body'].yeastStrainDetails;
+        this.listYeastItems(this.yeastStrain);
+      }
+    });
+  }
+
+  savenewYeast(e, i) {
+
+    this.formSubmitted = true;
+    this.enablenewYeastValidation = i;
+    let controlNewYeast = <FormArray>this.tankyeastForm.controls.newYeast;
+    let controlListYeast = <FormArray>this.tankyeastForm.controls.listYeast;
+
+    if (controlNewYeast.controls[i].status === 'VALID') {
+      this.savenewYeastEnabled = false;
+
+      const params = {
+        id: Guid.raw(),
+        name: controlNewYeast.controls[i].value.yeastStrain,
+        tenantId: this.tenantId,
+        isActive: "true",
+        createdDate: new Date(),
+        modifiedDate: new Date()
+      };
+
+      const saveYeastStrainApi = String.Format(this.apiService.addYeastStrain, this.tenantId)
+      this.apiService.postData(saveYeastStrainApi, params).subscribe((response: any) => {
+
+        if (response.status === 200) {
+          this.yeastStrain = response.body.yeastStrainDetails;
+          controlListYeast.controls = [];
+          controlNewYeast.removeAt(i);
+          this.listYeastItems(this.yeastStrain);
+          this.toast.show('Yeast Strain Added', 'Success');
+        }
+      }, error => {
+        this.toast.danger('Something went wrong, Try Again');
+      });
+    }
+  }
+
+  editYeast(e, i) {
+    this.enableeditYeastIndex = true;
+    this.enableYeastEdit = i;
+  }
+
+  saveEditYeast(e, i) {
+    this.enableYeastEdit = i;
+    this.formSubmitted = true;
+
+    let control = <FormArray>this.tankyeastForm.controls.listYeast;
+    if (this.yeastForms.controls[i].status === 'VALID') {
+      this.enableeditYeastIndex = false;
+      let yeastId = control.controls[i].value.id;
+      const params = {
+        id: control.controls[i].value.id,
+        name: control.controls[i].value.name,
+        tenantId: this.tenantId,
+        isActive: "true",
+        createdDate: new Date(),
+        modifiedDate: new Date()
+      };
+
+      const editYeastStrainApi = String.Format(this.apiService.editYeastStrain, this.tenantId, yeastId)
+      this.apiService.putData(editYeastStrainApi, params).subscribe((response: any) => {
+        if (response.status === 200) {
+          control.controls = [];
+          control.removeAt(i);
+          this.listYeastItems(response.body.yeastStrainDetails);
+          this.toast.show('Yeast Strain Edited', 'Success');
+        }
+      }, error => {
+        this.toast.danger('Something went wrong, Try Again');
+      });
+
+    }
   }
 
   newTankItem(): void {
@@ -296,9 +450,11 @@ export class PreferencesComponent implements OnInit {
   clear(text: string) {
     this.searchText = "";
     if (text == "tank") {
-      this.searchTank();
+    this.searchTank();
+    } else {
+    this.searchYeast();
     }
-  }
+    }
 
   statusClickEdit(status, i) {
     this.isactive = !this.isactive;

@@ -57,19 +57,6 @@ const routes: Routes = [{
       },
     },
     {
-      path: 'yeast-strains',
-      loadChildren: () => import('../pages/organization-users/yeast-strains/yeast-strains.module')
-        .then(m => m.YeastStrainsModule),
-      canActivate: [PermissionGaurdService, AuthGaurdService],
-      data: {
-        expectedPermissions: [
-          '8b31ba09-b429-4bab-8aa2-1d598b7e2139',
-          '19e10be9-12f1-4e92-a963-28c0c53654eb',
-          'f3a53daa-6bf6-4242-ba8c-53d1a1c3b337'
-        ],
-      },
-    },
-    {
       path: 'user-directory',
       loadChildren: () => import('../pages/organization-users/user-directory-organization/user-directory-organization.module')
         .then(m => m.UserDirectoryOrganizationModule),

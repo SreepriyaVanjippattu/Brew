@@ -107,8 +107,8 @@ export class ArchivedBrewsComponent implements OnInit {
 
     currentDate = year + "-" + this.month + "-" + this.day + "T" + this.hours + ":" + this.minutes + ":" + this.seconds;
 
-    const getAllArchivedBrewRunAPI = String.Format(this.apiService.getAllArchivedBrewRun, this.tenantId);
-    this.apiService.getDataByQueryParams(getAllArchivedBrewRunAPI, null, null, null, this.config.currentPage, this.config.itemsPerPage, this.searchText).subscribe(response => {
+    const getAllArchievedBrewRunAPI = String.Format(this.apiService.getAllArchievedBrewRun, this.tenantId);
+    this.apiService.getDataByQueryParams(getAllArchievedBrewRunAPI, null, null, null, this.config.currentPage, this.config.itemsPerPage, this.searchText).subscribe(response => {
 
       this.config.totalItems = response['body']['pagingDetails']['totalCount'];
       this.archivedContent = response['body']['brewRuns'];

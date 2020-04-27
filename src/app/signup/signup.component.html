@@ -1,31 +1,29 @@
-<section class="signup-wrapper">
+<section class='signup-wrapper'>
     <div class="signup-main">
         <div class="signup-copyright">© Copyright 2020 WarrierTech</div>
-        <div class="signup-details">
+        <div class='signup-details'>
+
             <form class="form-signup mt-4" [formGroup]="signUpForm" autocomplete="off">
-                <div class="signup-logo mb-5 ml-2">
-                    <a href="#"><img src="../../assets/images/brewer-logo-signup.png" alt="" width="250px" /></a>
+                <div class='signup-logo mb-5 ml-2'>
+                    <a href='#'><img src="../../assets/images/brewer-logo-signup.png" alt="" width="250px"></a>
                 </div>
 
                 <h3 class="mb-4 ml-2">Sign Up</h3>
                 <div class="form-row">
                     <div class="form-group col-md-12">
-                        <label for="companyName">Company Name</label>
-                        <input type="text" #companyname class="form-control" formControlName="companyName"
-                            id="companyName" (keyup)="keydown(companyName.value)" placeholder="Company Name" />
-                        <div *ngIf="formSubmitted && form.companyName.errors?.required" class="valid-error">
-                            Please enter Company Name
-                        </div>
-                        <div *ngIf="form.companyName.invalid && blur" class="valid-error">
-                            Please enter valid Company Name
-                        </div>
-                        <i *ngIf="form.companyName.valid && blur" class="material-icons check-success">
+                        <label for="companyname">Company Name</label>
+                        <input type="text" #companyname class="form-control" formControlName="companyname"
+                            id="companyname" (keyup)="keydown(companyname.value);" placeholder="Company Name">
+                        <div *ngIf="formSubmitted && form.companyname.errors" class="valid-error">Please enter Company
+                            Name</div>
+                        <div *ngIf="form.companyname.invalid && blur" class="valid-error">Please enter valid Company
+                            Name</div>
+                        <i *ngIf="form.companyname.valid && blur" class="material-icons check-success">
                             check_circle
                         </i>
-                        <div *ngIf="companyNameValue === '' && !blur" class="valid-error">
-                            Company Name Already Exists
+                        <div *ngIf="companynameValue === '' && !blur" class="valid-error">Company Name Already Exists
                         </div>
-                        <i *ngIf="companyNameValue === '' && !blur" class="material-icons check-fail">
+                        <i *ngIf="companynameValue === '' && !blur" class="material-icons check-fail">
                             cancel
                         </i>
                     </div>
@@ -35,65 +33,67 @@
                     <div class="form-group col-md-6">
                         <label for="firstname">First Name</label>
                         <input type="text" class="form-control" formControlName="firstName" id="firstname"
-                            placeholder="First Name" />
-                        <div *ngIf="formSubmitted && form.firstName.errors" class="valid-error">
-                            Please enter FirstName
+                            placeholder="First Name">
+                        <div *ngIf="formSubmitted && form.firstName.errors" class="valid-error">Please enter FirstName
                         </div>
+
                     </div>
                     <div class="form-group col-md-6">
                         <label for="lastname">Last Name</label>
                         <input type="text" class="form-control" formControlName="lastName" id="lastname"
-                            placeholder="Last Name" />
-                        <div *ngIf="formSubmitted && form.lastName.errors" class="valid-error">
-                            Please enter LastName
+                            placeholder="Last Name">
+                        <div *ngIf="formSubmitted && form.lastName.errors" class="valid-error">Please enter LastName
                         </div>
+
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">Email [User ID]</label>
                         <input type="email" class="form-control" (keyup)="emailvalidation($event.target.value)"
-                            autocomplete="off" formControlName="emailId" id="inputEmail4" placeholder="Email" />
-                        <div *ngIf="formSubmitted && form.emailId.errors?.required" class="valid-error">
-                            Please enter Email Address
-                        </div>
-                        <div *ngIf="!validEmail && formSubmitted" class="valid-error">
-                            Please enter valid Email Address
-                        </div>
+                            autocomplete="off" formControlName="emailId" id="inputEmail4" placeholder="Email">
+                        <div *ngIf="formSubmitted && form.emailId.errors" class="valid-error">Please enter valid Email
+                            Address</div>
+                        <div *ngIf="!validEmail" class="valid-error">Please enter valid Email Address</div>
+
                     </div>
+
 
                     <div class="form-group col-md-6">
                         <label for="inputPhone">Phone</label>
                         <input class="form-control" formControlName="phone" id="inputPhone" placeholder="(555) 555-5555"
-                            mask="(000) 000-0000" validation="true" (keyup)="formatPhone()" />
-                        <div *ngIf="formSubmitted && form.phone.errors?.required" class="valid-error">
-                            Please enter Phone Number
-                        </div>
+                            mask="(000) 000-0000" validation="true" (keyup)="formatPhone()">
+                        <div *ngIf="formSubmitted && form.phone.errors" class="valid-error">Please enter valid Phone
+                            Number</div>
                         <div class="valid-error" *ngIf="!validPhone">
                             Phone No is invalid.
                         </div>
+
                     </div>
+
                 </div>
                 <div class="form-row">
+
                     <div class="form-group col-md-12">
                         <label for="inputPassword4">Password</label>
                         <input type="password" class="form-control" (keyup)="passwordValidation($event.target.value)"
-                            id="inputPassword4" autocomplete="off" formControlName="password" placeholder="Password" />
-                        <div *ngIf="formSubmitted && form.password.errors" class="valid-error">
-                            Please enter valid password
-                        </div>
+                            id="inputPassword4" autocomplete="off" formControlName="password" placeholder="Password">
+                        <div *ngIf="formSubmitted && form.password.errors" class="valid-error">Please enter valid
+                            password</div>
                         <div *ngIf="!validPassword" class="tooltip-valid">
-                            Please enter at least one upper case letter, one lower case
-                            letter, one digit, one special character,Minimum eight in length
+                            Please enter at least one upper case letter, one lower case letter, one digit, one special
+                            character,Minimum eight in length
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="signup-actionwrap d-flex">
+                    <div class="signup-actionwrap d-flex ">
                         <button (click)="cancelClick()" type="button" class="btn btn-outline-light btn-cancel mr-2">
-                            <i class="material-icons cancel-ico"> cancel </i>Cancel
+                            <i class="material-icons cancel-ico">
+                                cancel
+                            </i>Cancel
                         </button>
-                        <button (click)="selectPackage()" href="signup/signup-plan" type="submit"
+                        <button (click)="selectPackage()" href='signup/signup-plan' type="submit"
                             class="btn btn-outline-light btn-select">
                             Select Package
                             <i class="material-icons">
@@ -102,6 +102,7 @@
                         </button>
                     </div>
                 </div>
+
             </form>
         </div>
     </div>

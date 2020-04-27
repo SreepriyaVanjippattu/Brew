@@ -30,7 +30,7 @@ export class ApiProviderService {
   ChangeBrewRunStatus = 'brewrun/v1/brewers/{0}/brewrun/{1}';
   getBrewDetailsById = 'brewrun/v1/brewers/{0}/brewrun/{1}/details';
   editBrewRun = "brewrun/v1/brewers/{0}/brewrun/{1}"
-  getAllArchivedBrewRun = 'brewrun/v1/brewers/{0}/brewrun/archived';
+  getAllArchievedBrewRun = 'brewrun/v1/brewers/{0}/brewrun/archived';
   getBrewRunMashinMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/mashin/masterdetails'
   getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
   mashin = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
@@ -71,15 +71,12 @@ export class ApiProviderService {
   getPreferenceSettings = 'user/v1/brewers/settings/{0}/preference';
   getAllPreferenceMasterDetails = 'brewrun/v1/brewers/settings/{0}/preferences';
   addPreference = 'user/v1/brewers/{0}/preference/';
-  addYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain';
-  addTankConfiguration = 'brewrun/v1/brewers/{0}/tank';
+  addYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrain';
+  addTankConfiguration = 'brewrun/v1/brewers/{0}/tank/';
   getAllTankConfigurationList = 'brewrun/v1/brewers/{0}/tanks';
   getAllYeastList = 'brewrun/v1/brewers/{0}/yeastStrains';
   editTankConfiguration = 'brewrun/v1/brewers/{0}/tank/{1}';
-  editYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain/{1}';
-  deleteYeastStrain = "brewrun/v1/brewers/yeaststrain";
-  getArchivedYeastStrains = 'brewrun/v1/brewers/{0}/yeaststrains/archived';
-  archiveYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain/{1}/archive';
+  editYeastStrain = 'brewrun/v1/brewers/{0}/yeastStrains/{1}';
 
   // recipe
   getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails'
@@ -97,10 +94,9 @@ export class ApiProviderService {
 
   addStyle = 'brewrun/v1/brewers/{0}/style/';
   addType = 'brewrun/v1/brewers/{0}/maltGrainType/';
-  addSupplier = 'brewrun/v1/brewers/{0}/supplier';
+  addSupplier = 'brewrun/v1/brewers/{0}/supplier/';
 
-  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeaststrains/base';
-  getYeastStrainById = 'brewrun/v1/brewers/{0}/yeaststrain/{1}';
+  getAllYeastStrains = 'brewrun/v1/brewers/{0}/yeastStrains/base';
   getAllActiveCountry = 'brewrun/v1/brewers/settings/countries';
   getAllActiveAddIn = 'brewrun/v1/brewers/recipe/{0}/addin';
   getAllActiveSupplier = 'brewrun/v1/brewers/{0}/suppliers';
