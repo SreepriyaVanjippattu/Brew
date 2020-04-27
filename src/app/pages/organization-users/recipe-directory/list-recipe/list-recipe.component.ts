@@ -121,7 +121,7 @@ export class ListRecipeComponent implements OnInit {
 
   pageSize(pagesize) {
     this.config.itemsPerPage = pagesize;
-    this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+    this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
   }
 
   editRecipe(recipeId, recipelist) {

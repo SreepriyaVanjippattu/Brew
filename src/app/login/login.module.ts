@@ -9,19 +9,19 @@ import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 import { CookieService } from 'ngx-cookie-service';
 import { ForgotchangepasswordComponent } from './forgotchangepassword/forgotchangepassword.component';
 import { ToastrModule } from 'ngx-toastr';
-
+import { NbLayoutModule } from '@nebular/theme';
 const routes: Routes = [
-  { 
-    path: '', 
-    component: LoginComponent 
+  {
+    path: '',
+    component: LoginComponent
   },
-  { 
-    path: 'forgot-password', 
-    component: ForgetPasswordComponent 
+  {
+    path: 'forgot-password',
+    component: ForgetPasswordComponent
   },
-  { 
-    path: 'forgot-changepassword', 
-    component: ForgotchangepasswordComponent 
+  {
+    path: 'forgot-changepassword',
+    component: ForgotchangepasswordComponent
   }
 ];
 
@@ -37,10 +37,10 @@ const routes: Routes = [
     ReactiveFormsModule,
     SharedModule,
     ShowHidePasswordModule,
-    ToastrModule.forRoot(),
+    ToastrModule,
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
   providers: [CookieService]
 })
-export class LoginModule { }
+export class LoginModule {}

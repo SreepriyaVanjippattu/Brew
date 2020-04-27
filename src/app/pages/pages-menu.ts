@@ -31,6 +31,11 @@ export const MENU_ITEMS_SUPER_USER: NbMenuItem[] = [
     icon: 'role-ico',
     link: '/app/role-privileges',
   },
+  {
+    title: "Yeast Manager",
+    icon: "yeast-ico",
+    link: "/app/yeast-strains",
+  },
 ];
 
 export const MENU_ITEMS_ORGANIZATION: NbMenuItem[] = [
@@ -48,6 +53,11 @@ export const MENU_ITEMS_ORGANIZATION: NbMenuItem[] = [
     title: 'Recipes',
     icon: 'recipe-ico',
     link: '/app/recipes',
+  },
+  {
+    title: "Yeast Manager",
+    icon: "yeast-ico",
+    link: "/app/yeast-strains",
   },
   {
     title: 'Users',

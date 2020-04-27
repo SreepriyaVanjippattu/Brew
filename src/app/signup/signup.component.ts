@@ -16,7 +16,7 @@ export class SignupComponent implements OnInit {
 
   validPhone = true;
   phone = null;
-  companynameValue: string;
+  companyNameValue: string;
   validPassword = true;
   validEmail = true;
   success: boolean;
@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit {
 
   passwordPattern = '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$';
   signUpForm = this.forms.group({
-    companyname: ['', [Validators.required]],
+    companyName: ['', [Validators.required]],
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     emailId: ['', [Validators.required, Validators.email]],
@@ -64,7 +64,7 @@ export class SignupComponent implements OnInit {
     }
   }
   selectPackage() {
-    this.CompanyName = this.signUpForm.get('companyname').value;
+    this.CompanyName = this.signUpForm.get('companyName').value;
     this.signupservice.signUpContent(this.signUpForm.value);
     this.formSubmitted = true;
     if (this.signUpForm.valid && this.blur === true) {
@@ -84,25 +84,25 @@ export class SignupComponent implements OnInit {
   cancelClick() {
     this.router.navigate(['/']);
   }
-  keydown(companyname) {
+  keydown(companyName) {
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.IsCompanynamesAvailable(companyname), 1000);
+    this.timer = setTimeout(() => this.IsCompanynamesAvailable(companyName), 1000);
   }
-  IsCompanynamesAvailable(companyname: string) {
-    if (this.signUpForm.get('companyname')) {
-      const clientDetails = this.apiService.getData(this.apiService.isCompanyNameAvailable + '&companyname=' + companyname).
+  IsCompanynamesAvailable(companyName: string) {
+    if (this.signUpForm.get('companyName')) {
+      const clientDetails = this.apiService.getDataList(this.apiService.isCompanyNameAvailable + '&companyName=' + companyName).
         subscribe((response) => {
           if (response.status === 200) {
             this.blur = true;
-            this.companynameValue = companyname;
+            this.companyNameValue = companyName;
           }
         },
           error => {
             this.blur = false;
-            this.companynameValue = '';
+            this.companyNameValue = '';
           });
     } else {
-      this.signUpForm.get('companyname').invalid;
+      this.signUpForm.get('companyName').invalid;
     }
   }
 }

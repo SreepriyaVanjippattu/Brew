@@ -115,7 +115,6 @@ export class UsersFormComponent implements OnInit {
   }
 
   userFormSubmit() {
-
     if (this.usersForm.get('image').value) {
       this.postImage();
     }

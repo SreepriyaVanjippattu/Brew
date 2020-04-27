@@ -1,0 +1,208 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12 col-lg-6">
+      <div class="header-title">
+        <h6>Archived Yeast Strains</h6>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb d-flex justify-content-end">
+          <li class="breadcrumb-item position-relative">
+            <a [routerLink]="['/app/yeast-strains']" class="home-font">
+              Yeast Strains
+              <i class="material-icons home-ico">
+                home
+              </i>
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <a [routerLink]="['/app/yeast-strains/archives']" class="home-font"
+              >Archived Yeast Strains
+            </a>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="col-12">
+      <div class="d-flex header-search-wrapper">
+        <div class="d-flex l-search">
+          <input
+            (keyup.enter)="searchYeastStrains()"
+            [(ngModel)]="searchText"
+            type="text"
+            class="l-searchbox"
+            id=""
+            placeholder="Search Archived Users"
+          />
+          <i
+            class="material-icons search-ico cursor-click"
+            (click)="searchYeastStrains()"
+          >
+            search
+          </i>
+          <i class="material-icons clear-ico cursor-click" (click)="clear()">
+            close
+          </i>
+        </div>
+        <i class="material-icons filter-ico cursor-click">filter_list</i>
+        <button
+          style="border: none; background: transparent;"
+          class="material-icons prin-ico cursor-click"
+          [elementToPrint]="TABLE"
+          ngPrint
+        >
+          local_printshop
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row" #TABLE #table>
+    <div class="col-md-12 mt-3">
+      <div class="archive-table table-responsive table-bg">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" (click)="filter('name')">
+               Yeast Name
+                <span class="mfilter-ico ml-2"
+                  ><img src="assets/images/main-filter.svg"
+                /></span>
+              </th>
+              <th scope="col" (click)="filter('createdDate')">
+                Created Date
+                <span class="mfilter-ico ml-2"
+                  ><img src="assets/images/main-filter.svg"
+                /></span>
+              </th>
+              <th scope="col" (click)="filter('status')">
+                Status
+                <span class="mfilter-ico ml-2"
+                  ><img src="assets/images/main-filter.svg"
+                /></span>
+              </th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let content of archiveContent | paginate: config">
+              <th scope="row" class="cursor-click">
+                {{ content.name }}
+              </th>
+              <td>{{ content.createdDate | date: "dd-MM-yyyy" }}</td>
+              <td>{{ statusName }}</td>
+              <td>
+                <span
+                  (click)="restoreArchive(content.id)"
+                  class="restore-ico ml-2 cursor-click"
+                >
+                  <img src="assets/images/restore.png" />
+                </span>
+
+                <span
+                  class="del-ico ml-2 cursor-click"
+                  (click)="deletePopup(content.id)"
+                  data-toggle="modal"
+                  data-target="#exampleModalCenter"
+                >
+                  <img src="assets/images/delete.svg" />
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" [ngClass]="{ hide: pageControl }">
+    <div class="col-md-12 d-flex justify-content-end mt-3">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination p-0 float-right">
+          <pagination-controls
+            class="my-pagination"
+            [maxSize]="config.totalItems"
+            [directionLinks]="true"
+            [autoHide]="false"
+            [responsive]="true"
+            [previousLabel]="previous"
+            [nextLabel]="next"
+            screenReaderPaginationLabel="Pagination"
+            screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page"
+            (pageChange)="pageChange($event)"
+          >
+          </pagination-controls>
+          <select (change)="pageSize($event.target.value)">
+            <option value="5">5/Page</option>
+            <option value="10">10/Page</option>
+            <option value="20">20/Page</option>
+            <option value="50">50/Page</option>
+          </select>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="del-modal">
+  <div
+    class="modal fade"
+    id="exampleModalCenter"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true"
+              ><img src="assets/images/modal-close.svg" class="modal-close-ico"
+            /></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 d-flex justify-content-center del-content">
+              <div>
+                <p class="del-header">You're currently going to delete.</p>
+                <p class="mt-3 text-center">
+                  Are you sure you want to proceed?
+                </p>
+              </div>
+            </div>
+            <div class="col-md-12 d-flex justify-content-center mt-2">
+              <button
+                type="button"
+                data-dismiss="modal"
+                class="btn l-btn-cancel mr-2"
+              >
+                No
+              </button>
+
+              <button
+                (click)="deleteArchivedYeast()"
+                type="button"
+                class="btn l-btn-agree"
+                data-dismiss="modal"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

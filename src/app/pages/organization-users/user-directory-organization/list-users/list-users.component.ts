@@ -104,7 +104,7 @@ export class ListUsersComponent implements OnInit {
   }
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+    this.getuserDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
   }
 
   goToArchive() {

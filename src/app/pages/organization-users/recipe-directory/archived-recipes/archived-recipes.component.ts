@@ -15,7 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ArchivedRecipesComponent implements OnInit {
   @ViewChild('TABLE', { static: false }) TABLE: ElementRef;
   title = 'Excel';
-  archieveContent;
+  archiveContent;
   maxSize: number = 5;
   archiveId;
   next;
@@ -50,10 +50,10 @@ export class ArchivedRecipesComponent implements OnInit {
     this.recipeStatusName = sessionStorage.getItem('recipeStatus');
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.tenantId = user['userDetails'].tenantId;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+    this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
   }
 
-  getArchieveDetails(pageNumber, pageSize, tenantId, searchText) {
+  getArchiveDetails(pageNumber, pageSize, tenantId, searchText) {
     this.router.navigate(['app/recipes/archives'], {
       queryParams: {
         page: this.config.currentPage,
@@ -62,7 +62,7 @@ export class ArchivedRecipesComponent implements OnInit {
     tenantId = this.tenantId;
     const getAllArchivedRecipesAPI = String.Format(this.apiService.getAllArchivedRecipes, this.tenantId);
     this.apiService.getDataList(getAllArchivedRecipesAPI, pageNumber, pageSize, null, null, searchText).subscribe(response => {
-      this.archieveContent = response['body'].recipes;
+      this.archiveContent = response['body'].recipes;
 
       this.headerValue = response['body']['pagingDetails'];
       if (this.headerValue) {
@@ -74,29 +74,29 @@ export class ArchivedRecipesComponent implements OnInit {
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
+    this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
     this.router.navigate(['app/recipes/archives'], { queryParams: { page: nextPage } });
   }
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+    this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, this.searchText);
   }
 
   deleteClick(recipe) {
     this.singleRecipeDelete = recipe;
   }
 
-  deleteArchieve() {
+  deleteArchive() {
     this.committedStatus = this.singleRecipeDelete.statusId.toLowerCase();
     if (this.recipeStatusName !== 'Committed') {
 
       const deleteRecipeAPI = String.Format(this.apiService.deleteRecipe, this.tenantId, this.singleRecipeDelete.id);
       this.apiService.deleteData(deleteRecipeAPI).subscribe((response: any) => {
         if (response.status === "SUCCESS") {
-          this.archieveContent = response['body'];
+          this.archiveContent = response['body'];
           this.toast.success('', 'Recipe Deleted');
-          this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+          this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         } error => {
           if (error instanceof HttpErrorResponse) {
             this.toast.danger(error.error.message, 'Failed');
@@ -111,12 +111,12 @@ export class ArchivedRecipesComponent implements OnInit {
     }
   }
 
-  restoreArchieve(archiveRecipe) {
+  restoreArchive(archiveRecipe) {
     if (archiveRecipe) {
       const archivedRecipeAPI = String.Format(this.apiService.archivedRecipe, this.tenantId, archiveRecipe.id);
       this.apiService.patchData(archivedRecipeAPI).subscribe((response: any) => {
         if (response.status === 200) {
-          this.archieveContent = response['body'];
+          this.archiveContent = response['body'];
           this.toast.success('', 'Recipe Restored');
         } error => {
           if (error instanceof HttpErrorResponse) {
@@ -146,8 +146,8 @@ export class ArchivedRecipesComponent implements OnInit {
           this.pageControl = (this.config.totalItems === 0) ? true : false;
         }
         if (response && response['body']) {
-          this.archieveContent = response['body'].recipes;
-          this.archieveContent.map((recipe, idx) => {
+          this.archiveContent = response['body'].recipes;
+          this.archiveContent.map((recipe, idx) => {
             if (recipe !== null) {
               recipe.name = recipe.name !== null ? recipe.name : '';
               recipe.styleName = recipe.styleName;
@@ -162,31 +162,31 @@ export class ArchivedRecipesComponent implements OnInit {
     this.searchRecipe();
   }
   filter(label) {
-    if (this.archieveContent) {
+    if (this.archiveContent) {
       if (this.toggleStatus === true && label === 'recipe') {
-        this.archieveContent.sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'recipe') {
-        this.archieveContent.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'style') {
-        this.archieveContent.sort((a, b) => a.Roles[0].styleName.toUpperCase() > b.Roles[0].styleName.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.Roles[0].styleName.toUpperCase() > b.Roles[0].styleName.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'style') {
-        this.archieveContent.sort((a, b) => a.styleName.toUpperCase() < b.styleName.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.styleName.toUpperCase() < b.styleName.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'yeastStrain') {
-        this.archieveContent.sort((a, b) => a.yeast.name.toUpperCase() > b.yeast.name.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.yeast.name.toUpperCase() > b.yeast.name.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'yeastStrain') {
-        this.archieveContent.sort((a, b) => a.yeast.name.toUpperCase() < b.yeast.name.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.yeast.name.toUpperCase() < b.yeast.name.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'status') {
-        this.archieveContent.sort((a, b) => a.statusName.toUpperCase() > b.statusName.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.statusName.toUpperCase() > b.statusName.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'status') {
-        this.archieveContent.sort((a, b) => a.statusName.toUpperCase() < b.statusName.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.statusName.toUpperCase() < b.statusName.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'brews') {
-        this.archieveContent.sort((a, b) => a.totalBrews.toUpperCase() > b.totalBrews.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.totalBrews.toUpperCase() > b.totalBrews.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'brews') {
-        this.archieveContent.sort((a, b) => a.totalBrews.toUpperCase() < b.totalBrews.toUpperCase() ? 1 : -1);
+        this.archiveContent.sort((a, b) => a.totalBrews.toUpperCase() < b.totalBrews.toUpperCase() ? 1 : -1);
       }
     }
     this.toggleStatus = !this.toggleStatus;
@@ -198,7 +198,7 @@ export class ArchivedRecipesComponent implements OnInit {
       if (response) {
         const recipeConent = response['body'];
         this.toast.show('', 'Recipe Copied');
-        this.getArchieveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
+        this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {

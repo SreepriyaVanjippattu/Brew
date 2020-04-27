@@ -4,14 +4,13 @@ import { Router } from '@angular/router';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { UtilitiesService } from '../core/utils/utilities.service';
 import { ApiProviderService } from '../core/api-services/api-provider.service';
-import { NbToastrService } from '@nebular/theme';
 import { Md5 } from 'ts-md5';
-import { Alert } from 'selenium-webdriver';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from '../data.service';
 import * as CryptoJS from 'crypto-js';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -19,19 +18,17 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
   userProfile: string;
   message: string;
   errorValidate: boolean = false;
   constructor(
-
     private router: Router,
     private util: UtilitiesService,
     private apiService: ApiProviderService,
-     private toast: ToastrService,
+    private toast: ToastrService,
     private data: DataService,
-    private cookieStore: CookieService,
-  ) { }
+    private cookieStore: CookieService
+  ) {}
 
   get form() {
     return this.loginForm.controls;
@@ -41,7 +38,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   loginError = '';
-  passwordPattern = '^(?=.*\d).{4,8}$';
+  passwordPattern = '^(?=.*d).{4,8}$';
   formSubmitted = false;
   userName;
   password;
@@ -52,13 +49,15 @@ export class LoginComponent implements OnInit {
   userAliasName;
   pwd;
   passwordKey = 'Brewers-WarriorTech';
-
   isEmailValid = true;
   ngOnInit() {
     this.createForm();
     if (this.cookieStore.get('rememberMe')) {
       this.loginForm.get('email').setValue(this.cookieStore.get('email'));
-      const decryptedPwd = CryptoJS.AES.decrypt(this.cookieStore.get('password'), this.passwordKey.trim()).toString(CryptoJS.enc.Utf8);
+      const decryptedPwd = CryptoJS.AES.decrypt(
+        this.cookieStore.get('password'),
+        this.passwordKey.trim()
+      ).toString(CryptoJS.enc.Utf8);
       this.loginForm.get('password').setValue(decryptedPwd);
       this.loginForm.get('rememberMe').setValue(true);
     }
@@ -81,7 +80,10 @@ export class LoginComponent implements OnInit {
       const encryptPassword = new Md5();
       if (this.loginForm.get('rememberMe').value) {
         this.cookieStore.set('email', this.loginForm.get('email').value);
-        const password = CryptoJS.AES.encrypt(this.loginForm.get('password').value.trim(), this.passwordKey.trim()).toString();
+        const password = CryptoJS.AES.encrypt(
+          this.loginForm.get('password').value.trim(),
+          this.passwordKey.trim()
+        ).toString();
         this.cookieStore.set('password', password);
         this.cookieStore.set('rememberMe', 'true');
       } else {
@@ -93,41 +95,43 @@ export class LoginComponent implements OnInit {
         password: encryptPassword.appendStr(this.password).end(),
       };
 
-      this.apiService.postData(this.apiService.login, params).subscribe(response => {
-        if (response) {
-          const responseBody = response['body'];
-          this.data.changeMessage(responseBody);
-          sessionStorage.user = JSON.stringify(response['body']);
-          this.userProfile = sessionStorage.getItem('user');
-          const user = JSON.parse(sessionStorage.getItem('user'));
-          const token = user['userDetails']['token'];
-          localStorage.setItem('token', token);
-          this.setPrivileges(token);
-          this.router.navigate([`/app/dashboard`])
-        }
-      },
+      this.apiService.postData(this.apiService.login, params).subscribe(
+        (response) => {
+          if (response) {
+            const responseBody = response['body'];
+            this.data.changeMessage(responseBody);
+            sessionStorage.user = JSON.stringify(response['body']);
+            this.userProfile = sessionStorage.getItem('user');
+            const user = JSON.parse(sessionStorage.getItem('user'));
+            const token = user['userDetails']['token'];
+            localStorage.setItem('token', token);
+            this.setPrivileges(token);
+            this.router.navigate([`/app/dashboard`]);
+          }
+        },
 
-        error => {
-          this.loginError =  error.error.message;
-         });
+        (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.toast.error('', error.error.message);
+          } else {
+            this.toast.error('', error);
+          }
+        }
+      );
     }
   }
 
-  setPrivileges(token)
-  {
+  setPrivileges(token) {
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(token);
-    localStorage.setItem("permissions", JSON.stringify(decodedToken.Permissions));
-
-  }
- 
-  changeUsername() {
-    this.loginError = '';
+    localStorage.setItem(
+      'permissions',
+      JSON.stringify(decodedToken.Permissions)
+    );
   }
 
   emailSubmit() {
     this.emailError = '';
-
   }
 
   closePwdResetModal() {
@@ -142,13 +146,12 @@ export class LoginComponent implements OnInit {
     if (this.util.emailRegEx.test(event)) {
       this.emailAddress = event;
       this.isEmailValid = true;
-    }else {
+    } else {
       this.isEmailValid = false;
     }
   }
 
   openPwdResetModal() {
     this.router.navigate(['login/forgot-password']);
-
   }
 }
