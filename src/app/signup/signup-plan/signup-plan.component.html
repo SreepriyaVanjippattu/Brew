@@ -26,18 +26,18 @@
     </div>
     <div *ngIf="marked" class="row mt-5">
         <div *ngFor="let subscription of subscriptionPlan; let i = index;" class="subscription-wrapouter">
-            <div [class.active]="subscription.Id === plan" class="subscription-wrap"
-                (click)="selectPlan(subscription.Id)">
+            <div [class.active]="subscription.id === plan" class="subscription-wrap"
+                (click)="selectPlan(subscription.id)">
                 <div class="subscription-radio">
-                    <input type="radio" [value]="subscription.Id" [(ngModel)]="plan" id="subscription"
+                    <input type="radio" [value]="subscription.id" [(ngModel)]="plan" id="subscription"
                         name="subscription">
                     <label></label>
                 </div>
 
-                <h4 class="subscription-title mb-5">{{subscription.Name}}</h4>
+                <h4 class="subscription-title mb-5">{{subscription.name}}</h4>
                 <h5>Subscription Features</h5>
                 <ul class="subscription-list">
-                    <span [innerHTML]="subscription.Description | newLine"></span>
+                    <span [innerHTML]="subscription.description | newLine"></span>
                 </ul>
                 <button (click)="packageClick()" type="button" class="btn btn-block subscription-action">Get
                     Started</button>

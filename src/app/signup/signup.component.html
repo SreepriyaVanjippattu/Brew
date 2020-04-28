@@ -12,7 +12,7 @@
                     <div class="form-group col-md-12">
                         <label for="companyName">Company Name</label>
                         <input type="text" #companyname class="form-control" formControlName="companyName"
-                            id="companyName" (keyup)="keydown(companyName.value)" placeholder="Company Name" />
+                            id="companyName" (keyup)="keydown($event.target.value)" placeholder="Company Name" />
                         <div *ngIf="formSubmitted && form.companyName.errors?.required" class="valid-error">
                             Please enter Company Name
                         </div>

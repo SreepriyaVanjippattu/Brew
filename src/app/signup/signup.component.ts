@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { EventEmitter } from 'events';
 import { SignUpService } from './sign-up.service';
+import { String } from 'typescript-string-operations';
 
 @Component({
   selector: 'signup',
@@ -90,7 +91,8 @@ export class SignupComponent implements OnInit {
   }
   IsCompanynamesAvailable(companyName: string) {
     if (this.signUpForm.get('companyName')) {
-      const clientDetails = this.apiService.getDataList(this.apiService.isCompanyNameAvailable + '&companyName=' + companyName).
+      const getAvailableCompanyNamesApi = String.Format(this.apiService.isCompanyNameAvailable);
+      this.apiService.getDataList(getAvailableCompanyNamesApi, null, null, null, null, companyName).
         subscribe((response) => {
           if (response.status === 200) {
             this.blur = true;

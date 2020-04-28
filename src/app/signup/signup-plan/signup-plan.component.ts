@@ -37,7 +37,7 @@ export class SignupPlanComponent implements OnInit {
 
   getSubscriptionDetails() {
     this.apiService.getDataList(this.apiService.getSubscriptions).subscribe(response => {
-      this.subscriptionPlan = response['body'];
+      this.subscriptionPlan = response['body'].subscriptions;
     });
   }
 
