@@ -18,7 +18,7 @@ import { StatusUse } from '../../../models/status-id-name';
 })
 
 export class DashboardComponent implements OnInit {
-status = StatusUse;
+  status = StatusUse;
   day;
   month;
   hours;
