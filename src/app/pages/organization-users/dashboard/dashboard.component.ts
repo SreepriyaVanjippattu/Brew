@@ -195,16 +195,11 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteBrew() {
-
     const params = {
-      id: this.singleDeletedBrew.Id,
-      BrewRunId: this.singleDeletedBrew.brewRunId,
-      status: '1625A5C1-B41A-4F6E-91AD-E4AA0C61121C',
-      tenantId: this.tenantId,
-      CreatedByUserId: this.currentUser,
+      statusId: '1625A5C1-B41A-4F6E-91AD-E4AA0C61121C',
     };
-
-    this.apiService.putData(this.apiService.changeBrewRunStatus, params).subscribe((response) => {
+    const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.singleDeletedBrew.id);
+    this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response) => {
       if (response) {
         this.getDashBoardDetails();
         this.toastrService.success('', 'Brew successfully deleted');

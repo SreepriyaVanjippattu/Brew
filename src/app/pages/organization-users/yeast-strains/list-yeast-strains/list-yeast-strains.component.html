@@ -71,9 +71,7 @@
               </th>
               <th scope="col" (click)="filter('createdDate')">
                 Created Date
-                <span class="nfilter-ico ml-2"
-                  ><img src="assets/images/filter.svg"
-                /></span>
+                <span class="nfilter-ico ml-2"><img src="assets/images/filter.svg"></span>
               </th>
               <th scope="col" (click)="filter('status')">
                 Status
@@ -91,7 +89,12 @@
               <th scope="row" (click)="goToView(item.id)" class="cursor-click">
                 {{ item.name }}
               </th>
-              <td>{{ item.createdDate | date: "dd-MM-yyyy" }}</td>
+              <td>
+                <span class="cal-img mr-2">
+                  <img src="assets/images/calendar-active.svg">
+
+              </span>
+              {{ item.createdDate | date: "dd-MM-yyyy" }}</td>
               <td>
                 <span> Active </span>
               </td>

@@ -148,16 +148,12 @@ export class BrewLogFormComponent implements OnInit {
     this.brewRunLog = new BrewRunLog();
     this.brewId = this.route.snapshot.paramMap.get('id');
     const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
     this.brewerName = userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"];
-    this.getPreferenceUsed();
     this.getBrewLogMasterDetails();
-    this.getBrewLogDetails();
-    
-  
   }
+
   getBrewLogMasterDetails()
   {
     const getBrewDetailsMasterAPI = String.Format(this.apiService.getBrewLogMasterDetails, this.tenantId);
@@ -169,7 +165,7 @@ export class BrewLogFormComponent implements OnInit {
         this.maltTypes = response['body']['brewLogMasterDetails']['maltGrainTypes'];
         this.styles = response['body']['brewLogMasterDetails']['styles'];
         this.units = response['body']['brewLogMasterDetails']['units']
-        this.findUnits();
+        this.getPreferenceUsed();
         
       }
     });
@@ -200,6 +196,7 @@ export class BrewLogFormComponent implements OnInit {
         this.getPostWhirlpoolTargets(this.recipeContent);
         this.getCoolingTargets(this.recipeContent);
         this.getKettleTargets(this.recipeContent);
+        this.findUnits();
 
         this.brewRunLog.hopesDetails.forEach(element => {
           if (element.addInId === '255ce5b1-4b1a-4da8-b269-5a0b81d9db23') {
@@ -307,15 +304,19 @@ export class BrewLogFormComponent implements OnInit {
 
 
   findUnits() {
-    this.units.forEach(element => {
-      if (element.id === this.preference.temperatureId) {
-        this.preferedUnit = element.symbol;
-      }
-      if (element.id === this.preference.gravityMeasurementId) {
-        this.preferedPlato = element.name;
-        this.platoUnitId = element.id;
-      }
-    });
+   
+    if(this.preference && this.units) {
+      this.units.forEach(element => {
+        if (element.id === this.preference.temperatureId) {
+          this.preferedUnit = element.symbol;
+        }
+
+        if (element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
+        }
+      });
+    }
   }
 
   getPreferenceUsed() {
@@ -323,7 +324,11 @@ export class BrewLogFormComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body']['preferenceSettings'];
+        this.getBrewLogDetails();
 
+      }
+      else{
+        this.findUnits();
       }
     }, error => {
 

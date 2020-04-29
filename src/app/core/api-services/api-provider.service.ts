@@ -111,7 +111,6 @@ export class ApiProviderService {
 
   logoutApi = 'Logout';
 
-  changeBrewRunStatus = 'ChangeBrewRunStatus';
  
   getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
   getBrewRunById = 'GetBrewRunById';
