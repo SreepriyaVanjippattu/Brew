@@ -114,6 +114,74 @@
               <th scope="col">Actions</th>
             </tr>
           </thead>
+           <!-- Add New Tank -->
+          <tbody formArrayName="newTank" *ngFor="let tankItems of newTankForms.controls; let i = index;">
+            <tr [formGroupName]="i" class="w-100">
+              <td> <input formControlName="tankName" class='form-control' placeholder="Tank Name">
+                <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                  <div *ngIf="tankItems.get('tankName').invalid" class="valid-error">
+                    Tank Name is required
+                  </div>
+                </div>
+              </td>
+              <td>
+                <select formControlName="tankType" class="form-control input-dropdown-prefer">
+                  <option value="" disabled>Select</option>
+                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.id}}">{{tankTypes.name}}</option>
+                </select>
+                <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                  <div *ngIf="tankItems.get('tankType').invalid" class="valid-error">
+                    Tank Type is required
+                  </div>
+                </div>
+              </td>
+              <td class="d-flex">
+
+                <div class="mr-2"> <input formControlName="capacity" class='form-control' placeholder="Capacity">
+                  <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                    <div *ngIf="tankItems.get('capacity').invalid" class="valid-error">
+                      Capacity is required
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <select formControlName="unit" class="form-control input-dropdown-prefer" style="min-width: 90px;">
+                    <option value="" disabled>Select</option>
+
+                    <ng-container *ngFor="let unitVol of unitTypes">
+                      <option *ngIf="unitVol.category === 'Size'" [value]="unitVol.id">{{unitVol.symbol}}</option>
+                    </ng-container>
+
+                  </select>
+                  <div *ngIf="formSubmitted && enablenewTankValidation == i">
+                    <div *ngIf="tankItems.get('unit').invalid" class="valid-error">
+                      Unit is required
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input formControlName="isActive" (click)="statusClick(newTankArray.controls[i].controls,i)"
+                    type="checkbox" [checked]="isactive" value="{{isactive}}" class="custom-control-input"
+                    id="switch{{i}}">
+                  <label class="custom-control-label" for="switch{{i}}">{{isactive? 'On' : 'Off'}}</label>
+                </div>
+              </td>
+              <td>
+                <div class="actions">
+
+                  <span (click)="savenewTank(newTankArray.controls[i].controls,i)" class="del-ico ml-2 cursor-click"><i
+                      class="material-icons save-ico">save</i>
+
+                  </span>
+                </div>
+
+              </td>
+
+            </tr>
+          </tbody>
+          <!-- List Tanks -->
           <tbody formArrayName="listTank" *ngFor="let lists of tankForms.controls  ; let i = index;">
 
             <tr [formGroupName]="i" class="w-100">
@@ -181,73 +249,8 @@
 
             </tr>
           </tbody>
-          <!-- Add New Tank -->
-          <tbody formArrayName="newTank" *ngFor="let tankItems of newTankForms.controls; let i = index;">
-            <tr [formGroupName]="i" class="w-100">
-              <td> <input formControlName="tankName" class='form-control' placeholder="Tank Name">
-                <div *ngIf="formSubmitted && enablenewTankValidation == i">
-                  <div *ngIf="tankItems.get('tankName').invalid" class="valid-error">
-                    Tank Name is required
-                  </div>
-                </div>
-              </td>
-              <td>
-                <select formControlName="tankType" class="form-control input-dropdown-prefer">
-                  <option value="" disabled>Select</option>
-                  <option *ngFor="let tankTypes of tankTypeList" value="{{tankTypes.id}}">{{tankTypes.name}}</option>
-                </select>
-                <div *ngIf="formSubmitted && enablenewTankValidation == i">
-                  <div *ngIf="tankItems.get('tankType').invalid" class="valid-error">
-                    Tank Type is required
-                  </div>
-                </div>
-              </td>
-              <td class="d-flex">
-
-                <div class="mr-2"> <input formControlName="capacity" class='form-control' placeholder="Capacity">
-                  <div *ngIf="formSubmitted && enablenewTankValidation == i">
-                    <div *ngIf="tankItems.get('capacity').invalid" class="valid-error">
-                      Capacity is required
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <select formControlName="unit" class="form-control input-dropdown-prefer" style="min-width: 90px;">
-                    <option value="" disabled>Select</option>
-
-                    <ng-container *ngFor="let unitVol of unitTypes">
-                      <option *ngIf="unitVol.category === 'Size'" [value]="unitVol.id">{{unitVol.symbol}}</option>
-                    </ng-container>
-
-                  </select>
-                  <div *ngIf="formSubmitted && enablenewTankValidation == i">
-                    <div *ngIf="tankItems.get('unit').invalid" class="valid-error">
-                      Unit is required
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="custom-control custom-switch">
-                  <input formControlName="isActive" (click)="statusClick(newTankArray.controls[i].controls,i)"
-                    type="checkbox" [checked]="isactive" value="{{isactive}}" class="custom-control-input"
-                    id="switch{{i}}">
-                  <label class="custom-control-label" for="switch{{i}}">{{isactive? 'On' : 'Off'}}</label>
-                </div>
-              </td>
-              <td>
-                <div class="actions">
-
-                  <span (click)="savenewTank(newTankArray.controls[i].controls,i)" class="del-ico ml-2 cursor-click"><i
-                      class="material-icons save-ico">save</i>
-
-                  </span>
-                </div>
-
-              </td>
-
-            </tr>
-          </tbody>
+         
+          
 
         </table>
 
