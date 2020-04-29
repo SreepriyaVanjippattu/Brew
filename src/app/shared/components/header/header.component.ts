@@ -72,10 +72,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logoutClick() {
-    sessionStorage.clear();
-    localStorage.clear();
-    this.router.navigate(['/login']);
-
+    // if (!sessionStorage.user || sessionStorage.user === '') {
+       sessionStorage.clear();
+       localStorage.clear();
+       this.router.navigate(['/login']);
+    // } else {
+    //   this.logoutPostApi();
+    // }
   }
 
   logOutModalOpen(confirmModal) {

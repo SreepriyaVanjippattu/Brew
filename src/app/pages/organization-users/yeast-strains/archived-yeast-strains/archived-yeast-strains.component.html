@@ -92,7 +92,12 @@
               <th scope="row" class="cursor-click">
                 {{ content.name }}
               </th>
-              <td>{{ content.createdDate | date: "dd-MM-yyyy" }}</td>
+              <td>
+                <span class="cal-img mr-2">
+                  <img src="assets/images/calendar-active.svg">
+
+              </span>
+              {{ content.createdDate | date: "dd-MM-yyyy" }}</td>
               <td>{{ statusName }}</td>
               <td>
                 <span
