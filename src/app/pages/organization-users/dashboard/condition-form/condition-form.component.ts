@@ -75,9 +75,8 @@ export class ConditionFormComponent implements OnInit {
    this.tenantId = userDetails["userDetails"]["tenantId"];
    this.currentUser = userDetails["userDetails"]["userId"];
    this.brewerName = userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"];
-    this.getPreferenceUsed();
+   
     this.getConditioningMasterDetails();
-    this.getConditioningDetails();
     
   }
 
@@ -87,7 +86,7 @@ export class ConditionFormComponent implements OnInit {
     this.apiService.getDataList(getConditioningMasterDetailsAPI).subscribe(response => {
       if (response) {
         this.units = response['body']['conditioningMasterDetails']['units']
-        this.findUnits();
+        this.getPreferenceUsed();
       }
     });
   }
@@ -106,6 +105,7 @@ export class ConditionFormComponent implements OnInit {
         this.brewRunConditioning = response['body']['brewRunConditioning'];
         this.conditioningAvailable =response['body']['conditioningAvailable']
         this.recipeContent = response['body']['recipe'];
+        this.findUnits();
         this.getConditionTargets(this.recipeContent);
         this.getFilterTargets(this.recipeContent);
         this.getCarbonTargets(this.recipeContent);
@@ -148,20 +148,17 @@ export class ConditionFormComponent implements OnInit {
   }
 
   findUnits() {
-    if (!this.preference)
-    {
-      this.getPreferenceUsed();
+    if (this.units && this.preference) {
+      this.units.forEach(element => {
+        if (element.id === this.preference.temperatureId) {
+          this.preferedUnit = element.symbol;
+        }
+        if (element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
+        }
+      });
     }
-   
-    this.units.forEach(element => {
-      if (element.id === this.preference.temperatureId) {
-        this.preferedUnit = element.symbol;
-      }
-      if (element.id === this.preference.gravityMeasurementId) {
-        this.preferedPlato = element.name;
-        this.platoUnitId = element.id;
-      }
-    });
   }
 
   getPreferenceUsed() {
@@ -170,6 +167,8 @@ export class ConditionFormComponent implements OnInit {
      
       if (response.status === 200) {
         this.preference = response['body']['preferenceSettings'];
+        this.getConditioningDetails();
+    
       }
     }, error => {
 

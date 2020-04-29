@@ -9,6 +9,7 @@ import 'rxjs/add/operator/switchMap';
 import { DataService } from '../../../data.service';
 import { permission } from '../../../models/rolePermission';
 import { String } from 'typescript-string-operations';
+import { StatusUse } from '../../../models/status-id-name';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,7 @@ import { String } from 'typescript-string-operations';
 })
 
 export class DashboardComponent implements OnInit {
-
+status = StatusUse;
   day;
   month;
   hours;
@@ -161,7 +162,7 @@ export class DashboardComponent implements OnInit {
   archiveBrew() {
 
     const params = {
-      statusId: 'fc7178dd-c5c1-4776-944a-b50fe2c37f06'
+      statusId: this.status.deleted.id
     };
 
     const changeBrewRunStatusAPI = String.Format(this.apiService.ChangeBrewRunStatus, this.tenantId, this.singleArchiveBrew.id);

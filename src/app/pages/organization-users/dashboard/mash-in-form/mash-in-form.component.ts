@@ -85,11 +85,7 @@ export class MashInFormComponent implements OnInit {
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
     this.brewerName = userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"];
-
-    this.getPreferenceUsed();
     this.getMashinMasterDetails();
-
-    this.getMashinDetails(this.tenantId, this.brewId);
 
   }
 
@@ -104,7 +100,8 @@ export class MashInFormComponent implements OnInit {
         this.maltNames = response['body']['mashinMasterDetails']['maltGrainBills'];
         this.styles = response['body']['mashinMasterDetails']['styles'];
         this.units = response['body']['mashinMasterDetails']['units']
-        this.findUnits();
+        this.getPreferenceUsed();
+        
 
       }
     });
@@ -126,6 +123,7 @@ export class MashInFormComponent implements OnInit {
         this.mashinTarget.push(response['body']['recipe']['mashingTargets']);
         this.starchTarget = response['body']['recipe'];
         this.mashinAvailable = response['body']['mashinAvailable'];
+        this.findUnits();
 
         if (this.brewRunMashin.maltGrainBillDetails.length == 0) {
           this.brewRunMashin.maltGrainBillDetails.push(new MaltGrainBillDetail());
@@ -174,15 +172,13 @@ export class MashInFormComponent implements OnInit {
   }
 
   findUnits() {
-    if (!this.preference)
-    {
-      this.getPreferenceUsed();
-    }
+    if(this.units && this.preference){
     this.units.forEach(element => {
       if (element.id === this.preference.temperatureId) {
         this.preferedUnit = element.symbol;
       }
     });
+  }
   }
 
   getPreferenceUsed() {
@@ -190,10 +186,10 @@ export class MashInFormComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body']['preferenceSettings'];
-
+        this.getMashinDetails(this.tenantId, this.brewId);
       }
     }, error => {
-      console.error(error);
+      this.toast.danger('', error.error.message);
     });
   }
 
@@ -250,7 +246,7 @@ export class MashInFormComponent implements OnInit {
       this.saveData().subscribe(response => {
         this.router.navigate([url])
       }, error => {
-        this.toast.danger(error.error.message);
+        this.toast.danger('', error.error.message);
       });
     } else {
       document.getElementById('openModalButton').click();

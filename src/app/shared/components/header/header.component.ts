@@ -72,13 +72,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logoutClick() {
-    if (!sessionStorage.user || sessionStorage.user === '') {
-      sessionStorage.clear();
-      localStorage.clear();
-      this.router.navigate(['/login']);
-    } else {
-      this.logoutPostApi();
-    }
+    sessionStorage.clear();
+    localStorage.clear();
+    this.router.navigate(['/login']);
+
   }
 
   logOutModalOpen(confirmModal) {
@@ -93,7 +90,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logoutPostApi() {
-    const email = JSON.parse(sessionStorage.user).UserProfile.EmailAddress;
+    const email = this.userProfile.emailAddress;
     const params = {
       email: email,
     };

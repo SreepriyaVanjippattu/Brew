@@ -325,10 +325,6 @@ export class BrewLogFormComponent implements OnInit {
       if (response.status === 200) {
         this.preference = response['body']['preferenceSettings'];
         this.getBrewLogDetails();
-
-      }
-      else{
-        this.findUnits();
       }
     }, error => {
 
@@ -386,7 +382,7 @@ export class BrewLogFormComponent implements OnInit {
     this.saveData().subscribe(response => {
       this.router.navigate([url])
     }, error => {
-      this.toast.danger(error.error.message);
+      this.toast.danger('', error.error.message);
     });
     
   }

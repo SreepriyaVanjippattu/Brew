@@ -125,13 +125,12 @@ export class ListRecipeComponent implements OnInit {
   }
 
   editRecipe(recipeId, recipelist) {
-
     const data = this.data.checkPermission(this.permission.Modify_Recipe.Id);
     if (!data) {
       this.toast.danger('You don\'t have access', 'Error');
     } else {
 
-      if (recipelist.StatusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+      if (recipelist.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
         this.toast.warning('Already Committed', 'Recipe');
       } else {
         sessionStorage.setItem('page', 'edit');

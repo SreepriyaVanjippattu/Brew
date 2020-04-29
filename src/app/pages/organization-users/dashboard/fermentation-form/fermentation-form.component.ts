@@ -120,9 +120,9 @@ export class FermentationFormComponent implements OnInit {
     this.tenantId = userDetails["userDetails"]["tenantId"];
     this.currentUser = userDetails["userDetails"]["userId"];
     this.brewerName = userDetails["userDetails"]["firstName"] + ' ' + userDetails["userDetails"]["lastName"];
-    this.getPreferenceUsed();
+    
     this.getFermentationMasterDetails();
-    this.getFermentationDetails();
+    
   }
   currentValue(event) {
     this.changeValue = event.target.value;
@@ -143,8 +143,9 @@ export class FermentationFormComponent implements OnInit {
         this.styles = response['body']['fermentationMasterDetails']['styles'];
         this.units = response['body']['fermentationMasterDetails']['units']
         this.yeastStrain = response['body']['fermentationMasterDetails']['yeastStrains'];
-        this.tankList = response['body']['fermentationMasterDetails']['tanks']
-        this.findUnits();
+        this.tankList = response['body']['fermentationMasterDetails']['tanks'];
+        this.getPreferenceUsed();
+        
         
       }
     });
@@ -164,6 +165,7 @@ export class FermentationFormComponent implements OnInit {
         this.currentTank = this.brewRunFermentation.tankName;
         this.recipeContent = response['body']['recipe'];
         this.fermentationAvailable = response['body']['fermentationAvailable'];
+        this.findUnits();
         this.getFermentTargets(this.recipeContent);
         this.getYeastTargets(this.recipeContent);
         this.getHopsTargets(this.recipeContent);
@@ -247,19 +249,17 @@ export class FermentationFormComponent implements OnInit {
 
 
   findUnits() {
-    if (!this.preference)
-    {
-      this.getPreferenceUsed();
+    if (this.units && this.preference) {
+      this.units.forEach(element => {
+        if (element.id === this.preference.temperatureId) {
+          this.preferedUnit = element.symbol;
+        }
+        if (element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
+        }
+      });
     }
-    this.units.forEach(element => {
-      if (element.id === this.preference.temperatureId) {
-        this.preferedUnit = element.symbol;
-      }
-      if (element.id === this.preference.gravityMeasurementId) {
-        this.preferedPlato = element.name;
-        this.platoUnitId = element.id;
-      }
-    });
   }
 
   getPreferenceUsed() {
@@ -267,7 +267,7 @@ export class FermentationFormComponent implements OnInit {
     this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
       if (response.status === 200) {
         this.preference = response['body']['preferenceSettings'];
-
+        this.getFermentationDetails();
       }
     }, error => {
 
