@@ -323,7 +323,6 @@ export class DashboardComponent implements OnInit {
   }
 
   filter(label) {
-    debugger;
     if (this.brewRuns) {
       if (this.toggleStatus === true && label === 'brewId') {
         this.brewRuns.sort((a, b) => a.brewRunId.toUpperCase() > b.brewRunId.toUpperCase() ? 1 : -1);

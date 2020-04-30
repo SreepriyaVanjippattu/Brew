@@ -311,7 +311,6 @@ export class ArchivedBrewsComponent implements OnInit {
   }
 
   filter(label) {
-    debugger;
     if (this.archivedContent) {
       if (this.toggleStatus === true && label === 'brewId') {
         this.archivedContent.sort((a, b) => a.brewRunId.toUpperCase() > b.brewRunId.toUpperCase() ? 1 : -1);
