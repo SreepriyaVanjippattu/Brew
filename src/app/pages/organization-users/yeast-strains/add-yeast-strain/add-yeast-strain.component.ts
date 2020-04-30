@@ -111,15 +111,15 @@ export class AddYeastStrainComponent implements OnInit {
         this.apiService.postData(addYeastStrainApi, params).subscribe(
           (response: any) => {
             if (response.status === 200) {
-              this.toastr.show("", "Success");
+              this.toastr.show("New Yeast Strain Added", "Success");
               this.router.navigate(["app/yeast-strains"]);
             }
           },
           (error) => {
             if (error instanceof HttpErrorResponse) {
-              this.toastr.danger("", error.error.message);
+              this.toastr.danger(error.error.message, 'Try Again');
             } else {
-              this.toastr.danger("", error);
+              this.toastr.danger(error, 'Try Again');
             }
           }
         );
@@ -128,15 +128,15 @@ export class AddYeastStrainComponent implements OnInit {
         this.apiService.putData(updateYeastStrainApi, params).subscribe(
           (response: any) => {
             if (response.status === 200) {
-              this.toastr.show("", "Success");
+              this.toastr.show("Yeast Strain Edited Successfully", "Success");
               this.router.navigate(["app/yeast-strains"]);
             }
           },
           (error) => {
             if (error instanceof HttpErrorResponse) {
-              this.toastr.danger("", error.error.message);
+              this.toastr.danger(error.error.message, 'Try Again');
             } else {
-              this.toastr.danger("", error);
+              this.toastr.danger( error,'Try Again');
             }
           }
         );

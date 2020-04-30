@@ -5,3 +5,9 @@
         width: 20px;
     }
 }
+.l-search {
+  min-width: 400px;
+  @media (max-width: 767px) {
+    min-width: calc(100% - 95px);
+  }
+}

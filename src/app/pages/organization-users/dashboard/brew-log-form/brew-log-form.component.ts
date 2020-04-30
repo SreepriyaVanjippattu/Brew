@@ -382,7 +382,7 @@ export class BrewLogFormComponent implements OnInit {
     this.saveData().subscribe(response => {
       this.router.navigate([url])
     }, error => {
-      this.toast.danger('', error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
     
   }
@@ -668,7 +668,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClass = true;
       }, error => {
         this.setClass = false;
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -681,7 +681,7 @@ export class BrewLogFormComponent implements OnInit {
         this.setClassSparge = true;
       }, error => {
         this.setClassSparge = false;
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -695,7 +695,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassFirst = true;
     }, error => {
       this.setClassFirst = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -708,7 +708,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassLast = true;
     }, error => {
       this.setClassLast = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -721,7 +721,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassKettle = true;
     }, error => {
       this.setClassKettle = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -737,7 +737,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassHops = true;
     }, error => {
       this.setClassHops = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -753,7 +753,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassHopsWhirl = true;
     }, error => {
       this.setClassHopsWhirl = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -768,7 +768,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassAdjuncts = true;
     }, error => {
       this.setClassAdjuncts = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -783,7 +783,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassAdjunctsWhirl = true;
     }, error => {
       this.setClassAdjunctsWhirl = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -797,7 +797,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassPostBoil = true;
     }, error => {
       this.setClassPostBoil = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -811,7 +811,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassWhirl = true;
     }, error => {
       this.setClassWhirl = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -825,7 +825,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassPostWhirl = true;
     }, error => {
       this.setClassPostWhirl = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 
@@ -838,7 +838,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassCool = true;
     }, error => {
       this.setClassCool = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message,'Try Again');
     });
   }
 

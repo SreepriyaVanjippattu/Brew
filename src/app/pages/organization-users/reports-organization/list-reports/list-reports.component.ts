@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
 import * as jsPDF from 'jspdf';
 import { permission } from '../../../../models/rolePermission';
 import { DataService } from '../../../../data.service';
-import { NbToastrService } from '@nebular/theme';
+import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { String } from 'typescript-string-operations';
 
 @Component({
@@ -42,6 +42,7 @@ export class ListReportsComponent implements OnInit {
     private route: ActivatedRoute,
     private data: DataService,
     private toastr: NbToastrService,
+    private scrolltop: NbLayoutScrollService,
 
   ) { }
 
@@ -190,6 +191,10 @@ export class ListReportsComponent implements OnInit {
         ferment.color = '#04FB6F';
       }
     }
+  }
+
+  goToTop() {
+    this.scrolltop.scrollTo(0, 0);
   }
 
   getDate(date) {

@@ -154,10 +154,10 @@ export class BrewRunFormComponent implements OnInit {
 
         if (response) {
           this.brewBody = response['body']['brewRun'];
-          this.toast.show('', 'Brew successfully added');
+          this.toast.show('Brew successfully added', 'Success');
         }
       }, error => {
-        this.toast.danger('', error.error.message);
+          this.toast.danger(error.error.message, 'Try Again');
       });
     }
   }
@@ -182,7 +182,7 @@ export class BrewRunFormComponent implements OnInit {
       this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
         if (response.status === 200) {
-          this.toast.success('', 'Brew successfully started');
+          this.toast.success('Brew successfully started', 'Success');
           this.router.navigate(['app/dashboard']);
         }
       });

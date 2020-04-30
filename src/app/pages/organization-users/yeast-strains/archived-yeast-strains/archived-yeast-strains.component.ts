@@ -102,9 +102,9 @@ deleteId: any;
       },
       (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.toast.danger("", error.error.message);
+          this.toast.danger(error.error.message, 'Try Again');
         } else {
-          this.toast.danger("", error);
+          this.toast.danger(error, 'Try Again');
         }
       }
     );
@@ -121,9 +121,9 @@ deleteId: any;
           }
           (error) => {
             if (error instanceof HttpErrorResponse) {
-              this.toast.danger(error.error.message, "Failed");
+              this.toast.danger(error.error.message, "Try Again");
             } else {
-              this.toast.danger("", error);
+              this.toast.danger( error,'Try Again');
             }
           };
           this.router.navigate(["app/yeast-strains"]);

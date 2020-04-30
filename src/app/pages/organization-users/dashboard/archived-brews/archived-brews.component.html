@@ -32,7 +32,7 @@
             <div class="d-flex header-search-wrapper">
                 <div class="d-flex l-search">
                     <input (keyup.enter)="searchBrew()" [(ngModel)]="searchText" type="text" class="l-searchbox" id=""
-                        placeholder="Search Brew Run">
+                        placeholder="Search Archived Brew Run">
                         <i class="material-icons search-ico cursor-click" (click)="searchBrew()"> search </i>
                     <i class="material-icons clear-ico cursor-click" (click)="clear()">
                         close
@@ -60,10 +60,10 @@
                             <th scope="col" (click)="filter('tankName')">Tank Name
                                 <span class="nfilter-ico ml-2"><img src="assets/images/filter.svg"></span>
                             </th>
-                            <th scope="col">Start/End Date
+                            <th scope="col" (click)="filter('date')">Start/End Date
                                 <span class="nfilter-ico ml-2"><img src="assets/images/filter.svg"></span>
                             </th>
-                            <th scope="col">Status
+                            <th scope="col" (click)="filter('status')">Status
                                 <span class="nfilter-ico ml-2"><img src="assets/images/filter.svg"></span>
                             </th>
                             <th scope="col">Actions</th>

@@ -169,11 +169,11 @@ export class DashboardComponent implements OnInit {
     this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
       if (response) {
-        this.toastrService.success('', 'Brew successfully archived')
+        this.toastrService.success('Brew successfully archived', 'Success')
         this.router.navigate(['app/dashboard/archives']);
       }
     }, error => {
-      this.toastrService.danger('', 'Something went wrong, Try Again');
+      this.toastrService.danger('Something went wrong', 'Try Again');
     });
 
 
@@ -203,10 +203,10 @@ export class DashboardComponent implements OnInit {
     this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response) => {
       if (response) {
         this.getDashBoardDetails();
-        this.toastrService.success('', 'Brew successfully deleted');
+        this.toastrService.success('Brew successfully deleted', 'Success');
       }
     }, error => {
-      this.toastrService.danger('', 'Something went wrong, Try Again');
+      this.toastrService.danger('Something went wrong', 'Try Again');
     });
 
   }
@@ -311,7 +311,7 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteToast() {
-    this.toastrService.warning('', 'Unable to delete, Brew already started');
+    this.toastrService.warning('Brew already started', 'Unable to delete');
   }
 
   archiveToast() {
@@ -319,10 +319,11 @@ export class DashboardComponent implements OnInit {
   }
 
   editToast() {
-    this.toastrService.warning('', 'Unable to edit, Brew already committed');
+    this.toastrService.warning('Brew already committed', 'Unable to edit');
   }
 
   filter(label) {
+    debugger;
     if (this.brewRuns) {
       if (this.toggleStatus === true && label === 'brewId') {
         this.brewRuns.sort((a, b) => a.brewRunId.toUpperCase() > b.brewRunId.toUpperCase() ? 1 : -1);

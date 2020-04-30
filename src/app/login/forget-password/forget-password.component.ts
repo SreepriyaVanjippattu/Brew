@@ -72,16 +72,16 @@ export class ForgetPasswordComponent implements OnInit {
       this.apiService.postData(postEmailApi, params).subscribe(
         (response) => {
           if (response && response['status'] === 200) {
-            this.toastr.success('Check your Inbox', 'Mail Sent');
+            this.toastr.success('Mail Sent', 'Check your Inbox');
             this.resetPasswordForm.reset();
             this.formSubmitted = false;
           }
         },
         (error) => {
           if (error instanceof HttpErrorResponse) {
-            this.toastr.error('', error.error.message);
+            this.toastr.error(error.error.message, 'Try Again');
           } else {
-            this.toastr.error('', error);
+            this.toastr.error(error, 'Try Again');
           }
         }
       );

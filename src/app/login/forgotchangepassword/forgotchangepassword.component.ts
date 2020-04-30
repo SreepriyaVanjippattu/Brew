@@ -100,9 +100,9 @@ export class ForgotchangepasswordComponent implements OnInit {
           },
           (error) => {
             if (error instanceof HttpErrorResponse) {
-              this.toast.error('', error.error.message);
+              this.toast.error(error.error.message, 'Try Again');
             } else {
-              this.toast.error('', error);
+              this.toast.error(error, 'Try Again');
             }
           }
         );

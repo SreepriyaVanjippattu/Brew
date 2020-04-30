@@ -146,10 +146,10 @@ export class ArchivedUsersComponent implements OnInit {
     },
       error => {
         if (error instanceof HttpErrorResponse) {
-          this.toastrService.danger('', error.error.message);
+          this.toastrService.danger(error.error.message, 'Try Again');
         }
         else {
-          this.toastrService.danger('', error);
+          this.toastrService.danger(error, 'Try Again');
         }
       });
   }
@@ -198,10 +198,10 @@ export class ArchivedUsersComponent implements OnInit {
       },
         error => {
           if (error instanceof HttpErrorResponse) {
-            this.toastrService.danger('', error.error.message);
+            this.toastrService.danger(error.error.message, 'Try Again');
           }
           else {
-            this.toastrService.danger('', error);
+            this.toastrService.danger(error, 'Try Again');
           }
         },
       );

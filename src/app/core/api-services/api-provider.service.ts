@@ -116,8 +116,12 @@ export class ApiProviderService {
   getBrewRunById = 'GetBrewRunById';
   editClient = 'EditClient';
   getSubscriptions = 'user/v1/brewers/subscriptions';
-  isCompanyNameAvailable ='user/v1/brewers/companyname';
-  initilizeClient ='';
+  isCompanyNameAvailable ='user/v1/brewers/companyname/{0}/check';
+  initilizeClient ='user/v1/brewers/{0}/client/initialize';
+  archiveClient = 'user/v1/brewers/{0}/clients/{1}/archive';
+  editTenantStatus = 'user/v1/brewers/{0}/tenantstatus';
+  getAllActiveClients = 'user/v1/brewers/clients';
+  getArchivedClients = 'user/v1/brewers/clients/archived';
   addBrewUserAuditTrail ='';
 
   

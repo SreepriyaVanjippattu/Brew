@@ -481,10 +481,10 @@ export class RecipeFermentationComponent implements OnInit {
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
-          this.toast.danger('', error.error.message);
+          this.toast.danger(error.error.message, 'Try Again');
         }
         else {
-          this.toast.danger(error);
+          this.toast.danger(error,'Try Again');
         }
       });
     }

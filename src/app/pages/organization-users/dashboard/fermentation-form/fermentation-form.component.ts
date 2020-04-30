@@ -338,7 +338,7 @@ export class FermentationFormComponent implements OnInit {
     this.saveData().subscribe(response => {
       this.router.navigate([url])
     }, error => {
-      this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
     });
     
    
@@ -530,7 +530,7 @@ export class FermentationFormComponent implements OnInit {
       this.setClass = true;
     }, error => {
       this.setClass = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
      });
   }
 
@@ -543,7 +543,7 @@ export class FermentationFormComponent implements OnInit {
       this.setClassYeast = true;
     }, error => {
       this.setClassYeast = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
      });
   }
 
@@ -558,7 +558,7 @@ export class FermentationFormComponent implements OnInit {
       this.setClassHops = true;
     }, error => {
       this.setClassHops = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
      });
   }
 
@@ -573,7 +573,7 @@ export class FermentationFormComponent implements OnInit {
       this.setClassAdjuncts = true;
     }, error => {
       this.setClassAdjuncts = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
      });
   }
 
@@ -587,7 +587,7 @@ export class FermentationFormComponent implements OnInit {
       this.setClassDia = true;
     }, error => {
       this.setClassDia = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
      });
   }
 
@@ -600,7 +600,7 @@ export class FermentationFormComponent implements OnInit {
       this.setClassCool = true;
     }, error => {
       this.setClassCool = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
      });
   }
 
@@ -613,7 +613,7 @@ export class FermentationFormComponent implements OnInit {
       this.setClassPrevFerm = true;
     }, error => {
       this.setClassPrevFerm = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
      });
   }
 

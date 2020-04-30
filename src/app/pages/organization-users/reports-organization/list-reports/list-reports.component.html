@@ -28,7 +28,7 @@
             <div class="header-right">
                 <div class='d-flex header-search-wrapper'>
                     <div class="d-flex l-search">
-                        <input (keyup.enter)="searchBrew()" [(ngModel)]="searchText" class='l-searchbox' placeholder="Search" type="text">
+                        <input (keyup.enter)="searchBrew()" [(ngModel)]="searchText" class='l-searchbox' placeholder="Search Reports" type="text">
                         <i class="material-icons search-ico cursor-click" (click)="searchBrew()"> search </i>
                         <i class="material-icons clear-ico cursor-click" (click)="clear()">
                             close
@@ -157,6 +157,11 @@
                         <option value="20">20/Page</option>
                         <option value="50">50/Page</option>
                     </select>
+                    <div class="report-scrolltop" (click)="goToTop()">
+                        <i class="material-icons scroll-arrow">
+                          expand_less
+                        </i>
+                      </div>
                 </ul>
             </nav>
         </div>

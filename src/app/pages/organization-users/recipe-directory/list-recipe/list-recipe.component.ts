@@ -164,10 +164,10 @@ export class ListRecipeComponent implements OnInit {
           this.toast.success('', 'Recipe Archived');
         } error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger('', error.error.message);
+            this.toast.danger(error.error.message, 'Try Again');
           }
           else {
-            this.toast.danger('', error);
+            this.toast.danger(error, 'Try Again');
           }
         }
         this.router.navigate(['app/recipes/archives']);
@@ -187,19 +187,19 @@ export class ListRecipeComponent implements OnInit {
       this.apiService.deleteData(deleteRecipeAPI).subscribe((response: any) => {
         if (response.status === "SUCCESS") {
           this.recipeContent = response['body'];
-          this.toast.success('', 'Recipe Deleted');
+          this.toast.success('Recipe Deleted Successfully','Success');
           this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         } error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger('', error.error.message);
+            this.toast.danger(error.error.message, 'Try Again');
           }
           else {
-            this.toast.danger('', error);
+            this.toast.danger( error,'Try Again');
           }
         }
       });
     } else {
-      this.toast.danger('', 'Committed Recipe Cannot Delete');
+      this.toast.danger('', 'Committed Recipe Cannot be Delete');
     }
   }
 
@@ -289,10 +289,10 @@ export class ListRecipeComponent implements OnInit {
       this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
     }, error => {
       if (error instanceof HttpErrorResponse) {
-        this.toast.danger('', error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       }
       else {
-        this.toast.danger('', error);
+        this.toast.danger(error, 'Try Again');
       }
     });
   }
@@ -315,16 +315,16 @@ export class ListRecipeComponent implements OnInit {
       const cloneRecipeAPI = String.Format(this.apiService.cloneRecipe, this.tenantId, recipeId);
       this.apiService.postData(cloneRecipeAPI).subscribe(response => {
         if (response) {
-          this.toast.show('', 'New Recipe Created');
+          this.toast.show('Recipe Copied', 'Success');
           this.getRecipeDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         }
       },
         error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger('', error.error.message);
+            this.toast.danger(error.error.message, 'Try Again');
           }
           else {
-            this.toast.danger('', error);
+            this.toast.danger(error, 'Try Again');
           }
         });
     }

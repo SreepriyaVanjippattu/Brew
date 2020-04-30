@@ -168,7 +168,7 @@ export class ArchivedBrewsComponent implements OnInit {
         this.router.navigate(['app/dashboard']);
       }
     }, error => {
-      this.toastrService.danger('Something went wrong, Try Again');
+      this.toastrService.danger('Something went wrong', 'Try Again');
     });
   }
 
@@ -182,11 +182,11 @@ export class ArchivedBrewsComponent implements OnInit {
     this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
       if (response) {
-        this.toastrService.show('Deleted', 'Success');
+        this.toastrService.show('Deleted Archived Brew Successfully', 'Success');
         this.router.navigate(['app/dashboard']);
       }
     }, error => {
-      this.toastrService.danger('Something went wrong, Try Again');
+      this.toastrService.danger('Something went wrong',' Try Again');
     });
   }
 
@@ -307,10 +307,11 @@ export class ArchivedBrewsComponent implements OnInit {
   }
 
   restoreToast() {
-    this.toastrService.warning('Unable to restore, Brew already canceled');
+    this.toastrService.warning('Brew already canceled', 'Unable to restore');
   }
 
   filter(label) {
+    debugger;
     if (this.archivedContent) {
       if (this.toggleStatus === true && label === 'brewId') {
         this.archivedContent.sort((a, b) => a.brewRunId.toUpperCase() > b.brewRunId.toUpperCase() ? 1 : -1);
@@ -326,6 +327,16 @@ export class ArchivedBrewsComponent implements OnInit {
         this.archivedContent.sort((a, b) => a.tankName.toUpperCase() > b.tankName.toUpperCase() ? 1 : -1);
       } else if (this.toggleStatus === false && label === 'tankName') {
         this.archivedContent.sort((a, b) => a.tankName.toUpperCase() < b.tankName.toUpperCase() ? 1 : -1);
+      }
+      if (this.toggleStatus === true && label === 'date') {
+        this.archivedContent.sort((a, b) => a.startTime > b.startTime ? 1 : -1);
+      } else if (this.toggleStatus === false && label === 'date') {
+        this.archivedContent.sort((a, b) => a.startTime < b.startTime ? 1 : -1);
+      }
+      if (this.toggleStatus === true && label === 'status') {
+        this.archivedContent.sort((a, b) => a.status.toUpperCase() > b.status.toUpperCase() ? 1 : -1);
+      } else if (this.toggleStatus === false && label === 'status') {
+        this.archivedContent.sort((a, b) => a.status.toUpperCase() < b.status.toUpperCase() ? 1 : -1);
       }
     }
     this.toggleStatus = !this.toggleStatus;

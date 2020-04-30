@@ -95,14 +95,14 @@ export class ArchivedRecipesComponent implements OnInit {
       this.apiService.deleteData(deleteRecipeAPI).subscribe((response: any) => {
         if (response.status === "SUCCESS") {
           this.archiveContent = response['body'];
-          this.toast.success('', 'Recipe Deleted');
+          this.toast.success('Recipe Deleted Successfully', 'Success');
           this.getArchiveDetails(this.config.currentPage, this.config.itemsPerPage, this.tenantId, null);
         } error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger(error.error.message, 'Failed');
+            this.toast.danger(error.error.message, 'Try Again');
           }
           else {
-            this.toast.danger('', error);
+            this.toast.danger(error, 'Try Again');
           }
         }
       });
@@ -117,13 +117,13 @@ export class ArchivedRecipesComponent implements OnInit {
       this.apiService.patchData(archivedRecipeAPI).subscribe((response: any) => {
         if (response.status === 200) {
           this.archiveContent = response['body'];
-          this.toast.success('', 'Recipe Restored');
+          this.toast.success('Recipe Restored', 'Success');
         } error => {
           if (error instanceof HttpErrorResponse) {
-            this.toast.danger(error.error.message, 'Failed');
+            this.toast.danger(error.error.message, 'Try Again');
           }
           else {
-            this.toast.danger('', error);
+            this.toast.danger(error, 'Try again');
           }
         }
         this.router.navigate(['app/recipes']);
@@ -202,10 +202,10 @@ export class ArchivedRecipesComponent implements OnInit {
       }
     }, error => {
       if (error instanceof HttpErrorResponse) {
-        this.toast.danger('', error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       }
       else {
-        this.toast.danger('', error);
+        this.toast.danger(error, 'Try Again');
       }
     });
   }

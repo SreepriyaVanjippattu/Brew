@@ -198,15 +198,15 @@ export class EditUserComponent implements OnInit {
       this.apiService.putData(edituserApi, params).subscribe((response: any) => {
 
         if (response.status === 200) {
-          this.toastr.show('Success');
+          this.toastr.show('Edit User successfully','Success');
           this.router.navigate(['app/user-directory']);
         }
       }, error => {
         if (error instanceof HttpErrorResponse) {
-          this.toastr.danger('', error.error.message);
+          this.toastr.danger(error.error.message, 'Try Again');
         }
         else {
-          this.toastr.danger('', error);
+          this.toastr.danger(error,'Try Again');
         }
       }
       );
@@ -232,7 +232,7 @@ export class EditUserComponent implements OnInit {
         this.router.navigate(['/app/user-directory']);
       }
     }, error => {
-      this.toastr.danger('', error.error.message);
+        this.toastr.danger(error.error.message, 'Try Again');
     });
   }
 

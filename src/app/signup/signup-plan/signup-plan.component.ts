@@ -49,7 +49,7 @@ export class SignupPlanComponent implements OnInit {
     if (this.subScriptionParams) {
       const md5 = new Md5();
       const params = {
-        clientName: this.subScriptionParams.signUp.companyname,
+        clientName: this.subScriptionParams.signUp.companyName,
         emailAddress: this.subScriptionParams.signUp.emailId,
         phoneNumber: this.subScriptionParams.signUp.phone,
         firstName: this.subScriptionParams.signUp.firstName,
@@ -63,7 +63,7 @@ export class SignupPlanComponent implements OnInit {
           this.router.navigate(['signup/signup-success']);
         }
       }, error => {
-        this.toastr.error('', error.error.message);
+          this.toastr.error(error.error.message, 'Try Again');
       });
     }
   }

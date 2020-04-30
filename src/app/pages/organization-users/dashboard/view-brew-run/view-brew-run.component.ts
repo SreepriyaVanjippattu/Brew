@@ -93,7 +93,7 @@ export class ViewBrewRunComponent implements OnInit {
   }
 
   addNewErrorMsg() {
-    this.toast.warning('', 'Unable to enter data, Brew not yet started');
+    this.toast.warning('Unable to enter data', 'Brew not yet started');
   }
 
   viewBrewDetails() {
@@ -137,11 +137,11 @@ export class ViewBrewRunComponent implements OnInit {
     this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
       if (response) {
-        this.toast.success('', 'Brew successfully archived');
+        this.toast.success('Brew successfully archived', 'Success');
         this.router.navigate(['app/dashboard/archives']);
       }
     }, error => {
-      this.toast.danger('', 'Something went wrong, Try Again');
+        this.toast.danger('Something went wrong', 'Try Again');
     });
   }
 
@@ -155,7 +155,7 @@ export class ViewBrewRunComponent implements OnInit {
     this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
       if (response.status === 200) {
-        this.toast.success('', 'Brew successfully ended');
+        this.toast.success('Brew successfully ended', 'Success');
       }
     });
   }
@@ -165,7 +165,7 @@ export class ViewBrewRunComponent implements OnInit {
   }
 
   endBrewRunToast() {
-    this.toast.warning('', 'Unable to end brew, Brew already committed');
+    this.toast.warning('Unable to end brew', 'Brew already committed');
   }
 
 }

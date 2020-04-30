@@ -189,9 +189,9 @@ export class ListYeastStrainsComponent implements OnInit {
       },
       (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.toastrService.danger("", error.error.message);
+          this.toastrService.danger(error.error.message, 'Try Again');
         } else {
-          this.toastrService.danger("", error);
+          this.toastrService.danger(error,'Try Again');
         }
       }
     );
@@ -209,13 +209,13 @@ export class ListYeastStrainsComponent implements OnInit {
     const archivedYeastAPI = String.Format(this.apiService.archiveYeastStrain, this.tenantId, this.archiveId);
     this.apiService.patchData(archivedYeastAPI).subscribe((response: any) => {
       if (response.status === 200) {
-        this.toastrService.success("", "Yeast Strain Archived");
+        this.toastrService.success( "Yeast Strain Archived",'success');
       }
       (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.toastrService.danger("", error.error.message);
+          this.toastrService.danger( error.error.message,'Try Again');
         } else {
-          this.toastrService.danger("", error);
+          this.toastrService.danger(error,'Try Again');
         }
       };
       this.router.navigate(["app/yeast-strains/archives"]);

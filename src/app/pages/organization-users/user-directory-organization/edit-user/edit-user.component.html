@@ -114,7 +114,6 @@
                         <label for="role">Role</label>
                         <select *ngIf="checkPermission" class="form-control input-style" id="role"
                             formControlName="roles">
-                            <option disabled value="">Select...</option>
                             <option *ngFor="let role of roles" [value]="role.id">{{role.name}}</option>
                         </select>
                         <select *ngIf="!checkPermission" disabled class="form-control input-style" id="role"

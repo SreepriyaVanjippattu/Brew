@@ -189,7 +189,7 @@ export class MashInFormComponent implements OnInit {
         this.getMashinDetails(this.tenantId, this.brewId);
       }
     }, error => {
-      this.toast.danger('', error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -246,7 +246,7 @@ export class MashInFormComponent implements OnInit {
       this.saveData().subscribe(response => {
         this.router.navigate([url])
       }, error => {
-        this.toast.danger('', error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       });
     } else {
       document.getElementById('openModalButton').click();
@@ -419,7 +419,7 @@ export class MashInFormComponent implements OnInit {
       this.setClass = true;
       }, error => {
         this.setClass = false;
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -443,7 +443,7 @@ export class MashInFormComponent implements OnInit {
       this.setClassWater = true;
       }, error => {
         this.setClassWater = false;
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
     });
 
   }
@@ -472,7 +472,7 @@ export class MashInFormComponent implements OnInit {
       this.setClassMashin = true;
       }, error => {
         this.setClassMashin = false;
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
     });
 
 
@@ -489,7 +489,7 @@ export class MashInFormComponent implements OnInit {
       this.setClassStarch = true;
       }, error => {
         this.setClassStarch = false;
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
     });
 
   }
@@ -566,7 +566,7 @@ export class MashInFormComponent implements OnInit {
         this.mashinAvailable = response['body']['mashinAvailable'];
         return observableOf(true);
       }, error => {
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       });
     }
     else {
@@ -574,7 +574,7 @@ export class MashInFormComponent implements OnInit {
         this.mashinAvailable = response['body']['mashinAvailable'];
         return observableOf(true);
       }, error => {
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       });
       return observableOf(false);
     }

@@ -194,7 +194,7 @@ export class ProfileOrganizationComponent implements OnInit, OnDestroy {
         this.updateSession();
       }
     }, error => {
-      this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       this.responseCompany = false;
     });
   }
@@ -235,7 +235,7 @@ export class ProfileOrganizationComponent implements OnInit, OnDestroy {
         this.updateSession();
       }
     }, error => {
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
       this.responseUser = false;
     });
   }

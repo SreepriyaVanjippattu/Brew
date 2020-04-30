@@ -173,7 +173,7 @@ export class PreferencesComponent implements OnInit {
           this.toast.show('General Settings Added', 'Success');
         }
       }, error => {
-        this.toast.danger('', 'Something went wrong, Try Again');
+          this.toast.danger('Something went wrong', 'Try Again');
       });
     }
 
@@ -288,7 +288,7 @@ export class PreferencesComponent implements OnInit {
           this.toast.show('Tank Configuration Edited', 'Success');
         }
       }, error => {
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       });
 
     }

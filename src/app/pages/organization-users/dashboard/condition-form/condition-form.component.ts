@@ -217,7 +217,7 @@ export class ConditionFormComponent implements OnInit {
       }
       this.router.navigate([url]);
     }, error => {
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -288,7 +288,7 @@ export class ConditionFormComponent implements OnInit {
       this.setClass = true;
     }, error => {
       this.setClass = false;
-      this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
     });
 
   }
@@ -302,7 +302,7 @@ export class ConditionFormComponent implements OnInit {
       this.setClassCarb = true;
     }, error => {
       this.setClassCarb = false;
-      this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
     });
 
   }
@@ -316,7 +316,7 @@ export class ConditionFormComponent implements OnInit {
       this.setClassCond = true;
     }, error => {
       this.setClassCond = false;
-      this.toast.danger(error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 

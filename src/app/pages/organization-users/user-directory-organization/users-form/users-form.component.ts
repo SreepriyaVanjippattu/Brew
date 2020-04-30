@@ -152,16 +152,16 @@ export class UsersFormComponent implements OnInit {
       const addUserApi = String.Format(this.apiService.addUser, this.tenantId);
       this.apiService.postData(addUserApi, params).subscribe((response: any) => {
         if (response.status === 200) {
-          this.toastr.show('', 'Success');
+          this.toastr.show('New User Added Successfully', 'Success');
           this.router.navigate(['app/user-directory']);
         }
       },
         (error) => {
           if (error instanceof HttpErrorResponse) {
-            this.toastr.danger('', error.error.message);
+            this.toastr.danger(error.error.message, 'Try Again');
           }
           else {
-            this.toastr.danger('', error);
+            this.toastr.danger(error, 'Try Again');
           }
         }
       );

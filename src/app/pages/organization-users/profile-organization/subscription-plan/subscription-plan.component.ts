@@ -84,11 +84,11 @@ export class SubscriptionPlanComponent implements OnInit {
     };
     this.apiService.putData(this.apiService.editClientSettings, paramSettings).subscribe(response => {
       if (response) {
-        this.toast.success('You have successfully send subscription update request');
+        this.toast.success('You have successfully send subscription update request', 'Success');
         this.router.navigate(['app/profile-organization']);
       }
     }, error => {
-      this.toast.danger('', error.error.message);
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 

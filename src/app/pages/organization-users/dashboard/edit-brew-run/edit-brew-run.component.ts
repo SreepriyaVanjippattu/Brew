@@ -153,11 +153,11 @@ export class EditBrewRunComponent implements OnInit {
       this.apiService.putData(editBrewRunAPI, params).subscribe(response => {
 
         if (response) {
-          this.toast.show('', 'Brew successfully updated');
+          this.toast.show('Brew successfully updated', 'Success');
           this.router.navigate(['app/dashboard']);
         }
       }, error => {
-        this.toast.danger('', error.error.message);
+          this.toast.danger(error.error.message, 'Try Again');
       });
     }
   }
@@ -181,7 +181,7 @@ export class EditBrewRunComponent implements OnInit {
         this.apiService.patchData(changeBrewRunStatusAPI, params).subscribe((response: any) => {
 
           if (response.status === 200) {
-            this.toast.success('', 'Brew successfully started');
+            this.toast.success('Brew successfully started', 'Success');
             this.router.navigate(['app/dashboard']);
           }
         });

@@ -91,7 +91,7 @@ export class ChangePasswordComponent implements OnInit {
           this.router.navigate(['app/login']);
         }
       }, error => {
-        this.toast.danger(error.error.message);
+        this.toast.danger(error.error.message, 'Try Again');
       });
     }
   }
