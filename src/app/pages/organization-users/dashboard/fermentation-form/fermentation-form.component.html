@@ -392,8 +392,8 @@
                                             <select class="form-control input-style input-dropdown" id="add-in"
                                                 [(ngModel)]="brewRunFermentation.hopesDetails[i].addInId">
                                                 <option disabled value="">Select</option>
-                                                <option *ngFor="let addins of addins" [value]="addins.Id">
-                                                    {{addins.Name}}</option>
+                                                <option *ngFor="let addins of addins" [value]="addins.id">
+                                                    {{addins.name}}</option>
                                             </select>
                                         </div>
 
@@ -1129,7 +1129,7 @@
                                 <select class="form-control input-style input-dropdown" id="add-in"
                                     [value]="hops.addInId" disabled>
                                     <option disabled value="">Select</option>
-                                    <option *ngFor="let addins of addins" [value]="addins.Id">
+                                    <option *ngFor="let addins of addins" [value]="addins.id">
                                         {{addins.name}}</option>
 
                                 </select>

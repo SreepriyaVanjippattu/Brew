@@ -190,7 +190,7 @@
                                         <label for="brewrun-id">% of Grain Bill</label>
                                         <input type="text" class="form-control" id="brewrun-id"
                                             placeholder="% of Grain Bill"
-                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].percentage">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].grainBillPercentage">
                                     </div>
 
                                     <div class="form-group col-md-3">
@@ -966,7 +966,7 @@
                             </div>
 
                             <div class="form-group col-md-6">
-                                <label for="brewerrun-temperature">Strike Water Temperature (in
+                                <label for="brewerrun-temperature">Strike Water Temperature (
                                     {{preferedUnit}})</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewerrun-temperature"
@@ -994,7 +994,7 @@
                             <div class="form-group col-md-6">
                                 <label for="brewerrun-ratio">Liquor to Grist Ratio</label>
                                 <input type="text" class="form-control" id="brewerrun-temperature"
-                                    placeholder="Liquor to Grist Ratio" [value]="mash.liquortogristratio" disabled>
+                                    placeholder="Liquor to Grist Ratio" [value]="mash.liquortoGristrRatio"  disabled>
                             </div>
                         </div>
 
@@ -1021,7 +1021,7 @@
                         <div class="form-row" *ngFor="let temp of mash.mashingTargetTemperatures;let i=index;">
                             <div class="form-group col-md-6">
                                 <label for="brewrrun-temperature" *ngIf="i==0">Temperature ({{preferedUnit}})</label>
-                                <label for="brewrrun-temperature" *ngIf="i!=0">Temperature #{{i+1}} (in
+                                <label for="brewrrun-temperature" *ngIf="i!=0">Temperature #{{i+1}} (
                                     {{preferedUnit}})</label>
                                 <input type="number" class="form-control" id="brewrrun-temperature"
                                     placeholder="Temperature ({{preferedUnit}})" [value]="temp.temperature" disabled>

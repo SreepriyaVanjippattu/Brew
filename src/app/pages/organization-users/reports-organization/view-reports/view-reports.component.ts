@@ -70,6 +70,7 @@ export class ViewReportsComponent implements OnInit {
   conditionDetailsCompletion: BrewRunCompletionDetail;
   filterationDetailsCompletion: BrewRunCompletionDetail;
   carbonationDetailsCompletion: BrewRunCompletionDetail;
+  userDetails: any;
 
   constructor(
     private apiService: ApiProviderService,
@@ -89,10 +90,11 @@ export class ViewReportsComponent implements OnInit {
 
     
     this.statusCheck();
-    const userDetails = JSON.parse(sessionStorage.getItem('user'));
-    this.tenantId = userDetails['CompanyDetails'].Id;
-    const company = JSON.parse(sessionStorage.user).CompanyDetails;
-    this.units = JSON.parse(sessionStorage.getItem('units'));
+    this.userDetails = sessionStorage.user;
+    const user = JSON.parse(this.userDetails);
+    this.tenantId = user['userDetails'].tenantId;
+    const company = user['userDetails'].companyName;
+    this.getUnits();
     if (company.Name !== '' && company.Name !== null) {
       this.currentTenantName = company.Name;
     }
@@ -111,7 +113,7 @@ export class ViewReportsComponent implements OnInit {
     if (company.Postalcode !== '' && company.Postalcode !== null) {
       this.postalCode = 'Postalcode - ' + company.Postalcode;
     }
-    this.tenantLogo = company.ImageUrl;
+    this.tenantLogo = user['userDetails'].imageUrl;
     this.getPreferenceUsed();
     if (!sessionStorage.styles || !sessionStorage.addins ||
       !sessionStorage.suppliers || !sessionStorage.maltTypes || !sessionStorage.maltNames ||
@@ -134,21 +136,24 @@ export class ViewReportsComponent implements OnInit {
 
     this.getSingleBrewDetails(this.tenantId, this.brewId);
   }
+  
   statusCheck() {
-    this.brewContent.forEach(element => {
-      if (element.Id === this.brewId) {
-        if (element.Status === '7cd88ffb-cf41-4efc-9a17-d75bcb5b3770') {
-          this.statusField = 'Not Started';
-        } else if (element.Status === '4267ae2f-4b7f-4a70-a592-878744a13900') {
-          this.statusField = 'Committed';
-        } else if (element.Status === '9231c5f1-2235-4f7b-b5e6-80694333dd72') {
-          this.statusField = 'Completed';
-        } else {
-          this.statusField = 'Progress';
+    if (this.brewContent !== 'default message') {
+      this.brewContent.forEach(element => {
+        if (element.id === this.brewId) {
+          if (element.status === '7cd88ffb-cf41-4efc-9a17-d75bcb5b3770') {
+            this.statusField = 'Not Started';
+          } else if (element.status === '4267ae2f-4b7f-4a70-a592-878744a13900') {
+            this.statusField = 'Committed';
+          } else if (element.status === '9231c5f1-2235-4f7b-b5e6-80694333dd72') {
+            this.statusField = 'Completed';
+          } else {
+            this.statusField = 'Progress';
+          }
         }
-      }
 
-    });
+      });
+    }
   }
   getCountries() {
     this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
@@ -157,6 +162,15 @@ export class ViewReportsComponent implements OnInit {
         sessionStorage.setItem('countries', JSON.stringify(this.countries));
       }
     });
+  }
+
+  getUnits() {
+    const getUnitsApi = String.Format(this.apiService.getAllActiveUnitType);
+    this.apiService.getDataList(getUnitsApi).subscribe(response => {
+      if (response) {
+        this.units = response['body'].unitTypes;
+      }
+    })
   }
 
   getAddIns() {
