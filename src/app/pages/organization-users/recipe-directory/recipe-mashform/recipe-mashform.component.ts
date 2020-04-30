@@ -713,7 +713,10 @@ export class RecipeMashformComponent implements OnInit {
         const saveEditedRecipeAPI = String.Format(this.apiService.saveEditedRecipe, this.tenantId, this.recipeId);
         this.apiService.putData(saveEditedRecipeAPI, formData).subscribe((response: any) => {
           if (response) {
-            if (this.formSubmitted || this.saveInProgress) {
+            if (this.saveInProgress) {
+              this.router.navigate(['/app/recipes']);
+            }
+            if (this.formSubmitted) {
               this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
             }
             if (this.mashinClicked) {
@@ -743,7 +746,10 @@ export class RecipeMashformComponent implements OnInit {
           if (response) {
             this.recipeId = response['body'].recipeId;
             this.hasRecipeIdGenerated = true;
-            if (this.formSubmitted || this.saveInProgress) {
+            if (this.saveInProgress) {
+              this.router.navigate(['/app/recipes']);
+            }
+            if (this.formSubmitted) {
               this.router.navigate(['/app/recipes/recipe-brewlog'], { queryParams: { recipeId: this.recipeId ? this.recipeId : '' } });
             }
             if (this.mashinClicked) {
