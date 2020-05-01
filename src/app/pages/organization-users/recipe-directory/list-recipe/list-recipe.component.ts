@@ -131,7 +131,7 @@ export class ListRecipeComponent implements OnInit {
     } else {
 
       if (recipelist.statusId === '4267ae2f-4b7f-4a70-a592-878744a13900') {
-        this.toast.warning('Already Committed', 'Recipe');
+        this.toast.warning('Already Committed Recipe', 'Unable To Edit');
       } else {
         sessionStorage.setItem('page', 'edit');
         this.router.navigate(['app/recipes/edit-recipe/' + recipeId]);

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BrewRun, MaltGrainBillDetail, WaterAdditionDetail, MashingTargetDetail, StartchTest, MashinDetailsNote, MashingTargetDetailsTemperature,
-   FermentationDetailsNote, FermentationDataEntry, YeastDataDetail, DiacetylRestDataDetail, AgingDetail, 
-   EnterFermentationData, Vorlauf, SpargeDetail, FirstRunning, LastRunning, KettleDataEntryDetail, HopesDetail, AdjunctsDetail, 
-   PostBoilData, WhirlPoolDataEntry, PostWhirlpoolDetail, CoolingKnockouDetail, BrewLogDetailsNote, ConditioningDetail, FilterationDetail, 
-   CarbonationDetail, ConditioningDetailsNote, BrewRunCompletionDetail } from '../../../../models/brewrun';
+import {
+  BrewRun, MaltGrainBillDetail, WaterAdditionDetail, MashingTargetDetail, StartchTest, MashinDetailsNote, MashingTargetDetailsTemperature,
+  FermentationDetailsNote, FermentationDataEntry, YeastDataDetail, DiacetylRestDataDetail, AgingDetail,
+  EnterFermentationData, Vorlauf, SpargeDetail, FirstRunning, LastRunning, KettleDataEntryDetail, HopesDetail, AdjunctsDetail,
+  PostBoilData, WhirlPoolDataEntry, PostWhirlpoolDetail, CoolingKnockouDetail, BrewLogDetailsNote, ConditioningDetail, FilterationDetail,
+  CarbonationDetail, ConditioningDetailsNote, BrewRunCompletionDetail
+} from '../../../../models/brewrun';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
@@ -88,7 +90,7 @@ export class ViewReportsComponent implements OnInit {
     this.brew = new BrewRun();
     this.brewId = this.route.snapshot.paramMap.get('id');
 
-    
+
     this.statusCheck();
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
@@ -136,7 +138,7 @@ export class ViewReportsComponent implements OnInit {
 
     this.getSingleBrewDetails(this.tenantId, this.brewId);
   }
-  
+
   statusCheck() {
     if (this.brewContent !== 'default message') {
       this.brewContent.forEach(element => {
@@ -226,15 +228,17 @@ export class ViewReportsComponent implements OnInit {
   }
 
   findUnits() {
-    this.units.forEach(element => {
-      if (element.Id === this.preference.TemperatureId) {
-        this.preferedUnit = element.Symbol;
-      }
-      if (element.Id === this.preference.GravityMeasurementId) {
-        this.preferedPlato = element.Name;
-        this.platoUnitId = element.Id;
-      }
-    });
+    if (this.units) {
+      this.units.forEach(element => {
+        if (element.Id === this.preference.TemperatureId) {
+          this.preferedUnit = element.Symbol;
+        }
+        if (element.Id === this.preference.GravityMeasurementId) {
+          this.preferedPlato = element.Name;
+          this.platoUnitId = element.Id;
+        }
+      });
+    }
   }
 
   getPreferenceUsed() {
@@ -473,7 +477,7 @@ export class ViewReportsComponent implements OnInit {
       var minutes = utc.getMinutes() + Number(zone[1]);
       var seconds = utc.getSeconds() + Number(zone[2]);
 
-      return new Date(utc.setHours(hours,minutes,seconds));
+      return new Date(utc.setHours(hours, minutes, seconds));
     }
   }
 
