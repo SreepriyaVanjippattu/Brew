@@ -41,6 +41,7 @@ export class ListClientsComponent implements OnInit {
   tenantStatus: any;
   userProfile: any;
   currentUser: any;
+  statusName: string;
   constructor(
     private httpService: HttpClient,
     private apiService: ApiProviderService,
@@ -52,8 +53,8 @@ export class ListClientsComponent implements OnInit {
 
   ngOnInit() {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    this.userProfile = user['UserProfile'];
-    this.currentUser = this.userProfile.Id;
+    this.userProfile = user['userDetails'];
+    this.currentUser = this.userProfile.userId;
     this.toggleStatus = false;
     this.page = this.route.snapshot.queryParamMap.get('page');
     if (this.page) {
@@ -142,27 +143,27 @@ export class ListClientsComponent implements OnInit {
         page: this.config.currentPage,
       },
     });
-    const clientDetails = this.apiService.getData(this.apiService.getAllActiveClients, pageNumber, pageSize).
+    const clientDetails = this.apiService.getDataList(this.apiService.getAllActiveClients, pageNumber, pageSize).
       subscribe((response) => {
         if (response && response['body']) {
-          this.clientList = response['body'];
+          this.clientList = response['body']['clientDetails'];
           sessionStorage.clientList = JSON.stringify(this.clientList);
           this.clientList.map((client, idx) => {
             client.localTime = client.EndDate.substr(0, client.EndDate.indexOf('T'));
             let d = new Date(client.EndDate);
             let e = d.toLocaleString();
             client.startDate = +(e);
-            if (client.OrgSuperUser !== null) {
-              client.contactName = client.OrgSuperUser.FirstName !== null ? client.OrgSuperUser.FirstName : '';
-              client.userName = client.OrgSuperUser.UserName;
-              client.PrimaryPhone = client.OrgSuperUser.PrimaryPhone;
+            if (client.orgSuperUser !== null) {
+              client.contactName = client.orgSuperUser.firstName !== null ? client.orgSuperUser.firstName : '';
+              client.userName = client.orgSuperUser.userName;
+              client.PrimaryPhone = client.orgSuperUser.phone;
             }
 
-            if (client.Subscriptions && client.Subscriptions.length > 0) {
-              client.package = client.Subscriptions[0].Name;
-              if (client.OrgSuperUser !== null && client.OrgSuperUser !== null) {
-                client.name = client.OrgSuperUser.FirstName + ' ' + client.OrgSuperUser.LastName;
-                client.username = client.OrgSuperUser.UserName;
+            if (client.subscriptions && client.subscriptions.length > 0) {
+              client.package = client.subscriptions[0].name;
+              if (client.orgSuperUser !== null && client.orgSuperUser !== null) {
+                client.name = client.orgSuperUser.firstName + ' ' + client.orgSuperUser.lastName;
+                client.username = client.orgSuperUser.userName;
               }
             }
           });

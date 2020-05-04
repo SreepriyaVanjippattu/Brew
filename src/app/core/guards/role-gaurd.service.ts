@@ -12,7 +12,6 @@ export class RoleGaurdService implements CanActivate {
   constructor( private authService: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-   
     // this will be passed from the route config
     // on the data property
   
@@ -25,7 +24,7 @@ export class RoleGaurdService implements CanActivate {
 
     this.userProfile = sessionStorage.getItem('user');
     const user = JSON.parse(sessionStorage.getItem('user'));
-    const roleName = user['UserProfile'].Roles[0].Name;
+    const roleName = user['userDetails']['position'];
     var checkRole = expectedRole.includes(roleName)
 
     // console.log(checkRole);

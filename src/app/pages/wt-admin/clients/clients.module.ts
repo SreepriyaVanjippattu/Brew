@@ -33,7 +33,7 @@ import {NgPrintModule} from 'ng-print';
     FormsModule,
     ReactiveFormsModule,
     ModalModule,
-    SharedModule.forRoot(),
+    SharedModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NbLayoutModule,

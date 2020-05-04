@@ -52,7 +52,7 @@ export class RolePrivilegesSuperAdminComponent implements OnInit {
     const output = [];
     this.apiService.getData(this.apiService.getAllPermissions).subscribe(response => {
       this.allPermissions = response['body'];
-      this.allCategories = this.allPermissions.map(item => item.Category)
+      this.allCategories = this.allPermissions.map(item => item.category)
         .filter((value, index, self) => self.indexOf(value) === index && value != null);
     }, error => {
       console.error(error);
@@ -62,9 +62,9 @@ export class RolePrivilegesSuperAdminComponent implements OnInit {
   shouldCheckThisItem(sRole: Role, aPerm: Permission): boolean {
 
     let retVal = false;
-    if (sRole.Permissions.length > 0) {
+    if (sRole.permissions.length > 0) {
 
-      const theActualPermissions = sRole.Permissions.filter(x => x.Id == aPerm.Id);
+      const theActualPermissions = sRole.permissions.filter(x => x.id == aPerm.id);
       if (theActualPermissions.length > 0) {
         retVal = true;
       }
@@ -73,7 +73,7 @@ export class RolePrivilegesSuperAdminComponent implements OnInit {
   }
 
   getPermissionsInCategory(category: string): Permission[] {
-    return this.allPermissions.filter(x => x.Category === category);
+    return this.allPermissions.filter(x => x.category === category);
   }
 
 
@@ -84,17 +84,17 @@ export class RolePrivilegesSuperAdminComponent implements OnInit {
       this.uncheckedsRole.push(sRole);
     }
     let posToRemove = -1;
-    sRole.Permissions.forEach((permission: Permission, index: number) => {
+    sRole.permissions.forEach((permission: Permission, index: number) => {
 
-      if (permission.Id == aPerm.Id) {
+      if (permission.id == aPerm.id) {
         posToRemove = index;
       }
     });
 
     if (posToRemove >= 0) {
-      sRole.Permissions.splice(posToRemove, 1);
+      sRole.permissions.splice(posToRemove, 1);
     } else {
-      sRole.Permissions.push(aPerm);
+      sRole.permissions.push(aPerm);
       this.rolePermisson.push(sRole);
     }
 

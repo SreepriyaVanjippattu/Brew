@@ -58,7 +58,7 @@ export class SignupPlanComponent implements OnInit {
         subscriptionId: this.subScriptionParams.plan,
 
       };
-      this.apiService.postData(this.apiService.initilizeClient, params).subscribe(response => {
+      this.apiService.postData(this.apiService.initializeClient, params).subscribe(response => {
         if (response) {
           this.router.navigate(['signup/signup-success']);
         }
