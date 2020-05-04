@@ -26,18 +26,14 @@ export class PagesComponent {
     private route: Router,
     private apiService: ApiProviderService,
     private iconLibraries: NbIconLibraries) {
+
     this.userProfile = sessionStorage.getItem('user');
     let user = JSON.parse(sessionStorage.getItem('user'));
+    
     this.iconLibraries.registerFontPack('nebular', { iconClassPrefix: 'nb' });
     this.iconLibraries.setDefaultPack('nebular');
+    this.menu = MENU_ITEMS_ORGANIZATION;
 
-    this.userProfile = user['userDetails']['position'];
-    if (this.userProfile === 'Superadmin') {
-      this.menu = MENU_ITEMS_SUPER_USER;
-    } else if (this.userProfile === 'brewer' || this.userProfile === 'Org Super User' || this.userProfile === 'Org Admin User' || this.userProfile === 'Org Dashboard User' || this.userProfile === 'Demo User') {
-      this.menu = MENU_ITEMS_ORGANIZATION;
-    }
-    
     idle.setIdle(1200);
     idle.setTimeout(5);
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
