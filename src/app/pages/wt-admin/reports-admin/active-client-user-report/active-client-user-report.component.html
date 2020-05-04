@@ -1,0 +1,146 @@
+<div class="container-fluid">
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="header-title">
+        <h6>Active Client Report</h6>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4">
+      <form [formGroup]="activeClientReport">
+
+        <div class="form-row form-bg">
+
+          <div class="form-group col-md-6 col-lg-3">
+            <label for="from">From</label>
+            <input nbInput type="text" class="form-control input-style" formControlName="startDate" id="start"
+              placeholder="" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" (dateTimeChange)="startDateChange()"
+              [min]="minStartDate" [max]="maxStartDate" readonly>
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+            <div class="text-danger" *ngIf="isError">{{dateError}}</div>
+
+          </div>
+
+          <div class="form-group col-md-6 col-lg-3">
+            <label for="to">To</label>
+            <input nbInput type="text" class="form-control input-style" formControlName="endDate" id="end"
+              placeholder="" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" (dateTimeChange)="endDateChange()"
+              [min]="minEndDate" [max]="maxEndDate" readonly>
+            <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+            <div class="text-danger" *ngIf="isError">{{dateError}}</div>
+          </div>
+
+          <div class="form-group col-md-6 col-lg-3">
+            <label for="package_city">Package</label>
+            <!-- <input type="text" class="form-control input-style" formControlName="package_pack" id="package_pack" placeholder=""> -->
+            <select class="form-control input-dropdown" id="status" formControlName="package_pack">
+              <option value="">ALL</option>
+              <option *ngFor="let sub of subList" [value]="sub.Name">{{sub.Name}}</option>
+          </select>
+          </div>
+
+          <!-- <div class="form-group col-md-6 col-lg-3">
+            <label for="package_city">City</label>
+            <input type="text" class="form-control input-style" formControlName="package_city" id="package_city" placeholder="">
+          </div>
+
+          <div class="form-group col-md-6 col-lg-3">
+            <label for="package_city">Province</label>
+            <input type="text" class="form-control input-style" formControlName="package_province" id="package_province" placeholder="">
+          </div>
+
+          <div class="form-group col-md-6 col-lg-3">
+            <label for="expiry">Expiry Date</label>
+            <input nbInput type="text" class="form-control input-style" formControlName="expiryDate" id="expiry"
+              placeholder="" [owlDateTime]="dt3" [owlDateTimeTrigger]="dt3" (dateTimeChange)="expiryDateChange()"
+              [min]="minExpiryDate" [max]="maxExpiryDate" readonly>
+            <owl-date-time [pickerType]="'calendar'" #dt3></owl-date-time>
+          </div> -->
+
+          <div class="col-md-12 mt-4 report-resp">
+            <div class="mr-2">
+              <button type="button" class="btn btn-outline-light btn-cancel" (click)="onCancelClick()">
+                <i class="material-icons cancel-ico">
+                  cancel
+                </i>
+                Cancel
+              </button>
+            </div>
+
+            <div>
+              <button (click)="activeClientLists(minStartDate,minEndDate,minExpiryDate)" type="button"
+                class="btn btn-outline-light btn-save">
+                <i class="material-icons save-ico">
+                  save
+                </i>
+                Search
+              </button>
+            </div>
+            <div  class="mt-1 ml-2"><span class="pdf-ico mr-3 cursor-click">
+              <img (click)= "downloadAsPDF()" src="assets/images/pdf.svg">
+          </span></div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row" id="pdfDiv" #pdfDiv>
+    <div class="col-md-12 mt-3">
+      <div class="client-table table-responsive">
+        <table class="table" id="table">
+          <thead>
+            <tr>
+              <th scope="col">#
+
+              </th>
+              <th scope="col">Company Name
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">City
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Province
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Contact Person
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Phone
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Email
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Package
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Expiry Date
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let activeClientList of activeClients ; let i = index" [attr.data-index]="i">
+              <td>{{i+1}}</td>
+              <td>{{activeClientList.Name}}</td>
+              <td>{{activeClientList.City}}</td>
+              <td>{{activeClientList.State}}</td>
+              <td>{{activeClientList.name}}</td>
+              <td>{{activeClientList.ContactPhone}}</td>
+              <td>{{activeClientList.ContactEmail}}</td>
+              <td>{{activeClientList.package}}</td>
+              <td>{{activeClientList.EndDate | date:'medium'}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+</div>

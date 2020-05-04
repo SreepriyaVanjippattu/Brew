@@ -1,0 +1,268 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="header-title">
+                <h6>{{pageHeader}}</h6>
+            </div>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end" *ngIf="page === 'View'">
+            <button type="button" (click)="goToEdit()" class="btn l-btn">
+                <i class="material-icons edit-ico">
+                    edit
+                </i>
+                Edit</button>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end" *ngIf="page==='edit'">
+
+            <div class="mr-2">
+                <button type="button" (click)="deleteSingleUser()" class="btn l-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                    <i class="material-icons del-ico">
+                        delete
+                    </i>
+                    Delete</button>
+            </div>
+
+
+            <div>
+                <button (click)="resetPasswordClick()" type="button" class="btn l-btn" data-toggle="modal" data-target="#resetconfirm">
+                    <i class="material-icons reset-ico">
+                        loop
+                    </i>
+                    Reset Password
+                </button>
+
+
+            </div>
+
+        </div>
+
+
+        <form [formGroup]="userDetailsForm" class="mt-3">
+
+            <div class="form-row form-bg form-margin">
+
+                <div for="status" class="form-group col-md-4">
+                    <label for="postal">Company Name</label>
+
+                    <select class="form-control input-style" id="company" formControlName="company">
+                        <option disabled value="">Select</option>
+                        <option *ngFor="let company of companyList" [value]="company.Id">{{company.Name}}</option>
+
+                    </select>
+                    <div *ngIf="formSubmitted">
+                        <div *ngIf="form.company.errors?.required" class="valid-error">
+                            Company Name is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control input-style" formControlName="firstName" id="firstName" placeholder="">
+                    <div *ngIf="formSubmitted">
+                        <div *ngIf="form.firstName.errors?.required" class="valid-error">
+                            First Name is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control input-style" formControlName="lastName" id="lastName" placeholder="">
+                    <div *ngIf="formSubmitted">
+                        <div *ngIf="form.lastName.errors?.required" class="valid-error">
+                            Last Name is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="email">E-mail [User ID]</label>
+                    <input type="text" class="form-control input-style" formControlName="email" id="email" placeholder="" (keyup)="emailvalidation($event.target.value)">
+                    <div *ngIf="formSubmitted">
+                        <div *ngIf="form.email.errors?.required" class="valid-error">
+                            Email is required
+                        </div>
+                    </div>
+                    <div *ngIf=" form.email.errors && !validEmail" class="valid-error">Please enter valid email address
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="phone">Phone</label>
+                    <input class="form-control" formControlName="phone" id="inputPhone" placeholder="(555) 555-5555" mask="(000) 000-0000" validation="true" (keyup)="formatPhone()">
+                    <div *ngIf="formSubmitted">
+                        <div *ngIf="form.phone.errors?.required" class="valid-error">
+                            Phone No is required
+                        </div>
+                    </div>
+                    <div *ngIf="!validPhone && page != 'View'" class="valid-error">
+                        Enter Valid Phone Number
+                    </div>
+                </div>
+
+
+
+                <div for="status" class="form-group col-md-4">
+                    <label for="postal">Status</label>
+                    <select class="form-control input-style" formControlName="status" id="status">
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="role">Role</label>
+                    <select class="form-control input-style" id="role" formControlName="roles">
+                        <option disabled value="">Select...</option>
+                        <option *ngFor="let role of roles" [value]="role.Id">{{role.Name}}</option>
+                    </select>
+                    <div *ngIf="formSubmitted">
+                        <div *ngIf="form.roles.errors?.required" class="valid-error">
+                            Role is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="image">Image</label>
+                    <div class="img">
+                        <input [ngClass]="{hide : imageLink}" type="file" class="form-control input-style" formControlName="image" id="image" placeholder="" (change)="imageUploadChange($event)" >
+                        <img *ngIf="imageLink" src="{{imageLink}}" width="100px">
+                        <i *ngIf="page !== 'View'" [ngClass]="{hide : !imageLink}" class="material-icons img-del-ico cursor-click" (click)="deleteImage()">
+                                delete
+                        </i>
+                    </div>
+                    <p class="valid-success" *ngIf="percent > 0">Upload Progress: {{ percent }}%</p>
+                    <div class="valid-error" *ngIf="imageError">
+                        Image shoulde of format .png / .jpg / .jpeg
+                    </div>
+                </div>
+
+
+                <div class="form-group col-md-4">
+                    <label for="position" class="input-label">Position in the Brewery
+                    </label>
+                    <input type="text" class="form-control input-style" formControlName="position" id="position" placeholder="Position">
+                    <div *ngIf="formSubmitted">
+                        <div *ngIf="form.position.errors?.required" class="valid-error">
+                            Position is required
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 d-flex justify-content-end" *ngIf="page != 'View'">
+
+                    <div class="mr-2">
+                        <button type="button" class="btn btn-outline-light btn-cancel" (click)="cancelForm()">
+                            <i class="material-icons cancel-ico">
+                                cancel
+                            </i>
+                            Cancel
+                        </button>
+                    </div>
+
+                    <div>
+                        <button (click)="saveSuperAdmin()" type="button" class="btn btn-outline-light btn-save">
+                            <i class="material-icons save-ico">
+                                save
+                            </i>
+                            Save
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<!--Delete Modal-->
+
+<jw-modal id="singleUser.Id">
+    <div class="del-modal">
+
+        <!-- Button trigger modal -->
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                    class="modal-close-ico"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 d-flex justify-content-center del-content">
+                                <div>
+                                    <p class="del-header">You're currently going to delete.</p>
+                                    <p class="mt-3 text-center">Are you sure you want to proceed?</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex justify-content-center mt-2">
+                                <button type="button" data-dismiss="modal" class="btn  l-btn-cancel mr-2">
+                                    No
+                                </button>
+
+                                <button (click)="deleteUser($event)" type="button" class="btn  l-btn-agree">
+                                    Yes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</jw-modal>
+
+
+
+<!--Change Password Modal-->
+
+<div class="del-modal">
+
+    <!-- Modal -->
+    <div class="modal fade" id="resetconfirm" tabindex="-1" role="dialog" aria-labelledby="resetconfirmTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Reset Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
+                                class="modal-close-ico"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 d-flex justify-content-center del-content">
+                            <div>
+                                <p class="del-header">Are you sure you want to proceed?</p>
+                                <!-- <p class="mt-3 text-center">Are you sure you want to proceed ?</p> -->
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex justify-content-center mt-2">
+                            <button type="button" data-dismiss="modal" class="btn  l-btn-cancel mr-2">
+                                No
+                            </button>
+
+                            <button (click)="resetpasswordClick()" data-dismiss="modal" type="button" class="btn  l-btn-agree">
+                                Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

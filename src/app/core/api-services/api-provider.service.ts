@@ -63,8 +63,18 @@ export class ApiProviderService {
   getAllTenantContent = 'GetAllTenentStatus';
   editClientSettings = 'EditClientSettings';
   editGeneralSettings = 'EditGeneralSettings';
-
+  resetTenantPassword= 'user/v1/brewers/resetforgotpassword/tenant';
   editSubcriptions = 'EditSubscription';
+  tenantPasswordLink ='user/v1/brewers/forgotpasswordlink';
+  getAllArchivedClients='';
+  editClientStatus='';
+  getAllActiveClientsReport='';
+  getAllAuditTrailReport='';
+  getAllLoginLogoutReport='';
+  getAllLastRunReportList='';
+  getAllTenantSubscriptionReport='';
+  editRoles='';
+  deleteUsers='';
  
 
   // preference
@@ -117,7 +127,7 @@ export class ApiProviderService {
   editClient = 'EditClient';
   getSubscriptions = 'user/v1/brewers/subscriptions';
   isCompanyNameAvailable ='user/v1/brewers/companyname/{0}/check';
-  initilizeClient ='user/v1/brewers/{0}/client/initialize';
+  initializeClient ='user/v1/brewers/client/initialize';
   archiveClient = 'user/v1/brewers/{0}/clients/{1}/archive';
   editTenantStatus = 'user/v1/brewers/{0}/tenantstatus';
   getAllActiveClients = 'user/v1/brewers/clients';

@@ -1,0 +1,59 @@
+@import "assets/styles/styles.scss";
+
+.btn-archive
+{
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 139px;
+    height: auto;
+    justify-content: center;
+    .archive-ico
+    {
+        font-size: 21px;
+    }
+}
+.btn-save
+{
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 139px;
+    height: auto;
+    justify-content: center;
+    .save-ico
+    {
+        font-size: 21px;
+    }
+}
+.header-title
+{
+    color:$headerFont;
+}
+.form-bg
+{
+    background: $BgWhite;
+    padding: $contentPadding;
+    border-radius: $tableBorder;
+}
+.image
+{
+    img
+    {
+        max-width: 100px;
+    }
+}
+.header-bg
+{
+    background: $mainBodyBg;
+    margin-top: 10px;
+}
+label
+{
+    font-size: 13px;
+    color: #808495;
+}

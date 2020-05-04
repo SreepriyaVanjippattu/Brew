@@ -1,0 +1,119 @@
+@import "assets/styles/styles.scss";
+.btn-del {
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 100px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    .del-ico {
+        font-size: 21px;
+    }
+}
+
+.star-ico {
+    font-size: 7px;
+    color: #F20A0A;
+    position: relative;
+    top: -5px;
+}
+
+.form-control:disabled{
+    background: transparent;
+}
+
+.btn-reset {
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    .reset-ico {
+        font-size: 21px;
+    }
+}
+
+.btn-save {
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 110px;
+    height: auto;
+    justify-content: center;
+    .save-ico {
+        font-size: 21px;
+    }
+}
+
+.btn-cancel {
+    background: $BgWhite;
+    border-radius: 21px;
+    border-color: #6C757D;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 125px;
+    height: auto;
+    justify-content: center;
+    color: #6C757D;
+    .cancel-ico {
+        font-size: 21px;
+        color: #6C757D;
+    }
+}
+
+.form-bg {
+    background: $BgWhite;
+    padding: $contentPadding;
+    margin: $noMargin;
+}
+
+#company {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: url(assets/images/down-arrow.png) no-repeat;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 10px;
+}
+
+#status {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: url(assets/images/down-arrow.png) no-repeat;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 10px;
+}
+
+#role {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: url(assets/images/down-arrow.png) no-repeat;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 10px;
+}
+
+.form-margin
+{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.img-del-ico
+{
+    color: #808495;
+}
+.img-del-ico:hover
+{
+    color: #1a2138;
+}

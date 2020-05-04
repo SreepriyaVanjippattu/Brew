@@ -1,0 +1,55 @@
+@import "assets/styles/styles.scss";
+
+
+
+.refresh-ico {
+    img {
+        width: 17px;
+    }
+}
+
+.del-ico
+{
+    img
+    {
+        width: 11px;
+    }
+}
+
+.archive-table
+{
+    background: $BgWhite;
+    border-radius: 10px;
+    padding: $tablePadding;
+}
+
+
+.search-style
+{
+    border-radius: $borderRadius;
+    padding: 10px 10px 10px 40px;
+    box-shadow: 0px 3px 5px #00000012;
+}
+
+.search-ico
+{
+    top: 9px;
+    left: 15px;
+    font-size: 21px;
+}
+
+.prin-ico
+{  
+    color: #636D75;
+    top: 5px;
+}
+.filter-ico
+{
+    
+    top: 5px;
+    color: #636D75;
+}
+table
+{
+    min-width: 1130px;
+}
