@@ -1,0 +1,56 @@
+@import "assets/styles/styles.scss";
+.form-bg {
+    background: $BgWhite;
+    padding: $contentPadding;
+    margin: $noMargin;
+    border-radius: $tableBorder;
+}
+
+.btn-save {
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 140px;
+    height: auto;
+    justify-content: center;
+    .save-ico {
+        font-size: 21px;
+    }
+}
+
+
+.btn-cancel {
+    background: $BgWhite;
+    border-radius: 21px;
+    border-color: #6C757D;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 125px;
+    height: auto;
+    justify-content: center;
+    color: #6C757D;
+    .cancel-ico {
+        font-size: 21px;
+        color: #6C757D;
+    }
+}
+
+
+.btn-del {
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 110px;
+    height: auto;
+    justify-content: center;
+    .del-ico {
+        font-size: 21px;
+    }
+
+}
+

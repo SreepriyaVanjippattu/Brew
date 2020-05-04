@@ -1,0 +1,79 @@
+@import "assets/styles/styles.scss";
+
+
+.form-bg
+{
+    background: $BgWhite;
+    padding: $contentPadding;
+    margin: $noMargin;
+    border-radius: $tableBorder;
+}
+
+.form-control:disabled{
+    background:transparent
+}
+.btn-save
+{
+    background: $archivebtn;
+    border-radius: 21px;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 110px;
+    height: auto;
+    justify-content: center;
+    .save-ico
+    {
+        font-size: 21px;
+    }
+}
+
+
+.btn-cancel
+{
+    background: $BgWhite;
+    border-radius: 21px;
+    border-color: #6C757D;
+    opacity: 1;
+    display: flex;
+    font-size: 14px;
+    width: 125px;
+    height: auto;
+    justify-content: center;
+    color: #6C757D;
+    .cancel-ico
+    {
+        font-size: 21px;
+        color: #6C757D;
+    }
+}
+.star-ico
+{
+    font-size:7px;
+    color: #F20A0A;
+    position: relative;
+    top: -5px;
+}
+
+#status
+{
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: url(assets/images/down-arrow.png) no-repeat;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 10px;
+}
+
+.modal-body {
+    min-height: 155px !important;
+}
+
+.img-del-ico
+{
+    color: #808495;
+}
+.img-del-ico:hover
+{
+    color: #1a2138;
+}

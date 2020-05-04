@@ -1,0 +1,185 @@
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="header-title">
+                Organization Information
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="archive d-flex justify-content-end">
+                <button (click)="restoreClick()" type="button" class="btn btn-outline-light btn-archive">
+              <i class="material-icons">
+                      settings_backup_restore
+              </i>
+              Restore
+        </button>
+            </div>
+        </div>
+    </div>
+
+    <form [formGroup]="clientEditForm" class="mt-3">
+
+        <div class="form-row form-bg">
+
+            <div class="col-md-12 cursor-click">
+                <h6 (click)="subscriptionPlanClick()">Package: {{editClientDetails?.Subscriptions[0].Name}}</h6>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="company">Company</label>
+                <input disabled type="text" disabled class="form-control input-style" formControlName="company" id="company" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="email">E-mail Address</label>
+                <input disabled type="text" class="form-control input-style" formControlName="email" id="email" placeholder="" (keyup)="emailvalidation($event.target.value)">
+                <!-- <div *ngIf="formSubmitted">
+                    <div *ngIf="form.email.errors?.required" class="valid-error">
+                        Email is required
+                    </div>
+                </div>
+                <div *ngIf=" form.email.errors && !validEmail" class="valid-error">Please enter valid email address
+                </div> -->
+            </div>
+
+            <div class="form-group col-md-4 position-relative">
+                <div class="image">
+                    <img src="{{imageLink}}">
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="phone">Phone</label>
+                <input disabled type="text" class="form-control" formControlName="phone" id="phone" placeholder="(555) 555-5555" (keyup)="formatPhone($event.target.value)" (keydown.backspace)="unformatPhone()" maxLength="10">
+                <!-- <div *ngIf="formSubmitted">
+                    <div *ngIf="form.phone.errors?.required" class="valid-error">
+                        Phone No is required
+                    </div>
+                </div>
+                <div *ngIf="!validPhone" class="valid-error">
+                    Enter Valid Phone No
+                </div> -->
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="start">Start Date</label>
+                <input disabled type="text" class="form-control input-style" formControlName="startDate" id="start" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="end">Expiry Date</label>
+                <input disabled type="text" class="form-control input-style" formControlName="expiryDate" id="end" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="street">Street</label>
+                <input disabled type="text" class="form-control input-style" formControlName="street" id="street" placeholder="">
+            </div>
+
+
+            <div class="form-group col-md-4">
+                <label for="city">City</label>
+                <input disabled type="text" class="form-control input-style" formControlName="city" id="city" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="state">State/Province</label>
+                <input disabled type="text" class="form-control input-style" formControlName="state" id="state" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="country">Country</label>
+                <input disabled type="text" class="form-control input-style" formControlName="country" id="country" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="postal">Postal Code</label>
+                <input disabled type="text" class="form-control input-style" formControlName="postalCode" id="postal" placeholder="">
+            </div>
+
+            <div for="status" class="form-group col-md-4">
+                <label for="postal">Status</label>
+                <select class="form-control input-style" id="drop">
+                      <option>Active</option>
+                      <option>Inactive</option>
+                      <option>Pending</option>
+              </select>
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-12  header-bg">
+            <h6>User Details</h6>
+        </div>
+
+        <div class="form-row form-bg">
+
+            <div class="form-group col-md-4">
+                <label for="firstname">First Name</label>
+                <input disabled type="text" class="form-control input-style" formControlName="firstname" id="firstname" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="lastname">Last Name</label>
+                <input disabled type="text" class="form-control input-style" formControlName="lastname" id="lastnae" placeholder="">
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="email">E-mail</label>
+                <input disabled type="text" class="form-control input-style" formControlName="email" id="email" placeholder="" (keyup)="emailvalidation($event.target.value)">
+                <!-- <div *ngIf="formSubmitted">
+                        <div *ngIf="form.email.errors?.required" class="valid-error">
+                            Email is required
+                        </div>
+                    </div>
+                    <div *ngIf=" form.email.errors && !validEmail" class="valid-error">Please enter valid email address
+                    </div> -->
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="phone">Phone</label>
+                <input disabled type="text" class="form-control" formControlName="phone" id="phone" placeholder="(555) 555-5555" (keyup)="formatPhone($event.target.value)" (keydown.backspace)="unformatPhone()" maxLength="10">
+                <!-- <div *ngIf="formSubmitted">
+                    <div *ngIf="form.phone.errors?.required" class="valid-error">
+                        Phone No is required
+                    </div>
+                </div>
+                <div *ngIf="!validPhone" class="valid-error">
+                    Enter Valid Phone No
+                </div> -->
+            </div>
+
+            <div class="form-group col-md-4">
+                <label for="user">User ID</label>
+                <input disabled type="text" class="form-control input-style" formControlName="userId" id="user" placeholder="" (keyup)="emailvalidation($event.target.value)">
+                <!-- <div *ngIf="formSubmitted">
+                    <div *ngIf="form.userId.errors?.required" class="valid-error">
+                        User ID is required
+                    </div>
+                </div>
+                <div *ngIf=" form.userId.errors && !validEmail" class="valid-error">Please enter valid email address
+                </div> -->
+            </div>
+
+            <!-- <div class="form-group col-md-4">
+                <label for="password">Password</label>
+                <input type="password" class="form-control input-style" formControlName="password" id="password" placeholder="">
+            </div> -->
+
+            <!-- <div class="col-md-12 mt-3">
+                <div class="save d-flex justify-content-end">
+                    <button (click)="clientSave()" type="button" class="btn btn-outline-light btn-save">
+                     <i class="material-icons save-ico">
+                          save
+                      </i>
+                     Save
+              </button>
+                </div>
+            </div> -->
+        </div>
+    </form>
+</div>

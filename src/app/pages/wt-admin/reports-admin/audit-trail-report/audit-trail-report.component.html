@@ -1,0 +1,120 @@
+<div class="container-fluid">
+
+  <div class="row">
+
+    <div class="col-md-6">
+      <div class="header-title">
+        <h6>Audit Trail Report</h6>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4">
+      <form [formGroup]="auditTrailReport">
+
+        <div class="form-row form-bg">
+
+          <div class="form-group col-md-6 col-lg-4">
+            <label for="from">From</label>
+            <input nbInput type="text" class="form-control input-style" formControlName="startDate" id="start"
+              placeholder="" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" (dateTimeChange)="startDateChange()"
+              [min]="minStartDate" [max]="maxStartDate" readonly>
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+            <div class="text-danger" *ngIf="isError">{{dateError}}</div>
+          </div>
+
+          <div class="form-group col-md-6 col-lg-4">
+            <label for="to">To</label>
+            <input nbInput type="text" class="form-control input-style" formControlName="endDate" id="end"
+              placeholder="" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" (dateTimeChange)="endDateChange()"
+              [min]="minEndDate" [max]="maxEndDate" readonly>
+            <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+            <div class="text-danger" *ngIf="isError">{{dateError}}</div>
+          </div>
+
+          <div class="form-group col-md-6 col-lg-4">
+            <label for="activity">Activity</label>
+            <input type="text" class="form-control input-style" formControlName="activity" id="activity" placeholder="">
+          </div>
+
+
+          <div class="col-md-12 report-resp mt-4">
+            <div class="mr-2">
+              <button type="button" class="btn btn-outline-light btn-cancel" (click)="onCancelClick()">
+                <i class="material-icons cancel-ico">
+                  cancel
+                </i>
+                Cancel
+              </button>
+            </div>
+
+            <div>
+              <button (click)="auditTrailLists()" type="button"
+                class="btn btn-outline-light btn-save">
+                <i class="material-icons save-ico">
+                  save
+                </i>
+                Search
+              </button>
+            </div>
+            <div  class="mt-1 ml-2"><span class="pdf-ico mr-3 cursor-click">
+              <img (click)= "downloadAsPDF()" src="assets/images/pdf.svg">
+          </span></div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row" id="pdfDiv" #pdfDiv>
+    <div class="col-md-12 mt-3">
+      <div class="client-table table-responsive">
+        <table class="table" id="table">
+          <thead>
+            <tr>
+              <th scope="col">#
+
+              </th>
+              <th scope="col">Date&Time
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">User
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Field Value
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Old Value
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">New Value
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Activity
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">IP Address
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let auditTrail of auditTrailList ; let i = index" [attr.data-index]="i">
+              <td>{{i+1}}</td>
+              <td>{{auditTrail.CreatedDate | date:'medium'}}</td>
+              <td>{{auditTrail.UserName}}</td>
+              <td>{{auditTrail.FieldValue}}</td>
+              <td>{{auditTrail.OldValue}}</td>
+              <td>{{auditTrail.NewValue}}</td>
+              <td>{{auditTrail.Activity}}</td>
+              <td>{{auditTrail.IpAddress}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+</div>

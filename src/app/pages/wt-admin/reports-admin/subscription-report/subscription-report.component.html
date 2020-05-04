@@ -1,0 +1,132 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="header-title">
+        <h6>Subscription Report</h6>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4">
+      <form [formGroup]="subscriptionReport">
+        <div class="form-row form-bg">
+          <div class="form-group col-md-3 col-lg-3">
+            <label for="start">From</label>
+            <input nbInput type="text" class="form-control input-style" formControlName="startDate" id="start"
+              placeholder="" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" (dateTimeChange)="startDateChange()"
+              [min]="minStartDate" [max]="maxStartDate" readonly>
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+            <div class="text-danger" *ngIf="isError">{{dateError}}</div>
+
+          </div>
+          <div class="form-group col-md-3 col-lg-3">
+            <label for="end">To</label>
+            <input nbInput type="text" class="form-control input-style" formControlName="endDate" id="end"
+              placeholder="" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" (dateTimeChange)="endDateChange()"
+              [min]="minEndDate" [max]="maxEndDate" readonly>
+            <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+            <div class="text-danger" *ngIf="isError">{{dateError}}</div>
+          </div>
+
+          <div class="form-group col-md-3 col-lg-3">
+              <label for="package_city">Package</label>
+              <!-- <input type="text" class="form-control input-style" formControlName="package" id="package" placeholder=""> -->
+              <select class="form-control input-dropdown" id="status" formControlName="package">
+                <option value="">ALL</option>
+                <option *ngFor="let sub of subList" [value]="sub.Name">{{sub.Name}}</option>
+            </select>
+          </div>
+
+          <div class="form-group col-md-3 col-lg-3">
+            <label for="status">Validity</label>
+            <select  class="form-control input-style" id="status" formControlName="status">
+              <option value="">ALL</option>
+              <option value="Active">Active</option>
+              <option value="Expired">Expired</option>
+
+            </select>
+          </div>
+
+          <div class="col-md-12 report-resp mt-4">
+            <div class="mr-2">
+              <button type="button" class="btn btn-outline-light btn-cancel" (click)="onCancelClick()">
+                <i class="material-icons cancel-ico">
+                  cancel
+                </i>
+                Cancel
+              </button>
+            </div>
+
+            <div>
+              <button (click)="subscriptionList(minStartDate,minEndDate)" type="button"
+                class="btn btn-outline-light btn-save">
+                <i class="material-icons save-ico">
+                  save
+                </i>
+                Search
+              </button>
+            </div>
+            <div  class="mt-1 ml-2"><span class="pdf-ico mr-3 cursor-click">
+              <img (click)= "downloadAsPDF()" src="assets/images/pdf.svg">
+          </span></div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div class="row" id="pdfDiv" #pdfDiv>
+    <div class="col-md-12 mt-3">
+      <div class="client-table table-responsive">
+        <table class="table" id="table">
+          <thead>
+            <tr>
+              <th scope="col">#
+
+              </th>
+              <th scope="col">Client Name
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Date Requested
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Package
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Contact Person
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Email-Id
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Subscr Start Date
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Subscr End Date
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+              <th scope="col">Status
+                <span class="nfilter-ico ml-2"><img class="thumbnail"></span>
+              </th>
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subscriptionList of subscriptionLists ; let i = index" [attr.data-index]="i">
+              <td>{{i+1}}</td>
+              <td>{{subscriptionList.Name}}</td>
+              <td>{{subscriptionList.RequestedDate| date:'medium'}}</td>
+              <td>{{subscriptionList.package}}</td>
+              <td>{{subscriptionList.name}}</td>
+              <td>{{subscriptionList.ContactEmail}}</td>
+              <td>{{subscriptionList.StartDate | date:'medium'}}</td>
+              <td>{{subscriptionList.EndDate | date:'medium'}}</td>
+              <td>{{subscriptionList.Status}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
