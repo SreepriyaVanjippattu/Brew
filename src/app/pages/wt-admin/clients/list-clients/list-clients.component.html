@@ -72,12 +72,12 @@
                     <tbody>
                         <tr *ngFor="let client of clientList | paginate: config">
                             <td class="cursor-click font-weight-bold" (click)="goToViewDetails(client.Id)">
-                                {{client?.companyAlias}}</td>
+                                {{client?.Name}}</td>
                             <td>{{client?.package}}</td>
-                            <td>{{client?.name}}</td>
-                            <td>{{client?.orgSuperUser?.emailAddress}}</td>
-                            <td>{{client?.contactPhone | phoneFormat}}</td>
-                            <td>{{client?.contactEmail}}</td>
+                            <td>{{client?.contactName}}</td>
+                            <td>{{client?.OrgSuperUser?.EmailAddress}}</td>
+                            <td>{{client?.ContactPhone | phoneFormat}}</td>
+                            <td>{{client?.ContactEmail}}</td>
                             <td>{{client?.EndDate | date: 'MMM d, y'}}</td>
                             <td>{{client?.Status}}</td>
                             <td>

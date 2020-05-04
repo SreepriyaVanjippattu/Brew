@@ -94,6 +94,7 @@ export class LoginComponent implements OnInit {
         email: this.emailAddress,
         password: encryptPassword.appendStr(this.password).end(),
       };
+
       this.apiService.postData(this.apiService.login, params).subscribe(
         (response) => {
           if (response) {
@@ -105,12 +106,7 @@ export class LoginComponent implements OnInit {
             const token = user['userDetails']['token'];
             localStorage.setItem('token', token);
             this.setPrivileges(token);
-            var position = user['userDetails']['position'];
-            if (position === 'Superadmin') {
-              this.router.navigate([`/app/clients`]);
-            } else {
-              this.router.navigate([`/app/dashboard`]);
-            }
+            this.router.navigate([`/app/dashboard`]);
           }
         },
 
