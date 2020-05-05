@@ -11,6 +11,7 @@ import * as CryptoJS from 'crypto-js';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpErrorResponse } from '@angular/common/http';
+import {RoleName} from '../models/roleName';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('userNameElement', { static: true }) userNameElement: any;
   loginForm: FormGroup;
-
+  roleName = RoleName;
   loginError = '';
   passwordPattern = '^(?=.*d).{4,8}$';
   formSubmitted = false;
@@ -106,7 +107,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', token);
             this.setPrivileges(token);
             var position = user['userDetails']['position'];
-            if (position === 'Superadmin') {
+            if (position === this.roleName.Superadmin) {
               this.router.navigate([`/app/clients`]);
             } else {
               this.router.navigate([`/app/dashboard`]);

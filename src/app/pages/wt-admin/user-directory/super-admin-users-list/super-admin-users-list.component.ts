@@ -191,12 +191,12 @@ export class SuperAdminUsersListComponent implements OnInit {
       'TenantId': result[0].TenantId,
     };
 
-    const endpoint = this.apiService.deleteUsers;
+    const endpoint = this.apiService.deleteUser;
     const url = new URL(`${environment.API.URL}/${endpoint}`);
     this.modalservice.close('singleUser.Id');
 
     // this.httpClient.delete(url.toString(), httpOptions)
-    this.apiService.deleteData(this.apiService.deleteUsers, anyObject)
+    this.apiService.deleteData(this.apiService.deleteUser, anyObject)
       .subscribe((res) => {
         this.toastrService.show('User Deleted', 'Success');
         this.getUserDirectoryDetails(this.currentPageNumber, this.config.itemsPerPage);

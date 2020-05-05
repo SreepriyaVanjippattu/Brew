@@ -385,7 +385,7 @@ export class SuperAdminUsersFormComponent implements OnInit {
       IsActive: result[0].IsActive,
       TenantId: result[0].TenantId,
     };
-    const endpoint = this.apiService.deleteUsers;
+    const endpoint = this.apiService.deleteUser;
     const url = new URL(`${environment.API.URL}/${endpoint}`);
 
     // const httpOptions = {
@@ -395,7 +395,7 @@ export class SuperAdminUsersFormComponent implements OnInit {
     // };
 
     // this.apiService.deleteData(url.toString(), httpOptions)
-    this.apiService.deleteData(this.apiService.deleteUsers,anyObject)
+    this.apiService.deleteData(this.apiService.deleteUser,anyObject)
       .subscribe((res) => {
         this.toast.show('User Deleted', 'Success');
         this.router.navigate(['app/user-directory-admin']);

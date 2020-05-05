@@ -73,7 +73,7 @@
                         <tr *ngFor="let client of clientList | paginate: config">
                             <td class="cursor-click font-weight-bold" (click)="goToViewDetails(client.Id)">
                                 {{client?.companyAlias}}</td>
-                            <td>{{client?.package}}</td>
+                            <td>{{client?.subscriptions.name}}</td>
                             <td>{{client?.name}}</td>
                             <td>{{client?.orgSuperUser?.emailAddress}}</td>
                             <td>{{client?.contactPhone | phoneFormat}}</td>

@@ -5,6 +5,7 @@ import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Router } from '@angular/router';
 import { ApiProviderService } from '../core/api-services/api-provider.service';
 import { NbIconLibraries } from '@nebular/theme';
+import {RoleName} from '../models/roleName';
 
 @Component({
   selector: 'app-pages',
@@ -21,20 +22,22 @@ export class PagesComponent {
   menu;
   idleState = 'Not started.';
   timedOut = false;
+  roleName = RoleName;
 
   constructor(private idle: Idle,
     private route: Router,
     private apiService: ApiProviderService,
     private iconLibraries: NbIconLibraries) {
+      
     this.userProfile = sessionStorage.getItem('user');
     let user = JSON.parse(sessionStorage.getItem('user'));
     this.iconLibraries.registerFontPack('nebular', { iconClassPrefix: 'nb' });
     this.iconLibraries.setDefaultPack('nebular');
 
     this.userProfile = user['userDetails']['position'];
-    if (this.userProfile === 'Superadmin') {
+    if (this.userProfile === this.roleName.Superadmin) {
       this.menu = MENU_ITEMS_SUPER_USER;
-    } else if (this.userProfile === 'brewer' || this.userProfile === 'Org Super User' || this.userProfile === 'Org Admin User' || this.userProfile === 'Org Dashboard User' || this.userProfile === 'Demo User') {
+    } else if (this.userProfile === this.roleName.Brewer || this.userProfile === this.roleName.OrgSuperUser || this.userProfile === this.roleName.OrgAdminUser || this.userProfile === this.roleName.OrgDashboardUser || this.userProfile === this.roleName.DemoUser) {
       this.menu = MENU_ITEMS_ORGANIZATION;
     }
     

@@ -66,8 +66,6 @@ export class ApiProviderService {
   resetTenantPassword= 'user/v1/brewers/resetforgotpassword/tenant';
   editSubcriptions = 'EditSubscription';
   tenantPasswordLink ='user/v1/brewers/forgotpasswordlink';
-  getAllArchivedClients='';
-  editClientStatus='';
   getAllActiveClientsReport='';
   getAllAuditTrailReport='';
   getAllLoginLogoutReport='';
@@ -129,9 +127,9 @@ export class ApiProviderService {
   isCompanyNameAvailable ='user/v1/brewers/companyname/{0}/check';
   initializeClient ='user/v1/brewers/client/initialize';
   archiveClient = 'user/v1/brewers/{0}/clients/{1}/archive';
-  editTenantStatus = 'user/v1/brewers/{0}/tenantstatus';
+  editClientStatus = 'user/v1/brewers/{0}/tenantstatus';
   getAllActiveClients = 'user/v1/brewers/clients';
-  getArchivedClients = 'user/v1/brewers/clients/archived';
+  getAllArchivedClients = 'user/v1/brewers/clients/archived';
   addBrewUserAuditTrail ='';
 
   

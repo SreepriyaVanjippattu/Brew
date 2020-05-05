@@ -153,6 +153,7 @@ export class ListClientsComponent implements OnInit {
             let d = new Date(client.EndDate);
             let e = d.toLocaleString();
             client.startDate = +(e);
+            
             if (client.orgSuperUser !== null) {
               client.contactName = client.orgSuperUser.firstName !== null ? client.orgSuperUser.firstName : '';
               client.userName = client.orgSuperUser.userName;

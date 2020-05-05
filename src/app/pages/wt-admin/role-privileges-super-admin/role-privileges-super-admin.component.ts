@@ -136,7 +136,7 @@ export class RolePrivilegesSuperAdminComponent implements OnInit {
 
 
     final.forEach(element => {
-      this.apiService.putData(this.apiService.editRoles, JSON.stringify(element)).subscribe((response: any) => {
+      this.apiService.putData(this.apiService.editRole, JSON.stringify(element)).subscribe((response: any) => {
         if (response.status === 200) {
           this.updateSession(element);
           this.toastrService.show('Role Previlege Saved', 'Success');
@@ -145,7 +145,7 @@ export class RolePrivilegesSuperAdminComponent implements OnInit {
     });
     this.router.navigate(['app/role-privileges']);
 
-    // this.apiService.putData(this.apiService.editRoles, this.saveeditRolePermission).subscribe((response: any) => {
+    // this.apiService.putData(this.apiService.editRole, this.saveeditRolePermission).subscribe((response: any) => {
     //   if (response.status === 200) {
     //     this.toastrService.show('Role Previlege Saved', 'Success');
     //     this.router.navigate(['app/clients']);
