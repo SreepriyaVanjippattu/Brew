@@ -16,6 +16,7 @@ import * as XLSX from 'xlsx';
 import { DataService } from '../../../../data.service';
 import { access } from 'fs';
 import { permission } from '../../../../models/rolePermission';
+import { String } from "typescript-string-operations";
 
 @Component({
   selector: 'app-archived-clients',
@@ -45,6 +46,9 @@ export class ArchivedClientsComponent implements OnInit {
   pageControl;
   userProfile: any;
   currentUser: string;
+  statusName: string;
+  searchText: string;
+  package: any;
 
   constructor(
     private modalservice: ModalService,
@@ -59,38 +63,49 @@ export class ArchivedClientsComponent implements OnInit {
 
   ngOnInit() {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    this.userProfile = user['UserProfile'];
-    this.currentUser = this.userProfile.Id;
+    this.userProfile = user['userDetails'];
+    this.currentUser = this.userProfile.userId;
+    this.toggleStatus = false;
     this.page = this.route.snapshot.queryParamMap.get('page');
 
     if (this.page) {
-      this.getArchivedClientDetails(this.page, this.config.itemsPerPage);
+      this.getArchivedClientDetails(this.page, this.config.itemsPerPage, this.searchText);
     } else {
-      this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage);
+      this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage, this.searchText);
     }
     this.checkDeletePermission();
   }
 
-  getArchivedClientDetails(pageNumber, pageSize) {
+  getArchivedClientDetails(pageNumber, pageSize, searchText) {
 
     this.router.navigate(['app/clients/archives'], {
       queryParams: {
         page: this.config.currentPage,
       },
     });
-    this.apiService.getData(this.apiService.getAllArchivedClients, pageNumber, pageSize).subscribe(response => {
-      const archivedClientDetails = response['body'];
+    this.apiService.getDataList(this.apiService.getAllArchivedClients, pageNumber, pageSize, searchText).subscribe(response => {
+      const archivedClientDetails = response['body']['clientDetails'];
       if (archivedClientDetails) {
         this.getPackageContact(archivedClientDetails);
       }
-      this.jsonValue = JSON.parse(response.headers.get('paging-headers'));
-      if (this.jsonValue) {
-        this.config.totalItems = this.jsonValue.TotalCount;
-        if (this.config.totalItems === 0) {
-          this.pageControl = true;
+      archivedClientDetails.forEach(element => {
+        if (element.status === this.status.archive.id) {
+          this.statusName = this.status.archive.name;
         }
+      });
+      this.headerValue = response["body"]["pagingDetails"];
+      if (this.headerValue) {
+        this.config.totalItems = this.headerValue.totalCount;
+        this.pageControl = this.config.totalItems === 0 ? true : false;
       }
-    });
+    },
+      (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.toastrService.danger(error.error.message, 'Try Again');
+        } else {
+          this.toastrService.danger(error, 'Try Again');
+        }
+      });
     this.route.queryParamMap
       .map(params => params.get('page'))
       .subscribe((page: any) => {
@@ -98,23 +113,30 @@ export class ArchivedClientsComponent implements OnInit {
       });
   }
 
+  clear() {
+    this.searchText = "";
+    this.searchArchived();
+  }
+
   getPackageContact(archivedClient) {
-     this.archivedClient = archivedClient;
-     this.archivedClient.map((client, idx) => {
-      client.localTime = client.EndDate.substr(0, client.EndDate.indexOf('T'));
-      if (client.OrgSuperUser !== null) { 
-        // Check the FirstName and Last Name exist and convert that to uppecase in the first letter and others in lowercase
-        client.contactName = client.OrgSuperUser.FirstName || client.OrgSuperUser.LastName !== null ? 
-        client.OrgSuperUser.FirstName[0].toUpperCase() + client.OrgSuperUser.FirstName.substr(1).toLowerCase() 
-        + ' ' + client.OrgSuperUser.LastName[0].toUpperCase() + client.OrgSuperUser.LastName.substr(1).toLowerCase(): '';
-        client.userName = client.OrgSuperUser.UserName;
-        client.PrimaryPhone = client.OrgSuperUser.PrimaryPhone;
+    this.archivedClient = archivedClient;
+    this.archivedClient.map((client, idx) => {
+      if (client.endDate) {
+        client.localTime = client.endDate.substr(0, client.endDate.indexOf('T'));
       }
-      if (client.Subscriptions && client.Subscriptions.length > 0) {
-        client.package = client.Subscriptions[0].Name;
-        if (client.OrgSuperUser !== null && client.OrgSuperUser !== null) {
-          client.name = client.OrgSuperUser.FirstName + ' ' + client.OrgSuperUser.LastName;
-          client.username = client.OrgSuperUser.UserName;
+      if (client.orgSuperUser !== null) {
+        // Check the FirstName and Last Name exist and convert that to uppecase in the first letter and others in lowercase
+        client.contactName = client.orgSuperUser.firstName || client.orgSuperUser.lastName !== null ?
+          client.orgSuperUser.firstName[0].toUpperCase() + client.orgSuperUser.firstName.substr(1).toLowerCase()
+          + ' ' + client.orgSuperUser.lastName[0].toUpperCase() + client.orgSuperUser.lastName.substr(1).toLowerCase() : '';
+        client.userName = client.orgSuperUser.userName;
+        client.primaryPhone = client.orgSuperUser.phone;
+      }
+      if (client.subscriptions && client.subscriptions.length > 0) {
+        this.package = client.subscriptions[0].name;
+        if (client.orgSuperUser !== null && client.orgSuperUser !== null) {
+          client.name = client.orgSuperUser.firstName + ' ' + client.orgSuperUser.lastName;
+          client.username = client.orgSuperUser.userName;
         }
       }
     })
@@ -123,22 +145,22 @@ export class ArchivedClientsComponent implements OnInit {
   filter(label) {
     if (this.archivedClient) {
       if (this.toggleStatus === true && label === 'company') {
-        this.archivedClient.sort((a, b) => a.Name.toUpperCase() > b.Name.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'company') {
-        this.archivedClient.sort((a, b) => a.Name.toUpperCase() < b.Name.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'package') {
-        this.archivedClient.sort((a, b) => a.package.toUpperCase() > b.package.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => this.package.toUpperCase() > this.package.toUpperCase() ? 1 : -1);
       }
-      else if (this.toggleStatus === false && label === 'package'){
-        this.archivedClient.sort((a, b) => a.package.toUpperCase() < b.package.toUpperCase() ? 1: -1);
+      else if (this.toggleStatus === false && label === 'package') {
+        this.archivedClient.sort((a, b) => this.package.toUpperCase() < this.package.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'name') {
-        this.archivedClient.sort((a, b) => a.OrgSuperUser.FirstName.toUpperCase() > b.OrgSuperUser.FirstName.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => a.orgSuperUser.firstName.toUpperCase() > b.orgSuperUser.firstName.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'name') {
-        this.archivedClient.sort((a, b) => a.OrgSuperUser.FirstName.toUpperCase() < b.OrgSuperUser.FirstName.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => a.orgSuperUser.firstName.toUpperCase() < b.orgSuperUser.firstName.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'user') {
         this.archivedClient.sort((a, b) => a.toggleStatus.toUpperCase() > b.toggleStatus.toUpperCase() ? 1: -1);
@@ -147,16 +169,16 @@ export class ArchivedClientsComponent implements OnInit {
         this.archivedClient.sort((a, b) => a.toggleStatus.toUpperCase() < b.toggleStatus.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'phone') {
-        this.archivedClient.sort((a, b) => a.ContactPhone < b.ContactPhone ? 1: -1);
+        this.archivedClient.sort((a, b) => a.contactPhone < b.contactPhone ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'phone') {
-        this.archivedClient.sort((a, b) => a.ContactPhone > b.ContactPhone? 1: -1);
+        this.archivedClient.sort((a, b) => a.contactPhone > b.contactPhone? 1: -1);
       }
       if (this.toggleStatus === true && label === 'email') {
-        this.archivedClient.sort((a, b) => a.ContactEmail.toUpperCase() < b.ContactEmail.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => a.contactEmail.toUpperCase() < b.contactEmail.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'email') {
-        this.archivedClient.sort((a, b) => a.ContactEmail.toUpperCase() > b.ContactEmail.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => a.contactEmail.toUpperCase() > b.contactEmail.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'expiry') {
         this.archivedClient.sort((a, b) => a.localTime < b.localTime ? 1: -1);
@@ -165,10 +187,10 @@ export class ArchivedClientsComponent implements OnInit {
         this.archivedClient.sort((a, b) => a.localTime > b.localTime ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'status') {
-        this.archivedClient.sort((a, b) => a.Status.toUpperCase() < b.Status.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => this.statusName.toUpperCase() < this.statusName.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'status') {
-        this.archivedClient.sort((a, b) => a.Status.toUpperCase() > b.Status.toUpperCase() ? 1: -1);
+        this.archivedClient.sort((a, b) => this.statusName.toUpperCase() > this.statusName.toUpperCase() ? 1: -1);
       }
     }
     this.toggleStatus = !this.toggleStatus;
@@ -180,38 +202,31 @@ export class ArchivedClientsComponent implements OnInit {
 
   restoreArchive(id) {
     this.archivedClient.forEach(element => {
-      if (id === element.Id) {
+      if (id === element.id) {
         this.clientToRestore = element;
       }
     });
     const params = {
-      Id: this.clientToRestore.Id,
-      Name: this.clientToRestore.Name,
-      ContactEmail: this.clientToRestore.ContactEmail,
-      ContactPhone: this.clientToRestore.ContactPhone,
-      Address1: this.clientToRestore.Address1,
-      Address2: this.clientToRestore.Address2,
-      State: this.clientToRestore.State,
-      Country: this.clientToRestore.Country,
-      City: this.clientToRestore.City,
-      Postalcode: this.clientToRestore.Postalcode,
-      IsActive: true,
-      Status: this.status.pending.name,
-      StatusId: this.status.pending.id,
-      CurrentUser: this.currentUser,
+      clientID: this.clientToRestore.id,
+      statusID: this.status.pending.id,
+      currentUser: this.currentUser,
     };
     this.restoreClient(params);
   }
 
   restoreClient(params) {
-    this.apiService.putData(this.apiService.editClient, params).subscribe((response: any) => {
+    this.apiService.putData(this.apiService.editClientStatus, params).subscribe((response: any) => {
       if (response.status === 200) {
         this.toastrService.show('Client Restored', 'Success');
         this.router.navigate(['app/clients']);
       }
     },
-      error => {
-        this.toastrService.danger(error.error.Message, 'Error');
+      (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.toastrService.danger(error.error.message, 'Try Again');
+        } else {
+          this.toastrService.danger(error, 'Try Again');
+        }
       });
   }
 
@@ -231,58 +246,64 @@ export class ArchivedClientsComponent implements OnInit {
     }
   }
 
-  deleteUser(id) {
+  deleteUser() {
     const params = {
-      'ClientID': this.idNumber,
-      'StatusID': '1625A5C1-B41A-4F6E-91AD-E4AA0C61121C',
-      'CurrentUser': JSON.parse(sessionStorage.user).UserProfile.Id,
+      clientID: this.idNumber,
+      statusID: this.status.pending.id,
+      currentUser: this.currentUser,
     };
     this.apiService.putData(this.apiService.editClientStatus, params).subscribe((response: any) => {
       if (response.status === 200) {
         this.toastrService.show('Client Deleted', 'Success');
         this.modalservice.close('archiveClient');
-        this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage);
+        this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage, this.searchText);
 
       }
     },
       error => {
         this.modalservice.close('archiveClient');
-        this.toastrService.danger(error.error.Message, 'Error');
+        this.toastrService.danger(error.error.message, 'Try Again');
       });
   }
 
 
   pageSize(pageSize) {
     this.config.itemsPerPage = pageSize;
-    this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage);
+    this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage, this.searchText);
   }
 
   pageChange(pageNumber) {
     this.config.currentPage = pageNumber;
-    this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage);
+    this.getArchivedClientDetails(this.config.currentPage, this.config.itemsPerPage, this.searchText);
     this.router.navigate(['app/clients/archives'], {
       queryParams: {
         page: pageNumber,
       },
     });
   }
-  searchArchived(event) {
-    const search = event.target.value;
-    // const url = new URL(`${apiConfig.url.archived}startwith=${search}`);
-    this.apiService.getData(this.apiService.getAllArchivedClients+`&startwith=${search}`, this.config.currentPage, this.config.itemsPerPage).subscribe((response) => {
-      const myHeaders = response.headers;
-      this.headerValue = JSON.parse(response.headers.get('paging-headers'));
-      if (this.headerValue) {
-        this.config.totalItems = this.headerValue.TotalCount;
-      }
+  searchArchived() {
+    this.apiService.getData(this.apiService.getAllArchivedClients, this.config.currentPage, this.config.itemsPerPage,this.searchText).subscribe((response) => {
       if ( response && response['body'] ) {
         const archivedData = response['body'];
+        this.headerValue = response["body"]["pagingDetails"];
+        if (this.headerValue) {
+          this.config.totalItems = this.headerValue.totalCount;
+          this.pageControl = this.config.totalItems === 0 ? true : false;
+        }
+
         this.getPackageContact(archivedData);
         // this.archivedClient.map((client, idx) => {
 
         // })
       }
-    })
+    },
+      (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.toastrService.danger(error.error.message, 'Try Again');
+        } else {
+          this.toastrService.danger(error, 'Try Again');
+        }
+      })
 
   }
   ExportToExcelsArchieved() {

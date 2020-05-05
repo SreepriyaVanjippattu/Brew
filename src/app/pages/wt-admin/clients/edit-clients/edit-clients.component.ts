@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,6 +11,7 @@ import { PhoneFormatPipe } from '../../../../core/utils/phone-format.pipe';
 import { StatusUse } from '../../../../models/status-id-name';
 import { NbToastrService } from '@nebular/theme';
 import { UtilitiesService } from '../../../../core/utils/utilities.service';
+import { String } from "typescript-string-operations";
 
 @Component({
   selector: 'app-edit-clients',
@@ -48,7 +49,7 @@ export class EditClientsComponent implements OnInit {
   subName: any;
   validUserPhone = true;
   imageLink = '';
-  userProfile: string;
+  userProfile: any;
   userId: any;
   constructor(
     private httpService: HttpClient,
@@ -84,8 +85,9 @@ export class EditClientsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userProfile = JSON.parse(sessionStorage.getItem('user'));
-    this.userId = this.userProfile['UserProfile'].Id;
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    this.userProfile = user['userDetails'];
+    this.userId = this.userProfile.userId;
     this.id = this.route.snapshot.url[1].path;
     this.page = this.route.snapshot.url[0].path;
     if (this.page === 'edit') {
@@ -207,18 +209,23 @@ export class EditClientsComponent implements OnInit {
   }
 
   getSingleEditUserDetails(id, status) {
-    if (!sessionStorage.clientList || sessionStorage.clientList === '') {
-      const clientDetails = this.apiService.getData(this.apiService.getAllActiveClients).
-      subscribe((response) => {
-        this.editClientDetails = response['body'];
-        this.editClientDetails.forEach(element => {
-          if (element.Id === id) {
-            this.editClientDetails = element;
-            this.setDataToEdit();
-          }
-        });
-      }, error => {
-        console.error(error);
+    if (!sessionStorage.clientList || sessionStorage.clientList === "") {
+      const getClientDetailsbyIdApi = String.Format(this.apiService.getClientDetailById, id);
+      this.apiService.getDataList(getClientDetailsbyIdApi, 1, 1, null, null, null).
+        subscribe((response) => {
+          this.editClientDetails = response['body']['clientDetails'];
+          this.editClientDetails.forEach(element => {
+            if (element.id === id) {
+              this.editClientDetails = element;
+              this.setDataToEdit();
+            }
+          });
+      },  (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message, 'Try Again');
+        } else {
+          this.toast.danger(error, 'Try Again');
+        }
       });
     }else {
       this.editClientDetails = JSON.parse(sessionStorage.clientList);

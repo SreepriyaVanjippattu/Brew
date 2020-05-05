@@ -28,12 +28,12 @@ export class PagesComponent {
     private route: Router,
     private apiService: ApiProviderService,
     private iconLibraries: NbIconLibraries) {
-      
+
     this.userProfile = sessionStorage.getItem('user');
     let user = JSON.parse(sessionStorage.getItem('user'));
     this.iconLibraries.registerFontPack('nebular', { iconClassPrefix: 'nb' });
     this.iconLibraries.setDefaultPack('nebular');
-
+    
     this.userProfile = user['userDetails']['position'];
     if (this.userProfile === this.roleName.Superadmin) {
       this.menu = MENU_ITEMS_SUPER_USER;

@@ -2,16 +2,20 @@
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="header-title">
-                <h6>Archived </h6>
+                <h6>Archived Clients</h6>
             </div>
         </div>
 
         <div class="col-md-12 col-lg-6 pr-5">
             <div class="d-flex justify-content-end preference-header-right">
                 <div class="d-flex l-search">
-                    <i class="material-icons search-ico"> search </i>
-                    <input (keyup.enter)="searchArchived($event)" class='l-searchbox' placeholder="Search" type="text">
-
+                    <input (keyup.enter)="searchArchived()" class='l-searchbox' [(ngModel)]="searchText" placeholder="Search Archived Client" type="text">
+                    <i class="material-icons search-ico cursor-click" (click)="searchArchived()">
+                        search
+                    </i>
+                    <i class="material-icons clear-ico cursor-click" (click)="clear()">
+                        close
+                    </i>
                 </div>
                 <i class="material-icons filter-ico position-relative cursor-click">
                     filter_list
@@ -59,28 +63,28 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let archiveClient of archivedClient | paginate: config">
-                            <td (click)="singleArchive(archiveClient.Id)" class="cursor-click">
-                                {{archiveClient?.Name}}</td>
-                            <td>{{archiveClient?.package}}</td>
+                            <td (click)="singleArchive(archiveClient.id)" class="cursor-click">
+                                {{archiveClient?.name}}</td>
+                            <td>{{archiveClient?.subscriptions[0]?.name}}</td>
                             <td>{{archiveClient?.contactName}}</td>
-                            <td>{{archiveClient?.OrgSuperUser?.EmailAddress}}</td>
-                            <td>{{archiveClient?.ContactPhone | phoneFormat}}</td>
-                            <td>{{archiveClient?.ContactEmail}}</td>
-                            <td>{{archiveClient?.EndDate | date: 'MMM d, y'}}</td>
-                            <td>{{archiveClient?.Status}}</td>
+                            <td>{{archiveClient?.orgSuperUser?.emailAddress}}</td>
+                            <td>{{archiveClient?.contactPhone | phoneFormat}}</td>
+                            <td>{{archiveClient?.contactEmail}}</td>
+                            <td>{{archiveClient?.endDate | date: 'MMM d, y'}}</td>
+                            <td>{{statusName}}</td>
                             <td>
 
                                 <span class="refresh-ico ml-2">
-                                    <img style="cursor: pointer" (click)="restoreArchive(archiveClient.Id)"
+                                    <img style="cursor: pointer" (click)="restoreArchive(archiveClient.id)"
                                         src="assets/images/restore-ico.svg">
                                 </span>
 
                                 <span class="del-ico ml-2 cursor-click">
-                                    <img   *ngIf="!checkPermission" (click)="deleteSingleClient(archiveClient.Id)"
+                                    <img   *ngIf="!checkPermission" (click)="deleteSingleClient(archiveClient.id)"
                                         src="assets/images/delete.svg"
                                        >
 
-                                    <img   *ngIf="checkPermission" (click)="deleteSingleClient(archiveClient.Id)"
+                                    <img   *ngIf="checkPermission" (click)="deleteSingleClient(archiveClient.id)"
                                         src="assets/images/delete.svg" data-toggle="modal"
                                         data-target="#exampleModalCenter">
                                 </span>

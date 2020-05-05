@@ -7,6 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { PhoneFormatPipe } from '../../../../core/utils/phone-format.pipe';
 import { StatusUse } from '../../../../models/status-id-name';
+import { String } from "typescript-string-operations";
 
 @Component({
   selector: 'archived',
@@ -54,8 +55,8 @@ export class ArchivedComponent implements OnInit {
 
   ngOnInit() {
     const user = JSON.parse(sessionStorage.getItem('user'));
-    this.userProfile = user['UserProfile'];
-    this.currentUser = this.userProfile.Id;
+    this.userProfile = user['userDetails'];
+    this.currentUser = this.userProfile.userId;
     this.id = this.route.snapshot.paramMap.get('id');
     this.getSingleEditUserDetails(this.id);
   }
@@ -65,11 +66,13 @@ export class ArchivedComponent implements OnInit {
   }
 
   getSingleEditUserDetails(id) {
-    this.apiService.getData(this.apiService.getAllArchivedClients).subscribe(response => {
+    const getClientDetailsbyIdApi = String.Format(this.apiService.getClientDetailById, id);
+    this.apiService.getDataList(getClientDetailsbyIdApi, 1, 1, null, null, null).
+    subscribe((response) => {
       this.editClientDetails = response['body'];
 
       this.editClientDetails.forEach(element => {
-        if (element.Id === id) {
+        if (element.id === id) {
           this.editClientDetails = element;
         }
       });

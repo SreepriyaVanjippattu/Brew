@@ -64,9 +64,9 @@ export class SettingsComponent implements OnInit {
 
     const sessionData = this.userProfile['SystemSettings'][0].EmailSetting;
     const sessionSubscriptionData = this.userProfile['CompanyDetails'].GeneralSetting;
-    this.apiService.getData(this.apiService.getAllActiveClients).subscribe((response: any) => {
+    this.apiService.getDataList(this.apiService.getAllActiveClients).subscribe((response: any) => {
       if (response.status === 200) {
-        this.clientData = response['body'];
+        this.clientData = response['body']['clientDetails'];
         const data = this.clientData.filter(element => element.Id === this.settingDetails['UserProfile'].TenantId);
         this.clientData = data[0].GeneralSetting;
         this.currentUserMail = data[0].SystemSetting[0].EmailSetting;

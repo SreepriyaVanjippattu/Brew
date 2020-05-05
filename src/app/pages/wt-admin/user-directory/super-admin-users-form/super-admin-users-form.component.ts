@@ -307,10 +307,10 @@ export class SuperAdminUsersFormComponent implements OnInit {
 
   getClientsList() {
     if (!sessionStorage.allActiveClients || sessionStorage.allActiveClients === '') {
-      const clientDetails = this.apiService.getData(this.apiService.getAllActiveClients).
+      const clientDetails = this.apiService.getDataList(this.apiService.getAllActiveClients).
       subscribe((response) => {
         if (response) {
-          this.companyList = response['body'];
+          this.companyList = response['body']['clientDetails'];
           sessionStorage.allActiveClients = JSON.stringify(this.companyList);
         }
       });

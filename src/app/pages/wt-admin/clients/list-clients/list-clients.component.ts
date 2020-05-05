@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -10,6 +10,7 @@ import { NbToastrService } from '@nebular/theme';
 import { StatusUse } from '../../../../models/status-id-name';
 import { apiConfig } from '../../../../../environments/api-config';
 import * as XLSX from 'xlsx';
+import { String } from "typescript-string-operations";
 
 @Component({
   selector: 'app-list-clients',
@@ -42,6 +43,8 @@ export class ListClientsComponent implements OnInit {
   userProfile: any;
   currentUser: any;
   statusName: string;
+  searchText: string;
+  package: any;
   constructor(
     private httpService: HttpClient,
     private apiService: ApiProviderService,
@@ -55,12 +58,13 @@ export class ListClientsComponent implements OnInit {
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.userProfile = user['userDetails'];
     this.currentUser = this.userProfile.userId;
+    this.tenantId = this.userProfile.tenantId;
     this.toggleStatus = false;
     this.page = this.route.snapshot.queryParamMap.get('page');
     if (this.page) {
-      this.getClientsList(this.page, this.config.itemsPerPage);
+      this.getClientsList(this.page, this.config.itemsPerPage, this.searchText);
     } else {
-      this.getClientsList(this.config.currentPage, this.config.itemsPerPage);
+      this.getClientsList(this.config.currentPage, this.config.itemsPerPage, this.searchText);
     }
   }
 
@@ -86,40 +90,40 @@ export class ListClientsComponent implements OnInit {
   filter(label) {
     if (this.clientList) {
       if (this.toggleStatus === true && label === 'company') {
-        this.clientList.sort((a, b) => a.Name.toUpperCase() > b.Name.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'company') {
-        this.clientList.sort((a, b) => a.Name.toUpperCase() < b.Name.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'package') {
-        this.clientList.sort((a, b) => a.package.toUpperCase() > b.package.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => this.package.toUpperCase() > this.package.toUpperCase() ? 1: -1);
       }
-      else if (this.toggleStatus === false && label === 'package'){
-        this.clientList.sort((a, b) => a.package.toUpperCase() < b.package.toUpperCase()? 1: -1);
+      else if (this.toggleStatus === false && label === 'package') {
+          this.clientList.sort((a, b) => this.package.toUpperCase() < this.package.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'name') {
-        this.clientList.sort((a, b) => a.OrgSuperUser.FirstName.toUpperCase() > b.OrgSuperUser.FirstName.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.orgSuperUser.firstName.toUpperCase() > b.orgSuperUser.firstName.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'name') {
-        this.clientList.sort((a, b) => a.OrgSuperUser.FirstName.toUpperCase() < b.OrgSuperUser.FirstName.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.orgSuperUser.firstName.toUpperCase() < b.orgSuperUser.firstName.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'user') {
-        this.clientList.sort((a, b) => a.OrgSuperUser.EmailAddress.toUpperCase() > b.OrgSuperUser.EmailAddress.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.orgSuperUser.emailAddress.toUpperCase() > b.orgSuperUser.emailAddress.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'user') {
-        this.clientList.sort((a, b) => a.OrgSuperUser.EmailAddress.toUpperCase() < b.OrgSuperUser.EmailAddress.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.orgSuperUser.emailAddress.toUpperCase() < b.orgSuperUser.emailAddress.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'phone') {
         this.clientList.sort((a, b) => a.ContactPhone < b.ContactPhone ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'phone') {
-        this.clientList.sort((a, b) => a.ContactPhone > b.ContactPhone? 1: -1);
+        this.clientList.sort((a, b) => a.contactPhone > b.contactPhone? 1: -1);
       }
       if (this.toggleStatus === true && label === 'email') {
-        this.clientList.sort((a, b) => a.ContactEmail.trim().toUpperCase() < b.ContactEmail.trim().toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.contactEmail.trim().toUpperCase() < b.contactEmail.trim().toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'email') {
-        this.clientList.sort((a, b) => a.ContactEmail.trim().toUpperCase() > b.ContactEmail.trim().toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.contactEmail.trim().toUpperCase() > b.contactEmail.trim().toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'expiry') {
         this.clientList.sort((a, b) => a.localTime < b.localTime ? 1: -1);
@@ -128,54 +132,66 @@ export class ListClientsComponent implements OnInit {
         this.clientList.sort((a, b) => a.localTime > b.localTime ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'status') {
-        this.clientList.sort((a, b) => a.Status.toUpperCase() < b.Status.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.status.toUpperCase() < b.status.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'status') {
-        this.clientList.sort((a, b) => a.Status.toUpperCase() > b.Status.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.status.toUpperCase() > b.status.toUpperCase() ? 1: -1);
       }
     }
     this.toggleStatus = !this.toggleStatus;
   }
 
-  getClientsList(pageNumber, pageSize) {
+  getClientsList(pageNumber, pageSize,searchText) {
     this.router.navigate(['app/clients'], {
       queryParams: {
         page: this.config.currentPage,
       },
     });
-    const clientDetails = this.apiService.getDataList(this.apiService.getAllActiveClients, pageNumber, pageSize).
+    const clientDetails = this.apiService.getDataList(this.apiService.getAllActiveClients, pageNumber, pageSize,null,null, searchText).
       subscribe((response) => {
         if (response && response['body']) {
           this.clientList = response['body']['clientDetails'];
           sessionStorage.clientList = JSON.stringify(this.clientList);
+          this.clientList.forEach(element => {
+            if (element.status === this.status.active.id) {
+              this.statusName = this.status.active.name;
+            }
+          });
+          
           this.clientList.map((client, idx) => {
-            client.localTime = client.EndDate.substr(0, client.EndDate.indexOf('T'));
-            let d = new Date(client.EndDate);
-            let e = d.toLocaleString();
-            client.startDate = +(e);
-            
+            if (client.endDate) {
+              client.localTime = client.endDate.substr(0, client.endDate.indexOf('T'));
+              let d = new Date(client.endDate);
+              let e = d.toLocaleString();
+              client.startDate = +(e);
+            }
+
             if (client.orgSuperUser !== null) {
               client.contactName = client.orgSuperUser.firstName !== null ? client.orgSuperUser.firstName : '';
               client.userName = client.orgSuperUser.userName;
-              client.PrimaryPhone = client.orgSuperUser.phone;
+              client.primaryPhone = client.orgSuperUser.phone;
             }
 
             if (client.subscriptions && client.subscriptions.length > 0) {
-              client.package = client.subscriptions[0].name;
+              this.package = client.subscriptions[0].name;
               if (client.orgSuperUser !== null && client.orgSuperUser !== null) {
-                client.name = client.orgSuperUser.firstName + ' ' + client.orgSuperUser.lastName;
+                // client.name = client.orgSuperUser.firstName + ' ' + client.orgSuperUser.lastName;
                 client.username = client.orgSuperUser.userName;
               }
             }
           });
-          const myHeaders = response.headers;
-          this.headerValue = JSON.parse(response.headers.get('paging-headers'));
+          this.headerValue = response["body"]["pagingDetails"];
           if (this.headerValue) {
-            this.config.totalItems = this.headerValue.TotalCount;
-            if (this.headerValue === 0) {
-              this.pageControl = true;
-            }
+            this.config.totalItems = this.headerValue.totalCount;
+            this.pageControl = this.config.totalItems === 0 ? true : false;
           }
+        }
+      },
+      (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.toastrService.danger(error.error.message, 'Try Again');
+        } else {
+          this.toastrService.danger(error, 'Try Again');
         }
       });
 
@@ -188,12 +204,12 @@ export class ListClientsComponent implements OnInit {
 
   pageSize(newSize) {
     this.config.itemsPerPage = newSize;
-    this.getClientsList(this.config.currentPage, this.config.itemsPerPage);
+    this.getClientsList(this.config.currentPage, this.config.itemsPerPage, this.searchText);
   }
 
   pageChange(nextPage) {
     this.config.currentPage = nextPage;
-    this.getClientsList(this.config.currentPage, this.config.itemsPerPage);
+    this.getClientsList(this.config.currentPage, this.config.itemsPerPage, this.searchText);
     this.router.navigate(['app/clients'], {
       queryParams: {
         page: nextPage,
@@ -213,17 +229,17 @@ export class ListClientsComponent implements OnInit {
     this.router.navigate(['app/clients/edit/' + client]);
   }
 
-  searchClient(event) {
-    const search = event.target.value;
-    this.apiService.getData(this.apiService.getAllActiveClients + `&startwith=${search}`, this.config.currentPage, this.config.itemsPerPage).subscribe((response) => {
-      const myHeaders = response.headers;
-      this.headerValue = JSON.parse(response.headers.get('paging-headers'));
-      if (this.headerValue) {
-        this.config.totalItems = this.headerValue.TotalCount;
-      }
+  searchClient() {
+    this.apiService.getDataList(this.apiService.getAllActiveClients , this.config.currentPage, this.config.itemsPerPage, null,null, this.searchText).subscribe((response) => {
+     
       if (response && response['body']) {
-        this.clientList = response['body'];
+        this.clientList = response['body']['clientDetails'];
         sessionStorage.clientList = JSON.stringify(this.clientList);
+        this.headerValue = response["body"]["pagingDetails"];
+        if (this.headerValue) {
+          this.config.totalItems = this.headerValue.totalCount;
+          this.pageControl = this.config.totalItems === 0 ? true : false;
+        }
         this.clientList.map((client, idx) => {
           if (client.OrgSuperUser !== null) {
             client.contactName = client.OrgSuperUser.FirstName !== null ? client.OrgSuperUser.FirstName : '';
@@ -242,45 +258,40 @@ export class ListClientsComponent implements OnInit {
     });
   }
 
+  clear() {
+    this.searchText = "";
+    this.searchClient();
+  }
+  
   getArchiveId(archiveId) {
     this.archiveId = archiveId;
   }
 
   archivedClick() {
     this.clientList.forEach(element => {
-      if (this.archiveId === element.Id) {
+      if (this.archiveId === element.id) {
         this.clientToArchive = element;
       }
     });
-    const params = {
-      Id: this.clientToArchive.Id,
-      Name: this.clientToArchive.Name,
-      ContactEmail: this.clientToArchive.ContactEmail,
-      ContactPhone: this.clientToArchive.ContactPhone,
-      Address1: this.clientToArchive.Address1,
-      Address2: this.clientToArchive.Address2,
-      State: this.clientToArchive.State,
-      Country: this.clientToArchive.Country,
-      City: this.clientToArchive.City,
-      Postalcode: this.clientToArchive.Postalcode,
-      IsActive: true,
-      Status: this.status.archive.name,
-      StatusId: this.status.archive.id,
-      CurrentUser: this.currentUser,
-    };
-    this.archiveClient(params);
+    
+    this.archiveClient();
   }
 
-  archiveClient(params) {
-    this.apiService.putData(this.apiService.editClient, params).subscribe((response: any) => {
+  archiveClient() {
+    const archiveClientApi = String.Format(this.apiService.archiveClient, this.tenantId, )
+    this.apiService.patchData(archiveClientApi).subscribe((response: any) => {
       if (response.status === 200) {
-        this.toastrService.show('Client Archived', 'Success');
+        this.toastrService.success('Client Archived', 'Success');
         this.goToArchive();
       }
     },
-      error => {
-        this.toastrService.danger(error.error.Message, 'Error');
-      });
+    (error) => {
+      if (error instanceof HttpErrorResponse) {
+        this.toastrService.danger(error.error.message, 'Try Again');
+      } else {
+        this.toastrService.danger(error, 'Try Again');
+      }
+    });
   }
 
   ExportToExcelClientList() {
@@ -297,14 +308,18 @@ export class ListClientsComponent implements OnInit {
     const params = {
       EmailAddress: email,
       Url: window.location.origin + '/login/forgot-changepassword',
-  };
-  this.apiService.putData(this.apiService.postEmail, params).subscribe(response => {
-    if (response) {
-      this.toastrService.show('', 'Mail Sent');
-    }
-  }, error => {
-    this.toastrService.danger(error.error.Message);
-  });
+    };
+    this.apiService.putData(this.apiService.postEmail, params).subscribe(response => {
+      if (response) {
+        this.toastrService.show('Mail Sent', 'Success');
+      }
+    }, (error) => {
+      if (error instanceof HttpErrorResponse) {
+        this.toastrService.danger(error.error.message, 'Try Again');
+      } else {
+        this.toastrService.danger(error, 'Try Again');
+      }
+    });
   }
 
   changeStatusClick(tenantId, status) {
@@ -313,7 +328,7 @@ export class ListClientsComponent implements OnInit {
   }
 
   activateClientDirectory() {
-    if (this.tenantStatus !== 'Active') {
+    if (this.tenantStatus !== this.status.active.id) {
       const params = {
         ClientId: this.tenantId,
         StatusId: '7cd88ffb-cf41-4efc-9a17-d75bcb5b3770',
@@ -325,11 +340,15 @@ export class ListClientsComponent implements OnInit {
           this.ngOnInit();
         }
       },
-        error => {
-          this.toastrService.danger(error.error.Message, 'Error');
+        (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.toastrService.danger(error.error.message, 'Try Again');
+          } else {
+            this.toastrService.danger(error, 'Try Again');
+          }
         });
     } else {
       this.toastrService.show('Already Active', 'Client');
-     }
+    }
   }
 }

@@ -126,11 +126,12 @@ export class ApiProviderService {
   getSubscriptions = 'user/v1/brewers/subscriptions';
   isCompanyNameAvailable ='user/v1/brewers/companyname/{0}/check';
   initializeClient ='user/v1/brewers/client/initialize';
-  archiveClient = 'user/v1/brewers/{0}/clients/{1}/archive';
+  archiveClient = 'user/v1/brewers/clients/{0}/archive';
   editClientStatus = 'user/v1/brewers/{0}/tenantstatus';
   getAllActiveClients = 'user/v1/brewers/clients';
   getAllArchivedClients = 'user/v1/brewers/clients/archived';
-  addBrewUserAuditTrail ='';
+  getClientDetailById = 'user/v1/brewers/{0}/tenant';
+  addBrewUserAuditTrail = '';
 
   
   constructor(public http: HttpClient) { }
