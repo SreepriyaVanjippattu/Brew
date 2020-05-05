@@ -8,9 +8,8 @@ import { PermissionGaurdService } from '../core/guards/permission-gaurd.service'
 import { ScrollTopComponent } from './scroll-top/scroll-top.component';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { RoleGaurdService } from '../core/guards/role-gaurd.service';
-import {RoleName} from '../models/roleName';
+import {Constants} from '../models/constants';
 
-const roleName = RoleName;
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
@@ -24,7 +23,7 @@ const routes: Routes = [{
       canActivateChild: [RoleGaurdService, AuthGaurdService],
       canActivate: [RoleGaurdService, AuthGaurdService],
       data: {
-        expectedRole: [roleName.Superadmin],
+        expectedRole: [Constants.Superadmin],
         expectedPermission: ['Delete Organization'],
       },
 
@@ -35,7 +34,7 @@ const routes: Routes = [{
         .then(m => m.ReportsAdminModule),
       canActivate: [RoleGaurdService, AuthGaurdService],
       data: {
-        expectedRole: [roleName.Superadmin],
+        expectedRole: [Constants.Superadmin],
       },
     },
     {
@@ -44,7 +43,7 @@ const routes: Routes = [{
         .then(m => m.UserDirectoryModule),
       canActivate: [RoleGaurdService, AuthGaurdService],
       data: {
-        expectedRole: [roleName.Superadmin],
+        expectedRole: [Constants.Superadmin],
       },
     },
     {
@@ -53,7 +52,7 @@ const routes: Routes = [{
         .then(m => m.SettingsModule),
       canActivate: [RoleGaurdService, AuthGaurdService],
       data: {
-        expectedRole: [roleName.Superadmin],
+        expectedRole: [Constants.Superadmin],
       },
     },
     {
@@ -62,7 +61,7 @@ const routes: Routes = [{
         .then(m => m.ProfileSuperAdminModule),
       canActivate: [RoleGaurdService, AuthGaurdService],
       data: {
-        expectedRole: [roleName.Superadmin],
+        expectedRole: [Constants.Superadmin],
       },
     },
     {
@@ -71,7 +70,7 @@ const routes: Routes = [{
         .then(m => m.RolePrivilegesSuperAdminModule),
       canActivate: [RoleGaurdService, AuthGaurdService],
       data: {
-        expectedRole: [roleName.Superadmin],
+        expectedRole: [Constants.Superadmin],
       },
     },
     /** wt-admin routes */

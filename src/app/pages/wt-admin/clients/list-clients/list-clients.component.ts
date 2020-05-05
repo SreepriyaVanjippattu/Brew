@@ -44,7 +44,7 @@ export class ListClientsComponent implements OnInit {
   currentUser: any;
   statusName: string;
   searchText: string;
-  package: any;
+  
   constructor(
     private httpService: HttpClient,
     private apiService: ApiProviderService,
@@ -96,10 +96,10 @@ export class ListClientsComponent implements OnInit {
         this.clientList.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'package') {
-        this.clientList.sort((a, b) => this.package.toUpperCase() > this.package.toUpperCase() ? 1: -1);
+        this.clientList.sort((a, b) => a.package.toUpperCase() > b.package.toUpperCase() ? 1: -1);
       }
       else if (this.toggleStatus === false && label === 'package') {
-          this.clientList.sort((a, b) => this.package.toUpperCase() < this.package.toUpperCase() ? 1 : -1);
+          this.clientList.sort((a, b) => a.package.toUpperCase() < b.package.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'name') {
         this.clientList.sort((a, b) => a.orgSuperUser.firstName.toUpperCase() > b.orgSuperUser.firstName.toUpperCase() ? 1: -1);
@@ -173,7 +173,7 @@ export class ListClientsComponent implements OnInit {
             }
 
             if (client.subscriptions && client.subscriptions.length > 0) {
-              this.package = client.subscriptions[0].name;
+              client.package = client.subscriptions[0].name;
               if (client.orgSuperUser !== null && client.orgSuperUser !== null) {
                 // client.name = client.orgSuperUser.firstName + ' ' + client.orgSuperUser.lastName;
                 client.username = client.orgSuperUser.userName;

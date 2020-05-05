@@ -48,7 +48,7 @@ export class ArchivedClientsComponent implements OnInit {
   currentUser: string;
   statusName: string;
   searchText: string;
-  package: any;
+  
 
   constructor(
     private modalservice: ModalService,
@@ -133,7 +133,7 @@ export class ArchivedClientsComponent implements OnInit {
         client.primaryPhone = client.orgSuperUser.phone;
       }
       if (client.subscriptions && client.subscriptions.length > 0) {
-        this.package = client.subscriptions[0].name;
+        client.package = client.subscriptions[0].name;
         if (client.orgSuperUser !== null && client.orgSuperUser !== null) {
           client.name = client.orgSuperUser.firstName + ' ' + client.orgSuperUser.lastName;
           client.username = client.orgSuperUser.userName;
@@ -151,10 +151,10 @@ export class ArchivedClientsComponent implements OnInit {
         this.archivedClient.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? 1: -1);
       }
       if (this.toggleStatus === true && label === 'package') {
-        this.archivedClient.sort((a, b) => this.package.toUpperCase() > this.package.toUpperCase() ? 1 : -1);
+        this.archivedClient.sort((a, b) => a.package.toUpperCase() > a.package.toUpperCase() ? 1 : -1);
       }
       else if (this.toggleStatus === false && label === 'package') {
-        this.archivedClient.sort((a, b) => this.package.toUpperCase() < this.package.toUpperCase() ? 1 : -1);
+        this.archivedClient.sort((a, b) => a.package.toUpperCase() < a.package.toUpperCase() ? 1 : -1);
       }
       if (this.toggleStatus === true && label === 'name') {
         this.archivedClient.sort((a, b) => a.orgSuperUser.firstName.toUpperCase() > b.orgSuperUser.firstName.toUpperCase() ? 1: -1);

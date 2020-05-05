@@ -5,7 +5,7 @@ import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Router } from '@angular/router';
 import { ApiProviderService } from '../core/api-services/api-provider.service';
 import { NbIconLibraries } from '@nebular/theme';
-import {RoleName} from '../models/roleName';
+import { Constants } from '../models/constants';
 
 @Component({
   selector: 'app-pages',
@@ -22,7 +22,6 @@ export class PagesComponent {
   menu;
   idleState = 'Not started.';
   timedOut = false;
-  roleName = RoleName;
 
   constructor(private idle: Idle,
     private route: Router,
@@ -35,9 +34,9 @@ export class PagesComponent {
     this.iconLibraries.setDefaultPack('nebular');
     
     this.userProfile = user['userDetails']['position'];
-    if (this.userProfile === this.roleName.Superadmin) {
+    if (this.userProfile === Constants.Superadmin) {
       this.menu = MENU_ITEMS_SUPER_USER;
-    } else if (this.userProfile === this.roleName.Brewer || this.userProfile === this.roleName.OrgSuperUser || this.userProfile === this.roleName.OrgAdminUser || this.userProfile === this.roleName.OrgDashboardUser || this.userProfile === this.roleName.DemoUser) {
+    } else if (this.userProfile === Constants.Brewer || this.userProfile === Constants.OrgSuperUser || this.userProfile === Constants.OrgAdminUser || this.userProfile === Constants.OrgDashboardUser || this.userProfile === Constants.DemoUser) {
       this.menu = MENU_ITEMS_ORGANIZATION;
     }
     
