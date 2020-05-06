@@ -90,8 +90,9 @@
                                 <span class="edit-ico ml-2 cursor-click">
                   <img (click)="editClientDirectory(client.id)" src="../../../../../assets/images/edit.svg">
                 </span>
-                                <span class="tic-ico ml-2 cursor-click">
-                  <img (click)="changeStatusClick(client?.id, client?.Status)" src="../../../../../assets/images/tic.svg" data-target="#statusModal" data-toggle="modal">
+                <span class="tic-ico ml-2 cursor-click">
+                    <img (click)="changeStatusClick(client?.id, client?.status)" src="../../../../../assets/images/tic.svg"
+                        data-target="#statusModal" data-toggle="modal" />
                 </span>
                                 <span class="refresh-ico ml-2 cursor-click">
                   <img (click)="resetpasswordClick(client?.orgSuperUser?.id, client?.orgSuperUser?.emailAddress, client?.id)" src="../../../../../assets/images/refresh.svg">

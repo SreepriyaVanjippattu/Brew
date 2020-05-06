@@ -304,7 +304,7 @@ export class ListClientsComponent implements OnInit {
 
   }
 
-  resetpasswordClick(id, email, tenantId) {
+  resetpasswordClick(email) {
     const params = {
       EmailAddress: email,
       Url: window.location.origin + '/login/forgot-changepassword',

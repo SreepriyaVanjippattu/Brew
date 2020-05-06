@@ -78,8 +78,13 @@
 
                     <div class="form-group col-md-6 col-lg-4">
                         <label for="end">Expiry Date</label>
-                        <input type="text" class="form-control input-style" formControlName="expiryDate" id="end" placeholder="" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" (dateTimeChange)="expiryDateChange()" [min]="minExpiryDate" readonly>
+                        <input type="text" class="form-control input-style" formControlName="expiryDate" id="end" (blur)="compareTwoDates()"
+                            placeholder="" [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" (dateTimeChange)="expiryDateChange()"
+                            [min]="minExpiryDate" readonly>
                         <owl-date-time #dt2></owl-date-time>
+                        <div *ngIf="error.isError" class="valid-error">
+                            Expiry Date can't be before Start Date
+                        </div>
                     </div>
 
                     <div class="form-group col-md-6 col-lg-4">

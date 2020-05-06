@@ -122,7 +122,7 @@ export class ApiProviderService {
  
   getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
   getBrewRunById = 'GetBrewRunById';
-  editClient = 'EditClient';
+  editClient = 'user/v1/brewers/{0}/tenant';  
   getSubscriptions = 'user/v1/brewers/subscriptions';
   isCompanyNameAvailable ='user/v1/brewers/companyname/{0}/check';
   initializeClient ='user/v1/brewers/client/initialize';

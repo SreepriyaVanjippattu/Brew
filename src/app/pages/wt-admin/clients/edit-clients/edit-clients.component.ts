@@ -51,6 +51,7 @@ export class EditClientsComponent implements OnInit {
   imageLink = '';
   userProfile: any;
   userId: any;
+  error: any = { isError: false, errorMessage: "" };
   constructor(
     private httpService: HttpClient,
     private apiService: ApiProviderService,
@@ -104,6 +105,17 @@ export class EditClientsComponent implements OnInit {
   //   this.currentStatus = event.target.value;
   //   this.selectedTenant = this.tenantList.find(x => x.Id === this.currentStatus);
   // }
+
+  compareTwoDates() {
+    if (
+      new Date(this.clientEditForm.get("expiryDate").value) <
+      new Date(this.clientEditForm.get("startDate").value)
+    ) {
+      this.error = { isError: true };
+    } else {
+      this.error = { isError: false };
+    }
+  }
 
   getAllTenantStatus() {
 
@@ -251,16 +263,23 @@ export class EditClientsComponent implements OnInit {
           this.clientEditForm.get('userPhone').setValue(this.editClientDetails.OrgSuperUser.PrimaryPhone);
         }
         if (this.editClientDetails.StartDate !== null) {
-          const startDate = this.editClientDetails.StartDate;
+          const startDate = this.datepipe.transform(
+            this.editClientDetails.StartDate,
+            "dd/MM/yyyy hh:mm:ss a"
+          );
           this.clientEditForm.controls.startDate.setValue(startDate);
-          const createdDate = this.editClientDetails.SystemSetting[0].CreatedDate;
+          const createdDate = this.editClientDetails.systemSetting[0]
+            .createdDate;
           this.minStartDate = createdDate;
-          this.maxStartDate = this.editClientDetails.EndDate;
+          this.maxStartDate = this.editClientDetails.endDate;
         }
-        if (this.editClientDetails.EndDate !== null) {
-          const expiryDate = this.editClientDetails.EndDate;
-          this.clientEditForm.get('expiryDate').setValue(expiryDate);
-          this.minExpiryDate = this.clientEditForm.get('startDate').value;
+        if (this.editClientDetails.endDate !== null) {
+          const expiryDate = this.datepipe.transform(
+            this.editClientDetails.endDate,
+            "dd/MM/yyyy hh:mm:ss a"
+          );
+          this.clientEditForm.get("expiryDate").setValue(expiryDate);
+          this.minExpiryDate = this.clientEditForm.get("startDate").value;
         }
         if (this.editClientDetails.OrgSuperUser.FirstName !== null) {
           this.clientEditForm.get('firstname').setValue(this.editClientDetails.OrgSuperUser.FirstName);
