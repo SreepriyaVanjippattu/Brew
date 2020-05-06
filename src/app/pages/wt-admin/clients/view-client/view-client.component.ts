@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -30,6 +30,7 @@ export class ViewclientComponent implements OnInit {
   imageLink = '';
   userProfile: any;
   currentUser: any;
+  tenantId: any;
   constructor(
     private httpService: HttpClient,
     private apiService: ApiProviderService,
@@ -65,6 +66,7 @@ export class ViewclientComponent implements OnInit {
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.userProfile = user['userDetails'];
     this.currentUser = this.userProfile.userId;
+    this.tenantId = this.userProfile.tenantId;
     this.id = this.route.snapshot.url[1].path;
     this.page = this.route.snapshot.url[0].path;
     this.getSingleEditUserDetails(this.id);
@@ -75,24 +77,18 @@ export class ViewclientComponent implements OnInit {
       const clientDetails = String.Format(this.apiService.getClientDetailById, id);
       this.apiService.getDataList(clientDetails, 1, 1, null, null, null).
         subscribe((response) => {
-        this.editClientDetails = response['body'];
-        this.editClientDetails.forEach(element => {
-          if (element.id === id) {
-            this.editClientDetails = element;
-            this.setDataToEdit();
+          this.editClientDetails = response['body'];
+          this.setDataToEdit();
+        }, (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message, 'Try Again');
+          } else {
+            this.toast.danger(error, 'Try Again');
           }
         });
-      }, error => {
-        console.error(error);
-      });
-    }else {
+    } else {
       this.editClientDetails = JSON.parse(sessionStorage.clientList);
-        this.editClientDetails.forEach(element => {
-          if (element.id === id) {
-            this.editClientDetails = element;
-            this.setDataToEdit();
-          }
-        });
+      this.setDataToEdit();
     }
   }
 
@@ -108,13 +104,13 @@ export class ViewclientComponent implements OnInit {
         this.viewClientForm.get('email').setValue(this.editClientDetails.contactEmail);
       }
       if (this.editClientDetails.orgSuperUser !== null) {
-        if (this.editClientDetails.orgSuperUser.EmailAddress !== null) {
+        if (this.editClientDetails.orgSuperUser.emailAddress !== null) {
           this.viewClientForm.get('userEmail').setValue(this.editClientDetails.orgSuperUser.emailAddress);
         }
-        if (this.editClientDetails.orgSuperUser.PrimaryPhone !== null) {
+        if (this.editClientDetails.orgSuperUser.primaryPhone !== null) {
           this.viewClientForm.get('phone').setValue(this.editClientDetails.orgSuperUser.primaryPhone);
         }
-        if (this.editClientDetails.orgSuperUser.CreatedDate !== null) {
+        if (this.editClientDetails.orgSuperUser.createdDate !== null) {
           let startDate = this.editClientDetails.startDate;
          startDate = this.datepipe.transform(new Date(startDate), 'dd/MM/yyyy  hh:mm:ss a');
           this.viewClientForm.get('startDate').setValue(startDate);
@@ -151,43 +147,23 @@ export class ViewclientComponent implements OnInit {
       if (this.editClientDetails.orgSuperUser !== null) {
         this.viewClientForm.get('userPhone').setValue(this.editClientDetails.orgSuperUser.primaryPhone);
       }
-      this.imageLink = this.editClientDetails.ImageUrl;
+      this.imageLink = this.editClientDetails.imageUrl;
     }
   }
 
   archivedClick() {
-    const clientForm = this.viewClientForm.controls;
-    const str_client = this.viewClientForm.value.street.split(',');
-    const params = {
-      Id: this.id,
-      Name: clientForm.company.value,
-      ContactEmail: clientForm.email.value,
-      ContactPhone: clientForm.phone.value,
-      Address1: str_client[0],
-      Address2: str_client[1],
-      State: clientForm.state.value,
-      Country: clientForm.country.value,
-      City: clientForm.city.value,
-      Postalcode: clientForm.postalCode.value,
-      IsActive: true,
-      Status: this.status.archive.name,
-      StatusId: this.status.archive.id,
-      CurrentUser: this.currentUser,
-      Subscriptions: [
-        {
-          Id: this.editClientDetails.Subscriptions[0].Id,
-          StartDate: this.viewClientForm.get('startDate').value,
-          EndDate: this.viewClientForm.get('expiryDate').value,
-        },
-      ],
-    };
-    this.apiService.putData(this.apiService.editClient, params).subscribe(response => {
+    const archiveClientApi = String.Format(this.apiService.archiveClient, this.id, )
+    this.apiService.patchData(archiveClientApi).subscribe((response: any) => {
       if (response) {
         this.toast.show('Client Archived', 'Success');
         this.router.navigate(['app/clients/archives']);
       }
-    }, error => {
-      this.toast.danger(error.error.Message);
+    }, (error) => {
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message, 'Try Again');
+      } else {
+        this.toast.danger(error, 'Try Again');
+      }
     });
 
   }

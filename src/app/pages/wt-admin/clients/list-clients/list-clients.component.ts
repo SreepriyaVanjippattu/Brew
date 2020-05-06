@@ -278,7 +278,7 @@ export class ListClientsComponent implements OnInit {
   }
 
   archiveClient() {
-    const archiveClientApi = String.Format(this.apiService.archiveClient, this.tenantId, )
+    const archiveClientApi = String.Format(this.apiService.archiveClient, this.archiveId )
     this.apiService.patchData(archiveClientApi).subscribe((response: any) => {
       if (response.status === 200) {
         this.toastrService.success('Client Archived', 'Success');

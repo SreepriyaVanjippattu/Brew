@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { PhoneFormatPipe } from '../../../../core/utils/phone-format.pipe';
 import { StatusUse } from '../../../../models/status-id-name';
 import { String } from "typescript-string-operations";
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'archived',
@@ -33,6 +34,7 @@ export class ArchivedComponent implements OnInit {
     private datepipe: DatePipe,
     private route: ActivatedRoute,
     private phonePipe: PhoneFormatPipe,
+    private toast: NbToastrService,
   ) { }
 
   clientEditForm = this.forms.group({
@@ -54,6 +56,7 @@ export class ArchivedComponent implements OnInit {
   });
 
   ngOnInit() {
+    debugger;
     const user = JSON.parse(sessionStorage.getItem('user'));
     this.userProfile = user['userDetails'];
     this.currentUser = this.userProfile.userId;
@@ -71,63 +74,59 @@ export class ArchivedComponent implements OnInit {
     subscribe((response) => {
       this.editClientDetails = response['body'];
 
-      this.editClientDetails.forEach(element => {
-        if (element.id === id) {
-          this.editClientDetails = element;
-        }
-      });
       this.setDataToEdit();
-    }, error => {
-      console.error(error);
+    }, (error) => {
+      if (error instanceof HttpErrorResponse) {
+        this.toast.danger(error.error.message, 'Try Again');
+      } else {
+        this.toast.danger(error, 'Try Again');
+      }
     });
   }
 
   setDataToEdit() {
-    this.clientEditForm.get('company').setValue(this.editClientDetails.Name);
-    this.clientEditForm.get('email').setValue(this.editClientDetails.ContactEmail);
-    this.clientEditForm.get('phone').setValue(this.editClientDetails.OrgSuperUser.PrimaryPhone);
-    this.clientEditForm.get('startDate').setValue(this.editClientDetails.startDate);
-    this.clientEditForm.get('expiryDate').setValue(this.editClientDetails.expiry);
-    this.clientEditForm.get('street').setValue(this.editClientDetails.Address1 + ' , ' + this.editClientDetails.Address2);
-    this.clientEditForm.get('city').setValue(this.editClientDetails.City);
-    this.clientEditForm.get('state').setValue(this.editClientDetails.State);
-    this.clientEditForm.get('country').setValue(this.editClientDetails.Country);
-    this.clientEditForm.get('postalCode').setValue(this.editClientDetails.Postalcode);
-    this.clientEditForm.get('firstname').setValue(this.editClientDetails.OrgSuperUser.FirstName);
-    this.clientEditForm.get('lastname').setValue(this.editClientDetails.OrgSuperUser.LastName);
-    this.clientEditForm.get('userEmail').setValue(this.editClientDetails.OrgSuperUser.EmailAddress);
-    this.clientEditForm.get('phone').setValue(this.editClientDetails.OrgSuperUser.PrimaryPhone);
-    this.clientEditForm.get('userId').setValue(this.editClientDetails.OrgSuperUser.EmailAddress);
+    this.clientEditForm.get('company').setValue(this.editClientDetails.name);
+    this.clientEditForm.get('email').setValue(this.editClientDetails.contactEmail);
+    this.clientEditForm.get('phone').setValue(this.editClientDetails.contactPhone);
+    let startDate = this.editClientDetails.startDate;
+    startDate = this.datepipe.transform(new Date(startDate), 'dd/MM/yyyy  hh:mm:ss a');
+    this.clientEditForm.get('startDate').setValue(startDate);
+    let expiryDate = this.editClientDetails.endDate;
+    expiryDate = this.datepipe.transform(new Date(expiryDate), 'dd/MM/yyyy  hh:mm:ss a');
+    this.clientEditForm.get('expiryDate').setValue(expiryDate);
+    this.clientEditForm.get('street').setValue(this.editClientDetails.address1 + ' , ' + this.editClientDetails.address2);
+    this.clientEditForm.get('city').setValue(this.editClientDetails.city);
+    this.clientEditForm.get('state').setValue(this.editClientDetails.state);
+    this.clientEditForm.get('country').setValue(this.editClientDetails.country);
+    this.clientEditForm.get('postalCode').setValue(this.editClientDetails.postalcode);
+    this.clientEditForm.get('firstname').setValue(this.editClientDetails.orgSuperUser.firstName);
+    this.clientEditForm.get('lastname').setValue(this.editClientDetails.orgSuperUser.lastName);
+    this.clientEditForm.get('userEmail').setValue(this.editClientDetails.orgSuperUser.emailAddress);
+    this.clientEditForm.get('phone').setValue(this.editClientDetails.orgSuperUser.primaryPhone);
+    this.clientEditForm.get('userId').setValue(this.editClientDetails.orgSuperUser.emailAddress);
     // this.clientEditForm.get('password').setValue(this.editClientDetails.OrgSuperUser.Password);
-    this.imageLink = this.editClientDetails.ImageUrl;
+    this.imageLink = this.editClientDetails.imageUrl;
   }
 
   restoreClick() {
-    const archiveForm = this.clientEditForm.controls;
-
     const params = {
-      Id: this.id,
-      Name: archiveForm.company.value,
-      ContactEmail: archiveForm.email.value,
-      ContactPhone: archiveForm.phone.value,
-      Address1: this.editClientDetails.Address1,
-      Address2: this.editClientDetails.Address2,
-      State: archiveForm.state.value,
-      Country: archiveForm.country.value,
-      City: archiveForm.city.value,
-      Postalcode: archiveForm.postalCode.value,
-      IsActive: true,
-      // ImageUrl: this.editClientDetails.ImageUrl,
-      Status: this.status.pending.name,
-      StatusId: this.status.pending.id,
-      CurrentUser: this.currentUser,
+      clientID: this.editClientDetails.id,
+      statusID: this.status.pending.id,
+      currentUser: this.currentUser,
     };
-    this.apiService.putData(this.apiService.editClient, params).subscribe(response => {
-      if (response) {
+    this.apiService.putData(this.apiService.editClientStatus, params).subscribe((response: any) => {
+      if (response.status === 200) {
+        this.toast.show('Client Restored', 'Success');
         this.router.navigate(['app/clients']);
       }
-    }, error => {
-    });
+    },
+      (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message, 'Try Again');
+        } else {
+          this.toast.danger(error, 'Try Again');
+        }
+      });
   }
 
   clientSave() {

@@ -213,28 +213,18 @@ export class EditClientsComponent implements OnInit {
       const getClientDetailsbyIdApi = String.Format(this.apiService.getClientDetailById, id);
       this.apiService.getDataList(getClientDetailsbyIdApi, 1, 1, null, null, null).
         subscribe((response) => {
-          this.editClientDetails = response['body']['clientDetails'];
-          this.editClientDetails.forEach(element => {
-            if (element.id === id) {
-              this.editClientDetails = element;
-              this.setDataToEdit();
-            }
-          });
-      },  (error) => {
-        if (error instanceof HttpErrorResponse) {
-          this.toast.danger(error.error.message, 'Try Again');
-        } else {
-          this.toast.danger(error, 'Try Again');
-        }
-      });
-    }else {
-      this.editClientDetails = JSON.parse(sessionStorage.clientList);
-        this.editClientDetails.forEach(element => {
-          if (element.Id === id) {
-            this.editClientDetails = element;
-            this.setDataToEdit();
+          this.editClientDetails = response['body'];
+          this.setDataToEdit();
+        }, (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.toast.danger(error.error.message, 'Try Again');
+          } else {
+            this.toast.danger(error, 'Try Again');
           }
         });
+    } else {
+      this.editClientDetails = JSON.parse(sessionStorage.clientList);
+      this.setDataToEdit();
     }
   }
 

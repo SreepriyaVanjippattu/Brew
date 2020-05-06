@@ -310,7 +310,7 @@ export class SuperAdminUsersFormComponent implements OnInit {
       const clientDetails = this.apiService.getDataList(this.apiService.getAllActiveClients).
       subscribe((response) => {
         if (response) {
-          this.companyList = response['body']['clientDetails'];
+          this.companyList = response['body'];
           sessionStorage.allActiveClients = JSON.stringify(this.companyList);
         }
       });
