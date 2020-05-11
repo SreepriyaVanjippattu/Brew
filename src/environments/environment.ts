@@ -8,7 +8,7 @@ export const environment = {
   baseUrl: 'brewerscanada',
   API: {
     URL: 'https://dev-brewers-insight.azure-api.net/',
-    emailUrl: 'https://dev-brewers-insight.azure-api.net/',
+    emailUrl: 'https://brewersclientqa.z9.web.core.windows.net/',
   },
   sasToken: '?sv=2019-02-02&ss=bfqt&srt=sco&sp=rwdlacup&se=2020-12-30T22:07:51Z&st=2019-12-03T14:07:51Z&spr=https&sig=K5vNMgrbKRHybJowC04XIPR6nk518%2B83bz%2FrKaQW1RM%3D',
   storageAccount: 'brewersinsightstorage',
