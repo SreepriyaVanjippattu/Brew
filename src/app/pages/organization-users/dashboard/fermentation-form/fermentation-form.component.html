@@ -109,7 +109,7 @@
                             <button (click)="isCollapsedFermentation = !isCollapsedFermentation"
                                 class="btn btn-link collapsed" type="button" data-toggle="collapse"
                                 aria-expanded="false" aria-controls="collapseTwo">
-                                Fermentation Data Entry
+                                Wort In
                             </button>
                         </h2>
                         <div class="d-flex align-items-center">
@@ -531,91 +531,7 @@
 
                 </div>
 
-                <div class="card">
-                    <div class="card-sub-header d-flex justify-content-between" id="headingThree">
-                        <h2 class="mb-0">
-                            <button (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl" class="btn btn-link collapsed"
-                                type="button" data-toggle="collapse" aria-expanded="false"
-                                aria-controls="collapseThree">
-                                Diacetyl Rest Data
-                            </button>
-                        </h2>
-                        <div class="d-flex align-items-center">
-                            <button class="btn l-btn-white" type="button" data-toggle="modal" data-target="#restData">
-                                Target Values</button>
-                            <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedDiacetyl"
-                                (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl">
-                                indeterminate_check_box
-                            </i>
-                            <i class="material-icons  colapse-toggle cursor-click"
-                                [ngClass]="{'colapse-toggle-active' :setClassDia}" [ngbCollapse]="!isCollapsedDiacetyl"
-                                (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl">
-                                add_box
-                            </i>
-
-                        </div>
-
-                    </div>
-                    <div [ngbCollapse]="isCollapsedDiacetyl" class="collapse" aria-labelledby="headingThree"
-                        data-parent="#accordionExample">
-                        <div class="card-body">
-                            <div *ngFor="let diacetylRestDataDetail of brewRunFermentation.diacetylRestDataDetails; let i = index;">
-                                <div class="form-row">
-
-                                    <div class="form-group col-md-6">
-                                        <label for="brewrun-id">Actual Temperature ({{preferedUnit}})</label>
-                                        <input type="number" class="form-control" id="brewrun-id"
-                                            placeholder="Actual Temperature"
-                                            [(ngModel)]=" brewRunFermentation.diacetylRestDataDetails[i].actualTemperatureIn">
-                                    </div>
-
-                                    <div class="form-group col-md-4">
-                                        <label for="brewrun-id">{{preferedPlato}}</label>
-                                        <input type="number" class="form-control" id="brewrun-id"
-                                            placeholder="{{preferedPlato}}"
-                                            [(ngModel)]=" brewRunFermentation.diacetylRestDataDetails[i].platoGravityValue">
-                                    </div>
-                                </div>
-
-
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="d-flex l-start">
-                                            <label class="l-start-label"
-                                                (click)="setStartDia(i, brewRunFermentation.diacetylRestDataDetails[i])">START</label>
-                                            <div class="form-group w-100">
-                                                <label for="brewrun-id">Start Time</label>
-                                                <input type="text" class="form-control"
-                                                    [(ngModel)]="diacetylRestDataDetail.startTime">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="d-flex l-start">
-                                            <label class="l-start-label"
-                                                (click)="setEndDia(i, brewRunFermentation.diacetylRestDataDetails[i])">END</label>
-                                            <div class="form-group w-100">
-                                                <label for="brewrun-id">End Time</label>
-                                                <input type="text" class="form-control"
-                                                    [(ngModel)]="diacetylRestDataDetail.endTime">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="col-md-12 d-flex justify-content-end">
-                                        <button type="button" class="btn btn-outline-light l-btn"
-                                            (click)="onDiacetylComplete(i,'DiacetylRestData')">
-                                            Complete
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
 
                 <div class="card">
                     <div class="card-sub-header d-flex justify-content-between" id="headingThree">
@@ -793,7 +709,7 @@
                             <button (click)="isCollapsedFermentationEnter = !isCollapsedFermentationEnter"
                                 class="btn btn-link collapsed" type="button" data-toggle="collapse"
                                 aria-expanded="false" aria-controls="collapseThree">
-                                Enter Fermentation Data
+                                Fermentation Data
                             </button>
                         </h2>
 
@@ -925,7 +841,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Fermentation Data Entry</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Wort In</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><img src="assets/images/modal-close.svg"
                                 class="modal-close-ico"></span>
@@ -1179,7 +1095,7 @@
                     </button>
                 </div>
                 <div class="modal-body" *ngFor="let adjuncts of adjunctsTarget;let i=index">
-                    <div class="container-fluid" *ngIf="adjuncts.AddInId == addInConstants.Fermentation.Id">
+                    <div class="container-fluid" *ngIf="adjuncts.addInId == addInConstants.Fermentation.Id">
                         <div class="col-md-12 pl-0"><b>Adjuncts. {{getAdjCountFermTargets(adjuncts.id)}}</b></div>
 
                         <div class="form-row mt-3">
@@ -1274,7 +1190,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Enter Fermentation Data</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Fermentation Data</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1319,51 +1235,7 @@
     </div>
 
 
-    <!-- Diacetyl Rest Data -->
-    <div class="modal fade" id="restData" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Diacetyl Rest Data</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true"><img src="assets/images/modal-close.svg"
-                                class="modal-close-ico"></span>
-                    </button>
-                </div>
-                <div class="modal-body" *ngFor="let diac of diacetylTarget">
-                    <div class="container-fluid">
-
-                        <div class="form-row">
-
-                            <div class="form-group col-md-6">
-                                <label for="brewrun-id">Actual Temperature ({{preferedUnit}})</label>
-                                <input type="text" class="form-control" id="brewrun-id" [value]="diac.temperature"
-                                    disabled>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                                <label for="brewrun-id">{{preferedPlato}}</label>
-                                <input type="text" class="form-control" id="brewrun-id" [value]="diac.plato" disabled>
-                            </div>
-
-
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-light l-btn" data-dismiss="modal">
-                                    Close
-                                </button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    
 
 
     <!-- Cooling/ Aging Data -->

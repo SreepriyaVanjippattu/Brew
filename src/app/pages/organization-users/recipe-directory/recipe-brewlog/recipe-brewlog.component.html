@@ -80,18 +80,18 @@
                                 <div [formGroupName]="i">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="brewlog-boil">Boil Length (mins)</label>
+                                            <label for="brewlog-boil">Boil Duration (mins)</label>
                                             <i class="material-icons star-ico">
                                                 star_rate
                                             </i>
                                             <div class='multiple-input'>
                                                 <input type="number" class="form-control" id="brewlog-boil"
-                                                    placeholder="Boil Length" formControlName="boilLength">
+                                                    placeholder="Boil Duration" formControlName="boilLength">
                                             </div>
                                             <div *ngIf="formSubmitted">
                                                 <div *ngIf="kettleTargets.get('boilLength').invalid"
                                                     class="valid-error">
-                                                    Boil Length is required
+                                                    Boil Duration is required
                                                 </div>
                                             </div>
                                         </div>

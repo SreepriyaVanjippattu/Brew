@@ -161,66 +161,6 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-sub-header d-flex justify-content-between" id="headingTwo">
-              <h2 class="mb-0">
-                <button (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl" class="btn btn-link collapsed"
-                  type="button" aria-expanded="false" aria-controls="collapseTwo">
-                  Diacetyl Rest Target
-                </button>
-              </h2>
-              <div class="d-flex align-items-center">
-                <i class="material-icons colapse-toggle cursor-click" [ngbCollapse]="isCollapsedDiacetyl"
-                  (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl">
-                  indeterminate_check_box
-                </i>
-                <i class="material-icons  colapse-toggle cursor-click" [ngbCollapse]="!isCollapsedDiacetyl"
-                  (click)="isCollapsedDiacetyl = !isCollapsedDiacetyl">
-                  add_box
-                </i>
-              </div>
-            </div>
-            <div [ngbCollapse]="isCollapsedDiacetyl" class="collapse" aria-labelledby="headingTwo"
-              data-parent="#accordionExample">
-              <div formArrayName="diacetylRest" *ngFor="let diacetyl of diacetylRestArray.controls; let i=index"
-                class="card-body">
-                <div [formGroupName]="i" class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="brewrun-Temperature">Temperature ({{preferedUnit}})</label>
-                    <i class="material-icons star-ico">
-                      star_rate
-                    </i>
-                    <input type="number" class="form-control" id="brewrun-Temperature" placeholder=""
-                      formControlName="temperature">
-                    <div *ngIf="formSubmitted">
-                      <div *ngIf="diacetyl.get('temperature').invalid" class="valid-error">
-                        Temperature Required
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="recipe-plato">{{preferedPlato}}</label>
-                    <i class="material-icons star-ico">
-                      star_rate
-                    </i>
-                    <input type="number" class="form-control" id="recipe-plato" placeholder="{{preferedPlato}}"
-                      formControlName="plato">
-                    <div *ngIf="formSubmitted">
-                      <div *ngIf="diacetyl.get('plato').invalid" class="valid-error">
-                        Required
-                      </div>
-                    </div>
-                    <div *ngIf="preferedPlato != 'Plato'">
-                      <div *ngIf="diacetyl.get('plato').invalid" class="valid-error">
-                        Range should be from 1 to 1.100
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
 
           <div class="card">
             <div class="card-sub-header d-flex justify-content-between" id="headingThree">
@@ -360,6 +300,26 @@
                         <option disabled value="">Select</option>
                         <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
                       </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="brewrrun-Quantity">Pitch Rate</label>
+                      <i class="material-icons star-ico">
+                        star_rate
+                      </i>
+                      <div class='multiple-input'>
+                        <input type="number" class="form-control" id="brewrrun-Pitch" placeholder="Quantity" formControlName="pitchRate">
+                        <select class="form-control input-dropdown" formControlName="quantityUnitId">
+                    
+                          <ng-container *ngFor="let unit of units">
+                            <option *ngIf="unit.category === 'Mass'" [value]="unit.id">{{unit.symbol}}</option>
+                          </ng-container>
+                        </select>
+                      </div>
+                      <div *ngIf="formSubmitted">
+                        <div *ngIf="yeast.get('pitchRate').invalid || yeast.get('quantityUnitId').invalid" class="valid-error">
+                          Pitch Rate and unit is required
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

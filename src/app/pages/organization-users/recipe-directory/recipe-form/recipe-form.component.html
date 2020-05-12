@@ -767,33 +767,7 @@
                         </div>
                     </div>
 
-                    <p><strong>Diacetyl Rest</strong></p>
-                    <div formArrayName="diacetylRest"
-                        *ngFor="let DiacetylRest of diacetylRestArray.controls; let i=index">
-                        <div [formGroupName]="i">
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="recipe-temp">Temperature ({{preferedUnit}})</label>
-                                    <div class='multiple-input'>
-                                        <input type="number" class="form-control" id="recipe-temp"
-                                            placeholder="Temperature" formControlName="temperature">
-                                        <select class="form-control input-dropdown" formControlName="temperatureUnitId"
-                                        id="TemperatureUnitId">
-                                            <option disabled value="">Select</option>
-                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="recipe-plato">{{preferedPlato}}</label>
-                                    <input type="number" class="form-control" id="recipe-plato"
-                                        placeholder="{{preferedPlato}}" formControlName="plato">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                   
                     <p><strong>Cooling/ Aging</strong></p>
                     <div formArrayName="aging" *ngFor="let Aging of agingArray.controls; let i=index">
                         <div [formGroupName]="i">
@@ -856,6 +830,17 @@
                                         <option disabled value="">Select</option>
                                         <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
                                             {{suppliers.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="pitch-Rate">Pitch Rate</label>
+                                <div class='multiple-input'>
+                                    <input type="number" class="form-control" id="PitchRate" placeholder="Quantity" formControlName="pitchRate">
+                                    <select class="form-control input-dropdown" formControlName="quantityUnitId" id="QuantityUnitId">
+                                        <option disabled value="">Select</option>
+                                        <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
                                         </option>
                                     </select>
                                 </div>

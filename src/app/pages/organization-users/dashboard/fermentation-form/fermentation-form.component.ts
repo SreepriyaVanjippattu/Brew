@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
-  BrewRunFermentation, FermentationDataEntry, YeastDataDetail, DiacetylRestDataDetail, AgingDetail,
+  BrewRunFermentation, FermentationDataEntry, YeastDataDetail, AgingDetail,
   EnterFermentationData, FermentationDetailsNote, AdjunctsDetail, HopesDetail,
 } from '../../../../models/brewrun';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
@@ -28,12 +28,11 @@ export class FermentationFormComponent implements OnInit {
   isCollapsedFermentation = false;
   isCollapsedYeast = false;
   isCollapsedHops = false;
-  isCollapsedDiacetyl = false;
   isCollapsedCooling = false;
   isCollapsedFermentationPrevious = false;
   isCollapsedFermentationEnter = false;
   isCollapsedNotes;
-  isCollapsedAdjuncts;
+  isCollapsedAdjuncts = false;
   tenantId: any;
   brewId: any;
 
@@ -84,7 +83,6 @@ export class FermentationFormComponent implements OnInit {
   yeastTarget = [];
   hopsTarget = [];
   adjunctsTarget = [];
-  diacetylTarget = [];
   coolTarget = [];
   tankList: any;
   currentTank: string;
@@ -170,7 +168,6 @@ export class FermentationFormComponent implements OnInit {
         this.getYeastTargets(this.recipeContent);
         this.getHopsTargets(this.recipeContent);
         this.getAdjunctsTargets(this.recipeContent);
-        this.getDiacetylTargets(this.recipeContent);
         this.getCoolingTargets(this.recipeContent);
         this.brewRunFermentation.hopesDetails.forEach(element => {
           // fermentation data
@@ -206,16 +203,6 @@ export class FermentationFormComponent implements OnInit {
 
           this.brewRunFermentation.yeastDataDetails.push(new YeastDataDetail());
           this.brewRunFermentation.yeastDataDetails[this.brewRunFermentation.yeastDataDetails.length - 1].tenantId = this.tenantId;
-        }
-        if (this.brewRunFermentation.diacetylRestDataDetails.length == 0) {
-          this.brewRunFermentation.diacetylRestDataDetails.push(new DiacetylRestDataDetail());
-          this.brewRunFermentation.diacetylRestDataDetails[this.brewRunFermentation.diacetylRestDataDetails.length - 1].tenantId = this.tenantId;
-
-        } else {
-          this.brewRunFermentation.diacetylRestDataDetails.map((diaTimes: DiacetylRestDataDetail) => {
-            diaTimes.startTime = this.datePipe.transform(diaTimes.startTime, 'E, dd LLL yyyy HH:mm:ss');
-            diaTimes.endTime = this.datePipe.transform(diaTimes.endTime, 'E, dd LLL yyyy HH:mm:ss');
-          });
         }
         if (this.brewRunFermentation.agingDetails.length == 0) {
           this.brewRunFermentation.agingDetails.push(new AgingDetail());
@@ -466,11 +453,6 @@ export class FermentationFormComponent implements OnInit {
       this.adjunctsTarget = recipeContent.adjuncts.filter(x => x.addInId === this.addInConstants.Fermentation.Id);
     }
   }
-  getDiacetylTargets(recipeContent: any) {
-    if (recipeContent.diacetylRest !== null) {
-      this.diacetylTarget.push(recipeContent.diacetylRest);
-    }
-  }
   getCoolingTargets(recipeContent: any) {
     if (recipeContent.aging !== null) {
       this.coolTarget.push(recipeContent.aging);
@@ -577,19 +559,6 @@ export class FermentationFormComponent implements OnInit {
      });
   }
 
-  onDiacetylComplete(i, editedSectionName) {
-    this.isCollapsedDiacetyl = !this.isCollapsedDiacetyl;
-    this.brewRunFermentation.diacetylRestDataDetails.map(element => {
-      element.isCompleted = true;
-    });
-
-    this.saveData().subscribe(response => {
-      this.setClassDia = true;
-    }, error => {
-      this.setClassDia = false;
-      this.toast.danger(error.error.message, 'Try Again');
-     });
-  }
 
   onCoolingComplete(i, editedSectionName) {
     this.isCollapsedCooling = !this.isCollapsedCooling;
@@ -654,14 +623,6 @@ export class FermentationFormComponent implements OnInit {
       });
     }
 
-    if (brew.diacetylRestDataDetails.length !== 0) {
-      brew.diacetylRestDataDetails.map(element => {
-        if (element.isCompleted === true) {
-          this.isCollapsedDiacetyl = !this.isCollapsedDiacetyl;
-          this.setClassDia = true;
-        }
-      });
-    }
 
     if (brew.agingDetails.length !== 0) {
       brew.agingDetails.map(element => {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   BrewRun, MaltGrainBillDetail, WaterAdditionDetail, MashingTargetDetail, StartchTest, MashinDetailsNote, MashingTargetDetailsTemperature,
-  FermentationDetailsNote, FermentationDataEntry, YeastDataDetail, DiacetylRestDataDetail, AgingDetail,
+  FermentationDetailsNote, FermentationDataEntry, YeastDataDetail, AgingDetail,
   EnterFermentationData, Vorlauf, SpargeDetail, FirstRunning, LastRunning, KettleDataEntryDetail, HopesDetail, AdjunctsDetail,
   PostBoilData, WhirlPoolDataEntry, PostWhirlpoolDetail, CoolingKnockouDetail, BrewLogDetailsNote, ConditioningDetail, FilterationDetail,
   CarbonationDetail, ConditioningDetailsNote, BrewRunCompletionDetail
@@ -348,11 +348,6 @@ export class ViewReportsComponent implements OnInit {
         if (this.brew.yeastDataDetails.length === 0) {
           this.brew.yeastDataDetails.push(new YeastDataDetail());
           this.brew.yeastDataDetails[this.brew.yeastDataDetails.length - 1].tenantId = this.tenantId;
-        }
-        if (this.brew.diacetylRestDataDetails.length === 0) {
-          this.brew.diacetylRestDataDetails.push(new DiacetylRestDataDetail());
-          this.brew.diacetylRestDataDetails[this.brew.diacetylRestDataDetails.length - 1].tenantId = this.tenantId;
-
         }
         if (this.brew.agingDetails.length === 0) {
           this.brew.agingDetails.push(new AgingDetail());

@@ -405,6 +405,7 @@ export class RecipeMashformComponent implements OnInit {
         timeInUnitId: ['944db4fe-e508-43a6-b599-e11556cfc844'],
         additionalAdjunctsStatus: [false],
         isActive: [null],
+        notes: [''],
         createdDate: [new Date()],
         modifiedDate: [new Date()],
         tenantId: [this.tenantId],
@@ -620,7 +621,6 @@ export class RecipeMashformComponent implements OnInit {
         formData.whirlpoolTarget = this.recipeDetails.whirlpoolTarget;
         formData.coolingKnockoutTarget = this.recipeDetails.coolingKnockoutTarget;
         formData.fermentationTargets = this.recipeDetails.fermentationTargets;
-        formData.diacetylRest = this.recipeDetails.diacetylRest;
         formData.aging = this.recipeDetails.aging;
         formData.yeast = this.recipeDetails.yeast;
         formData.conditioningTargets = this.recipeDetails.conditioningTargets;
@@ -633,7 +633,6 @@ export class RecipeMashformComponent implements OnInit {
         formData.whirlpoolTarget = {};
         formData.coolingKnockoutTarget = {};
         formData.fermentationTargets = {};
-        formData.diacetylRest = {};
         formData.aging = {};
         formData.yeast = {};
         formData.conditioningTargets = {};

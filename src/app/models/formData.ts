@@ -53,9 +53,6 @@ export const formData = {
     'fermentationTargets': {
 
     },
-    'diacetylRest': {
-
-    },
     'aging': {
 
     },

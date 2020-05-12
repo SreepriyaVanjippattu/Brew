@@ -352,7 +352,7 @@
                             <button class="btn btn-link collapsed" type="button"
                                 (click)="isCollapsedKettle = !isCollapsedKettle" aria-expanded="false"
                                 aria-controls="collapseTwo">
-                                Kettle Data Entry
+                                Kettle
                             </button>
                         </h2>
                         <div class="d-flex align-items-center">
@@ -402,9 +402,9 @@
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="boil-length">Boil Length (mins)</label>
+                                        <label for="boil-length">Boil Duration (mins)</label>
                                         <input type="number" class="form-control" id="boil-length"
-                                            placeholder="Boil Length"
+                                            placeholder="Boil Duration"
                                             [(ngModel)]="brewRunLog.kettleDataEntryDetails[i].boilLength">
                                     </div>
 
@@ -680,7 +680,7 @@
                     <h2 class="mb-0">
                         <button (click)="isCollapsedPostBoil = !isCollapsedPostBoil" class="btn btn-link collapsed"
                             type="button" aria-expanded="false" aria-controls="collapseTwo">
-                            Post Boil Data
+                            Post Boil 
                         </button>
                     </h2>
                     <div class="d-flex align-items-center">
@@ -702,10 +702,10 @@
                         <div class="form-row" *ngFor="let postBoilData of brewRunLog.postBoilData; let i = index;">
 
                             <div class="form-group col-md-4">
-                                <label for="brewrrun-quantity">Volume PostBoil</label>
+                                <label for="brewrrun-quantity">Volume Post Boil</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewrrun-quantity"
-                                        placeholder="Volume PostBoil" [(ngModel)]="brewRunLog.postBoilData[i].volumePostBoil">
+                                        placeholder="Volume Post Boil" [(ngModel)]="brewRunLog.postBoilData[i].volumePostBoil">
                                     <select class="form-control input-dropdown"
                                         [(ngModel)]="brewRunLog.postBoilData[i].volumePostBoilOptionId">
                                         <option disabled value="">Select</option>
@@ -1102,7 +1102,7 @@
                         <button (click)="isCollapsedCoolingKnockout = !isCollapsedCoolingKnockout"
                             class="btn btn-link collapsed" type="button" data-toggle="collapse" aria-expanded="false"
                             aria-controls="collapseTwo">
-                            Cooling-Knockout Data Entry
+                            Cooling-Knockout 
                         </button>
                     </h2>
                     <div class="d-flex align-items-center">
@@ -1321,7 +1321,7 @@
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewrrun-quantity"
                                         placeholder="Quantity" [value]="sparge.spargeWaterTemperature" disabled>
-                                    <select class="form-control input-dropdown" [value]="sparge.QuantityUnitId"
+                                    <select class="form-control input-dropdown" [value]="sparge.spargeTotalVolumeUnitId"
                                         disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
@@ -1424,7 +1424,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Kettle Data Entry</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Kettle</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><img src="assets/images/modal-close.svg"
                                 class="modal-close-ico"></span>
@@ -1436,7 +1436,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="boil-length">Boil Length (mins)</label>
+                                <label for="boil-length">Boil Duration (mins)</label>
                                 <input type="number" class="form-control" id="boil-length" placeholder="Mash pH"
                                     [value]="kettle.boilLength" disabled>
                             </div>
@@ -1921,7 +1921,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Post Boil Data</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Post Boil </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><img src="assets/images/modal-close.svg"
                                 class="modal-close-ico"></span>
@@ -2047,7 +2047,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Cooling-Knockout Data Entry</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">Cooling-Knockout </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><img src="assets/images/modal-close.svg"
                                 class="modal-close-ico"></span>

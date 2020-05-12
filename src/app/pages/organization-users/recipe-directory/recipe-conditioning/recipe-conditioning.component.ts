@@ -18,7 +18,6 @@ export class RecipeConditioningComponent implements OnInit {
 
   isCollapsedConditioning = false;
   isCollapsedFiltration = true;
-  isCollapsedDiacetyl = true;
   isCollapsedCooling = true;
   isCollapsedCarbonation = true;
   units: any;
@@ -84,7 +83,6 @@ export class RecipeConditioningComponent implements OnInit {
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
       this.isCollapsedFiltration = false;
-      this.isCollapsedDiacetyl = false;
       this.isCollapsedCooling = false;
       this.isCollapsedCarbonation = false;
     } else {
@@ -156,13 +154,11 @@ export class RecipeConditioningComponent implements OnInit {
       if (this.singleRecipeDetails.kettleTargets.platoUnitId || this.singleRecipeDetails.sparges.length !== 0 &&
         this.singleRecipeDetails.sparges[0].platoUnitId ||
         this.singleRecipeDetails.conditioningTargets.platoUnitId ||
-        this.singleRecipeDetails.diacetylRest.platoUnitId ||
         this.singleRecipeDetails.fermentationTargets.platoUnitId) {
 
         this.platoUnitIdFromDb = this.singleRecipeDetails.kettleTargets.platoUnitId || this.singleRecipeDetails.sparges.length !== 0 &&
           this.singleRecipeDetails.sparges[0].platoUnitId ||
           this.singleRecipeDetails.conditioningTargets.platoUnitId ||
-          this.singleRecipeDetails.diacetylRest.platoUnitId ||
           this.singleRecipeDetails.fermentationTargets.platoUnitId;
 
         if (this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||

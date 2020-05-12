@@ -81,7 +81,6 @@ export class RecipeFormComponent implements OnInit {
     whirlpoolTarget: this.formBuilder.array([]),
     coolingKnockoutTarget: this.formBuilder.array([]),
     fermentationTargets: this.formBuilder.array([]),
-    diacetylRest: this.formBuilder.array([]),
     aging: this.formBuilder.array([]),
     yeast: this.formBuilder.array([]),
     conditioningTargets: this.formBuilder.array([]),
@@ -147,10 +146,6 @@ export class RecipeFormComponent implements OnInit {
 
   get fermentationTargetsArray(): FormArray {
     return <FormArray>this.recipeDetailsForm.get('fermentationTargets');
-  }
-
-  get diacetylRestArray(): FormArray {
-    return <FormArray>this.recipeDetailsForm.get('diacetylRest');
   }
 
   get agingArray(): FormArray {
@@ -244,13 +239,11 @@ export class RecipeFormComponent implements OnInit {
         if (this.recipeContent.kettleTargets.platoUnitId || this.recipeContent.sparges.length !== 0 &&
           this.recipeContent.sparges[0].platoUnitId ||
           this.recipeContent.conditioningTargets.platoUnitId ||
-          this.recipeContent.diacetylRest.platoUnitId ||
           this.recipeContent.fermentationTargets.platoUnitId) {
 
           this.platoUnitIdFromDb = this.recipeContent.kettleTargets.platoUnitId || this.recipeContent.sparges.length !== 0 &&
             this.recipeContent.sparges[0].platoUnitId ||
             this.recipeContent.conditioningTargets.platoUnitId ||
-            this.recipeContent.diacetylRest.platoUnitId ||
             this.recipeContent.fermentationTargets.platoUnitId;
 
           if (this.recipeContent.mashingTargets.strikeWaterTemperatureUnitTypeId ||
@@ -555,23 +548,6 @@ export class RecipeFormComponent implements OnInit {
       }));
   }
 
-  addDiacetylRest() {
-    const control = <FormArray>this.recipeDetailsForm.controls['diacetylRest'];
-    control.push(
-      this.formBuilder.group({
-        id: [Guid.raw()],
-        receipeId: [this.recipeId],
-        temperature: [''],
-        temperatureUnitId: ['29948d48-3bca-4786-a465-78e42693604f'],
-        plato: [''],
-        specificGravity: [''],
-        isActive: [true],
-        createdDate: ['2019-01-01T00:00:00'],
-        modifiedDate: ['2019-01-01T00:00:00'],
-        tenantId: [this.tenantId],
-      }));
-  }
-
   addAging() {
     const control = <FormArray>this.recipeDetailsForm.controls['aging'];
     control.push(
@@ -598,6 +574,7 @@ export class RecipeFormComponent implements OnInit {
         recipeId: [this.recipeId],
         yeastStrainId: [''],
         countryId: [''],
+        quantityUnitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c'],
         supplierId: [''],
         isActive: [true],
         createdDate: ['2019-01-01T00:00:00'],
@@ -711,10 +688,6 @@ export class RecipeFormComponent implements OnInit {
     if (this.recipeContent.fermentationTargets === null) {
       const fermentationTargetsArray = this.recipeDetailsForm.get('fermentationTargets') as FormArray;
       this.addFermentationTargets();
-    }
-    if (this.recipeContent.diacetylRest === null) {
-      const diacetylRestArray = this.recipeDetailsForm.get('diacetylRest') as FormArray;
-      this.addDiacetylRest();
     }
     if (this.recipeContent.aging === null) {
       const agingArray = this.recipeDetailsForm.get('aging') as FormArray;
@@ -939,17 +912,6 @@ export class RecipeFormComponent implements OnInit {
       });
     }
 
-    if (data.diacetylRest != null) {
-      this.addDiacetylRest();
-      this.diacetylRestArray.controls.forEach(fields => {
-        fields.get('temperature').setValue(data.diacetylRest.temperature);
-        fields.get('temperatureUnitId').setValue(data.diacetylRest.temperatureUnitId);
-        fields.get('plato').setValue(data.diacetylRest.plato);
-        fields.get('specificGravity').setValue(data.diacetylRest.specificGravity);
-        fields.disable();
-      });
-    }
-
     if (data.aging != null) {
       this.addAging();
       this.agingArray.controls.forEach(fields => {
@@ -969,6 +931,7 @@ export class RecipeFormComponent implements OnInit {
         fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
         fields.get('countryId').setValue(data.yeast.countryId);
         fields.get('supplierId').setValue(data.yeast.supplierId);
+        fields.get('quantityUnitId').setValue(data.yeast.quantityUnitId);
         fields.disable();
       });
     }

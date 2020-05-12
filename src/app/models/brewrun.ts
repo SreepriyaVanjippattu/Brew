@@ -57,7 +57,6 @@ export class BrewRunFermentation{
     adjunctsDetails: AdjunctsDetail[];
     fermentationDataEntry: FermentationDataEntry[];
     yeastDataDetails: YeastDataDetail[];
-    diacetylRestDataDetails: DiacetylRestDataDetail[];
     agingDetails: AgingDetail[];
     enterFermentationData: EnterFermentationData[];
     fermentationDetailsNotes: FermentationDetailsNote[];
@@ -173,7 +172,6 @@ export class BrewRun {
 
     fermentationDataEntry: FermentationDataEntry[];
     yeastDataDetails: YeastDataDetail[];
-    diacetylRestDataDetails: DiacetylRestDataDetail[];
     agingDetails: AgingDetail[];
     enterFermentationData: EnterFermentationData[];
     fermentationDetailsNotes: FermentationDetailsNote[];
@@ -786,35 +784,7 @@ export class YeastDataDetail {
     }
 }
 
-export class DiacetylRestDataDetail {
-    id: string;
-    brewId: string;
-    recipeId: string;
-    ActualTemperatureIn: number;
-    ActualTemperatureInUnitId: string;
-    PlatoGravityValue: number;
-    platoGravityUnitId: string;
-    startTime: string;
-    endTime: string;
-    isActive: boolean;
-    createdDate: Date;
-    modifiedDate: Date;
-    tenantId: string;
-    isCompleted: boolean;
 
-    constructor() {
-        this.id = Guid.raw();
-        this.ActualTemperatureIn = null;
-        this.ActualTemperatureInUnitId = "";
-        this.PlatoGravityValue = null;
-        this.platoGravityUnitId = "";
-        this.isActive = true;
-        this.createdDate = new Date();
-        this.modifiedDate = null;
-        this.tenantId = "";
-        this.isCompleted = false;
-    }
-}
 
 export class AgingDetail {
     id: string;

@@ -18,7 +18,6 @@ export class RecipeFermentationComponent implements OnInit {
   formSubmitted = false;
   isCollapsedFermentation = false;
   isCollapsedLauter = true;
-  isCollapsedDiacetyl = true;
   isCollapsedCooling = true;
   isCollapsedYeast = true;
   units: any;
@@ -58,7 +57,6 @@ export class RecipeFermentationComponent implements OnInit {
 
   recipeFermentationForm = this.formBuilder.group({
     fermentationTargets: this.formBuilder.array([]),
-    diacetylRest: this.formBuilder.array([]),
     aging: this.formBuilder.array([]),
     yeast: this.formBuilder.array([]),
   });
@@ -71,9 +69,6 @@ export class RecipeFermentationComponent implements OnInit {
   }
   get fermentationTargetsArray(): FormArray {
     return <FormArray>this.recipeFermentationForm.get('fermentationTargets');
-  }
-  get diacetylRestArray(): FormArray {
-    return <FormArray>this.recipeFermentationForm.get('diacetylRest');
   }
   get agingArray(): FormArray {
     return <FormArray>this.recipeFermentationForm.get('aging');
@@ -95,7 +90,6 @@ export class RecipeFermentationComponent implements OnInit {
     if (sessionStorage.page === 'edit') {
       this.pageHeader = 'Edit Recipe';
       this.isCollapsedLauter = false;
-      this.isCollapsedDiacetyl = false;
       this.isCollapsedCooling = false;
       this.isCollapsedYeast = false;
 
@@ -173,13 +167,11 @@ export class RecipeFermentationComponent implements OnInit {
       if (this.singleRecipeDetails.kettleTargets.platoUnitId || this.singleRecipeDetails.sparges.length !== 0 &&
         this.singleRecipeDetails.sparges[0].platoUnitId ||
         this.singleRecipeDetails.conditioningTargets.platoUnitId ||
-        this.singleRecipeDetails.diacetylRest.platoUnitId ||
         this.singleRecipeDetails.fermentationTargets.platoUnitId) {
 
         this.platoUnitIdFromDb = this.singleRecipeDetails.kettleTargets.platoUnitId || this.singleRecipeDetails.sparges.length !== 0 &&
           this.singleRecipeDetails.sparges[0].platoUnitId ||
           this.singleRecipeDetails.conditioningTargets.platoUnitId ||
-          this.singleRecipeDetails.diacetylRest.platoUnitId ||
           this.singleRecipeDetails.fermentationTargets.platoUnitId;
 
         if (this.singleRecipeDetails.mashingTargets.strikeWaterTemperatureUnitTypeId ||
@@ -204,14 +196,13 @@ export class RecipeFermentationComponent implements OnInit {
 
   initiateFormArrays() {
     this.addFermentationTargets();
-    this.addDiacetylRest();
     this.addAging();
     this.addYeast();
   }
 
   getYeastStrain() {
     const getAllYeastStrainsAPI = String.Format(this.apiService.getAllYeastStrains, this.tenantId);
-    this.apiService.getData(getAllYeastStrainsAPI).subscribe(response => {
+    this.apiService.getDataList(getAllYeastStrainsAPI).subscribe(response => {
       if (response) {
         this.yeastStrain = response['body'].yeastStrains;
       }
@@ -247,21 +238,6 @@ export class RecipeFermentationComponent implements OnInit {
       }
 
 
-      if (data.diacetylRest != null) {
-        this.diacetylRestArray.controls.forEach(fields => {
-          if (data.diacetylRest.id !== Guid.EMPTY && data.diacetylRest.id !== null) {
-            fields.get('id').setValue(data.diacetylRest.id);
-          }
-          fields.get('temperature').setValue(data.diacetylRest.temperature);
-          if (data.diacetylRest.temperatureUnitId !== Guid.EMPTY && data.diacetylRest.temperatureUnitId !== null) {
-            fields.get('temperatureUnitId').setValue(data.diacetylRest.temperatureUnitId);
-          }
-          fields.get('plato').setValue(data.diacetylRest.plato);
-          if (data.diacetylRest.platoUnitId !== Guid.EMPTY && data.diacetylRest.platoUnitId !== null) {
-            fields.get('platoUnitId').setValue(data.diacetylRest.platoUnitId);
-          }
-        });
-      }
 
 
       if (data.aging != null) {
@@ -285,18 +261,22 @@ export class RecipeFermentationComponent implements OnInit {
       if (data.yeast != null) {
 
         this.yeastArray.controls.forEach(fields => {
-          if (data.yeast.id !== Guid.EMPTY && data.yeast.id !== null) {
+          if (data.yeast.id !== Guid.EMPTY && data.yeast.id) {
             fields.get('id').setValue(data.yeast.id);
           }
           fields.get('name').setValue(data.yeast.name);
-          if (data.yeast.yeastStrainId !== Guid.EMPTY && data.yeast.yeastStrainId !== null) {
+          if (data.yeast.yeastStrainId !== Guid.EMPTY && data.yeast.yeastStrainId) {
             fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
           }
-          if (data.yeast.countryId !== Guid.EMPTY && data.yeast.countryId !== null) {
+          if (data.yeast.countryId !== Guid.EMPTY && data.yeast.countryId) {
             fields.get('countryId').setValue(data.yeast.countryId);
           }
-          if (data.yeast.supplierId !== Guid.EMPTY && data.yeast.supplierId !== null) {
+          if (data.yeast.supplierId !== Guid.EMPTY && data.yeast.supplierId) {
             fields.get('supplierId').setValue(data.yeast.supplierId);
+          }
+          fields.get('pitchRate').setValue(data.yeast.pitchRate);
+          if (data.yeast.quantityUnitId !== Guid.EMPTY && data.yeast.quantityUnitId) {
+            fields.get('quantityUnitId').setValue(data.yeast.quantityUnitId);
           }
         });
       }
@@ -325,22 +305,7 @@ export class RecipeFermentationComponent implements OnInit {
         tenantId: [this.tenantId],
       }));
   }
-  addDiacetylRest() {
-    const control = <FormArray>this.recipeFermentationForm.controls['diacetylRest'];
-    control.push(
-      this.formBuilder.group({
-        id: [Guid.raw()],
-        receipeId: [this.recipeId],
-        temperature: ['', Validators.required],
-        temperatureUnitId: [this.tempUnitIdFromDb],
-        plato: ['', this.validateGravity],
-        platoUnitId: [this.platoUnitId],
-        isActive: [true],
-        createdDate: [new Date()],
-        modifiedDate: [new Date()],
-        tenantId: [this.tenantId],
-      }));
-  }
+  
   addAging() {
     const control = <FormArray>this.recipeFermentationForm.controls['aging'];
     control.push(
@@ -367,6 +332,8 @@ export class RecipeFermentationComponent implements OnInit {
         recipeId: [this.recipeId],
         yeastStrainId: ['', Validators.required],
         countryId: ['bcab5d2f-32c6-48c2-880b-ec4eb214fe30'],
+        pitchRate: ['', Validators.required],
+        quantityUnitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c', [Validators.required]],
         supplierId: [''],
         isActive: [true],
         createdDate: [new Date()],
@@ -390,9 +357,6 @@ export class RecipeFermentationComponent implements OnInit {
   findValidationErrors() {
     if (this.fermentationTargetsArray.invalid) {
       this.isCollapsedFermentation = false;
-    }
-    if (this.diacetylRestArray.invalid) {
-      this.isCollapsedDiacetyl = false;
     }
     if (this.agingArray.invalid) {
       this.isCollapsedCooling = false;
@@ -451,8 +415,6 @@ export class RecipeFermentationComponent implements OnInit {
       const fermentationTargets = JSON.stringify(this.recipeFermentationForm.get('fermentationTargets').value).replace(/^\[|]$/g, '');
       this.singleRecipeDetails.fermentationTargets = JSON.parse(fermentationTargets);
 
-      const diacetylrest = JSON.stringify(this.recipeFermentationForm.get('diacetylRest').value).replace(/^\[|]$/g, '');
-      this.singleRecipeDetails['diacetylRest'] = (JSON.parse(diacetylrest));
 
       const aging = JSON.stringify(this.recipeFermentationForm.get('aging').value).replace(/^\[|]$/g, '');
       this.singleRecipeDetails['aging'] = (JSON.parse(aging));
