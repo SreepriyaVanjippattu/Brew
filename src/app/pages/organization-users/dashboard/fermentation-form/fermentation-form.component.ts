@@ -92,7 +92,6 @@ export class FermentationFormComponent implements OnInit {
   setClassYeast = false;
   setClassHops = false;
   setClassAdjuncts = false;
-  setClassDia = false;
   setClassCool = false;
   setClassPrevFerm = false;
   currentUser: any;
