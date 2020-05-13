@@ -95,6 +95,8 @@ export class FermentationFormComponent implements OnInit {
   setClassCool = false;
   setClassPrevFerm = false;
   currentUser: any;
+  statusDate: Date;
+  status: string;
 
   constructor(
     private dataService: DashboardService,
@@ -328,6 +330,25 @@ export class FermentationFormComponent implements OnInit {
     });
     
    
+  }
+
+  radioChange(status) {
+    this.statusDate = new Date();
+    if (status === 'Pass') {
+      this.status = 'Pass';
+    } else {
+      this.status = 'Fail';
+    }
+    // let dateTime = this.timezone(this.statusDate).toString();
+    // dateTime = dateTime.split(' ').slice(0, 5).join(' ');
+    // this.statusDate = new Date(dateTime).toLocaleString();
+    // this.statusDate = new Date();
+    // const statusData = new StarchTestResultList();
+    // statusData.starchTestId = this.brewRunFermentation.enterFermentationData[0];
+    // statusData.testName = 'Test ';
+    // statusData.testResult = this.status;
+    // statusData.timeStamp = this.statusDate;
+    // this.brewRunFermentation.enterFermentationData[0];
   }
  
   addNewStyle() {

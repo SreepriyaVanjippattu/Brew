@@ -447,7 +447,7 @@
                                     <select class="form-control input-dropdown" [value]="cond.volumeInUnitId" disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>

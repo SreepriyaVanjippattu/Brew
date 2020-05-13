@@ -8,7 +8,7 @@ export const environment = {
   baseUrl: 'brewerscanada',
   API: {
     URL: 'https://dev-brewers-insight.azure-api.net/',
-    emailUrl: 'https://app.brewersinsight.com/',
+    emailUrl: 'https://brewersclientqa.z9.web.core.windows.net/',
   },
   FUNCTIONCODE: {
    

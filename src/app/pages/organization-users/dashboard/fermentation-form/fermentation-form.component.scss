@@ -9,7 +9,15 @@
         min-height: 100px;
     }   
 }
-
+.custom-radio-wrapper {
+    float: left;
+    margin-top: 8px;
+    width: 100%;
+    .custom-radio {
+        float: left;
+        margin-right: 10px;
+    }
+}
 
 // Medium devices (tablets, less than 992px)
 @media (max-width: 992px) { 

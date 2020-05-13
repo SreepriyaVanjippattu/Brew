@@ -190,7 +190,7 @@
                                         <label for="brewrun-id">% of Grain Bill</label>
                                         <input type="text" class="form-control" id="brewrun-id"
                                             placeholder="% of Grain Bill"
-                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].grainBillPercentage">
+                                            [(ngModel)]="brewRunMashin.maltGrainBillDetails[i].percentage">
                                     </div>
 
                                     <div class="form-group col-md-3">
@@ -958,7 +958,7 @@
                                         disabled>
 
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>

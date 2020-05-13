@@ -671,6 +671,9 @@
                                         <th scope="col">{{preferedPlato}}</th>
                                         <th scope="col">Temperature</th>
                                         <th scope="col">Ph</th>
+                                        <th scope="col">Cell Count</th>
+                                        <th scope="col">Pass/Fail</th>
+                                        <th scope="col">Notes</th>
                                         <th scope="col">Edit</th>
                                     </tr>
                                 </thead>
@@ -681,6 +684,9 @@
                                         <td>{{enterFermentationData.plato}}</td>
                                         <td>{{enterFermentationData.temperature}}</td>
                                         <td>{{enterFermentationData.ph}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td>
                                             <span class="edit-ico ml-2 cursor-click">
                                                 <img (click)="editClientDirectory(i)"
@@ -763,6 +769,43 @@
                                         <label for="ferment-ph">pH</label>
                                         <input type="number" class="form-control" id="ferment-ph" placeholder="pH"
                                             [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].ph">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <!-- <div class="form-group col-md-6">
+                                        <label for="ferment-acttemp">Set Temperature</label>
+                                        <input type="number" class="form-control" id="ferment-acttemp"
+                                            placeholder="Set Temperature"
+                                            [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].temperature">
+                                    </div> -->
+
+                                    <div class="form-group col-md-6">
+                                        <label for="ferment-ph">Cell Count</label>
+                                        <input type="number" class="form-control" id="ferment-ph" placeholder="Cell Count"
+                                            [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].cellCount">
+                                    </div>
+                                    <div class='form-group col-md-6 custom-radio-wrapper'>
+                                        <div class='custom-radio'>
+                                            <input type="radio" id="meshin-pass" name="radio-gravity" [value]="true"
+                                                name="PassStatus" (change)="radioChange('Pass')"
+                                                [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos]">
+                                            <label for="meshin-pass">Pass</label>
+                                        </div>
+                                        <div class='custom-radio'>
+                                            <input type="radio" id="meshin-fail" name="radio-gravity"
+                                                [value]="false" name="PassStatus" (change)="radioChange('Fail')"
+                                                [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos]">
+                                            <label for="meshin-fail">Fail</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 target-text">
+                                        <h6>Notes</h6>
+                                        <textarea type="text" class="form-control" id="target-Notes" placeholder="Type Text here"
+                                            formControlName="notes"></textarea>
+                                
                                     </div>
                                 </div>
 
@@ -860,7 +903,7 @@
                                         disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>

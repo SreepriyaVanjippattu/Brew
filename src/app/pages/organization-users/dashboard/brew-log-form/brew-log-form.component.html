@@ -1136,7 +1136,7 @@
                                             [(ngModel)]="brewRunLog.coolingKnockouDetails[i].volumeInFermentationOptionId">
                                             <option disabled value="">Select</option>
                                             <ng-container *ngFor="let unit of units">
-                                                <option *ngIf="unit.category === 'Volume'" [value]="unit.id">
+                                                <option *ngIf="unit.category === 'Size'" [value]="unit.id">
                                                     {{unit.symbol}}</option>
                                             </ng-container>
                                         </select>
@@ -1325,7 +1325,7 @@
                                         disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
@@ -2018,11 +2018,11 @@
                             <div class='multiple-input'>
                                 <input type="number" class="form-control" id="vol-out" [value]="post.postBoilVolume"
                                     disabled>
-                                <select class="form-control input-dropdown" [value]="post.postBoilVolumeunitId"
+                                <select class="form-control input-dropdown" [value]="post.postBoilVolumeUnitId"
                                     disabled>
                                     <option disabled value="">Select</option>
                                     <ng-container *ngFor="let unit of units">
-                                        <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                        <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}
                                         </option>
                                     </ng-container>
                                 </select>
@@ -2066,7 +2066,7 @@
                                         [value]="cool.volumeInFermentationOptionId" disabled>
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>
