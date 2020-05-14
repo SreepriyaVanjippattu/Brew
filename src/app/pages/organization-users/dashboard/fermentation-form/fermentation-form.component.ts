@@ -351,14 +351,6 @@ export class FermentationFormComponent implements OnInit {
     this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList.push(statusData);
   }
 
-  get sortData() {
-    if (this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList != null) {
-      return this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList.sort((a, b) => {
-        return <any>new Date(a.timeStamp) - <any>new Date(b.timeStamp);
-      });
-    }
-  }
- 
   addNewStyle() {
     const params = {
       id: Guid.raw(),
