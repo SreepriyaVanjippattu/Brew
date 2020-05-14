@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   BrewRunFermentation, FermentationDataEntry, YeastDataDetail, AgingDetail,
-  EnterFermentationData, FermentationDetailsNote, AdjunctsDetail, HopesDetail,
+  EnterFermentationData, FermentationDetailsNote, AdjunctsDetail, HopesDetail, FermentationTestResultList,
 } from '../../../../models/brewrun';
 import { ApiProviderService } from '../../../../core/api-services/api-provider.service';
 import { DashboardService } from '../dashboard.service';
@@ -95,7 +95,7 @@ export class FermentationFormComponent implements OnInit {
   setClassCool = false;
   setClassPrevFerm = false;
   currentUser: any;
-  statusDate: Date;
+  statusDate: any;
   status: string;
 
   constructor(
@@ -339,16 +339,24 @@ export class FermentationFormComponent implements OnInit {
     } else {
       this.status = 'Fail';
     }
-    // let dateTime = this.timezone(this.statusDate).toString();
-    // dateTime = dateTime.split(' ').slice(0, 5).join(' ');
-    // this.statusDate = new Date(dateTime).toLocaleString();
-    // this.statusDate = new Date();
-    // const statusData = new StarchTestResultList();
-    // statusData.starchTestId = this.brewRunFermentation.enterFermentationData[0];
-    // statusData.testName = 'Test ';
-    // statusData.testResult = this.status;
-    // statusData.timeStamp = this.statusDate;
-    // this.brewRunFermentation.enterFermentationData[0];
+    let dateTime = this.timezone(this.statusDate).toString();
+    dateTime = dateTime.split(' ').slice(0, 5).join(' ');
+    this.statusDate = new Date(dateTime).toLocaleString();
+    this.statusDate = new Date();
+    const statusData = new FermentationTestResultList();
+    statusData.fermentationTestId = this.brewRunFermentation.enterFermentationData[this.selectedPos].id;
+    statusData.testName = 'Test ';
+    statusData.testResult = this.status;
+    statusData.timeStamp = this.statusDate;
+    this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList.push(statusData);
+  }
+
+  get sortData() {
+    if (this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList != null) {
+      return this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList.sort((a, b) => {
+        return <any>new Date(a.timeStamp) - <any>new Date(b.timeStamp);
+      });
+    }
   }
  
   addNewStyle() {
@@ -358,7 +366,7 @@ export class FermentationFormComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('styleText').value) {
       const addStyleAPI = String.Format(this.apiService.addStyle, this.tenantId);

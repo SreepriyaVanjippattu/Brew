@@ -29,7 +29,7 @@ export class ApiProviderService {
   addBrewRun = 'brewrun/v1/brewers/{0}/brewrun';
   ChangeBrewRunStatus = 'brewrun/v1/brewers/{0}/brewrun/{1}';
   getBrewDetailsById = 'brewrun/v1/brewers/{0}/brewrun/{1}/details';
-  editBrewRun = "brewrun/v1/brewers/{0}/brewrun/{1}"
+  editBrewRun = 'brewrun/v1/brewers/{0}/brewrun/{1}';
   getAllArchivedBrewRun = 'brewrun/v1/brewers/{0}/brewrun/archived';
   getBrewRunMashinMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/mashin/masterdetails'
   getBrewRunMashinDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/mashin/';
@@ -49,7 +49,7 @@ export class ApiProviderService {
   getUserById = 'user/v1/brewers/{0}/user/{1}';
   getAllArchivedUsers = 'user/v1/brewers/user/{0}/archived';
   postEmail = 'user/v1/brewers/{0}/forgotPasswordLink';
-  editForgotPassword = "user/v1/brewers/resetForgotPassword";
+  editForgotPassword = 'user/v1/brewers/resetForgotPassword';
   resetUserPassword = 'ResetUserPassword';
   // Profile
   changeProfilePassword = 'EditUserPassword';
@@ -57,7 +57,7 @@ export class ApiProviderService {
   // Role Permissions
   getAllActiveRoles = 'user/v1/brewers/{0}/roles';
   getAllPermissions = 'user/v1/brewers/role/permission';
-  addRole ='user/v1/brewers/{0}/role'
+  addRole ='user/v1/brewers/{0}/role';
   editRole = 'user/v1/brewers/{0}/role';
   // get all Tenants/
   getAllTenantContent = 'GetAllTenentStatus';
@@ -85,12 +85,12 @@ export class ApiProviderService {
   getAllYeastList = 'brewrun/v1/brewers/{0}/yeastStrains';
   editTankConfiguration = 'brewrun/v1/brewers/{0}/tank/{1}';
   editYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain/{1}';
-  deleteYeastStrain = "brewrun/v1/brewers/yeaststrain";
+  deleteYeastStrain = 'brewrun/v1/brewers/yeaststrain';
   getArchivedYeastStrains = 'brewrun/v1/brewers/{0}/yeaststrains/archived';
   archiveYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain/{1}/archive';
 
   // recipe
-  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails'
+  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails';
   getAllRecipeByTenant = 'brewrun/v1/brewers/recipe/{0}';
   getRecipebyId = 'brewrun/v1/brewers/recipe/{0}/{1}';
   addRecipe = 'brewrun/v1/brewers/{0}/recipe/';

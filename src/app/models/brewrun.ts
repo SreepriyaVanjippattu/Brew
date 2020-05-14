@@ -825,6 +825,9 @@ export class EnterFermentationData {
     temperature: number;
     temperatureUnitId: string;
     ph: number;
+    cellCount: number;
+    fermentationTestResultList: FermentationTestResultList[];
+    notes: string;
     isActive: boolean;
     createdDate: Date;
     modifiedDate: Date;
@@ -836,15 +839,42 @@ export class EnterFermentationData {
         this.dateAndTime = new Date();
         this.plato = null;
         this.temperature = null;
-        this.temperatureUnitId = "";
+        this.temperatureUnitId = '';
         this.ph = null;
+        this.cellCount = null;
+        this.notes = null;
         this.plato = null;
         this.isActive = true;
         this.createdDate = new Date();
         this.modifiedDate = null;
-        this.tenantId = "";
+        this.tenantId = '';
         this.isCompleted = false;
 
+    }
+}
+
+export class FermentationTestResultList {
+    id: string;
+    brewId: string;
+    recipeId: string;
+    isActive: boolean;
+    createdDate: Date;
+    modifiedDate: Date;
+    tenantId: string;
+    fermentationTestId: string;
+    testName: string;
+    timeStamp: any;
+    testResult: string;
+
+    constructor() {
+        this.id = Guid.raw();
+        this.testName = null;
+        this.timeStamp = new Date();
+        this.testResult = null;
+        this.isActive = true;
+        this.createdDate = new Date();
+        this.modifiedDate = new Date();
+        this.tenantId = '';
     }
 }
 

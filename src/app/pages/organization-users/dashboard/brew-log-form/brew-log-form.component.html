@@ -614,7 +614,7 @@
                                             <label for="postal">Supplier</label>
                                             <i class="material-icons  position-absolute cursor-click add-dropicon"
                                                 data-toggle="modal" data-target="#supplierModal">add_circle_outline</i>
-                                            <select class="form-control input-style input-dropdown" id="">
+                                            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="brewRunLog.adjunctsDetails[i].supplierId">
                                                 <option disabled value="">Select</option>
                                                 <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">
                                                     {{suppliers.name}}</option>
@@ -631,7 +631,7 @@
                                                     placeholder="Quantity"
                                                     [(ngModel)]="brewRunLog.adjunctsDetails[i].quantity">
                                                 <select class="form-control input-dropdown"
-                                                    [(ngModel)]="brewRunLog.adjunctsDetails[i].quantityUnitTypeId">
+                                                    [(ngModel)]="brewRunLog.adjunctsDetails[i].quantityOptionId">
                                                     <option disabled value="">Select</option>
                                                     <ng-container *ngFor="let unit of units">
                                                         <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
@@ -646,7 +646,7 @@
                                             <select class="form-control input-style input-dropdown" id="add-in"
                                                 [(ngModel)]="brewRunLog.adjunctsDetails[i].addInId" disabled>
                                                 <option disabled value="">Select</option>
-                                                <option *ngFor="let addin of addins" [value]="addin.Id">{{addin.Name}}
+                                                <option *ngFor="let addin of addins" [value]="addin.id">{{addin.name}}
                                                 </option>
                                             </select>
                                         </div>
@@ -837,7 +837,7 @@
                                         <select class="form-control input-style input-dropdown" id=""
                                             [(ngModel)]="brewRunLog.hopesDetails[i].maltGrainTypeId">
                                             <option disabled value="">Select</option>
-                                            <option *ngFor="let maltType of maltTypes" [value]="maltType.Id">
+                                            <option *ngFor="let maltType of maltTypes" [value]="maltType.id">
                                                 {{maltType.name}}</option>
                                         </select>
                                     </div>
@@ -859,8 +859,8 @@
                                         <select class="form-control input-style input-dropdown" id=""
                                             [(ngModel)]="brewRunLog.hopesDetails[i].supplierId">
                                             <option disabled value="">Select</option>
-                                            <option *ngFor="let supplier of suppliers" [value]="supplier.Id">
-                                                {{supplier.Name}}</option>
+                                            <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                                                {{supplier.name}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -894,7 +894,7 @@
                                         <select class="form-control input-style input-dropdown" id="add-in"
                                             [(ngModel)]="brewRunLog.hopesDetails[i].addInId" disabled>
                                             <option disabled value="">Select</option>
-                                            <option *ngFor="let addins of addins" [value]="addins.id">{{addins.Name}}
+                                            <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}
                                             </option>
                                         </select>
                                     </div>
@@ -996,7 +996,7 @@
                                             <input type="number" class="form-control" id="brewrrun-quantity"
                                                 placeholder="Quantity" [(ngModel)]="brewRunLog.adjunctsDetails[i].quantity">
                                             <select class="form-control input-dropdown"
-                                                [(ngModel)]="brewRunLog.adjunctsDetails[i].quantityUnitTypeId">
+                                                [(ngModel)]="brewRunLog.adjunctsDetails[i].quantityOptionId">
                                                 <option disabled value="">Select</option>
                                                 <ng-container *ngFor="let unit of units">
                                                     <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
@@ -1012,7 +1012,7 @@
                                         <select class="form-control input-style input-dropdown" id="add-in"
                                             [(ngModel)]="brewRunLog.adjunctsDetails[i].addInId" disabled>
                                             <option disabled value="">Select</option>
-                                            <option *ngFor="let addin of addins" [value]="addin.id">{{addin.Nnme}}
+                                            <option *ngFor="let addin of addins" [value]="addin.id">{{addin.name}}
                                             </option>
                                         </select>
                                     </div>
@@ -1320,7 +1320,7 @@
                                 <label for="brewrrun-quantity">Sparge Total Volume</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="brewrrun-quantity"
-                                        placeholder="Quantity" [value]="sparge.spargeWaterTemperature" disabled>
+                                        placeholder="Quantity" [value]="sparge.spargeTotalVolume" disabled>
                                     <select class="form-control input-dropdown" [value]="sparge.spargeTotalVolumeUnitId"
                                         disabled>
                                         <option disabled value="">Select</option>
@@ -1492,7 +1492,7 @@
                                 <select class="form-control input-style input-dropdown" id=""
                                     [value]="hops.maltGrainTypeId" disabled>
                                     <option disabled value="">Select</option>
-                                    <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.Id">
+                                    <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">
                                         {{maltTypes.name}}</option>
                                 </select>
                             </div>
@@ -1558,7 +1558,7 @@
                                     <input type="number" disabled class="form-control" id="brewrrun-Quantity"
                                         placeholder="Time In" [value]="hops.timeIn">
 
-                                    <select disabled [value]="hops.TimeInUnitId" class="form-control input-dropdown">
+                                    <select disabled [value]="hops.timeInUnitId" class="form-control input-dropdown">
                                         <ng-container *ngFor="let unit of units">
                                             <option *ngIf="unit.category === 'Days'" [value]="unit.id">{{unit.symbol}}
                                             </option>
@@ -1881,16 +1881,16 @@
                                     [value]="adjuncts.addInId" disabled>
                                     <option disabled value="">Select</option>
                                     <option *ngFor="let addins of addins" [value]="addins.id">
-                                        {{addins.Name}}</option>
+                                        {{addins.name}}</option>
                                 </select>
                             </div>
                             <div for="status" class="form-group col-md-4">
                                 <label for="brewrrun-Quantity">Time In</label>
                                 <div class='multiple-input'>
                                     <input type="number" disabled class="form-control" id="brewrrun-Quantity"
-                                        placeholder="Time In" [value]="adjuncts.TimeIn">
+                                        placeholder="Time In" [value]="adjuncts.timeIn">
 
-                                    <select disabled [value]="adjuncts.TimeInUnitId"
+                                    <select disabled [value]="adjuncts.timeInUnitId"
                                         class="form-control input-dropdown">
                                         <ng-container *ngFor="let unit of units">
                                             <option *ngIf="unit.category === 'Days'" [value]="unit.id">{{unit.symbol}}

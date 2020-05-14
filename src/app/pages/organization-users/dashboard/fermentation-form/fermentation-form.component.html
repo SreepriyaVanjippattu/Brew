@@ -489,7 +489,7 @@
                                                     placeholder="Quantity"
                                                     [(ngModel)]="brewRunFermentation.adjunctsDetails[i].quantity">
                                                 <select class="form-control input-dropdown"
-                                                    [(ngModel)]="brewRunFermentation.adjunctsDetails[i].quantityUnitTypeId">
+                                                    [(ngModel)]="brewRunFermentation.adjunctsDetails[i].quantityOptionId">
                                                     <option disabled value="">Select</option>
                                                     <ng-container *ngFor="let unit of units">
                                                         <option *ngIf="unit.category === 'Mass'" [value]="unit.id">
@@ -504,7 +504,7 @@
                                             <select class="form-control input-style input-dropdown" id="add-in"
                                                 [(ngModel)]="brewRunFermentation.adjunctsDetails[i].addInId">
                                                 <option disabled value="">Select</option>
-                                                <option *ngFor="let addin of addins" [value]="addin.Id">{{addin.Name}}
+                                                <option *ngFor="let addin of addins" [value]="addin.id">{{addin.name}}
                                                 </option>
                                             </select>
                                         </div>
@@ -673,7 +673,6 @@
                                         <th scope="col">Ph</th>
                                         <th scope="col">Cell Count</th>
                                         <th scope="col">Pass/Fail</th>
-                                        <th scope="col">Notes</th>
                                         <th scope="col">Edit</th>
                                     </tr>
                                 </thead>
@@ -684,9 +683,14 @@
                                         <td>{{enterFermentationData.plato}}</td>
                                         <td>{{enterFermentationData.temperature}}</td>
                                         <td>{{enterFermentationData.ph}}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{enterFermentationData.cellCount}}</td>
+                                        <td>
+                                            <ul *ngFor="let stat of sortData; let i = index;" style="list-style-type: none">
+                                                <li *ngIf="stat != null"><label>{{stat.testName}} {{i+1}}
+                                                        &nbsp;&nbsp;&nbsp;&nbsp; {{stat.timeStamp | date: 'medium'}}
+                                                        &nbsp;&nbsp;&nbsp;&nbsp; {{stat.testResult}}</label></li>
+                                            </ul>
+                                        </td>
                                         <td>
                                             <span class="edit-ico ml-2 cursor-click">
                                                 <img (click)="editClientDirectory(i)"
@@ -786,15 +790,15 @@
                                     </div>
                                     <div class='form-group col-md-6 custom-radio-wrapper'>
                                         <div class='custom-radio'>
-                                            <input type="radio" id="meshin-pass" name="radio-gravity" [value]="true"
+                                            <input type="radio" id="meshin-pass" name="radio-gravity" [checked]="true"
                                                 name="PassStatus" (change)="radioChange('Pass')"
-                                                [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos]">
+                                                [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].passStatus">
                                             <label for="meshin-pass">Pass</label>
                                         </div>
                                         <div class='custom-radio'>
                                             <input type="radio" id="meshin-fail" name="radio-gravity"
                                                 [value]="false" name="PassStatus" (change)="radioChange('Fail')"
-                                                [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos]">
+                                                [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].passStatus">
                                             <label for="meshin-fail">Fail</label>
                                         </div>
 
@@ -804,7 +808,7 @@
                                     <div class="form-group col-md-12 target-text">
                                         <h6>Notes</h6>
                                         <textarea type="text" class="form-control" id="target-Notes" placeholder="Type Text here"
-                                            formControlName="notes"></textarea>
+                                        [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].notes"></textarea>
                                 
                                     </div>
                                 </div>
