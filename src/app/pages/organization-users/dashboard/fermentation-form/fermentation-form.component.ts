@@ -97,6 +97,7 @@ export class FermentationFormComponent implements OnInit {
   currentUser: any;
   statusDate: any;
   status: string;
+  resultList = [];
 
   constructor(
     private dataService: DashboardService,
@@ -339,6 +340,7 @@ export class FermentationFormComponent implements OnInit {
     } else {
       this.status = 'Fail';
     }
+    this.brewRunFermentation.enterFermentationData[this.selectedPos].passStatusName = this.status;
     let dateTime = this.timezone(this.statusDate).toString();
     dateTime = dateTime.split(' ').slice(0, 5).join(' ');
     this.statusDate = new Date(dateTime).toLocaleString();
@@ -348,7 +350,10 @@ export class FermentationFormComponent implements OnInit {
     statusData.testName = 'Test ';
     statusData.testResult = this.status;
     statusData.timeStamp = this.statusDate;
-    this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList.push(statusData);
+    if (this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList) {
+     this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList.push(statusData);
+     this.resultList = this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList;
+    }
   }
 
   addNewStyle() {

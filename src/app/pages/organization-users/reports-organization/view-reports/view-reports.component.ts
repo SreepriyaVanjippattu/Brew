@@ -85,7 +85,6 @@ export class ViewReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
     this.dataService.currentMessage.subscribe(message => this.message = message);
     this.brewContent = this.message;
     this.brew = new BrewRun();

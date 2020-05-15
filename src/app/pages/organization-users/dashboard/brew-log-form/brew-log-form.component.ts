@@ -66,6 +66,7 @@ export class BrewLogFormComponent implements OnInit {
   whirlstartTime: any = '';
   coolstartTime: any = '';
   coolEndTime: any = '';
+  targetStartTime: any = '';
   max = new Date();
  
 
@@ -131,6 +132,7 @@ export class BrewLogFormComponent implements OnInit {
   maltNames: any;
   brewerName : string;
   brewLogAvailable:boolean;
+  
 
   constructor(
     private dataService: DashboardService,
@@ -485,6 +487,9 @@ export class BrewLogFormComponent implements OnInit {
     this.postTarget = recipeContent.maltGrainBills;
   }
   getWhirlpoolTargets(recipeContent: any) {
+    if (recipeContent.whirlpoolTarget.createdDate) {
+      this.setTargetWhirlStart();
+    }
     this.whirlpoolTarget.push(recipeContent.whirlpoolTarget);
   }
   getPostWhirlpoolTargets(recipeContent: any) {
@@ -538,8 +543,10 @@ export class BrewLogFormComponent implements OnInit {
     start.startTime = this.whirlstartTime;
   }
 
-  setTargetWhirlStart(){
-    
+  setTargetWhirlStart() {
+    this.targetStartTime = this.timezone();
+    this.targetStartTime = this.targetStartTime.toString().split(' ').slice(0, 5).join(' ');
+    this.recipeContent.whirlpoolTarget.createdDate = this.targetStartTime;
   }
 
   setCoolStart(i, start) {

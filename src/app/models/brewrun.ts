@@ -826,6 +826,8 @@ export class EnterFermentationData {
     temperatureUnitId: string;
     ph: number;
     cellCount: number;
+    passStatus: boolean;
+    passStatusName: string;
     fermentationTestResultList: FermentationTestResultList[];
     notes: string;
     isActive: boolean;
@@ -841,6 +843,8 @@ export class EnterFermentationData {
         this.temperature = null;
         this.temperatureUnitId = '';
         this.ph = null;
+        this.passStatusName = '';
+        this.passStatus = true;
         this.cellCount = null;
         this.notes = null;
         this.plato = null;

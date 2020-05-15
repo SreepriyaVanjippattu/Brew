@@ -710,7 +710,7 @@
                                         [(ngModel)]="brewRunLog.postBoilData[i].volumePostBoilOptionId">
                                         <option disabled value="">Select</option>
                                         <ng-container *ngFor="let unit of units">
-                                            <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}
+                                            <option *ngIf="unit.category === 'Size'" [value]="unit.id">{{unit.symbol}}
                                             </option>
                                         </ng-container>
                                     </select>

@@ -684,12 +684,12 @@
                                         <td>{{enterFermentationData.temperature}}</td>
                                         <td>{{enterFermentationData.ph}}</td>
                                         <td>{{enterFermentationData.cellCount}}</td>
-                                        <td>
-                                            <ul *ngFor="let stat of this.brewRunFermentation.enterFermentationData[i].fermentationTestResultList; let i = index;" style="list-style-type: none">
+                                        <td>{{enterFermentationData.passStatusName}}
+                                            <!-- <ul *ngFor="let stat of this.brewRunFermentation.enterFermentationData[i].fermentationTestResultList; let i = index;" style="list-style-type: none">
                                                 <li *ngIf="stat != null"><label>{{stat.testName}} {{i+1}}
                                                         &nbsp;&nbsp;&nbsp;&nbsp; {{stat.timeStamp | date: 'medium'}}
                                                         &nbsp;&nbsp;&nbsp;&nbsp; {{stat.testResult}}</label></li>
-                                            </ul>
+                                            </ul> -->
                                         </td>
                                         <td>
                                             <span class="edit-ico ml-2 cursor-click">
@@ -776,15 +776,15 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-
                                     <div class="form-group col-md-6">
                                         <label for="ferment-ph">Cell Count</label>
                                         <input type="number" class="form-control" id="ferment-ph" placeholder="Cell Count"
                                             [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].cellCount">
                                     </div>
+                                    
                                     <div class='form-group col-md-6 custom-radio-wrapper'>
                                         <div class='custom-radio'>
-                                            <input type="radio" id="meshin-pass" name="radio-gravity" [checked]="true"
+                                            <input type="radio" id="meshin-pass" name="radio-gravity" [value]="true"
                                                 name="PassStatus" (change)="radioChange('Pass')"
                                                 [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].passStatus">
                                             <label for="meshin-pass">Pass</label>
@@ -795,9 +795,21 @@
                                                 [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].passStatus">
                                             <label for="meshin-fail">Fail</label>
                                         </div>
-
+                                        
                                     </div>
+                                    <div class="form-group col-md-6"></div>
+                                    <div class="form-group col-md-6">
+                                        <ul *ngFor="let stat of resultList; let i = index;" style="list-style-type: none">
+                                            <li *ngIf="stat != null"><label>{{stat.testName}} {{i+1}}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.timeStamp | date: 'medium'}}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; {{stat.testResult}}</label></li>
+                                        </ul>
+                                    </div>
+                                    
+                                   
                                 </div>
+                               
+                               
                                 <div class="form-row">
                                     <div class="form-group col-md-12 target-text">
                                         <h6>Notes</h6>

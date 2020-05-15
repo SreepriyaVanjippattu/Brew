@@ -414,7 +414,6 @@ export class RecipeFormComponent implements OnInit {
         id: [Guid.raw()],
         receipeId: [this.recipeId],
         boilLength: [''],
-        boilLengthUnitId: [''],
         volumePreBoil: [''],
         volumePreBoilUnitId: ['1D211DBF-1A2C-470F-9795-6001C627AC44'],
         volumePostBoil: [''],
@@ -861,7 +860,6 @@ export class RecipeFormComponent implements OnInit {
       this.kettleTargetsArray.controls.forEach(fields => {
         fields.get('id').setValue(data.kettleTargets.id);
         fields.get('boilLength').setValue(data.kettleTargets.boilLength);
-        fields.get('boilLengthUnitId').setValue(data.kettleTargets.boilLengthUnitId);
         fields.get('volumePreBoil').setValue(data.kettleTargets.volumePreBoil);
         fields.get('volumePreBoilUnitId').setValue(data.kettleTargets.volumePreBoilUnitId);
         fields.get('volumePostBoil').setValue(data.kettleTargets.volumePostBoil);
