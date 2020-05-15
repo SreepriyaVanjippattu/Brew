@@ -538,6 +538,10 @@ export class BrewLogFormComponent implements OnInit {
     start.startTime = this.whirlstartTime;
   }
 
+  setTargetWhirlStart(){
+    
+  }
+
   setCoolStart(i, start) {
 
     this.coolstartTime = this.timezone();

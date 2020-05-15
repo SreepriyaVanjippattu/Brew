@@ -85,6 +85,7 @@ export class ViewReportsComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
     this.dataService.currentMessage.subscribe(message => this.message = message);
     this.brewContent = this.message;
     this.brew = new BrewRun();
@@ -230,12 +231,12 @@ export class ViewReportsComponent implements OnInit {
   findUnits() {
     if (this.units) {
       this.units.forEach(element => {
-        if (element.Id === this.preference.TemperatureId) {
-          this.preferedUnit = element.Symbol;
+        if (element.id === this.preference.temperatureId) {
+          this.preferedUnit = element.symbol;
         }
-        if (element.Id === this.preference.GravityMeasurementId) {
-          this.preferedPlato = element.Name;
-          this.platoUnitId = element.Id;
+        if (element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
         }
       });
     }

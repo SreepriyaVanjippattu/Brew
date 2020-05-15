@@ -574,6 +574,8 @@ export class RecipeFormComponent implements OnInit {
         recipeId: [this.recipeId],
         yeastStrainId: [''],
         countryId: [''],
+        pitchRate : [''],
+        pitchRateUnitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c'],
         quantityUnitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c'],
         supplierId: [''],
         isActive: [true],
@@ -931,6 +933,8 @@ export class RecipeFormComponent implements OnInit {
         fields.get('yeastStrainId').setValue(data.yeast.yeastStrainId);
         fields.get('countryId').setValue(data.yeast.countryId);
         fields.get('supplierId').setValue(data.yeast.supplierId);
+        fields.get('pitchRate').setValue(data.yeast.pitchRate);
+        fields.get('pitchRateUnitId').setValue(data.yeast.pitchRateUnitId);
         fields.get('quantityUnitId').setValue(data.yeast.quantityUnitId);
         fields.disable();
       });

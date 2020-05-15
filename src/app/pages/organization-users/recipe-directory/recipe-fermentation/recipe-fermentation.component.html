@@ -308,7 +308,7 @@
                       </i>
                       <div class='multiple-input'>
                         <input type="number" class="form-control" id="brewrrun-Pitch" placeholder="Quantity" formControlName="pitchRate">
-                        <select class="form-control input-dropdown" formControlName="quantityUnitId">
+                        <select class="form-control input-dropdown" formControlName="pitchRateUnitId">
                     
                           <ng-container *ngFor="let unit of units">
                             <option *ngIf="unit.category === 'Mass'" [value]="unit.id">{{unit.symbol}}</option>
@@ -316,7 +316,7 @@
                         </select>
                       </div>
                       <div *ngIf="formSubmitted">
-                        <div *ngIf="yeast.get('pitchRate').invalid || yeast.get('quantityUnitId').invalid" class="valid-error">
+                        <div *ngIf="yeast.get('pitchRate').invalid || yeast.get('pitchRateUnitId').invalid" class="valid-error">
                           Pitch Rate and unit is required
                         </div>
                       </div>

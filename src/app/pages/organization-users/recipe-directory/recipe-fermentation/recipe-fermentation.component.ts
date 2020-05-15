@@ -275,8 +275,8 @@ export class RecipeFermentationComponent implements OnInit {
             fields.get('supplierId').setValue(data.yeast.supplierId);
           }
           fields.get('pitchRate').setValue(data.yeast.pitchRate);
-          if (data.yeast.quantityUnitId !== Guid.EMPTY && data.yeast.quantityUnitId) {
-            fields.get('quantityUnitId').setValue(data.yeast.quantityUnitId);
+          if (data.yeast.pitchRateUnitId !== Guid.EMPTY && data.yeast.pitchRateUnitId) {
+            fields.get('pitchRateUnitId').setValue(data.yeast.pitchRateUnitId);
           }
         });
       }
@@ -333,7 +333,7 @@ export class RecipeFermentationComponent implements OnInit {
         yeastStrainId: ['', Validators.required],
         countryId: ['bcab5d2f-32c6-48c2-880b-ec4eb214fe30'],
         pitchRate: ['', Validators.required],
-        quantityUnitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c', [Validators.required]],
+        pitchRateUnitId: ['a6190eaa-8dc5-400c-a5f6-b72468fa3d5c', [Validators.required]],
         supplierId: [''],
         isActive: [true],
         createdDate: [new Date()],

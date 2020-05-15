@@ -526,15 +526,10 @@
                         <div [formGroupName]="i">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="recipe-boil">Boil Length (mins)</label>
+                                    <label for="recipe-boil">Boil Duration (mins)</label>
                                     <div class='multiple-input'>
                                         <input type="number" class="form-control" id="BoilLength"
-                                            placeholder="Boil Length (mins)" formControlName="boilLength">
-                                        <select formControlName="boilLengthUnitId" class="form-control input-dropdown">
-                                            <option disabled value="">Select</option>
-                                            <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
-                                            </option>
-                                        </select>
+                                            placeholder="Boil Duration (mins)" formControlName="boilLength">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -838,7 +833,7 @@
                                 <label for="pitch-Rate">Pitch Rate</label>
                                 <div class='multiple-input'>
                                     <input type="number" class="form-control" id="PitchRate" placeholder="Quantity" formControlName="pitchRate">
-                                    <select class="form-control input-dropdown" formControlName="quantityUnitId" id="QuantityUnitId">
+                                    <select class="form-control input-dropdown" formControlName="pitchRateUnitId" id="PitchRateUnitId">
                                         <option disabled value="">Select</option>
                                         <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}
                                         </option>

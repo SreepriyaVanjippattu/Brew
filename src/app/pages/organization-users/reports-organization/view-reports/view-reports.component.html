@@ -75,11 +75,13 @@
         <div class="form-row">
           <div class="form-group col-md-3">
             <label for="brewrun-name">Name </label>
-            <select class="form-control input-style input-dropdown" id=""
+            <input type="text" class="form-control" id="brewrrun-quantity" placeholder="MaltGrain countryName"
+                [(ngModel)]="maltGrainBillDetail.maltGrainName" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id=""
               [(ngModel)]="maltGrainBillDetail.maltGrainNameId" disabled>
               <option disabled value="">Select</option>
-              <option *ngFor="let maltNames of maltNames" [value]="maltNames.Id">{{maltNames.Name}}</option>
-            </select>
+              <option *ngFor="let maltNames of maltNames" [value]="maltNames.id">{{maltNames.name}}</option>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-type">Type</label>
@@ -90,19 +92,23 @@
           </div>
           <div class="form-group col-md-3">
             <label for="brewrrun-origin">Origin</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="maltGrainBillDetail.countryId"
+            <input type="text" class="form-control" id="brewrrun-quantity" placeholder="MaltGrain countryName"
+                [(ngModel)]="maltGrainBillDetail.country" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="maltGrainBillDetail.countryId"
               disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let countries of countries" [value]="countries.id">{{countries.countryName}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-supplier">Supplier</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="maltGrainBillDetail.supplierId"
+            <input type="text" class="form-control" id="brewrrun-quantity" placeholder=""
+                [(ngModel)]="maltGrainBillDetail.supplier" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="maltGrainBillDetail.supplierId"
               disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
-            </select>
+            </select> -->
           </div>
         </div>
         <div>
@@ -114,10 +120,12 @@
             <div class='multiple-input'>
               <input type="number" class="form-control" id="brewrrun-quantity" placeholder="Quantity"
                 [(ngModel)]="maltGrainBillDetail.quantity" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="maltGrainBillDetail.quantityUnitTypeId" disabled>
+                <input type="text" class="form-control" id="brewrrun-quantity" placeholder=""
+                [(ngModel)]="maltGrainBillDetail.quantityUnitType" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="maltGrainBillDetail.quantityUnitTypeId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
@@ -143,8 +151,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{maltGrainBillDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{timezone(maltGrainBillDetailsCompletion.CreatedDateTimeString)}}</span>
+            <span>Completed by {{maltGrainBillDetailsCompletion.createdBy}} who pressed compete button at
+              {{timezone(maltGrainBillDetailsCompletion.createdDateTimeString)}}</span>
           </div>
         </div>
       </div>
@@ -159,10 +167,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewrrun-CaCl2" placeholder="CaCl2"
                 [(ngModel)]="waterAdditionDetail.cacl2" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.cacl2UnitId">
+                <input type="text" class="form-control" id="brewrrun-CaCl2" placeholder=""
+                [(ngModel)]="waterAdditionDetail.cacl2Unit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.cacl2UnitId">
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
@@ -170,10 +180,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-gypsum" placeholder="Gypsum"
                 [(ngModel)]="waterAdditionDetail.gypsum" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.gypsumUnitId" disabled>
+                <input type="text" class="form-control" id="brewrrun-gypsum" placeholder=""
+                [(ngModel)]="waterAdditionDetail.gypsumUnit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.gypsumUnitId" disabled>
                 <option disabled value="">Select</option>
                 <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
@@ -181,10 +193,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewrrun-tablesalt" placeholder="Table Salt"
                 [(ngModel)]="waterAdditionDetail.tableSalt" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.tableSaltUnitId" disabled>
+                <input type="text" class="form-control" id="brewrrun-tablesalt" placeholder=""
+                [(ngModel)]="waterAdditionDetail.tableSaltUnit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.tableSaltUnitId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
@@ -192,10 +206,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-epsomsalt" placeholder="Epsom Salt"
                 [(ngModel)]="waterAdditionDetail.epsomSalt" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.epsomSaltUnitId" disabled>
+                <input type="text" class="form-control" id="brewerrun-epsomsalt" placeholder="Epsom Salt"
+                [(ngModel)]="waterAdditionDetail.epsomSaltUnit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.epsomSaltUnitId" disabled>
                 <option disabled value="">Select</option>
                 <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+              </select> -->
             </div>
           </div>
         </div>
@@ -205,10 +221,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewrrun-CaCO3" placeholder="CaCO3"
                 [(ngModel)]="waterAdditionDetail.caCo3" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.caCo3unitId" disabled>
+                <input type="text" class="form-control" id="brewrrun-CaCO3" placeholder="CaCO3"
+                [(ngModel)]="waterAdditionDetail.caCo3unit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.caCo3unitId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
@@ -216,10 +234,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-bakingsoda" placeholder="Baking Soda"
                 [(ngModel)]="waterAdditionDetail.bakingSoda" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.bakingSodaUnitId" disabled>
+                <input type="text" class="form-control" id="brewerrun-bakingsoda" placeholder="Baking Soda"
+                [(ngModel)]="waterAdditionDetail.bakingSodaUnit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.bakingSodaUnitId" disabled>
                 <option disabled value="">Select</option>
                 <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-6">
@@ -227,10 +247,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewrrun-H3PO4" placeholder="H3PO4"
                 [(ngModel)]="waterAdditionDetail.h3po4" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.h3po4unitId" disabled>
+                <input type="text" class="form-control" id="brewrrun-H3PO4" placeholder="H3PO4"
+                [(ngModel)]="waterAdditionDetail.h3po4unit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="waterAdditionDetail.h3po4unitId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
         </div>
@@ -239,8 +261,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{waterAdditionsCompletion.CreatedBy}} who pressed compete button at
-              {{waterAdditionsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{waterAdditionsCompletion.createdBy}} who pressed compete button at
+              {{waterAdditionsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -277,11 +299,13 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewrrun-volume" placeholder="Strike Water Volume"
                 [(ngModel)]="mashingTargetDetail.strikeWaterVolume" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="mashingTargetDetail.strikeWaterUnitTypeId"
+                <input type="text" class="form-control" id="brewrrun-volume" placeholder="Strike Water Volume"
+                [(ngModel)]="mashingTargetDetail.strikeWaterUnitType" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="mashingTargetDetail.strikeWaterUnitTypeId"
                 disabled>
                 <option disabled value="">Select</option>
                 <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-6">
@@ -290,11 +314,14 @@
               <input type="text" class="form-control" id="brewerrun-temperature"
                 placeholder="Strike Water Temperature (Celsius)"
                 [(ngModel)]="mashingTargetDetail.strikeWaterTemperature" disabled>
-              <select class="form-control input-dropdown"
+                <input type="text" class="form-control" id="brewerrun-temperature"
+                placeholder="Strike Water Temperature (Celsius)"
+                [(ngModel)]="mashingTargetDetail.strikeWaterTemperatureUnitType" disabled>
+              <!-- <select class="form-control input-dropdown"
                 [(ngModel)]="mashingTargetDetail.strikeWaterTemperatureUnitTypeId">
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
         </div>
@@ -328,8 +355,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{mashinDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{mashinDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{mashinDetailsCompletion.createdBy}} who pressed compete button at
+              {{mashinDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -396,10 +423,12 @@
             <div class=" multiple-input">
               <input type="text" class="form-control" id="brewerrun-spargetotal" placeholder="Sparge Total Volume"
                 [(ngModel)]="spargeDetail.spargeTotalVolume" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="spargeDetail.spargeTotalVolumeUnitId" disabled>
+                <input type="text" class="form-control" id="brewerrun-spargetotal" placeholder="Sparge Total Volume"
+                [(ngModel)]="spargeDetail.spargeTotalVolumeUnit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="spargeDetail.spargeTotalVolumeUnitId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
         </div>
@@ -433,8 +462,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{spargeDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{spargeDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{spargeDetailsCompletion.createdBy}} who pressed compete button at
+              {{spargeDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -465,10 +494,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-preboil" placeholder="Volume Pre Boil"
                 [(ngModel)]="kettleDataEntryDetail.volumePreBoil" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="kettleDataEntryDetail.volumePreBoilUnitId">
+                <input type="text" class="form-control" id="brewerrun-preboil" placeholder="Volume Pre Boil"
+                [(ngModel)]="kettleDataEntryDetail.volumePreBoilUnit" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="kettleDataEntryDetail.volumePreBoilUnitId">
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
         </div>
@@ -501,8 +532,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{kettleDataCompletion.CreatedBy}} who pressed compete button at
-              {{kettleDataCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{kettleDataCompletion.createdBy}} who pressed compete button at
+              {{kettleDataCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -513,57 +544,69 @@
         <div class="form-row">
           <div class="form-group col-md-3">
             <label for="brewrun-name">Name</label>
-            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.Name"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.name"
               disabled>
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-type">Type</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.MaltGrainTypeId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.maltGrainType"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.maltGrainTypeId" disabled>
 
               <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">{{maltTypes.name}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewrrun-origin">Origin</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.CountryId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.country"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.countryId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let countries of countries" [value]="countries.id">{{countries.countryName}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-supplier">Supplier</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.SupplierId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.supplier"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.supplierId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
-            </select> </div>
+            </select>--> 
+          </div> 
         </div>
         <div class="form-row">
           <div class="form-group col-md-3">
             <label for="brewrrun-alpha">Alpha (%)</label>
             <input type="text" class="form-control" id="brewrrun-alpha" placeholder="Alpha (%)"
-              [(ngModel)]="kettle.Alpha" disabled>
+              [(ngModel)]="kettle.alpha" disabled>
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-quantity">Quantity</label>
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
-                [(ngModel)]="kettle.Quantity" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="kettle.QuantityUnitTypeId" disabled>
+                [(ngModel)]="kettle.quantity" disabled>
+                <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="kettle.quantityUnitType" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="kettle.quantityUnitTypeId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
             <label for="brewrrun-addin">Add In</label>
-            <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="kettle.AddInId" disabled>
+            <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+            [(ngModel)]="kettle.addIn" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="kettle.addInId" disabled>
               <option disabled value="">Select</option>
-              <option *ngFor="let addins of addins" [value]="addins.Id">{{addins.Name}}</option>
-            </select> </div>
+              <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}</option>
+            </select> -->
+          </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-start">Start</label>
             <input type="text" class="form-control" id="brewerrun-start" placeholder="Start"
-              [(ngModel)]="kettle.StartTime" disabled>
+              [(ngModel)]="kettle.startTime" disabled>
           </div>
         </div>
       </div>
@@ -571,8 +614,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{kettleHopeCompletion.CreatedBy}} who pressed compete button at
-              {{kettleHopeCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{kettleHopeCompletion.createdBy}} who pressed compete button at
+              {{kettleHopeCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -583,22 +626,27 @@
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="brewrun-name">Name</label>
-            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.Name"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.name"
               disabled>
           </div>
           <div class="form-group col-md-4">
             <label for="brewrrun-origin">Origin</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.CountryId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.country"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.countryId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let countries of countries" [value]="countries.id">{{countries.countryName}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-4">
             <label for="brewerrun-supplier">Supplier</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.SupplierId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="kettle.supplier"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="kettle.supplierId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
-            </select> </div>
+            </select>  -->
+          </div>
         </div>
         <div class="form-row">
 
@@ -606,24 +654,28 @@
             <label for="brewerrun-quantity">Quantity</label>
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
-                [(ngModel)]="kettle.Quantity" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="kettle.QuantityOptionId" disabled>
+                [(ngModel)]="kettle.quantity" disabled>
+                <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="kettle.quantityOption" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="kettle.quantityOptionId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-4">
             <label for="brewrrun-addin">Add In</label>
-            <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="kettle.AddInId" disabled>
+            <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="kettle.addIn" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="kettle.addInId" disabled>
               <option disabled value="">Select</option>
-              <option *ngFor="let addins of addins" [value]="addins.Id">{{addins.Name}}</option>
-            </select>
+              <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}</option>
+            </select> -->
           </div>
           <div class="form-group col-md-4">
             <label for="brewerrun-start">Start</label>
             <input type="text" class="form-control" id="brewerrun-start" placeholder="Start"
-              [(ngModel)]="kettle.StartTime" disabled>
+              [(ngModel)]="kettle.startTime" disabled>
           </div>
         </div>
       </div>
@@ -631,8 +683,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{kettleAdjunctDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{kettleAdjunctDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{kettleAdjunctDetailsCompletion.createdBy}} who pressed compete button at
+              {{kettleAdjunctDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -652,10 +704,12 @@
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewrrun-preboil" placeholder="Volume Pre Boil"
                 [(ngModel)]="postWhirlpoolDetails.volumeOut" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="postWhirlpoolDetails.volumeOutOptionId" disabled>
+                <input type="text" class="form-control" id="brewrrun-preboil" placeholder="Volume Pre Boil"
+                [(ngModel)]="postWhirlpoolDetails.volumeOutOption" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="postWhirlpoolDetails.volumeOutOptionId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
         </div>
@@ -671,8 +725,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{whirlPoolDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{whirlPoolDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{whirlPoolDetailsCompletion.createdBy}} who pressed compete button at
+              {{whirlPoolDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -684,59 +738,71 @@
         <div class="form-row">
           <div class="form-group col-md-3">
             <label for="brewrun-name">Name</label>
-            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlpool.Name"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlpool.name"
               disabled>
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-type">Type</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlpool.MaltGrainTypeId"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlpool.maltGrainType"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlpool.maltGrainTypeId"
               disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">{{maltTypes.name}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewrrun-origin">Origin</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlpool.CountryId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlpool.country"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlpool.countryId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let countries of countries" [value]="countries.id">{{countries.countryName}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-supplier">Supplier</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlpool.SupplierId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlpool.supplier"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlpool.supplierId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
-            </select> </div>
+            </select>  -->
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-3">
             <label for="brewrrun-alpha">Alpha (%)</label>
             <input type="text" class="form-control" id="brewrrun-alpha" placeholder="Alpha (%)"
-              [(ngModel)]="whirlpool.Alpha" disabled>
+              [(ngModel)]="whirlpool.alpha" disabled>
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-quantity">Quantity</label>
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
-                [(ngModel)]="whirlpool.Quantity" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="whirlpool.QuantityUnitTypeId" disabled>
+                [(ngModel)]="whirlpool.quantity" disabled>
+                <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="whirlpool.quantityUnitType" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="whirlpool.quantityUnitTypeId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
             <label for="brewrrun-addin">Add In</label>
-            <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="whirlpool.AddInId"
+            <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+            [(ngModel)]="whirlpool.addIn" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="whirlpool.addInId"
               disabled>
               <option disabled value="">Select</option>
-              <option *ngFor="let addins of addins" [value]="addins.Id">{{addins.Name}}</option>
-            </select> </div>
+              <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}</option>
+            </select>  -->
+          </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-start">Start</label>
             <input type="text" class="form-control" id="brewerrun-start" placeholder="Start"
-              [(ngModel)]="whirlpool.StartTime" disabled>
+              [(ngModel)]="whirlpool.startTime" disabled>
           </div>
         </div>
       </div>
@@ -744,8 +810,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{whirlPoolHopeCompletion.CreatedBy}} who pressed compete button at
-              {{whirlPoolHopeCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{whirlPoolHopeCompletion.createdBy}} who pressed compete button at
+              {{whirlPoolHopeCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -756,22 +822,27 @@
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="brewrun-name">Name</label>
-            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlPool.Name"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlPool.name"
               disabled>
           </div>
           <div class="form-group col-md-4">
             <label for="brewrrun-origin">Origin</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlPool.CountryId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlPool.country"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlPool.countryId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let countries of countries" [value]="countries.id">{{countries.countryName}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-4">
             <label for="brewerrun-supplier">Supplier</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlPool.SupplierId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="whirlPool.supplier"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="whirlPool.supplierId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
-            </select> </div>
+            </select> -->
+           </div>
         </div>
         <div class="form-row">
 
@@ -779,25 +850,29 @@
             <label for="brewerrun-quantity">Quantity</label>
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
-                [(ngModel)]="whirlPool.Quantity" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="whirlPool.QuantityOptionId" disabled>
+                [(ngModel)]="whirlPool.quantity" disabled>
+                <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="whirlPool.quantityOption" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="whirlPool.quantityOptionId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-4">
             <label for="brewrrun-addin">Add In</label>
-            <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="whirlPool.AddInId"
+            <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="whirlPool.addIn" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="whirlPool.addInId"
               disabled>
               <option disabled value="">Select</option>
-              <option *ngFor="let addins of addins" [value]="addins.Id">{{addins.Name}}</option>
-            </select>
+              <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}</option>
+            </select> -->
           </div>
           <div class="form-group col-md-4">
             <label for="brewerrun-start">Start</label>
             <input type="text" class="form-control" id="brewerrun-start" placeholder="Start"
-              [(ngModel)]="whirlPool.StartTime" disabled>
+              [(ngModel)]="whirlPool.startTime" disabled>
           </div>
         </div>
       </div>
@@ -806,8 +881,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{whirlPoolAdjunctDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{whirlPoolAdjunctDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{whirlPoolAdjunctDetailsCompletion.createdBy}} who pressed compete button at
+              {{whirlPoolAdjunctDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -823,13 +898,16 @@
               <div class='multiple-input'>
                 <input type="number" class="form-control" id="ferment-volume" placeholder="Volume In"
                   [(ngModel)]="brew.fermentationDataEntry[i].volumeIn" disabled>
-                <select class="form-control input-dropdown" [(ngModel)]="brew.fermentationDataEntry[i].volumeInUnitId"
+                  <input type="number" class="form-control" id="ferment-volume" placeholder="Volume In"
+                  [(ngModel)]="brew.fermentationDataEntry[i].volumeInUnit" disabled>
+
+                <!-- <select class="form-control input-dropdown" [(ngModel)]="brew.fermentationDataEntry[i].volumeInUnitId"
                   disabled>
                   <option disabled value="">Select</option>
                   <ng-container *ngFor="let unit of units">
-                    <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}</option>
+                    <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}</option>
                   </ng-container>
-                </select>
+                </select> -->
               </div>
             </div>
 
@@ -851,13 +929,15 @@
               <div class='multiple-input'>
                 <input type="number" disabled class="form-control" id="ferment-pressure"
                   placeholder="Actual Pressure (PSI)" [(ngModel)]="brew.fermentationDataEntry[i].actualPressure">
-                <select class="form-control input-dropdown" disabled
+                  <input type="number" disabled class="form-control" id="ferment-pressure"
+                  placeholder="Actual Pressure (PSI)" [(ngModel)]="brew.fermentationDataEntry[i].actualPressureUnit">
+                <!-- <select class="form-control input-dropdown" disabled
                   [(ngModel)]="brew.fermentationDataEntry[i].actualPressureUnitId">
                   <option disabled value="">Select</option>
                   <ng-container *ngFor="let unit of units">
-                    <option *ngIf="unit.Category === 'Pressure'" [value]="unit.Id">{{unit.Symbol}}</option>
+                    <option *ngIf="unit.category === 'Pressure'" [value]="unit.id">{{unit.symbol}}</option>
                   </ng-container>
-                </select>
+                </select> -->
               </div>
             </div>
 
@@ -882,8 +962,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{fermentationDataEntryCompletion.CreatedBy}} who pressed compete button at
-              {{fermentationDataEntryCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{fermentationDataEntryCompletion.createdBy}} who pressed compete button at
+              {{fermentationDataEntryCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -894,58 +974,71 @@
         <div class="form-row">
           <div class="form-group col-md-3">
             <label for="brewrun-name">Name</label>
-            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.Name"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.name"
               disabled>
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-type">Type</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.MaltGrainTypeId"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.maltGrainType"
+            disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.maltGrainTypeId"
               disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let maltTypes of maltTypes" [value]="maltTypes.id">{{maltTypes.name}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewrrun-origin">Origin</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.CountryId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.country"
+            disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.countryId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let countries of countries" [value]="countries.id">{{countries.countryName}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-supplier">Supplier</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.SupplierId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.supplier"
+            disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.supplierId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
-            </select> </div>
+            </select> -->
+          
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-3">
             <label for="brewrrun-alpha">Alpha (%)</label>
             <input type="text" class="form-control" id="brewrrun-alpha" placeholder="Alpha (%)"
-              [(ngModel)]="ferment.Alpha" disabled>
+              [(ngModel)]="ferment.alpha" disabled>
           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-quantity">Quantity</label>
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
-                [(ngModel)]="ferment.Quantity" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="ferment.QuantityUnitTypeId" disabled>
+                [(ngModel)]="ferment.quantity" disabled>
+                <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="ferment.quantity" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="ferment.quantityUnitTypeId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-3">
             <label for="brewrrun-addin">Add In</label>
-            <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="ferment.AddInId" disabled>
+            <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+            [(ngModel)]="ferment.addIn" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="ferment.addInId" disabled>
               <option disabled value="">Select</option>
-              <option *ngFor="let addins of addins" [value]="addins.Id">{{addins.Name}}</option>
-            </select> </div>
+              <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}</option>
+            </select> -->
+           </div>
           <div class="form-group col-md-3">
             <label for="brewerrun-start">Start</label>
             <input type="text" class="form-control" id="brewerrun-start" placeholder="Start"
-              [(ngModel)]="ferment.StartTime" disabled>
+              [(ngModel)]="ferment.startTime" disabled>
           </div>
         </div>
       </div>
@@ -953,8 +1046,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{fermentationHopDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{fermentationHopDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{fermentationHopDetailsCompletion.createdBy}} who pressed compete button at
+              {{fermentationHopDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -965,22 +1058,27 @@
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="brewrun-name">Name</label>
-            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.Name"
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.name"
               disabled>
           </div>
           <div class="form-group col-md-4">
             <label for="brewrrun-origin">Origin</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.CountryId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.country"
+              disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.countryId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let countries of countries" [value]="countries.id">{{countries.countryName}}</option>
-            </select>
+            </select> -->
           </div>
           <div class="form-group col-md-4">
             <label for="brewerrun-supplier">Supplier</label>
-            <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.SupplierId" disabled>
+            <input type="text" class="form-control" id="brewrun-name" placeholder="Name" [(ngModel)]="ferment.supplier"
+            disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="" [(ngModel)]="ferment.supplierId" disabled>
               <option disabled value="">Select</option>
               <option *ngFor="let suppliers of suppliers" [value]="suppliers.id">{{suppliers.name}}</option>
-            </select> </div>
+            </select> -->
+           </div>
         </div>
         <div class="form-row">
 
@@ -988,24 +1086,28 @@
             <label for="brewerrun-quantity">Quantity</label>
             <div class='multiple-input'>
               <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
-                [(ngModel)]="ferment.Quantity" disabled>
-              <select class="form-control input-dropdown" [(ngModel)]="ferment.QuantityOptionId" disabled>
+                [(ngModel)]="ferment.quantity" disabled>
+                <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="ferment.quantityOption" disabled>
+              <!-- <select class="form-control input-dropdown" [(ngModel)]="ferment.quantityOptionId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
           <div class="form-group col-md-4">
             <label for="brewrrun-addin">Add In</label>
-            <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="ferment.AddInId" disabled>
+            <input type="text" class="form-control" id="brewerrun-quantity" placeholder="Quantity"
+                [(ngModel)]="ferment.addIn" disabled>
+            <!-- <select class="form-control input-style input-dropdown" id="add-in" [(ngModel)]="ferment.addInId" disabled>
               <option disabled value="">Select</option>
-              <option *ngFor="let addins of addins" [value]="addins.Id">{{addins.Name}}</option>
-            </select>
+              <option *ngFor="let addins of addins" [value]="addins.id">{{addins.name}}</option>
+            </select> -->
           </div>
           <div class="form-group col-md-4">
             <label for="brewerrun-start">Start</label>
             <input type="text" class="form-control" id="brewerrun-start" placeholder="Start"
-              [(ngModel)]="ferment.StartTime" disabled>
+              [(ngModel)]="ferment.startTime" disabled>
           </div>
         </div>
       </div>
@@ -1015,8 +1117,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{fermentationAdjunctDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{fermentationAdjunctDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{fermentationAdjunctDetailsCompletion.createdBy}} who pressed compete button at
+              {{fermentationAdjunctDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -1048,11 +1150,13 @@
             <div class="multiple-input">
               <input type="number" class="form-control" id="vol-out" placeholder="Volume in Fermentation"
                 [(ngModel)]="coolingKnockouDetail.volumeInFermentation" disabled>
-              <select class="form-control input-dropdown"
+                <input type="number" class="form-control" id="vol-out" placeholder="Volume in Fermentation"
+                [(ngModel)]="coolingKnockouDetail.volumeInFermentationOption" disabled>
+              <!-- <select class="form-control input-dropdown"
                 [(ngModel)]="coolingKnockouDetail.volumeInFermentationOptionId" disabled>
                 <option disabled value="">Select</option>
-                <option *ngFor="let unit of units" [value]="unit.Id">{{unit.Symbol}}</option>
-              </select>
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.symbol}}</option>
+              </select> -->
             </div>
           </div>
         </div>
@@ -1068,8 +1172,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{coolingKnockOutDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{coolingKnockOutDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{coolingKnockOutDetailsCompletion.createdBy}} who pressed compete button at
+              {{coolingKnockOutDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -1090,10 +1194,10 @@
           </thead>
           <tbody>
             <tr *ngFor="let enterFermentationData of brew.enterFermentationData; let i = index;">
-              <th>{{enterFermentationData.DateAndTime | date: 'MM/dd/yyyy  HH:mm:ss' }}</th>
-              <td>{{enterFermentationData.Plato}}</td>
-              <td>{{enterFermentationData.Temperature}}</td>
-              <td>{{enterFermentationData.Ph}}</td>
+              <th>{{enterFermentationData.dateAndTime | date: 'MM/dd/yyyy  HH:mm:ss' }}</th>
+              <td>{{enterFermentationData.plato}}</td>
+              <td>{{enterFermentationData.temperature}}</td>
+              <td>{{enterFermentationData.ph}}</td>
             </tr>
           </tbody>
         </table>
@@ -1103,8 +1207,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{enterFermentationDataCompletion.CreatedBy}} who pressed compete button at
-              {{enterFermentationDataCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{enterFermentationDataCompletion.createdBy}} who pressed compete button at
+              {{enterFermentationDataCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -1121,13 +1225,15 @@
               <div class='multiple-input'>
                 <input type="number" disabled class="form-control" id="ferment-volume" placeholder="Volume In"
                   [(ngModel)]="brew.conditioningDetails[i].volumeIn">
-                <select class="form-control input-dropdown" disabled
+                  <input type="number" disabled class="form-control" id="ferment-volume" placeholder="Volume In"
+                  [(ngModel)]="brew.conditioningDetails[i].volumeInOption">
+                <!-- <select class="form-control input-dropdown" disabled
                   [(ngModel)]="brew.conditioningDetails[i].volumeInOptionId">
                   <option disabled value="">Select</option>
                   <ng-container *ngFor="let unit of units">
-                    <option *ngIf="unit.Category === 'Volume'" [value]="unit.Id">{{unit.Symbol}}</option>
+                    <option *ngIf="unit.category === 'Volume'" [value]="unit.id">{{unit.symbol}}</option>
                   </ng-container>
-                </select>
+                </select> -->
               </div>
             </div>
 
@@ -1193,8 +1299,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{conditionDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{conditionDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{conditionDetailsCompletion.createdBy}} who pressed compete button at
+              {{conditionDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -1216,8 +1322,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{filterationDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{filterationDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{filterationDetailsCompletion.createdBy}} who pressed compete button at
+              {{filterationDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
@@ -1265,8 +1371,8 @@
         <div class="form-group col-md-12">
 
           <div>
-            <span>Completed by {{carbonationDetailsCompletion.CreatedBy}} who pressed compete button at
-              {{carbonationDetailsCompletion.CreatedDateTimeString}}</span>
+            <span>Completed by {{carbonationDetailsCompletion.createdBy}} who pressed compete button at
+              {{carbonationDetailsCompletion.createdDateTimeString}}</span>
           </div>
         </div>
       </div>
