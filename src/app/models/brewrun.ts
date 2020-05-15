@@ -603,7 +603,7 @@ export class PostBoilData {
     recipeId: string;
     volumePostBoil: number;
     volumePostBoilOptionId: string;
-    plato: number;
+    gravity: number;
     ph: number;
     isActive: boolean;
     createdDate: Date;
@@ -615,7 +615,7 @@ export class PostBoilData {
         this.id = Guid.raw();
         this.volumePostBoil = null;
         this.volumePostBoilOptionId = "";
-        this.plato = null;
+        this.gravity = null;
         this.ph = null;
         this.isActive = true;
         this.createdDate = new Date();
