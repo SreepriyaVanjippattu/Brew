@@ -168,14 +168,6 @@
                                             <input type="number" class="form-control" id="ferment-pressure"
                                                 placeholder="Actual Pressure (PSI)"
                                                 [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPressure">
-                                            <select class="form-control input-dropdown"
-                                                [(ngModel)]="brewRunFermentation.fermentationDataEntry[i].actualPressureUnitId">
-                                                <option disabled value="">Select</option>
-                                                <ng-container *ngFor="let unit of units">
-                                                    <option *ngIf="unit.category === 'Pressure'" [value]="unit.id">
-                                                        {{unit.symbol}}</option>
-                                                </ng-container>
-                                            </select>
                                         </div>
                                     </div>
 
@@ -684,13 +676,7 @@
                                         <td>{{enterFermentationData.temperature}}</td>
                                         <td>{{enterFermentationData.ph}}</td>
                                         <td>{{enterFermentationData.cellCount}}</td>
-                                        <td>{{enterFermentationData.passStatusName}}
-                                            <!-- <ul *ngFor="let stat of this.brewRunFermentation.enterFermentationData[i].fermentationTestResultList; let i = index;" style="list-style-type: none">
-                                                <li *ngIf="stat != null"><label>{{stat.testName}} {{i+1}}
-                                                        &nbsp;&nbsp;&nbsp;&nbsp; {{stat.timeStamp | date: 'medium'}}
-                                                        &nbsp;&nbsp;&nbsp;&nbsp; {{stat.testResult}}</label></li>
-                                            </ul> -->
-                                        </td>
+                                        <td>{{enterFermentationData.passStatusName}}</td>
                                         <td>
                                             <span class="edit-ico ml-2 cursor-click">
                                                 <img (click)="editClientDirectory(i)"
@@ -795,7 +781,6 @@
                                                 [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].passStatus">
                                             <label for="meshin-fail">Fail</label>
                                         </div>
-                                        
                                     </div>
                                     <div class="form-group col-md-6"></div>
                                     <div class="form-group col-md-6">
@@ -805,11 +790,8 @@
                                                     &nbsp;&nbsp;&nbsp;&nbsp; {{stat.testResult}}</label></li>
                                         </ul>
                                     </div>
-                                    
-                                   
                                 </div>
-                               
-                               
+
                                 <div class="form-row">
                                     <div class="form-group col-md-12 target-text">
                                         <h6>Notes</h6>

@@ -362,31 +362,19 @@ export class BrewLogFormComponent implements OnInit {
 
     this.brewRunLog.hopesDetails.forEach((hop: HopesDetail) => {
       if (hop.addInId !== this.addInConstants.Fermentation.Id) {
-        const dateTime2 = hop.startTime.toString().split(' ').slice(0, 5).join(' ');
-        const preferedZone = this.preference.baseUtcOffset;
-        let zone = preferedZone.replace(/:/gi, '');
-        zone = zone.slice(0, -2);
-        const newDateTime = dateTime2 + ' GMT' + `${zone}`;
-        hop.startTime = new Date(newDateTime).toLocaleString();
+        hop.startTime = hop.startTime.toString().split(' ').slice(0, 5).join(' ');
       }
     });
     this.brewRunLog.adjunctsDetails.forEach((adjunct: AdjunctsDetail) => {
       if (adjunct.addInId !== this.addInConstants.Fermentation.Id) {
-        const dateTime2 = adjunct.startTime.toString().split(' ').slice(0, 5).join(' ');
-        const preferedZone = this.preference.baseUtcOffset;
-        let zone = preferedZone.replace(/:/gi, '');
-        zone = zone.slice(0, -2);
-        const newDateTime = dateTime2 + ' GMT' + `${zone}`;
-        adjunct.startTime = new Date(newDateTime).toLocaleString();
+        adjunct.startTime = adjunct.startTime.toString().split(' ').slice(0, 5).join(' ');
       }
     });
-   
     this.saveData().subscribe(response => {
-      this.router.navigate([url])
+      this.router.navigate([url]);
     }, error => {
       this.toast.danger(error.error.message,'Try Again');
     });
-    
   }
 
   addNewStyle() {
@@ -396,7 +384,7 @@ export class BrewLogFormComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('styleText').value) {
       const addStyleAPI = String.Format(this.apiService.addStyle, this.tenantId);
@@ -416,7 +404,7 @@ export class BrewLogFormComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('typeText').value) {
       const addTypeAPI = String.Format(this.apiService.addType, this.tenantId);
@@ -437,7 +425,7 @@ export class BrewLogFormComponent implements OnInit {
       isActive: true,
       createdDate: '2019-12-16T06:55:05.243',
       modifiedDate: '2019-12-16T06:55:05.243',
-      tenantId: this.tenantId
+      tenantId: this.tenantId,
     };
     if (this.modalForms.get('supplierText').value) {
       const addStyleAPI = String.Format(this.apiService.addSupplier, this.tenantId);
@@ -450,7 +438,6 @@ export class BrewLogFormComponent implements OnInit {
     }
   }
 
-  
   getVorlaufTargets(recipeContent: any) {
     this.vorlaufTarget = recipeContent.MaltGrainBill;
   }
@@ -488,7 +475,7 @@ export class BrewLogFormComponent implements OnInit {
   }
   getWhirlpoolTargets(recipeContent: any) {
     if (recipeContent.whirlpoolTarget.createdDate) {
-      this.setTargetWhirlStart();
+      this.setTargetWhirlStart(recipeContent.whirlpoolTarget.createdDate);
     }
     this.whirlpoolTarget.push(recipeContent.whirlpoolTarget);
   }
@@ -543,8 +530,8 @@ export class BrewLogFormComponent implements OnInit {
     start.startTime = this.whirlstartTime;
   }
 
-  setTargetWhirlStart() {
-    this.targetStartTime = this.timezone();
+  setTargetWhirlStart(dateTime) {
+    this.targetStartTime = this.timezone(dateTime);
     this.targetStartTime = this.targetStartTime.toString().split(' ').slice(0, 5).join(' ');
     this.recipeContent.whirlpoolTarget.createdDate = this.targetStartTime;
   }

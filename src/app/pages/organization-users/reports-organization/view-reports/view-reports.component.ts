@@ -255,13 +255,14 @@ export class ViewReportsComponent implements OnInit {
   }
 
   getSingleBrewDetails(tenantId, brewId) {
-    this.apiService.getDataByQueryParams(this.apiService.getBrewRunById, null, tenantId, brewId).subscribe(response => {
+    const getBrewDetailsById = String.Format(this.apiService.getBrewDetailsById, tenantId, brewId);
+    this.apiService.getDataByQueryParams(getBrewDetailsById, null, null, null).subscribe(response => {
       if (response.status === 200) {
 
-        this.brew = response['body'];
+        this.brew = response['body']['brewRun'];
 
         this.currentBrewId = this.brew.brewRunId;
-        this.recipeId = response['body'].RecipeId;
+        this.recipeId = this.brew.recipeId;
 
         this.maltGrainBillDetailsCompletion = this.isCompleted("MaltGrainBill");
         this.waterAdditionsCompletion = this.isCompleted("Water Additions");

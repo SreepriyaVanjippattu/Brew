@@ -294,22 +294,12 @@ export class FermentationFormComponent implements OnInit {
   saveGo(url: string) {
     this.brewRunFermentation.hopesDetails.map((hop: HopesDetail) => {
       if (hop.addInId === this.addInConstants.Fermentation.Id) {
-        const dateTime2 = hop.startTime.toString().split(' ').slice(0, 5).join(' ');
-        const preferedZone = this.preference.baseUtcOffset;
-        let zone = preferedZone.replace(/:/gi, '');
-        zone = zone.slice(0, -2);
-        const newDateTime = dateTime2 + ' GMT' + `${zone}`;
-        hop.startTime = new Date(newDateTime).toLocaleString();
+        hop.startTime = hop.startTime.toString().split(' ').slice(0, 5).join(' ');
       }
     });
     this.brewRunFermentation.adjunctsDetails.map((adjunct: AdjunctsDetail) => {
       if (adjunct.addInId === this.addInConstants.Fermentation.Id) {
-        const dateTime2 = adjunct.startTime.toString().split(' ').slice(0, 5).join(' ');
-        const preferedZone = this.preference.baseUtcOffset;
-        let zone = preferedZone.replace(/:/gi, '');
-        zone = zone.slice(0, -2);
-        const newDateTime = dateTime2 + ' GMT' + `${zone}`;
-        adjunct.startTime = new Date(newDateTime).toLocaleString();
+        adjunct.startTime = adjunct.startTime.toString().split(' ').slice(0, 5).join(' ');
       }
     });
 
@@ -317,12 +307,7 @@ export class FermentationFormComponent implements OnInit {
       if (enter.plato === null && enter.temperature === null && enter.ph === null) {
         this.brewRunFermentation.enterFermentationData.splice(i, 1);
       }
-      const dateTime2 = enter.dateAndTime.toString().split(' ').slice(0, 5).join(' ');
-      const preferedZone = this.preference.baseUtcOffset;
-      let zone = preferedZone.replace(/:/gi, '');
-      zone = zone.slice(0, -2);
-      const newDateTime = dateTime2 + ' GMT' + `${zone}`;
-      enter.dateAndTime = new Date(newDateTime).toLocaleString();
+      enter.dateAndTime = enter.dateAndTime.toString().split(' ').slice(0, 5).join(' ');
     });
     this.saveData().subscribe(response => {
       this.router.navigate([url])
@@ -335,23 +320,19 @@ export class FermentationFormComponent implements OnInit {
 
   radioChange(status) {
     this.statusDate = new Date();
-    if (status === 'Pass') {
-      this.status = 'Pass';
-    } else {
-      this.status = 'Fail';
-    }
-    this.brewRunFermentation.enterFermentationData[this.selectedPos].passStatusName = this.status;
+    this.status = status === 'Pass' ? 'Pass' : 'Fail';
     let dateTime = this.timezone(this.statusDate).toString();
     dateTime = dateTime.split(' ').slice(0, 5).join(' ');
     this.statusDate = new Date(dateTime).toLocaleString();
     this.statusDate = new Date();
     const statusData = new FermentationTestResultList();
     statusData.fermentationTestId = this.brewRunFermentation.enterFermentationData[this.selectedPos].id;
-    statusData.testName = 'Test ';
+    statusData.testName = 'Test';
     statusData.testResult = this.status;
     statusData.timeStamp = this.statusDate;
     if (this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList) {
      this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList.push(statusData);
+     this.brewRunFermentation.enterFermentationData[this.selectedPos].passStatusName = this.status;
      this.resultList = this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList;
     }
   }
