@@ -38,8 +38,10 @@ export class ApiProviderService {
   getBrewLogDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewlog/';
   getFermentationMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/fermentation/masterdetails';
   getFermentationDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/fermentation/';
-  getConditioningMasterDetails =  'brewrun/v1/brewers/{0}/brewrun/conditioning/masterdetails';
-  getConditioningDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/conditioning'
+  getConditioningMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/conditioning/masterdetails';
+  getConditioningDetails = 'brewrun/v1/brewers/{0}/brewrun/{1}/conditioning';
+  getbrewDetailsForReport = 'brewrun/v1/brewers/{0}/brewrun/{1}/brewdetails';
+  getExcelReport = 'brewrun/v1/brewers/{0}/brewrun/{1}/excelreport';
 
   // User Api/
   getAllActiveUsers = 'user/v1/brewers/{0}/users';
@@ -57,23 +59,23 @@ export class ApiProviderService {
   // Role Permissions
   getAllActiveRoles = 'user/v1/brewers/{0}/roles';
   getAllPermissions = 'user/v1/brewers/role/permission';
-  addRole ='user/v1/brewers/{0}/role';
+  addRole = 'user/v1/brewers/{0}/role';
   editRole = 'user/v1/brewers/{0}/role';
   // get all Tenants/
   getAllTenantContent = 'GetAllTenentStatus';
   editClientSettings = 'EditClientSettings';
   editGeneralSettings = 'EditGeneralSettings';
-  resetTenantPassword= 'user/v1/brewers/resetforgotpassword/tenant';
+  resetTenantPassword = 'user/v1/brewers/resetforgotpassword/tenant';
   editSubcriptions = 'EditSubscription';
-  tenantPasswordLink ='user/v1/brewers/forgotpasswordlink';
-  getAllActiveClientsReport='';
-  getAllAuditTrailReport='';
-  getAllLoginLogoutReport='';
-  getAllLastRunReportList='';
-  getAllTenantSubscriptionReport='';
-  editRoles='';
-  deleteUsers='';
- 
+  tenantPasswordLink = 'user/v1/brewers/forgotpasswordlink';
+  getAllActiveClientsReport = '';
+  getAllAuditTrailReport = '';
+  getAllLoginLogoutReport = '';
+  getAllLastRunReportList = '';
+  getAllTenantSubscriptionReport = '';
+  editRoles = '';
+  deleteUsers = '';
+
 
   // preference
   getPreferenceSettings = 'user/v1/brewers/settings/{0}/preference';
@@ -90,7 +92,7 @@ export class ApiProviderService {
   archiveYeastStrain = 'brewrun/v1/brewers/{0}/yeaststrain/{1}/archive';
 
   // recipe
-  getRecipeMasterDetails='brewrun/v1/brewers/{0}/recipe/masterdetails';
+  getRecipeMasterDetails = 'brewrun/v1/brewers/{0}/recipe/masterdetails';
   getAllRecipeByTenant = 'brewrun/v1/brewers/recipe/{0}';
   getRecipebyId = 'brewrun/v1/brewers/recipe/{0}/{1}';
   addRecipe = 'brewrun/v1/brewers/{0}/recipe/';
@@ -119,13 +121,13 @@ export class ApiProviderService {
 
   logoutApi = 'Logout';
 
- 
+
   getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
   getBrewRunById = 'GetBrewRunById';
-  editClient = 'user/v1/brewers/{0}/tenant';  
+  editClient = 'user/v1/brewers/{0}/tenant';
   getSubscriptions = 'user/v1/brewers/subscriptions';
-  isCompanyNameAvailable ='user/v1/brewers/companyname/{0}/check';
-  initializeClient ='user/v1/brewers/client/initialize';
+  isCompanyNameAvailable = 'user/v1/brewers/companyname/{0}/check';
+  initializeClient = 'user/v1/brewers/client/initialize';
   archiveClient = 'user/v1/brewers/clients/{0}/archive';
   editClientStatus = 'user/v1/brewers/{0}/tenantstatus';
   getAllActiveClients = 'user/v1/brewers/clients';
@@ -133,7 +135,7 @@ export class ApiProviderService {
   getClientDetailById = 'user/v1/brewers/{0}/tenant';
   addBrewUserAuditTrail = '';
 
-  
+
   constructor(public http: HttpClient) { }
 
   add(formData, endpoint: string) {
@@ -302,8 +304,15 @@ export class ApiProviderService {
     );
   }
 
-  getJsonData(url): Observable<any> {
-    return this.http.get(url, { observe: 'response' }).pipe(
+  getJsonData(endpoint): Observable<any> {
+
+    let url = `${environment.API.URL}/${endpoint}?`;
+
+    const httpOptions = {
+      responseType: 'blob' as 'json'
+    };
+
+    return this.http.get(url, httpOptions).pipe(
       map((response) => response),
       retry(3),
       catchError(this.handleError),

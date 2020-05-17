@@ -71,7 +71,7 @@ export class PagesComponent {
   }
 
   logoutPostApi() {
-    const email = JSON.parse(sessionStorage.user).UserProfile.EmailAddress;
+    const email = JSON.parse(sessionStorage.user).userDetails.emailAddress;
     const params = {
       email: email,
     };

@@ -20,7 +20,7 @@ import { Guid } from 'guid-typescript';
 import { DatePipe } from '@angular/common';
 import { String } from 'typescript-string-operations';
 import { throwError } from 'rxjs/internal/observable/throwError';
-import { Observable,of as observableOf } from 'rxjs';
+import { Observable, of as observableOf } from 'rxjs';
 
 @Component({
   selector: 'brew-log-form',
@@ -68,7 +68,7 @@ export class BrewLogFormComponent implements OnInit {
   coolEndTime: any = '';
   targetStartTime: any = '';
   max = new Date();
- 
+
 
   countries: any;
   addins: any;
@@ -130,9 +130,9 @@ export class BrewLogFormComponent implements OnInit {
   setClassAdjunctsWhirl = false;
   currentUser: any;
   maltNames: any;
-  brewerName : string;
-  brewLogAvailable:boolean;
-  
+  brewerName: string;
+  brewLogAvailable: boolean;
+
 
   constructor(
     private dataService: DashboardService,
@@ -156,8 +156,7 @@ export class BrewLogFormComponent implements OnInit {
     this.getBrewLogMasterDetails();
   }
 
-  getBrewLogMasterDetails()
-  {
+  getBrewLogMasterDetails() {
     const getBrewDetailsMasterAPI = String.Format(this.apiService.getBrewLogMasterDetails, this.tenantId);
     this.apiService.getDataList(getBrewDetailsMasterAPI).subscribe(response => {
       if (response) {
@@ -168,7 +167,7 @@ export class BrewLogFormComponent implements OnInit {
         this.styles = response['body']['brewLogMasterDetails']['styles'];
         this.units = response['body']['brewLogMasterDetails']['units']
         this.getPreferenceUsed();
-        
+
       }
     });
   }
@@ -180,8 +179,8 @@ export class BrewLogFormComponent implements OnInit {
    */
   getBrewLogDetails() {
 
-    const getBrewLogDetailsAPI = String.Format(this.apiService.getBrewLogDetails, this.tenantId,this.brewId);
-  
+    const getBrewLogDetailsAPI = String.Format(this.apiService.getBrewLogDetails, this.tenantId, this.brewId);
+
     this.apiService.getDataByQueryParams(getBrewLogDetailsAPI, null, this.tenantId, this.brewId).subscribe(response => {
       if (response.status === 200) {
         this.brewRunLog = response['body']['brewRunLog'];
@@ -306,8 +305,8 @@ export class BrewLogFormComponent implements OnInit {
 
 
   findUnits() {
-   
-    if(this.preference && this.units) {
+
+    if (this.preference && this.units) {
       this.units.forEach(element => {
         if (element.id === this.preference.temperatureId) {
           this.preferedUnit = element.symbol;
@@ -364,16 +363,25 @@ export class BrewLogFormComponent implements OnInit {
       if (hop.addInId !== this.addInConstants.Fermentation.Id) {
         hop.startTime = hop.startTime.toString().split(' ').slice(0, 5).join(' ');
       }
+      hop.country = this.getCountryName(hop.countryId);
+      hop.maltGrainType = this.getMaltTypeName(hop.maltGrainTypeId);
+      hop.addIn = this.getAddInName(hop.addInId);
+      hop.supplier = this.getSupplierName(hop.supplierId);
     });
+
     this.brewRunLog.adjunctsDetails.forEach((adjunct: AdjunctsDetail) => {
       if (adjunct.addInId !== this.addInConstants.Fermentation.Id) {
         adjunct.startTime = adjunct.startTime.toString().split(' ').slice(0, 5).join(' ');
       }
+      adjunct.country = this.getCountryName(adjunct.countryId);
+      adjunct.addIn = this.getAddInName(adjunct.addInId);
+      adjunct.supplier = this.getSupplierName(adjunct.supplierId);
     });
+
     this.saveData().subscribe(response => {
       this.router.navigate([url]);
     }, error => {
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -562,7 +570,7 @@ export class BrewLogFormComponent implements OnInit {
       var minutes = utc.getMinutes() + Number(zone[1]);
       var seconds = utc.getSeconds() + Number(zone[2]);
 
-      return new Date(utc.setHours(hours,minutes,seconds));
+      return new Date(utc.setHours(hours, minutes, seconds));
     }
   }
 
@@ -660,13 +668,13 @@ export class BrewLogFormComponent implements OnInit {
   onVorlauf(i, editedSectionName) {
     this.isCollapsedVorlauf = !this.isCollapsedVorlauf;
     this.brewRunLog.vorlauf.map(element => {
-       element.isCompleted = true;
-     });
+      element.isCompleted = true;
+    });
     this.saveData().subscribe(response => {
       this.setClass = true;
-      }, error => {
-        this.setClass = false;
-        this.toast.danger(error.error.message,'Try Again');
+    }, error => {
+      this.setClass = false;
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -676,10 +684,10 @@ export class BrewLogFormComponent implements OnInit {
       element.isCompleted = true;
     });
     this.saveData().subscribe(response => {
-        this.setClassSparge = true;
-      }, error => {
-        this.setClassSparge = false;
-        this.toast.danger(error.error.message,'Try Again');
+      this.setClassSparge = true;
+    }, error => {
+      this.setClassSparge = false;
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -688,12 +696,12 @@ export class BrewLogFormComponent implements OnInit {
     this.brewRunLog.firstRunnings.map(element => {
       element.isCompleted = true;
     });
-   
+
     this.saveData().subscribe(response => {
       this.setClassFirst = true;
     }, error => {
       this.setClassFirst = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -706,7 +714,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassLast = true;
     }, error => {
       this.setClassLast = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -719,8 +727,53 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassKettle = true;
     }, error => {
       this.setClassKettle = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
+  }
+
+  getMaltTypeName(maltTypeId) {
+    let maltTypeName = '';
+    for (var maltType of this.maltTypes) {
+      if (maltType.id === maltTypeId) {
+        maltTypeName = maltType.name;
+        break;
+      }
+    }
+    return maltTypeName;
+  }
+
+  getCountryName(countryId) {
+    let countryName = '';
+    for (var country of this.countries) {
+      if (country.id === countryId) {
+        countryName = country.countryName;
+        break;
+      }
+    }
+    return countryName;
+  }
+
+
+  getSupplierName(supplierId) {
+    let supplierName = '';
+    for (var supplier of this.suppliers) {
+      if (supplier.id === supplierId) {
+        supplierName = supplier.name;
+        break;
+      }
+    }
+    return supplierName;
+  }
+
+  getAddInName(addInId) {
+    let addInName = '';
+    for (var addIn of this.addins) {
+      if (addIn.id === addInId) {
+        addInName = addIn.name;
+        break;
+      }
+    }
+    return addInName;
   }
 
   onHopsCompleteKettle(editedSectionName) {
@@ -729,13 +782,17 @@ export class BrewLogFormComponent implements OnInit {
       if (element.addInId === this.addInConstants.Kettle.Id) {
         element.isCompleted = true;
       }
+      element.country = this.getCountryName(element.countryId);
+      element.maltGrainType = this.getMaltTypeName(element.maltGrainTypeId);
+      element.addIn = this.getAddInName(element.addInId);
+      element.supplier = this.getSupplierName(element.supplierId);
     });
-   
+
     this.saveData().subscribe(response => {
       this.setClassHops = true;
     }, error => {
       this.setClassHops = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -745,13 +802,17 @@ export class BrewLogFormComponent implements OnInit {
       if (element.addInId === this.addInConstants.Whirlpool.Id) {
         element.isCompleted = true;
       }
+      element.country = this.getCountryName(element.countryId);
+      element.maltGrainType = this.getMaltTypeName(element.maltGrainTypeId);
+      element.addIn = this.getAddInName(element.addInId);
+      element.supplier = this.getSupplierName(element.supplierId);
     });
-    
+
     this.saveData().subscribe(response => {
       this.setClassHopsWhirl = true;
     }, error => {
       this.setClassHopsWhirl = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -761,12 +822,15 @@ export class BrewLogFormComponent implements OnInit {
       if (element.addInId === this.addInConstants.Kettle.Id) {
         element.isCompleted = true;
       }
+      element.country = this.getCountryName(element.countryId);
+      element.addIn = this.getAddInName(element.addInId);
+      element.supplier = this.getSupplierName(element.supplierId);
     });
     this.saveData().subscribe(response => {
       this.setClassAdjuncts = true;
     }, error => {
       this.setClassAdjuncts = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -776,12 +840,15 @@ export class BrewLogFormComponent implements OnInit {
       if (element.addInId === this.addInConstants.Whirlpool.Id) {
         element.isCompleted = true;
       }
+      element.country = this.getCountryName(element.countryId);
+      element.addIn = this.getAddInName(element.addInId);
+      element.supplier = this.getSupplierName(element.supplierId);
     });
     this.saveData().subscribe(response => {
       this.setClassAdjunctsWhirl = true;
     }, error => {
       this.setClassAdjunctsWhirl = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -790,12 +857,12 @@ export class BrewLogFormComponent implements OnInit {
     this.brewRunLog.postBoilData.map(element => {
       element.isCompleted = true;
     });
-    
+
     this.saveData().subscribe(response => {
       this.setClassPostBoil = true;
     }, error => {
       this.setClassPostBoil = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -804,12 +871,12 @@ export class BrewLogFormComponent implements OnInit {
     this.brewRunLog.whirlPoolDataEntry.map(element => {
       element.isCompleted = true;
     });
-    
+
     this.saveData().subscribe(response => {
       this.setClassWhirl = true;
     }, error => {
       this.setClassWhirl = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -818,12 +885,12 @@ export class BrewLogFormComponent implements OnInit {
     this.brewRunLog.postWhirlpoolDetails.map(element => {
       element.isCompleted = true;
     });
-    
+
     this.saveData().subscribe(response => {
       this.setClassPostWhirl = true;
     }, error => {
       this.setClassPostWhirl = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -836,7 +903,7 @@ export class BrewLogFormComponent implements OnInit {
       this.setClassCool = true;
     }, error => {
       this.setClassCool = false;
-      this.toast.danger(error.error.message,'Try Again');
+      this.toast.danger(error.error.message, 'Try Again');
     });
   }
 
@@ -950,22 +1017,22 @@ export class BrewLogFormComponent implements OnInit {
     }
   }
 
-  saveData(): Observable<boolean>{
-    const brewLogAPI = String.Format(this.apiService.getBrewLogDetails, this.tenantId,this.brewId);
+  saveData(): Observable<boolean> {
+    const brewLogAPI = String.Format(this.apiService.getBrewLogDetails, this.tenantId, this.brewId);
     if (!this.brewLogAvailable) {
-        this.apiService.postData(brewLogAPI, this.brewRunLog).subscribe(response => {
-          this.brewLogAvailable = response['body']['brewLogAvailable'];
-          return observableOf(true);
-        }, error => {
+      this.apiService.postData(brewLogAPI, this.brewRunLog).subscribe(response => {
+        this.brewLogAvailable = response['body']['brewLogAvailable'];
+        return observableOf(true);
+      }, error => {
         return throwError(error);
       });
     }
     else {
-       this.apiService.putData(brewLogAPI, this.brewRunLog).subscribe(response => {
-        this.brewLogAvailable =  response['body']['brewLogAvailable'];
+      this.apiService.putData(brewLogAPI, this.brewRunLog).subscribe(response => {
+        this.brewLogAvailable = response['body']['brewLogAvailable'];
         return observableOf(true);
-        }, error => {
-          return throwError(error);
+      }, error => {
+        return throwError(error);
       });
     }
     return observableOf(false);

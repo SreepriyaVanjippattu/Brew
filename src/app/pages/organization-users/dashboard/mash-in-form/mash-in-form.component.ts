@@ -237,6 +237,16 @@ export class MashInFormComponent implements OnInit {
 
   saveGo(url: string) {
     if (this.status === 'Pass') {
+      this.brewRunMashin.maltGrainBillDetails.forEach(maltGrainBillDetail => {
+        maltGrainBillDetail.isCompleted = true;
+        maltGrainBillDetail.maltGrainType = this.getMaltTypeName(maltGrainBillDetail.maltGrainTypeId);
+        maltGrainBillDetail.country = this.getCountryName(maltGrainBillDetail.countryId);
+        maltGrainBillDetail.supplier = this.getSupplierName(maltGrainBillDetail.supplierId);
+        maltGrainBillDetail.quantityUnit = this.getUnitName(maltGrainBillDetail.quantityUnitId)
+        maltGrainBillDetail.completedUserId = this.currentUser;
+        maltGrainBillDetail.completedUserName = this.brewerName;
+      });
+
       this.brewRunMashin.mashingTargetDetails.forEach((mash: any) => {
         mash.startTime = this.mashinStartTime;
         mash.endTime = this.mashinEndTime;

@@ -535,11 +535,16 @@ export class HopesDetail {
     endTime: Date;
     Name: string;
     countryId: string;
+    country: string;
     supplierId: string;
+    supplier: string;
+    maltGrainTypeId: string;
+    maltGrainType: string;
     alpha: number;
     quantity: number;
     quantityUnitTypeId: string;
     addInId: string;
+    addIn: string;
     additionalHopesStatus: boolean;
     isActive: boolean;
     createdDate: Date;
@@ -566,10 +571,13 @@ export class AdjunctsDetail {
     recipeId: string;
     Name: string;
     countryId: string;
+    country: string;
     supplierId: string;
+    supplier: string;
     quantity: number;
     quantityOptionId: string;
     addInId: string;
+    addIn: string;
     startTime: any;
     additionalAdjunctsStatus: boolean;
     isActive: boolean;
@@ -760,26 +768,27 @@ export class YeastDataDetail {
     id: string;
     brewId: string;
     recipeId: string;
-    YeastStrainId: string;
+    yeastStrainId: string;
+    yeastStrain: string;
     isActive: boolean;
     createdDate: Date;
     modifiedDate: Date;
     tenantId: string;
-    Generation: string;
-    CellCount: string;
-    Viability: string;
+    generation: string;
+    cellCount: string;
+    viability: string;
     isCompleted: boolean;
 
     constructor() {
         this.id = Guid.raw();
-        this.YeastStrainId = "";
+        this.yeastStrainId = "";
         this.isActive = true;
         this.createdDate = new Date();
         this.modifiedDate = null;
         this.tenantId = "";
-        this.Generation = null;
-        this.CellCount = null;
-        this.Viability = null;
+        this.generation = null;
+        this.cellCount = null;
+        this.viability = null;
         this.isCompleted = false;
     }
 }
@@ -844,6 +853,7 @@ export class EnterFermentationData {
         this.temperatureUnitId = '';
         this.ph = null;
         this.passStatusName = '';
+        this.fermentationTestResultList =[];
         this.passStatus = true;
         this.cellCount = null;
         this.notes = null;

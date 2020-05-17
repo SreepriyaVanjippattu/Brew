@@ -784,7 +784,7 @@
                                     </div>
                                     <div class="form-group col-md-6"></div>
                                     <div class="form-group col-md-6">
-                                        <ul *ngFor="let stat of resultList; let i = index;" style="list-style-type: none">
+                                        <ul *ngFor="let stat of resultListData; let i = index;" style="list-style-type: none">
                                             <li *ngIf="stat != null"><label>{{stat.testName}} {{i+1}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp; {{stat.timeStamp | date: 'medium'}}
                                                     &nbsp;&nbsp;&nbsp;&nbsp; {{stat.testResult}}</label></li>

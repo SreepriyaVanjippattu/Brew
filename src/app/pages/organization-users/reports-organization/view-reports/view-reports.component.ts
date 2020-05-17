@@ -255,11 +255,11 @@ export class ViewReportsComponent implements OnInit {
   }
 
   getSingleBrewDetails(tenantId, brewId) {
-    const getBrewDetailsById = String.Format(this.apiService.getBrewDetailsById, tenantId, brewId);
-    this.apiService.getDataByQueryParams(getBrewDetailsById, null, null, null).subscribe(response => {
+    const getBrewDetailsById = String.Format(this.apiService.getbrewDetailsForReport, tenantId, brewId);
+    this.apiService.getDataList(getBrewDetailsById).subscribe(response => {
       if (response.status === 200) {
 
-        this.brew = response['body']['brewRun'];
+        this.brew = response['body']['brew'];
 
         this.currentBrewId = this.brew.brewRunId;
         this.recipeId = this.brew.recipeId;
@@ -494,6 +494,19 @@ export class ViewReportsComponent implements OnInit {
 
   saveAs(pdf) {
     pdf.saveAs(this.currentBrewId + '.pdf');
+  }
+
+  downloadExcelReport() {
+
+    const getExcelReportAPI = String.Format(this.apiService.getExcelReport, this.tenantId, this.brewId);
+    this.apiService.getJsonData(getExcelReportAPI).subscribe(response => {
+
+      var downloadURL = window.URL.createObjectURL(response);
+      var link = document.createElement('a');
+      link.href = downloadURL;
+      link.download = 'Brew_Run_Report';
+      link.click();
+    });
   }
 
   print() {
