@@ -10,16 +10,17 @@ import { ApiProviderService } from '../../../../core/api-services/api-provider.s
 import { Router, ActivatedRoute } from '@angular/router';
 import { NbToastrService, NbLayoutScrollService } from '@nebular/theme';
 import { DataService } from '../../../../data.service';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { String } from 'typescript-string-operations';
-
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-reports',
   templateUrl: './view-reports.component.html',
   styleUrls: ['./view-reports.component.scss'],
 })
+
 export class ViewReportsComponent implements OnInit {
+
   brew: BrewRun;
   brewId: string;
   tenantId: any;
@@ -73,6 +74,7 @@ export class ViewReportsComponent implements OnInit {
   filterationDetailsCompletion: BrewRunCompletionDetail;
   carbonationDetailsCompletion: BrewRunCompletionDetail;
   userDetails: any;
+  totalTime: any;
 
   constructor(
     private apiService: ApiProviderService,
@@ -81,62 +83,56 @@ export class ViewReportsComponent implements OnInit {
     private toast: NbToastrService,
     private scrolltop: NbLayoutScrollService,
     private dataService: DataService,
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
+
     this.dataService.currentMessage.subscribe(message => this.message = message);
     this.brewContent = this.message;
+
     this.brew = new BrewRun();
     this.brewId = this.route.snapshot.paramMap.get('id');
 
-
-    this.statusCheck();
     this.userDetails = sessionStorage.user;
     const user = JSON.parse(this.userDetails);
     this.tenantId = user['userDetails'].tenantId;
-    const company = user['userDetails'].companyName;
-    this.getUnits();
-    if (company.Name !== '' && company.Name !== null) {
-      this.currentTenantName = company.Name;
-    }
-    if (company.Address1 !== '' && company.Address1 !== null) {
-      this.addressOne = company.Address1 + ' ,';
-    }
-    if (company.City !== '' && company.City !== null) {
-      this.city = company.City + ' ,';
-    }
-    if (company.State !== '' && company.State !== null) {
-      this.state = company.State;
-    }
-    if (company.Country !== '' && company.Country !== '') {
-      this.country = company.Country + ' ,';
-    }
-    if (company.Postalcode !== '' && company.Postalcode !== null) {
-      this.postalCode = 'Postalcode - ' + company.Postalcode;
-    }
     this.tenantLogo = user['userDetails'].imageUrl;
-    this.getPreferenceUsed();
-    if (!sessionStorage.styles || !sessionStorage.addins ||
-      !sessionStorage.suppliers || !sessionStorage.maltTypes || !sessionStorage.maltNames ||
-      !sessionStorage.countries) {
-      this.getCountries();
-      this.getAddIns();
-      this.getMaltTypes();
-      this.getStyles();
-      this.getSuppliers();
-      this.getMaltName();
-    } else {
-      this.styles = JSON.parse(sessionStorage.styles);
-      this.addins = JSON.parse(sessionStorage.addins);
-      this.countries = JSON.parse(sessionStorage.countries);
-      this.maltTypes = JSON.parse(sessionStorage.maltTypes);
-      this.suppliers = JSON.parse(sessionStorage.suppliers);
-      this.maltNames = JSON.parse(sessionStorage.maltNames);
 
-    }
-
+    this.statusCheck();
+    this.getCompanyDetails(this.tenantId);
+    this.getUnits();
     this.getSingleBrewDetails(this.tenantId, this.brewId);
+    this.getPreferenceUsed();
+  }
+
+  getCompanyDetails(tenantId) {
+
+    const getCompanyDetailsByTenantAPI = String.Format(this.apiService.getCompanyDetailsByTenant, tenantId);
+    this.apiService.getDataList(getCompanyDetailsByTenantAPI).subscribe(response => {
+
+      if (response.status === 200) {
+
+        var company = response['body'];
+        if (company.name !== '' && company.name !== null) {
+          this.currentTenantName = company.name;
+        }
+        if (company.address1 !== '' && company.address1 !== null) {
+          this.addressOne = company.address1 + ' ,';
+        }
+        if (company.city !== '' && company.city !== null) {
+          this.city = company.city + ' ,';
+        }
+        if (company.state !== '' && company.state !== null) {
+          this.state = company.state;
+        }
+        if (company.country !== '' && company.country !== '') {
+          this.country = company.country + ' ,';
+        }
+        if (company.postalcode !== '' && company.postalcode !== null) {
+          this.postalCode = 'Postalcode - ' + company.postalcode;
+        }
+      }
+    });
   }
 
   statusCheck() {
@@ -157,131 +153,49 @@ export class ViewReportsComponent implements OnInit {
       });
     }
   }
-  getCountries() {
-    this.apiService.getDataList(this.apiService.getAllActiveCountry).subscribe(response => {
-      if (response) {
-        this.countries = response['body'].countrybase;
-        sessionStorage.setItem('countries', JSON.stringify(this.countries));
-      }
-    });
-  }
 
   getUnits() {
-    const getUnitsApi = String.Format(this.apiService.getAllActiveUnitType);
-    this.apiService.getDataList(getUnitsApi).subscribe(response => {
-      if (response) {
-        this.units = response['body'].unitTypes;
-      }
-    })
-  }
-
-  getAddIns() {
-    const getAllActiveAddInAPI = String.Format(this.apiService.getAllActiveAddIn, this.tenantId);
-    this.apiService.getDataList(getAllActiveAddInAPI).subscribe(response => {
-      if (response) {
-        this.addins = response['body'].addinBase;
-        sessionStorage.setItem('addins', JSON.stringify(this.addins));
-
-      }
-    });
-  }
-
-  getSuppliers() {
-    const getAllActiveSupplierAPI = String.Format(this.apiService.getAllActiveSupplier, this.tenantId);
-    this.apiService.getDataList(getAllActiveSupplierAPI).subscribe(response => {
-      if (response) {
-        this.suppliers = response['body'].supplierBase;
-        sessionStorage.setItem('suppliers', JSON.stringify(this.suppliers));
-
-      }
-    });
-  }
-
-  getMaltTypes() {
-    const getAllActiveMaltGrainTypeAPI = String.Format(this.apiService.getAllActiveMaltGrainType, this.tenantId);
-    this.apiService.getDataList(getAllActiveMaltGrainTypeAPI).subscribe(response => {
-      if (response) {
-        this.maltTypes = response['body'];
-        sessionStorage.setItem('maltTypes', JSON.stringify(this.maltTypes));
-
-      }
-    });
-  }
-  getMaltName() {
-    this.apiService.getData(this.apiService.getAllMaltGrainName, '', '', this.tenantId).subscribe(response => {
-      if (response) {
-        this.maltNames = response['body'];
-        sessionStorage.setItem('maltNames', JSON.stringify(this.maltNames));
-
-      }
-    });
-  }
-  getStyles() {
-    const getAllActiveStyleAPI = String.Format(this.apiService.getAllActiveStyle, this.tenantId);
-    this.apiService.getData(getAllActiveStyleAPI).subscribe(response => {
-      if (response) {
-        this.styles = response['body'].style;
-        sessionStorage.setItem('styles', JSON.stringify(this.styles));
-
-      }
-    });
-  }
-
-  findUnits() {
-    if (this.units) {
-      this.units.forEach(element => {
-        if (element.id === this.preference.temperatureId) {
-          this.preferedUnit = element.symbol;
+    this.apiService.getDataList(this.apiService.getAllActiveUnitType).subscribe(response => {
+      this.units = response['body']['unitTypes'];
+    },
+      (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.toast.danger(error.error.message, 'Try Again');
         }
-        if (element.id === this.preference.gravityMeasurementId) {
-          this.preferedPlato = element.name;
-          this.platoUnitId = element.id;
+        else {
+          this.toast.danger(error, 'Try Again');
         }
       });
-    }
-  }
-
-  getPreferenceUsed() {
-    const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
-    this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
-      if (response.status === 200) {
-        this.preference = response['body'];
-        sessionStorage.setItem('preferenceUsed', JSON.stringify(this.preference));
-        this.findUnits();
-      }
-    }, error => {
-      console.error(error);
-    });
   }
 
   getSingleBrewDetails(tenantId, brewId) {
     const getBrewDetailsById = String.Format(this.apiService.getbrewDetailsForReport, tenantId, brewId);
     this.apiService.getDataList(getBrewDetailsById).subscribe(response => {
-      if (response.status === 200) {
 
+      if (response.status === 200) {
         this.brew = response['body']['brew'];
+        
 
         this.currentBrewId = this.brew.brewRunId;
         this.recipeId = this.brew.recipeId;
-
-        this.maltGrainBillDetailsCompletion = this.isCompleted("MaltGrainBill");
-        this.waterAdditionsCompletion = this.isCompleted("Water Additions");
-        this.mashinDetailsCompletion = this.isCompleted("Mashing");
-        this.spargeDetailsCompletion = this.isCompleted("Sparge");
-        this.kettleDataCompletion = this.isCompleted("Kettle Data Entry");
-        this.kettleHopeCompletion = this.isCompleted("Kettle Hopes");
-        this.kettleAdjunctDetailsCompletion = this.isCompleted("Kettle Adjuncts");
-        this.whirlPoolDetailsCompletion = this.isCompleted("Whirlpool Data Entry");
-        this.whirlPoolHopeCompletion = this.isCompleted("Whirlpool Hopes");
-        this.whirlPoolAdjunctDetailsCompletion = this.isCompleted("Whirlpool Adjuncts");
-        this.fermentationDataEntryCompletion = this.isCompleted("Fermentation Data Entry");
-        this.fermentationHopDetailsCompletion = this.isCompleted("Fermentation Hopes");
-        this.fermentationAdjunctDetailsCompletion = this.isCompleted("Fermentation Adjuncts");
-        this.coolingKnockOutDetailsCompletion = this.isCompleted("Cooling - Knockout Data Entry");
-        this.enterFermentationDataCompletion = this.isCompleted("Enter Fermentation Data");
-        this.conditionDetailsCompletion = this.isCompleted("Conditioning Data Entry");
-        this.filterationDetailsCompletion = this.isCompleted("Filtration Data Entry");
-        this.carbonationDetailsCompletion = this.isCompleted("Carbonation Data Entry");
+        // this.maltGrainBillDetailsCompletion = this.isCompleted("MaltGrainBill");
+        // this.waterAdditionsCompletion = this.isCompleted("Water Additions");
+        // this.mashinDetailsCompletion = this.isCompleted("Mashing");
+        // this.spargeDetailsCompletion = this.isCompleted("Sparge");
+        // this.kettleDataCompletion = this.isCompleted("Kettle Data Entry");
+        // this.kettleHopeCompletion = this.isCompleted("Kettle Hopes");
+        // this.kettleAdjunctDetailsCompletion = this.isCompleted("Kettle Adjuncts");
+        // this.whirlPoolDetailsCompletion = this.isCompleted("Whirlpool Data Entry");
+        // this.whirlPoolHopeCompletion = this.isCompleted("Whirlpool Hopes");
+        // this.whirlPoolAdjunctDetailsCompletion = this.isCompleted("Whirlpool Adjuncts");
+        // this.fermentationDataEntryCompletion = this.isCompleted("Fermentation Data Entry");
+        // this.fermentationHopDetailsCompletion = this.isCompleted("Fermentation Hopes");
+        // this.fermentationAdjunctDetailsCompletion = this.isCompleted("Fermentation Adjuncts");
+        // this.coolingKnockOutDetailsCompletion = this.isCompleted("Cooling - Knockout Data Entry");
+        // this.enterFermentationDataCompletion = this.isCompleted("Enter Fermentation Data");
+        // this.conditionDetailsCompletion = this.isCompleted("Conditioning Data Entry");
+        // this.filterationDetailsCompletion = this.isCompleted("Filtration Data Entry");
+        // this.carbonationDetailsCompletion = this.isCompleted("Carbonation Data Entry");
 
 
         if (this.brew.maltGrainBillDetails.length === 0) {
@@ -293,6 +207,7 @@ export class ViewReportsComponent implements OnInit {
         if (this.brew.mashingTargetDetails.length === 0) {
           this.brew.mashingTargetDetails.push(new MashingTargetDetail());
         }
+
         this.brew.mashingTargetDetails.forEach((mash: MashingTargetDetail) => {
           if (!mash.mashingTargetDetailsTemperature) {
             mash.mashingTargetDetailsTemperature = [];
@@ -331,12 +246,12 @@ export class ViewReportsComponent implements OnInit {
           this.brew.postWhirlpoolDetails.push(new PostWhirlpoolDetail());
         }
         if (this.brew.coolingKnockouDetails.length === 0) {
+
           this.brew.coolingKnockouDetails.push(new CoolingKnockouDetail());
         }
         if (this.brew.brewLogDetailsNotes.length === 0) {
           this.brew.brewLogDetailsNotes.push(new BrewLogDetailsNote());
         }
-
         if (this.brew.startchTest.length === 0) {
           this.brew.startchTest.push(new StartchTest());
         }
@@ -370,13 +285,10 @@ export class ViewReportsComponent implements OnInit {
         if (this.brew.fermentationDetailsNotes.length === 0) {
           this.brew.fermentationDetailsNotes.push(new FermentationDetailsNote());
           this.brew.fermentationDetailsNotes[this.brew.fermentationDetailsNotes.length - 1].tenantId = this.tenantId;
-
         }
-
         if (this.brew.conditioningDetails.length === 0) {
           this.brew.conditioningDetails.push(new ConditioningDetail());
           this.brew.conditioningDetails[this.brew.conditioningDetails.length - 1].tenantId = this.tenantId;
-
         }
         if (this.brew.filterationDetails.length === 0) {
           this.brew.filterationDetails.push(new FilterationDetail());
@@ -384,19 +296,37 @@ export class ViewReportsComponent implements OnInit {
         if (this.brew.carbonationDetails.length === 0) {
           this.brew.carbonationDetails.push(new CarbonationDetail());
           this.brew.carbonationDetails[this.brew.carbonationDetails.length - 1].tenantId = this.tenantId;
-
         }
         if (this.brew.conditioningDetailsNotes.length === 0) {
           this.brew.conditioningDetailsNotes.push(new ConditioningDetailsNote());
           this.brew.conditioningDetailsNotes[this.brew.conditioningDetailsNotes.length - 1].tenantId = this.tenantId;
-
         }
-
-
-
       }
-
     });
+  }
+
+  getPreferenceUsed() {
+    const getPreferenceSettingsAPI = String.Format(this.apiService.getPreferenceSettings, this.tenantId);
+    this.apiService.getDataList(getPreferenceSettingsAPI).subscribe((response: any) => {
+      if (response.status === 200) {
+        this.preference = response['body'].preferenceSettings;
+        this.findUnits();
+      }
+    });
+  }
+
+  findUnits() {
+    if (this.units) {
+      this.units.forEach(element => {
+        if (element.id === this.preference.temperatureId) {
+          this.preferedUnit = element.symbol;
+        }
+        if (element.id === this.preference.gravityMeasurementId) {
+          this.preferedPlato = element.name;
+          this.platoUnitId = element.id;
+        }
+      });
+    }
   }
 
   goToTop() {
@@ -409,6 +339,7 @@ export class ViewReportsComponent implements OnInit {
       let dateTime = this.timezone(element.startTime).toString();
       dateTime = dateTime.split(' ').slice(0, 5).join(' ');
       element.startTime = new Date(dateTime).toLocaleString();
+
       if (element.addInId === '255ce5b1-4b1a-4da8-b269-5a0b81d9db23') { // kettle
         this.kettleAdjuncts.push(element);
       }
@@ -419,6 +350,7 @@ export class ViewReportsComponent implements OnInit {
         this.fermentAdjuncts.push(element);
       }
     });
+
     if (this.kettleAdjuncts.length === 0) {
       this.kettleAdjuncts.push(new AdjunctsDetail());
       this.kettleAdjuncts[0].startTime = (this.kettleAdjuncts[0].startTime).toLocaleString();
@@ -446,6 +378,7 @@ export class ViewReportsComponent implements OnInit {
         this.fermentHops.push(element);
       }
     });
+
     if (this.kettleHops.length === 0) {
       this.kettleHops.push(new HopesDetail());
       this.kettleHops[0].startTime = (this.kettleHops[0].startTime).toLocaleString();
@@ -489,7 +422,6 @@ export class ViewReportsComponent implements OnInit {
       }
     }
     return returnValue;
-
   }
 
   saveAs(pdf) {

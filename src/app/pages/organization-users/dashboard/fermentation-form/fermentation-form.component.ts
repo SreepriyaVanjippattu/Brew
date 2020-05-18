@@ -227,7 +227,7 @@ export class FermentationFormComponent implements OnInit {
           dateTime = dateTime.split(' ').slice(0, 5).join(' ');
           enter.dateAndTime = new Date(dateTime);
         });
-       
+
         if (this.brewRunFermentation.fermentationDetailsNotes.length == 0) {
           this.brewRunFermentation.fermentationDetailsNotes.push(new FermentationDetailsNote());
           this.brewRunFermentation.fermentationDetailsNotes[this.brewRunFermentation.fermentationDetailsNotes.length - 1].tenantId = this.tenantId;
@@ -335,11 +335,13 @@ export class FermentationFormComponent implements OnInit {
 
   radioChange(status) {
     this.statusDate = new Date();
-    this.status = status === 'Pass' ? 'Pass' : 'Fail';
+    this.status = (status === 'Pass') ? 'Pass' : 'Fail';
+
     let dateTime = this.timezone(this.statusDate).toString();
     dateTime = dateTime.split(' ').slice(0, 5).join(' ');
     this.statusDate = new Date(dateTime).toLocaleString();
     this.statusDate = new Date();
+
     const statusData = new FermentationTestResultList();
     statusData.fermentationTestId = this.brewRunFermentation.enterFermentationData[this.selectedPos].id;
     statusData.testName = 'Test';
@@ -350,6 +352,7 @@ export class FermentationFormComponent implements OnInit {
       this.brewRunFermentation.enterFermentationData[this.selectedPos].passStatusName = this.status;
     }
   }
+
   get resultListData() {
     this.resultList = this.brewRunFermentation.enterFermentationData[this.selectedPos].fermentationTestResultList;
     return this.resultList;

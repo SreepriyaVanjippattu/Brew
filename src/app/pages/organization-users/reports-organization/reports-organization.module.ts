@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { NgPrintModule } from 'ng-print';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 const routes: Routes = [
   {
@@ -29,6 +30,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     PDFExportModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     NgPrintModule,
     RouterModule.forChild(routes)
   ],

@@ -662,7 +662,7 @@
                                         <th scope="col">Date</th>
                                         <th scope="col">{{preferedPlato}}</th>
                                         <th scope="col">Temperature</th>
-                                        <th scope="col">Ph</th>
+                                        <th scope="col">ph</th>
                                         <th scope="col">Cell Count</th>
                                         <th scope="col">Pass/Fail</th>
                                         <th scope="col">Edit</th>
@@ -770,16 +770,16 @@
                                     
                                     <div class='form-group col-md-6 custom-radio-wrapper'>
                                         <div class='custom-radio'>
-                                            <input type="radio" id="meshin-pass" name="radio-gravity" [value]="true"
+                                            <input type="radio" id="fermentation-pass" name="radio-gravity" [value]="true"
                                                 name="PassStatus" (change)="radioChange('Pass')"
                                                 [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].passStatus">
-                                            <label for="meshin-pass">Pass</label>
+                                            <label for="fermentation-pass">Pass</label>
                                         </div>
                                         <div class='custom-radio'>
-                                            <input type="radio" id="meshin-fail" name="radio-gravity"
+                                            <input type="radio" id="fermentation-fail" name="radio-gravity"
                                                 [value]="false" name="PassStatus" (change)="radioChange('Fail')"
                                                 [(ngModel)]="brewRunFermentation.enterFermentationData[selectedPos].passStatus">
-                                            <label for="meshin-fail">Fail</label>
+                                            <label for="fermentation-fail">Fail</label>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6"></div>

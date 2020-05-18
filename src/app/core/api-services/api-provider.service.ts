@@ -23,6 +23,9 @@ export class ApiProviderService {
 
   // api endpoints
   login = 'authorization/v1/login';
+  logoutApi = 'Logout';
+
+  // brewrun
   getAllBrewRun = 'brewrun/v1/brewers/{0}/brewrun/';
   getAllActiveBrewUsers = 'user/v1/users/{0}/brewers';
   getBrewRunMasterDetails = 'brewrun/v1/brewers/{0}/brewrun/masterdetails';
@@ -52,8 +55,7 @@ export class ApiProviderService {
   getAllArchivedUsers = 'user/v1/brewers/user/{0}/archived';
   postEmail = 'user/v1/brewers/{0}/forgotPasswordLink';
   editForgotPassword = 'user/v1/brewers/resetForgotPassword';
-  resetUserPassword = 'ResetUserPassword';
-  // Profile
+  getCompanyDetailsByTenant = 'user/v1/brewers/tenant/{0}';
   changeProfilePassword = 'EditUserPassword';
 
   // Role Permissions
@@ -61,12 +63,10 @@ export class ApiProviderService {
   getAllPermissions = 'user/v1/brewers/role/permission';
   addRole = 'user/v1/brewers/{0}/role';
   editRole = 'user/v1/brewers/{0}/role';
+
   // get all Tenants/
-  getAllTenantContent = 'GetAllTenentStatus';
   editClientSettings = 'EditClientSettings';
-  editGeneralSettings = 'EditGeneralSettings';
   resetTenantPassword = 'user/v1/brewers/resetforgotpassword/tenant';
-  editSubcriptions = 'EditSubscription';
   tenantPasswordLink = 'user/v1/brewers/forgotpasswordlink';
   getAllActiveClientsReport = '';
   getAllAuditTrailReport = '';
@@ -75,7 +75,6 @@ export class ApiProviderService {
   getAllTenantSubscriptionReport = '';
   editRoles = '';
   deleteUsers = '';
-
 
   // preference
   getPreferenceSettings = 'user/v1/brewers/settings/{0}/preference';
@@ -118,12 +117,6 @@ export class ApiProviderService {
   getAllActiveUnitType = 'brewrun/v1/brewers/settings/units';
   getAllActiveStyle = 'brewrun/v1/brewers/settings/{0}/styles';
 
-
-  logoutApi = 'Logout';
-
-
-  getAllMaltGrainName = 'GetAllMaltGrainNameByTenantId';
-  getBrewRunById = 'GetBrewRunById';
   editClient = 'user/v1/brewers/{0}/tenant';
   getSubscriptions = 'user/v1/brewers/subscriptions';
   isCompanyNameAvailable = 'user/v1/brewers/companyname/{0}/check';

@@ -117,6 +117,7 @@ export class MaltGrainBillDetail {
         this.maltGrainNameId = "";
         this.maltGrainTypeId = "";
         this.countryId = "";
+        this.supplier = '';
         this.supplierId = "";
         this.quantity = null;
         this.quantityUnitId = 'a6190eaa-8dc5-400c-a5f6-b72468fa3d5c';
@@ -684,6 +685,7 @@ export class CoolingKnockouDetail {
     brewId: string;
     recipeId: string;
     volumeInFermentation: number;
+    volumeInFermentationOption: string;
     volumeInFermentationOptionId: string;
     actualTemperature: number;
     actualTemperatureUnitId: string;
@@ -697,7 +699,7 @@ export class CoolingKnockouDetail {
 
     constructor() {
         this.id = Guid.raw();
-
+        this.volumeInFermentationOption='';
         this.isActive = true;
         this.createdDate = new Date();
         this.modifiedDate = null;
@@ -853,8 +855,8 @@ export class EnterFermentationData {
         this.temperatureUnitId = '';
         this.ph = null;
         this.passStatusName = '';
-        this.fermentationTestResultList =[];
-        this.passStatus = true;
+        this.fermentationTestResultList = [];
+        this.passStatus = null;
         this.cellCount = null;
         this.notes = null;
         this.plato = null;
@@ -917,6 +919,7 @@ export class ConditioningDetail {
     brewId: string;
     recipeId: string;
     volumeIn: number;
+    volumeInOption: string;
     volumeInOptionId: string;
     temperatureIn: number;
     temperatureUnitId: string;
@@ -938,6 +941,7 @@ export class ConditioningDetail {
         this.volumeIn = null;
         this.volumeInOptionId = '58c07c47-a13e-4464-bec8-628fe11f027a';
         this.temperatureIn = null;
+        this.volumeInOption='';
         this.temperatureUnitId = "";
         this.actualpressure = null;
         this.actualPressurUnitId = "";
